@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Explore ancient Roman coins with Imperium Roma. Discover resources for identifying, cataloging, and researching Roman Imperial coinage. Join our global community today." />
+    <title>Imperium Roma: Ancient Roman Coins - Collect, Learn, Discover</title>
+    
+    <!-- Apple Touch Icons -->
+    <!-- <link rel="apple-touch-icon" sizes="57x57" href="/assets/images/icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/assets/images/icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/images/icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/images/icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/images/icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/images/icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/images/icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/images/icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-icon-180x180.png"> -->
+
+    <!-- Favicon Icons -->
+    <!-- <link rel="icon" type="image/png" sizes="192x192" href="/assets/images/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/images/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png"> -->
+    <link rel="icon" type="image/x-icon" href="/assets/images/icons/favicon.ico">
+
+    <!-- Web Manifest -->
+    <!-- <link rel="manifest" href="/assets/images/icons/manifest.json"> -->
+
+    <!-- Microsoft Tiles -->
+    <!-- <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/assets/images/icons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff"> -->
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/contact.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header__container">
+            <a class="logo" href="/">
+                <img src="/assets/images/icons/favicon.ico" alt="Logo">
+                <span>Imperium Roma</span>
+            </a>
+            <nav>
+                <ul id="menu" class="menu">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/services">Services</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/news">News</a></li>
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Banner -->
+    <section class="banner">
+        <div class="banner-image-container">
+            <img src="/assets/images/general/contact1.jpg" alt="Expertise in Ancient Roman Coins">
+        </div>
+        <div class="banner-content">
+            <h1>Get in Touch with Us</h1>        
+            <a href="#contact" class="btn-banner">Contact Us</a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <p>We'd love to hear from you! Whether you have a question about our services, need assistance, or just want to talk about Roman coins, we're here to help.</p>
+            <form action="https://formkeep.com/f/fbd762e87bd6" method="POST" class="contact-form" enctype="multipart/form-data" target="_blank">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+
+                <!-- Updated Subject Dropdown -->
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <select id="subject" name="subject" required>
+                        <option value="" disabled selected>Select a subject</option>
+                        <option value="market evaluation">Market Evaluation</option>
+                        <option value="authenticity check">Authenticity Check</option>
+                        <option value="data parsing">Data Parsing</option>
+                        <option value="promote your lot">Promote Your Lot</option>
+                        <option value="custom request">Custom Request</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="file">Attach files (up to 5)</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="file" name="file[]" multiple>
+                        <button type="button" id="customButton" class="custom-file-upload">Choose Files</button>
+                    </div>
+                    <ul id="fileList"></ul> <!-- File list area -->
+                </div>               
+                <div class="form-group">
+                    <button type="submit" class="btn-submit">Send Message</button>
+                </div>
+            </form>                      
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="/assets/images/icons/favicon.ico" alt="Imperium Roma Logo">
+                </div>
+                <p>&copy; 2024 Imperium Roma. All rights reserved.</p>
+                <ul class="footer-links">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="/contact/">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/header.js"></script>
+    <script src="/assets/js/hamburger.js"></script>
+    <script src="/assets/js/form.js"></script>
+
+</body>
+
+</html>

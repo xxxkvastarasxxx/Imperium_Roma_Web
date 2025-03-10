@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Explore ancient Roman coins with Imperium Roma. Discover resources for identifying, cataloging, and researching Roman Imperial coinage. Join our global community today." />
+    <title>Imperium Roma: Ancient Roman Coins - Collect, Learn, Discover</title>
+    
+    <!-- Apple Touch Icons -->
+    <!-- <link rel="apple-touch-icon" sizes="57x57" href="/assets/images/icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/assets/images/icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/images/icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/images/icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/images/icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/images/icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/images/icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/images/icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-icon-180x180.png"> -->
+
+    <!-- Favicon Icons -->
+    <!-- <link rel="icon" type="image/png" sizes="192x192" href="/assets/images/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/images/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png"> -->
+    <link rel="icon" type="image/x-icon" href="/assets/images/icons/favicon.ico">
+
+    <!-- Web Manifest -->
+    <!-- <link rel="manifest" href="/assets/images/icons/manifest.json"> -->
+
+    <!-- Microsoft Tiles -->
+    <!-- <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/assets/images/icons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff"> -->
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/services.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header__container">
+            <a class="logo" href="/">
+                <img src="/assets/images/icons/favicon.ico" alt="Logo">
+                <span>Imperium Roma</span>
+            </a>
+            <nav>
+                <ul id="menu" class="menu">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/services">Services</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/news">News</a></li>
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Banner -->
+    <section class="banner">
+        <div class="video-container">
+            <video autoplay muted loop playsinline poster="/assets/images/poster.jpg">
+                <source src="/assets/videos/services.intro.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="banner-content">
+            <h1>Expertise in Ancient Roman Coins</h1>
+            <p>Precision and authenticity with every evaluation.</p>
+            <a href="#services" class="btn-banner">Our Services</a>
+        </div>
+    </section>
+    
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2>Our Services</h2>
+            <p class="services-description">We specialize in evaluating and checking prices on the markets for ancient Roman coins, utilizing the newest technologies. Our advanced parsers crawl data from different markets to ensure authenticity and provide up-to-date pricing information.</p>
+            
+            <div class="services-wrapper">
+                <div class="service-item">
+                    <h3>Market Evaluation</h3>
+                    <p>We analyze current market trends and prices, ensuring you get the most accurate and up-to-date information on the value of your ancient Roman coins.</p>
+                    <a href="#market-evaluation" class="btn-service">Learn More</a>
+                </div>
+                <div class="service-item">
+                    <h3>Authenticity Check</h3>
+                    <p>Our technology verifies the authenticity of ancient Roman coins by cross-referencing multiple sources, ensuring that your investments are secure and reliable.</p>
+                    <a href="#authenticity-check" class="btn-service">Learn More</a>
+                </div>
+                <div class="service-item">
+                    <h3>Data Parsing</h3>
+                    <p>We use advanced parsers to crawl and extract data from various market platforms, providing a comprehensive view of the current market situation.</p>
+                    <a href="#data-parsing" class="btn-service">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+    
+    
+    
+    
+    <section id="market-evaluation" class="market-analysis">
+        <div class="container">
+            <!-- Section Header -->
+            <div class="section-header">
+                <h2 class="section-title gradient-text">Marcus Aurelius Denarius Market Insights</h2>
+                <p class="section-subtext">Interactive analysis for <span class="highlight">RIC 123, 27 BC Issue</span></p>
+            </div>
+    
+            <!-- Analysis Grid -->
+            <div class="analysis-grid">
+                <!-- Price Trend Card -->
+                <div class="analysis-card trend-card">
+                    <div class="card-header">
+                        <h3>Price Trajectory</h3>
+                        <div class="time-filter">
+                            <button class="active">5Y</button>
+                            <button>3Y</button>
+                            <button>1Y</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="priceTrendChart"></canvas>
+                    </div>
+                    <div class="chart-annotation">
+                        <span class="peak-marker">📈 2024 Peak Value</span>
+                        <div class="growth-badge">+22% YoY Growth</div>
+                    </div>
+                </div>
+    
+                <!-- Coin Spotlight Card -->
+                <div class="analysis-card coin-spotlight">
+                    <div class="coin-display">
+                        <div class="auto-spin-coin">
+                            <div class="coin-face obverse">
+                                <img src="/assets/images/FeaturedCoinsOTD/den1.png" alt="Augustus Obverse">
+                            </div>
+                            <div class="coin-face reverse">
+                                <img src="/assets/images/FeaturedCoinsOTD/den2.png" alt="Divus Julius Reverse">
+                            </div>
+                        </div>
+                        <div class="specimen-meta">
+                            <div class="meta-item">
+                                <span>RIC I² 267</span>
+                                <span>Lugdunum Mint</span>
+                            </div>
+                            <div class="meta-item">
+                                <span>Silver</span>
+                                <span>3.8g</span>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="market-stats">
+                        <div class="stat-pill">
+                            <div class="stat-value">$1,850</div>
+                            <div class="stat-caption">Current Median</div>
+                        </div>
+                        <div class="stat-pill highlight">
+                            <div class="stat-value">154</div>
+                            <div class="stat-caption">Certified Examples</div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Market Distribution Card -->
+                <div class="analysis-card distribution-card">
+                    <div class="card-header">
+                        <h3>Market Liquidity</h3>
+                    </div>
+                    <div class="chart-wrapper">
+                        <div class="chart-container">
+                            <canvas id="marketComparisonChart"></canvas>
+                            <div class="chart-center-label">65%</div>
+                        </div>
+                        <div class="chart-legend">
+                            <div class="legend-item auction">
+                                <div class="color-swatch"></div>
+                                Auction
+                            </div>
+                            <div class="legend-item private">
+                                <div class="color-swatch"></div>
+                                Private
+                            </div>
+                        </div>
+                    </div>
+                    <div class="volume-indicator">
+                        <div class="volume-bar">
+                            <span class="volume-text">Auction Dominance</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Insight Actions -->
+            <div class="insight-actions">
+                <button class="insight-btn export-btn">
+                    <svg viewBox="0 0 24 24" width="20" height="20">
+                        <path d="M12 2v8l3-3m-6 0l3 3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    Export Report
+                </button>
+                <button class="insight-btn primary">
+                    Full Market Analysis
+                    <svg viewBox="0 0 24 24" width="20" height="20">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </button>
+            </div>
+    
+            <!-- Overlay and Tooltip -->
+            <div class="contextual-tooltip"></div>
+            <div class="chart-overlay">
+                <div class="overlay-content"></div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+    <!-- Authenticity Check Section -->
+    <section id="authenticity-check" class="service-detail">
+        <div class="container">
+            <h2>Authenticity Check</h2>
+            <p>With the prevalence of counterfeit coins, our authenticity check service is crucial for ensuring the legitimacy of your ancient Roman coins. We cross-reference multiple trusted sources, including expert databases and market records, to verify the authenticity of your coins. This service provides peace of mind, ensuring that your collection or investment is secure and genuine.</p>
+            <a href="/authenticity/" class="btn-authenticity">Check for the valid certificate</a>
+            <br>
+            <a href="/contact/" class="btn-contact">Contact Us for More Info</a>
+        </div>
+    </section>
+
+    <!-- Data Parsing Section -->
+    <section id="data-parsing" class="service-detail">
+        <div class="container">
+            <h2>Data Parsing</h2>
+            <p>Our data parsing service is at the cutting edge of technology, using sophisticated parsers to crawl and extract information from a wide array of online marketplaces and databases. This service provides a comprehensive overview of market conditions, including price fluctuations, demand trends, and historical comparisons. By aggregating data from diverse sources, we offer a holistic view of the market, empowering you with the information needed to make strategic decisions.</p>
+            <a href="/contact/" class="btn-contact">Contact Us for More Info</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="/assets/images/icons/favicon.ico" alt="Imperium Roma Logo">
+                </div>
+                <p>&copy; 2024 Imperium Roma. All rights reserved.</p>
+                <ul class="footer-links">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="/contact/">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/header.js"></script>
+    <script src="/assets/js/hamburger.js"></script>
+    <script src="/assets/js/market-avaluation.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,615 @@
+/* Main Banner */
+.banner {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.banner .video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.banner video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+    z-index: 1;
+}
+
+.banner-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+}
+
+.banner h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+.banner p {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+.btn-banner {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffcc00;
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-banner:hover {
+    background-color: #ff9900;
+}
+
+/* Main Banner */
+@media (max-width: 1024px) {
+    .banner {
+        height: 50vh; /* Reduce height on tablets */
+    }
+
+    .banner h1 {
+        font-size: 36px; /* Adjust text size */
+    }
+
+    .banner p {
+        font-size: 20px;
+    }
+
+    .btn-banner {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .banner {
+        height: 50vh; /* Reduce height on mobile */
+    }
+
+    .banner h1 {
+        font-size: 28px;
+    }
+
+    .banner p {
+        font-size: 16px;
+    }
+
+    .btn-banner {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+}
+
+
+
+
+
+
+
+/***************************************************
+ * MARKET EVALUATION SECTION STYLES
+ ***************************************************/
+
+/* Main Container */
+.market-analysis {
+    background: linear-gradient(65deg, #fafbfc 0%, #ffffff 100%);
+    padding: 4rem 0;
+}
+
+/* Section Header */
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 2.6rem;
+    font-weight: 700;
+    background: #ffcc00;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.section-subtext {
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+/* Grid Layout */
+.analysis-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+@media (max-width: 1200px) {
+    .analysis-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Common Card Styles */
+.analysis-card {
+    background: #ffffff;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.analysis-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.06);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.card-header h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* Time Filter Buttons */
+.time-filter {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.time-filter button {
+    padding: 0.35rem 0.85rem;
+    border-radius: 1rem;
+    border: 1px solid #dee2e6;
+    background: #fff;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.time-filter button.active {
+    background: #fff9d9;
+    border-color: #ffdf7e;
+}
+
+/* Chart Containers */
+.chart-container {
+    position: relative;
+    height: 300px;
+}
+
+/* Trend Annotations */
+.chart-annotation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.peak-marker {
+    color: #d4af37;
+}
+
+.growth-badge {
+    background: #e9ecef;
+    padding: 0.3rem 0.7rem;
+    border-radius: 1rem;
+    font-size: 0.85rem;
+}
+
+/* Coin Spotlight */
+.coin-display {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    margin: 0 auto;
+    perspective: 1000px;
+}
+
+.auto-spin-coin {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: constantSpin 10s infinite linear;
+}
+
+.coin-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 50%;
+    overflow: visible;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+.coin-face.reverse {
+    transform: rotateY(180deg);
+}
+
+.coin-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@keyframes constantSpin {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(360deg);
+    }
+}
+
+/* Coin Metadata */
+.specimen-meta {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-around;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Market Stats */
+.market-stats {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 100px;
+}
+
+.stat-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f8f9fa;
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    transition: background 0.3s ease;
+}
+
+.stat-pill.highlight {
+    background: #fff3cd;
+}
+
+.stat-pill:hover {
+    background: #fffcf2;
+}
+
+.stat-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.stat-caption {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* Distribution Card */
+.distribution-card {
+    background: linear-gradient(135deg, #fff9f5 0%, #ffffff 100%);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-center-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #d4af37 0%, #a67c00 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.chart-legend {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.color-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.auction .color-swatch {
+    background: linear-gradient(135deg, #d4af37 0%, #a67c00 100%);
+}
+
+.private .color-swatch {
+    background: linear-gradient(135deg, #e5e5e5 0%, #b0b0b0 100%);
+}
+
+/* Volume Indicator */
+.volume-indicator {
+    margin-top: 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+.volume-bar {
+    height: 8px;
+    background: linear-gradient(90deg, #ffdf7e, #d4af37);
+    border-radius: 4px;
+    width: 65%;
+    position: relative;
+    transition: width 0.5s ease;
+}
+
+.volume-text {
+    position: absolute;
+    right: -5px;
+    top: -25px;
+    font-size: 0.9rem;
+    color: #d4af37;
+    font-weight: 500;
+    white-space: nowrap;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Action Buttons */
+.insight-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+
+.insight-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    border: 1px solid #dee2e6;
+    background: #ffcc00;
+    color: #000;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.insight-btn.export-btn svg {
+    margin-right: 0.3rem;
+    fill: currentColor;
+}
+
+.insight-btn.primary {
+    background: #ffcc00;
+    border: none;
+    padding: 0.75rem 2rem;
+}
+
+.insight-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Overlay and Tooltip */
+.contextual-tooltip {
+    display: none; /* Implementation depends on JavaScript */
+}
+
+.chart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.chart-overlay.active {
+    display: flex;
+}
+
+.overlay-content {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 1rem;
+    max-width: 800px;
+    width: 90%;
+}
+
+
+
+
+
+
+
+
+/* Services Section */
+.services {
+    padding: 80px 20px;
+    background-color: #111;
+    color: white;
+    text-align: center;
+}
+
+.services h2 {
+    font-size: 36px;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.services p {
+    font-size: 18px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.services-description {
+    margin-bottom: 40px;
+}
+
+.services-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Адаптивна сітка */
+    gap: 20px;
+}
+
+.service-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 100%;
+    padding: 20px;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+    text-align: left;
+    min-height: 340px;
+}
+
+.service-item h3 {
+    font-size: 24px;
+}
+
+.service-item p {
+    font-size: 16px;
+    color: #bbb;
+}
+
+/* Service Detail Buttons */
+.btn-service {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffcc00;
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-service:hover {
+    background-color: #ff9900;
+}
+
+/* Service Detail Sections */
+.service-detail {
+    padding: 60px 20px;
+    background-color: #f4f4f4;
+    color: #333;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.service-detail h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.service-detail p {
+    font-size: 18px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Contact Us Buttons */
+.btn-contact {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffcc00;
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn-contact:hover {
+    background-color: #ff9900;
+}
+
+/* Check Authenticity Button */
+.btn-authenticity {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffcc00;
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn-authenticity:hover {
+    background-color: #ff9900;
+}

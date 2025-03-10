@@ -1,0 +1,1078 @@
+/* Introduction */
+.introduction, .featured-coins {
+    padding: 20px 20px;
+    background: var(--background);
+}
+
+.introduction h2, .daily-news h2 {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    color: var(--white);
+}
+
+.introduction p, .daily-news p {
+    color: var(--white);
+    font-size: 18px;
+}
+
+.section-title-text {
+    text-align: center;
+    padding-top: 140px;
+    padding-bottom: 140px;
+}
+
+.introduction .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.introduction {
+    position: relative;
+    overflow: hidden;
+}
+
+.drifting-objects {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.object-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.object {
+    position: absolute;
+    bottom: 100%;
+    animation: driftDown linear infinite;
+    width: 40px;
+    height: 40px;
+}
+
+@keyframes driftDown {
+    to {
+        transform: translateY(100vh);
+    }
+}
+
+/* Keyframes for the drifting animation */
+@keyframes drift {
+    0% {
+        transform: translateY(-100px);
+        opacity: 1;
+    }
+}
+
+/* Add randomness to the objects' positions and animations */
+.object:nth-child(1) {
+    left: 10%;
+    animation-duration: 6s;
+}
+
+.object:nth-child(2) {
+    left: 30%;
+    animation-duration: 4s;
+}
+
+.object:nth-child(3) {
+    left: 50%;
+    animation-duration: 5s;
+}
+
+.object:nth-child(4) {
+    left: 70%;
+    animation-duration: 7s;
+}
+
+.object:nth-child(5) {
+    left: 90%;
+    animation-duration: 3.5s;
+}
+
+.elements-btn {
+    margin-top: 50px;
+}
+
+.btn-primary {
+    background-color: gold;
+    color: var(--white);
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Featured Coins Section */
+.featured-coins {
+    display: flex;
+    justify-content: center;
+    background-color: #f0f0f0;
+    padding: 40px 0;
+}
+
+/* Container with Image and Text Frame Side by Side */
+.featured-coins-container {
+    display: flex;
+    width: 90%;
+    max-width: 2560px;
+    position: relative;
+    gap: 0;
+}
+
+/* Image Side */
+.image-side {
+    width: 60%; 
+    height: auto;
+    position: relative;
+}
+
+.side-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Text Overlay */
+.text-overlay {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-left: 20px;
+}
+
+.overlay-frame {
+    background: linear-gradient(135deg, #ffffff 0%, #f7f7f7 100%);
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    padding: 40px;
+    margin-bottom: 20px;
+    text-align: left;
+    color: var(--grey);
+}
+
+.overlay-frame h2 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: var(--darkgrey);
+}
+
+.overlay-frame p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: var(--lightgrey);
+}
+
+.explore-button {
+    display: inline-block;
+    padding: 12px 25px;
+    font-size: 16px;
+    color: #fff;
+    background-color: var(--grey);
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.explore-button:hover {
+    background-color: var(--lightgrey);
+    transform: scale(1.05);
+}
+
+/* Logos Section (General Styles) */
+.auction-logos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+    justify-content: center; /* Center the grid items horizontally */
+    align-items: center; /* Center the grid items vertically */
+    margin-top: 20px;
+    justify-items: center; /* Center the logos within the grid cells */
+}
+
+/* Styling the logos */
+.auction-logos img {
+    width: 100px; /* Default size for larger screens */
+    height: 100px;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    background-color: var(--white);
+}
+
+.auction-logos img:hover {
+    transform: scale(1.1);
+}
+
+/* Spacer between sections */
+.roman-spacer {
+    height: 100px;
+    width: 100%;
+    background: linear-gradient(to bottom, #efefef, var(--background));
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+
+.animation-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.running-roman, .running-roman-reverse {
+    position: absolute;
+    bottom: 0;
+    width: 100px;
+    height: auto;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    z-index: 2;
+}
+
+.running-roman {
+    animation: moveLeftToRight 15s linear infinite;
+}
+
+.running-roman-reverse {
+    animation: moveRightToLeft 15s linear infinite;
+}
+
+@keyframes moveLeftToRight {
+    0% {
+        left: -10%;
+    }
+    100% {
+        left: 110%;
+    }
+}
+
+@keyframes moveRightToLeft {
+    0% {
+        left: 110%;
+    }
+    100% {
+        left: -10%;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Updated News Section */
+.news-section {
+    background-color: var(--background); /* Consistent var(--background) background */
+    padding: 40px 20px;
+    text-align: center;
+    min-height: 1000px; /* Increased to adapt to additional content */
+}
+
+.news-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0; /* Removed internal padding */
+}
+
+.news-container h2 {
+    font-size: 36px;
+    color: #f1f1f1;
+    margin-bottom: 10px;
+}
+
+.section-description {
+    font-size: 18px;
+    color: #c2c2c2;
+    margin-bottom: 30px;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* This will ensure 3 items per row */
+    gap: 30px;
+}
+
+.news-item {
+    background-color: var(--background); /* Consistent background with the rest of the section */
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.news-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.news-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 15px rgba(255, 255, 255, 0.3);
+}
+
+.news-thumbnail {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.news-content {
+    padding: 20px;
+}
+
+.news-content h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #f1f1f1;
+}
+
+.news-content p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #c2c2c2;
+}
+
+.news-content .read-link {
+    color: #66b3ff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+.news-content .read-link:hover {
+    color: #3399ff;
+}
+
+/* Parallax Section */
+.parallax-section {
+    position: relative;
+    overflow: hidden;
+    height: 800px;
+    background: var(--background);
+}
+
+.parallax-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Helmet Image */
+.parallax-img.helmet {
+    position: absolute;
+    width: 400px;
+    height: auto;
+    object-fit: contain;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    top: 40%; /* Adjusted from 50% to lift it higher */
+    left: 50%;
+    transform-origin: center;
+}
+
+/* Coin Images */
+.coin {
+    position: absolute;
+    width: 100px;
+    height: auto;
+    transition: transform 0.5s ease-out;
+    will-change: transform, opacity;
+    transform-origin: center;
+}
+
+/* Coin Positions - Adjusted to move all coins higher */
+.coin-one {
+    left: 30%;
+    top: 15%; /* Adjusted from 25% to lift it higher */
+    z-index: 2;
+}
+
+.coin-two {
+    right: 30%;
+    top: 15%; /* Adjusted from 25% to lift it higher */
+    opacity: 0.8;
+    z-index: 2;
+}
+
+.coin-three {
+    right: 35%;
+    top: 60%; /* Adjusted from 70% to lift it higher */
+    z-index: 1;
+}
+
+.coin-four {
+    left: 35%;
+    top: 60%; /* Adjusted from 70% to lift it higher */
+    opacity: 0.9;
+    z-index: 1;
+}
+
+.parallax-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    color: #fff;
+    max-width: 600px;
+    animation: fadeInUp 1s ease-in-out;
+    top: -50px; /* Adjusted to lift the text slightly higher */
+}
+
+.parallax-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.parallax-content-font {
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    animation: fadeInUp 1s ease-in-out;
+}
+
+/* Scroll-triggered animations */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Auction Highlights Section */
+.auction-highlights {
+    position: relative;
+    padding: 40px 0;
+    overflow: hidden;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    box-sizing: border-box;
+}
+
+/* Video Background */
+.background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    filter: brightness(50%);
+}
+
+/* Auction Content */
+.auction-content {
+    position: relative;
+    z-index: 1;
+    color: #fff;
+}
+
+/* Auction Highlights Title */
+.auction-title {
+    text-align: center;
+    font-size: 36px;
+    font-family: 'Playfair Display', serif;
+    color: var(--yellow);
+    margin-bottom: 30px;
+}
+
+/* Carousel */
+#auction-carousel {
+    display: flex;
+    overflow: hidden;
+    justify-content: center;
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding-right: 20px;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.5s ease-in-out;
+    padding-right: 20px;
+}
+
+/* Carousel Control Buttons */
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: var(--yellow);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    z-index: 2;
+}
+
+.carousel-control:hover {
+    background-color: rgba(255, 215, 0, 0.8);
+    transform: scale(1.2);
+}
+
+.carousel-control.prev {
+    left: 10px;
+}
+
+.carousel-control.next {
+    right: 10px;
+}
+
+/* Auction Item */
+.auction-item {
+    background: #2c2c2e;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 0 10px;
+    max-width: 240px;
+    flex-shrink: 0;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.auction-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.auction-item img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    background-color: var(--grey);
+}
+
+.item-details {
+    text-align: center;
+}
+
+.item-details h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: #ffae00;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item-details p {
+    font-size: 14px;
+    margin-bottom: 15px;
+    color: #ddd;
+    line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* View Details Button */
+.view-details-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #ffae00;
+    color: #1c1c1e;
+    border: none;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.view-details-btn:hover {
+    background: var(--yellow);
+    transform: scale(1.1);
+}
+
+/* Promote Lot Button */
+.promote-lot-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.promote-lot-btn {
+    padding: 15px 30px;
+    background: #ffae00;
+    color: #1c1c1e;
+    border: none;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+    transition: background 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.promote-lot-btn:hover {
+    background: var(--yellow);
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+}
+
+
+/* Responsive Adjustments for Devices with 1024px by 1366px (e.g., larger tablets or small laptops) */
+@media (max-width: 1366px) and (min-width: 1024px) {
+    .object {
+        width: 40px;
+        height: 40px;
+    }
+
+    .introduction, .featured-coins, .daily-news {
+        padding: 50px 20px;
+    }
+
+    .introduction h2, .featured-coins h2, .daily-news h2,
+    .news-container h2 {
+        font-size: 32px;
+    }
+
+    .introduction p, .featured-coins p, .daily-news p,
+    .section-description {
+        font-size: 18px;
+    }
+
+    .featured-coins-container {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .image-side, .text-overlay {
+        width: 48%;
+    }
+
+    .text-overlay {
+        margin: 30px 0 0 0;
+    }
+
+    .overlay-frame {
+        padding: 25px;
+        text-align: center;
+    }
+
+    .overlay-frame h2 {
+        font-size: 28px;
+    }
+
+    .overlay-frame p {
+        font-size: 16px;
+    }
+
+    .auction-logos {
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 25px;
+    }
+
+    .auction-logos img {
+        width: 150px;
+        height: 150px;
+    }
+
+    .news-section {
+        padding: 40px 20px;
+        min-height: auto;
+    }
+
+    .news-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+
+    .news-item {
+        transform: translateY(5px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .parallax-section {
+        min-height: 600px; /* Adjust for better layout */
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .parallax-img.helmet {
+        width: 300px;
+        top: 40%;
+    }
+
+    .coin {
+        width: 80px;
+    }
+
+    .coin-one, .coin-two {
+        top: 10%;
+    }
+
+    .coin-three, .coin-four {
+        top: 50%;
+    }
+
+    .parallax-content h2 {
+        font-size: 2rem;
+    }
+
+    #auction-carousel {
+        overflow-x: auto;
+        white-space: nowrap;
+        display: flex;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding: 20px 0;
+    }
+
+    .carousel-track {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 15px;
+        padding: 0 10px;
+        overflow-x: auto;  /* Enable horizontal scrolling */
+        overflow-y: hidden; /* Prevent vertical scrolling */
+        scroll-snap-type: x mandatory;  /* Optional for snap behavior */
+        -webkit-overflow-scrolling: touch;  /* Smooth scroll on iOS */
+        /* Hide scrollbar for cleaner look (optional) */
+        scrollbar-width: none;  /* Firefox */
+    }
+    
+    /* Hide scrollbar for Chrome/Safari */
+    .carousel-track::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .carousel-track > .auction-item {
+        flex: 0 0 calc(50% - 10px);
+        scroll-snap-align: center;
+        white-space: nowrap; /* Prevent text wrapping */
+    }
+    
+}
+
+
+
+
+/* Responsive Adjustments for Tablets (768px and below) */
+@media (max-width: 768px) {
+    .object {
+        width: 30px;
+        height: 30px;
+    }
+
+    .introduction, .featured-coins, .daily-news {
+        padding: 40px 10px;
+    }
+
+    .introduction h2, .featured-coins h2, .daily-news h2,
+    .news-container h2 {
+        font-size: 28px;
+    }
+
+    .introduction p, .featured-coins p, .daily-news p,
+    .section-description {
+        font-size: 16px;
+    }
+    
+    .featured-coins-container {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .image-side, .text-overlay {
+        width: 100%;
+    }
+
+    .text-overlay {
+        margin: 20px 0 0 0;
+    }
+
+    .overlay-frame {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .overlay-frame h2 {
+        font-size: 24px;
+    }
+
+    .overlay-frame p {
+        font-size: 14px;
+    }
+
+    .auction-logos {
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 30px;
+    }
+
+    .auction-logos img {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .news-section {
+        padding: 30px 15px;
+        min-height: auto;
+    }
+
+    .news-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .news-item {
+        transform: translateY(10px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .parallax-section {
+        min-height: 500px; /* Adjust for better layout */
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .parallax-img.helmet {
+        width: 250px;
+        top: 40%;
+    }
+
+    .coin {
+        width: 60px;
+    }
+
+    .coin-one, .coin-two {
+        top: 10%;
+    }
+
+    .coin-three, .coin-four {
+        top: 50%;
+    }
+
+    .parallax-content h2 {
+        font-size: 1.8rem;
+    }
+
+    #auction-carousel {
+        overflow-x: auto;
+        white-space: nowrap;
+        display: flex;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding: 10px 0;
+    }
+
+    .carousel-track {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 15px;
+        padding: 0 10px;
+        overflow-x: auto;  /* Enable horizontal scrolling */
+        overflow-y: hidden; /* Prevent vertical scrolling */
+        scroll-snap-type: x mandatory;  /* Optional for snap behavior */
+        -webkit-overflow-scrolling: touch;  /* Smooth scroll on iOS */
+        /* Hide scrollbar for cleaner look (optional) */
+        scrollbar-width: none;  /* Firefox */
+    }
+    
+    /* Hide scrollbar for Chrome/Safari */
+    .carousel-track::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .carousel-track > .auction-item {
+        flex: 0 0 calc(50% - 10px);
+        scroll-snap-align: center;
+        white-space: nowrap; /* Prevent text wrapping */
+    }
+    
+
+    .carousel-control {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+}
+
+/* Additional Adjustments for Phones (480px and below) */
+@media (max-width: 480px) {
+    .news-container h2 {
+        font-size: 24px;
+    }
+
+    .section-description {
+        font-size: 14px;
+    }
+
+    .news-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .news-content h3 {
+        font-size: 20px;
+    }
+
+    .news-content p {
+        font-size: 14px;
+    }
+
+    .parallax-section {
+        height: 340px;
+    }
+
+    .parallax-img.helmet {
+        width: 200px;
+        top: 40%;
+    }
+
+    .coin {
+        width: 50px;
+    }
+
+    .parallax-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .parallax-content-font {
+        font-size: 1.2rem;
+    }
+
+    .overlay-frame {
+        padding: 15px;
+    }
+
+    .overlay-frame h2 {
+        font-size: 20px;
+    }
+
+    .overlay-frame p {
+        font-size: 14px;
+    }
+
+    .explore-button {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .auction-title {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+
+    .carousel-track {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 15px;
+        padding: 0 10px;
+        overflow-x: auto;  /* Enable horizontal scrolling */
+        overflow-y: hidden; /* Prevent vertical scrolling */
+        scroll-snap-type: x mandatory;  /* Optional for snap behavior */
+        -webkit-overflow-scrolling: touch;  /* Smooth scroll on iOS */
+        /* Hide scrollbar for cleaner look (optional) */
+        scrollbar-width: none;  /* Firefox */
+    }
+    
+    /* Hide scrollbar for Chrome/Safari */
+    .carousel-track::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .carousel-track > .auction-item {
+        flex: 0 0 calc(50% - 10px);
+        scroll-snap-align: center;
+        white-space: nowrap; /* Prevent text wrapping */
+    }
+    
+
+    .auction-item {
+        max-width: 160px;
+        padding: 10px;
+    }
+
+    .auction-item img {
+        height: 100px;
+        margin-bottom: 8px;
+    }
+
+    .item-details h2 {
+        font-size: 14px;
+    }
+
+    .item-details p {
+        font-size: 12px;
+    }
+
+    .view-details-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .carousel-control {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+
+    .promote-lot-container {
+        margin-top: 20px;
+    }
+
+    .promote-lot-btn {
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+}

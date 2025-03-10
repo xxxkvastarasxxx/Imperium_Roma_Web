@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<website>
+    <meta>
+        <charset>UTF-8</charset>
+        <viewport>width=device-width, initial-scale=1.0</viewport>
+        <title>Imperium Roma - Ancient Roman Coins</title>
+        <icon>/Imperium_Roma/Imperium.ico</icon>
+        <description>Explore the fascinating world of ancient Roman coins with Imperium Roma. Our platform offers comprehensive resources for identifying, cataloging, and researching Roman Imperial coinage. Join a global community of enthusiasts and scholars to discover the rich heritage and history of the Roman Empire through its coinage. Stay updated with the latest news and featured coins, and participate in auctions to add unique pieces to your collection.</description>
+        <stylesheet>styles/Imperium_Roma_Web.css</stylesheet>
+    </meta>
+    <header>
+        <container>
+            <title>Imperium Roma</title>
+            <nav>
+                <menu>
+                    <item>
+                        <name>Home</name>
+                        <link>index.html</link>
+                    </item>
+                    <item>
+                        <name>About</name>
+                        <link>about.html</link>
+                    </item>
+                    <item>
+                        <name>Coin Catalog</name>
+                        <link>catalog.html</link>
+                    </item>
+                    <item>
+                        <name>History</name>
+                        <link>history.html</link>
+                    </item>
+                    <item>
+                        <name>Resources</name>
+                        <link>resources.html</link>
+                    </item>
+                    <item>
+                        <name>Contact</name>
+                        <link>contact.html</link>
+                    </item>
+                </menu>
+            </nav>
+        </container>
+    </header>
+    <sections>
+        <section>
+            <type>spacer</type>
+        </section>
+        <section>
+            <type>banner</type>
+            <video>
+                <source>videos/intro1.mp4</source>
+                <fallback>Your browser does not support the video tag.</fallback>
+            </video>
+            <container>
+                <bannerText>
+                    <h2>Discover the Rich Heritage of Ancient Roman Coins with <br/>Imperium Roma</h2>
+                </bannerText>
+            </container>
+        </section>
+        <section>
+            <type>introduction</type>
+            <container>
+                <h2>Welcome to Imperium Roma</h2>
+                <p>Imperium Roma, the premier destination for enthusiasts, collectors, and scholars of ancient Rome. Our mission is to revolutionize the study and appreciation of Roman Imperial coins through cutting-edge technology and comprehensive data integration. Imperium Roma offers an unparalleled resource for identifying, cataloging, evaluating, and researching the diverse and fascinating world of Roman Empire coinage.</p>
+                <p>Supported by a global community of passionate enthusiasts, Imperium Roma fosters communication and collaboration, building a friendly society dedicated to bringing the past to life. Our platform connects individuals who share a love for history, providing a space where knowledge is shared, discoveries are celebrated, and the rich legacy of Roman coinage is preserved for future generations.</p>
+                <p>Discover the grandeur of Roman coinage with Imperium Roma, where history and technology converge to illuminate the past.</p>
+            </container>
+        </section>
+        <section>
+            <type>featured-coins</type>
+            <container>
+                <h2>Featured Coins of the Day</h2>
+                <coinList>
+                    <coin>
+                        <image>images/FeaturedCoinsOTD/08.07.24.1.jpg</image>
+                        <h3>Aureus</h3>
+                        <details>
+                            <name>Marcus Aurelius</name>
+                            <attribute>Honos</attribute>
+                            <translation>Honour</translation>
+                        </details>
+                    </coin>
+                    <coin>
+                        <image>images/FeaturedCoinsOTD/08.07.24.2.jpg</image>
+                        <h3>Aureus</h3>
+                        <details>
+                            <name>Caracalla</name>
+                            <attribute>Galley</attribute>
+                            <translation>Adventus Augustorum</translation>
+                        </details>
+                    </coin>
+                    <coin>
+                        <image>images/FeaturedCoinsOTD/08.07.24.3.jpg</image>
+                        <h3>Aureus</h3>
+                        <details>
+                            <name>Lucius Verus</name>
+                            <attribute>Victory</attribute>
+                            <translation>Tribunicia Potestate Quarta</translation>
+                        </details>
+                    </coin>
+                </coinList>
+            </container>
+        </section>
+        <section>
+            <type>daily-news</type>
+            <container>
+                <h2>Daily News</h2>
+                <newsList>
+                    <newsItem>
+                        <h3>Archaeologists Unearth Ancient Roman Cemetery Full of Jewelry, Coins and Clothing</h3>
+                        <image>https://th-thumbnailer.cdn-si-edu.com/26cMs3r5a77_shHgouVcNmL9U9k=/1000x750/filters:no_upscale():focal(640x482:641x483)/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer_public/65/17/6517425b-0b6e-410e-8cd4-c71e79035489/dapzb5ujcdqgqpawhbqpqm_1.jpeg</image>
+                        <content>
+                            <p>An ancient Roman burial ground filled with treasure has been discovered in central Italy. Along with nearly 70 skeletons interred in carefully constructed graves, researchers found precious jewelry, leather goods, pottery and coins.</p>
+                            <p>As lead archaeologist Emanuele Giannini tells CNN’s Silvia Marchetti, his team had a “faint idea” that the site would yield valuables, “but the magnitude of the discovery is unmatched.”</p>
+                            <p>Unearthed during a pre-construction dig for a solar energy plant, the burial ground lies on a 52-acre plot of land north of Rome. It’s not far from the ancient city of Tarquinia, known for Etruscan stone cemeteries dating to the seventh century B.C.E.</p>
+                        </content>
+                        <link>https://www.smithsonianmag.com/smart-news/ancient-roman-cemetery-full-of-jewelry-coins-and-clothing-180983615/</link>
+                    </newsItem>
+                    <newsItem>
+                        <h3>Archaeologists unearth luxurious Roman home with "unparalleled" mosaic near Colosseum</h3>
+                        <image>https://static.euronews.com/articles/stories/08/10/79/64/828x552_cmsv2_acc3fc48-40ce-5806-927c-735249df01be-8107964.jpg</image>
+                        <content>
+                            <p>Italian archaeologists have recently unearthed a stunning, one-of-a-kind Roman dwelling, boasting an "unparalleled" mosaic featuring shells, marble and precious glass, near the iconic Colosseum in Rome.</p>
+                            <p>The luxurious residence, dating back to the latter half of the 2nd century BC to the conclusion of the 1st century BC, has been described by Culture Minister Gennaro Sangiuliano as an "authentic treasure."</p>
+                            <p>Three large ships ride waves in the mosaic towards a coastal city, its walls dotted with small towers and porticoes in a scene suggesting the owner of the more than 2,000-year-old home, or domus, had been victorious in battle.</p>
+                        </content>
+                        <link>https://www.euronews.com/culture/2023/12/14/archaeologists-unearth-luxurious-roman-home-with-unparalleled-mosaic-near-colosseum</link>
+                    </newsItem>
+                    <newsItem>
+                        <h3>Archaeologists in Bulgaria Have Discovered an Ancient Roman ‘Fridge’ Containing Drinking Vessels and Animal Bones</h3>
+                        <image>https://news.artnet.com/app/news-upload/2023/09/DJI_0037-1024x683.jpg</image>
+                        <content>
+                            <p>Archaeologists excavating a Roman military settlement in modern-day Bulgaria have uncovered a type of ancient fridge.</p>
+                            <p>The discovery at Novae, a first century C.E. fortress along the Danube river, came as the team from the University of Warsaw uncovered much of the site’s water system. They located the settlement’s first water well along with a network of aqueducts made from ceramic and lead pipes.</p>
+                            <p>Alongside one of the lead pipes, the team found an open-topped box built out of wood and ceramic material that was still damp from water that had leaked out of the pipe network. Inside the box, they found several drinking vessels and animal bones, which may have once been used as part of a ritual.</p>
+                        </content>
+                        <link>https://news.artnet.com/art-world/bulgaria-ancient-roman-fridge-234567890</link>
+                    </newsItem>
+                </newsList>
+            </container>
+        </section>
+        <section>
+            <type>auction-highlights</type>
+            <container>
+                <h1>Auction Highlights</h1>
+                <auctionList id="auction-list"></auctionList>
+            </container>
+        </section>
+    </sections>
+    <footer>
+        <container>
+            <copyright>&#169; 2024 Imperium Roma. All rights reserved.</copyright>
+            <menu>
+                <item>
+                    <name>Privacy Policy</name>
+                    <link>#</link>
+                </item>
+                <item>
+                    <name>Terms of Service</name>
+                    <link>#</link>
+                </item>
+                <item>
+                    <name>Contact Us</name>
+                    <link>contact.html</link>
+                </item>
+            </menu>
+        </container>
+    </footer>
+</website>
