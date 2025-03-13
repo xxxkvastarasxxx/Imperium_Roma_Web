@@ -35,6 +35,8 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/services.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 
 <body>
@@ -194,9 +196,7 @@
     
           <!-- Insight Actions -->
           <div class="insight-actions">
-            <a href="/export/" class="insight-btn export-btn">
-              Export Report
-            </a>
+            <a href="#" id="export-report" class="insight-btn export-btn">Export Report</a>
             <a href="/contact/#contact" class="insight-btn primary">
               Full Market Analysis
             </a>
@@ -253,6 +253,7 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="/assets/js/export-logic.js"></script>
     <script src="/assets/js/header.js"></script>
     <script src="/assets/js/hamburger.js"></script>
     <script src="/assets/js/market-avaluation.js"></script>
