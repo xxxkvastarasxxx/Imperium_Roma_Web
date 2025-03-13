@@ -110,120 +110,105 @@
     
     <section id="market-evaluation" class="market-analysis">
         <div class="container">
-            <!-- Section Header -->
-            <div class="section-header">
-                <h2 class="section-title gradient-text">Marcus Aurelius Denarius Market Insights</h2>
-                <p class="section-subtext">Interactive analysis for <span class="highlight">RIC 123, 27 BC Issue</span></p>
-            </div>
+          <!-- Section Header -->
+          <div class="section-header">
+            <h2 class="section-title gradient-text">Marcus Aurelius Denarius Market Insights</h2>
+            <p class="section-subtext">
+              Interactive analysis for <span class="highlight" id="issue-name" data-issue="RIC 123, 27 BC Issue">RIC III Marcus Aurelius 171</span>
+            </p>
+          </div>
     
-            <!-- Analysis Grid -->
-            <div class="analysis-grid">
-                <!-- Price Trend Card -->
-                <div class="analysis-card trend-card">
-                    <div class="card-header">
-                        <h3>Price Trajectory</h3>
-                        <div class="time-filter">
-                            <button class="active">5Y</button>
-                            <button>3Y</button>
-                            <button>1Y</button>
-                        </div>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="priceTrendChart"></canvas>
-                    </div>
-                    <div class="chart-annotation">
-                        <span class="peak-marker">📈 2024 Peak Value</span>
-                        <div class="growth-badge">+22% YoY Growth</div>
-                    </div>
+          <!-- Analysis Grid -->
+          <div class="analysis-grid">
+            <!-- Price Trend Card -->
+            <div class="analysis-card trend-card">
+              <div class="card-header">
+                <h3>Price Trajectory</h3>
+                <div class="time-filter">
+                  <button class="active" data-range="5Y">5Y</button>
+                  <button data-range="3Y">3Y</button>
+                  <button data-range="1Y">1Y</button>
                 </div>
+              </div>
+              <div class="chart-container">
+                <canvas id="priceTrendChart"></canvas>
+              </div>
+              <div class="chart-annotation">
+                <span class="peak-marker" id="peak-marker">📈 2024 Peak Value</span>
+                <div class="growth-badge" id="growth-badge">+22% YoY Growth</div>
+              </div>
+            </div>
     
-                <!-- Coin Spotlight Card -->
-                <div class="analysis-card coin-spotlight">
-                    <div class="coin-display">
-                        <div class="auto-spin-coin">
-                            <div class="coin-face obverse">
-                                <img src="/assets/images/FeaturedCoinsOTD/den1.png" alt="Augustus Obverse">
-                            </div>
-                            <div class="coin-face reverse">
-                                <img src="/assets/images/FeaturedCoinsOTD/den2.png" alt="Divus Julius Reverse">
-                            </div>
-                        </div>
-                        <div class="specimen-meta">
-                            <div class="meta-item">
-                                <span>RIC I² 267</span>
-                                <span>Lugdunum Mint</span>
-                            </div>
-                            <div class="meta-item">
-                                <span>Silver</span>
-                                <span>3.8g</span>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <div class="market-stats">
-                        <div class="stat-pill">
-                            <div class="stat-value">$1,850</div>
-                            <div class="stat-caption">Current Median</div>
-                        </div>
-                        <div class="stat-pill highlight">
-                            <div class="stat-value">154</div>
-                            <div class="stat-caption">Certified Examples</div>
-                        </div>
-                    </div>
+            <!-- Coin Spotlight Card -->
+            <div class="analysis-card coin-spotlight">
+              <div class="coin-display">
+                <div class="auto-spin-coin">
+                  <div class="coin-face obverse">
+                    <img src="/assets/images/FeaturedCoinsOTD/den1.png" alt="Marcus Aurelius Obverse" />
+                  </div>
+                  <div class="coin-face reverse">
+                    <img src="/assets/images/FeaturedCoinsOTD/den2.png" alt="Marcus Aurelius Reverse" />
+                  </div>
                 </div>
+              </div>
     
-                <!-- Market Distribution Card -->
-                <div class="analysis-card distribution-card">
-                    <div class="card-header">
-                        <h3>Market Liquidity</h3>
-                    </div>
-                    <div class="chart-wrapper">
-                        <div class="chart-container">
-                            <canvas id="marketComparisonChart"></canvas>
-                            <div class="chart-center-label">65%</div>
-                        </div>
-                        <div class="chart-legend">
-                            <div class="legend-item auction">
-                                <div class="color-swatch"></div>
-                                Auction
-                            </div>
-                            <div class="legend-item private">
-                                <div class="color-swatch"></div>
-                                Private
-                            </div>
-                        </div>
-                    </div>
-                    <div class="volume-indicator">
-                        <div class="volume-bar">
-                            <span class="volume-text">Auction Dominance</span>
-                        </div>
-                    </div>
+              <div class="market-stats">
+                <div class="stat-pill">
+                  <div class="stat-value" id="current-median" data-value="1850">$1,850</div>
+                  <div class="stat-caption">Current Median</div>
                 </div>
+                <div class="stat-pill highlight">
+                  <div class="stat-value" id="certified-examples" data-value="154">154</div>
+                  <div class="stat-caption">Certified Examples</div>
+                </div>
+              </div>
             </div>
     
-            <!-- Insight Actions -->
-            <div class="insight-actions">
-                <button class="insight-btn export-btn">
-                    <svg viewBox="0 0 24 24" width="20" height="20">
-                        <path d="M12 2v8l3-3m-6 0l3 3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                    </svg>
-                    Export Report
-                </button>
-                <button class="insight-btn primary">
-                    Full Market Analysis
-                    <svg viewBox="0 0 24 24" width="20" height="20">
-                        <path d="M9 18l6-6-6-6"/>
-                    </svg>
-                </button>
+            <!-- Market Distribution Card -->
+            <div class="analysis-card distribution-card">
+              <div class="card-header">
+                <h3>Market Liquidity</h3>
+              </div>
+              <div class="chart-wrapper">
+                <div class="chart-container">
+                  <canvas id="marketComparisonChart"></canvas>
+                  <div class="chart-center-label" id="doughnut-center-label">65%</div>
+                </div>
+                <div class="chart-legend">
+                  <div class="legend-item auction">
+                    <div class="color-swatch"></div>
+                    Auction
+                  </div>
+                  <div class="legend-item private">
+                    <div class="color-swatch"></div>
+                    Private
+                  </div>
+                </div>
+              </div>
+              <div class="volume-indicator">
+                <div class="volume-bar">
+                </div>
+              </div>
             </div>
+          </div>
     
-            <!-- Overlay and Tooltip -->
-            <div class="contextual-tooltip"></div>
-            <div class="chart-overlay">
-                <div class="overlay-content"></div>
-            </div>
+          <!-- Insight Actions -->
+          <div class="insight-actions">
+            <a href="/export/" class="insight-btn export-btn">
+              Export Report
+            </a>
+            <a href="/contact/#contact" class="insight-btn primary">
+              Full Market Analysis
+            </a>
+          </div>
+    
+          <!-- Overlay and Tooltip -->
+          <div class="contextual-tooltip"></div>
+          <div class="chart-overlay">
+            <div class="overlay-content"></div>
+          </div>
         </div>
-    </section>
+      </section>
 
 
 
