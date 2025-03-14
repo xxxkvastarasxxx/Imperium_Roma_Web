@@ -98,10 +98,6 @@
         font-size: 0.8rem;
     }
 }
-
-
-
-
   
 /***************************************************
  * MARKET EVALUATION SECTION STYLES
@@ -120,7 +116,7 @@
 }
 
 .section-title {
-  font-size: 3rem; /* Increased from 2.6rem */
+  font-size: 32px;
   font-weight: 700;
   background: #333;
   -webkit-background-clip: text;
@@ -522,6 +518,259 @@
     font-size: 2.2rem;
   }
 }
+
+
+
+/***************************************************
+ * Authenticity Chack SECTION STYLES
+ ***************************************************/
+#authenticity-check {
+  padding: 4rem 0;
+}
+
+/* Modal for zoomed image */
+.zoomed {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(2);
+  max-width: 90vw;
+  max-height: 90vh;
+  z-index: 1000;
+  box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+/* Create overlay when image is zoomed */
+.certificate-img {
+  transition: all 0.3s ease;
+}
+
+.service-description {
+  color: #495057;
+  max-width: 800px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.authentication-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto 3rem;
+  padding: 0;
+  list-style: none;
+}
+
+.authentication-features li {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.authentication-features li:hover {
+  transform: translateY(-5px);
+}
+
+.certificate-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  position: relative;
+}
+
+.certificate-card {
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease;
+}
+
+.certificate-card:hover {
+  transform: translateY(-5px);
+}
+
+.certificate-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+.certificate-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.certificate-card:hover .certificate-hover {
+  opacity: 1;
+}
+
+.magnify-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.magnify-btn:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.certificate-caption {
+  text-align: center;
+  color: #6c757d;
+  margin-top: 1rem;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #ffcc00;
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 25px;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-primary:hover {
+  background-color: #ff9900;
+}
+
+.btn-secondary:hover {
+  background: #ff9900;
+}
+
+/* Add these lightbox styles to your CSS */
+.certificate-lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.certificate-lightbox.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  animation: zoomIn 0.3s ease forwards;
+}
+
+.lightbox-image {
+  display: block;
+  max-width: 100%;
+  max-height: 85vh;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  transition: opacity 0.3s ease;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 36px;
+  cursor: pointer;
+  padding: 5px;
+  transition: transform 0.2s ease;
+}
+
+.lightbox-close:hover {
+  transform: scale(1.2);
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .service-description {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    width: 100%;
+    padding: 0 1rem;
+  }
+  
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 
 
 
