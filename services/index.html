@@ -294,24 +294,51 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-    <!-- Data Parsing Section -->
-    <section id="data-parsing" class="service-detail">
-        <div class="container">
-            <h2>Data Parsing</h2>
-            <p>Our data parsing service is at the cutting edge of technology, using sophisticated parsers to crawl and extract information from a wide array of online marketplaces and databases. This service provides a comprehensive overview of market conditions, including price fluctuations, demand trends, and historical comparisons. By aggregating data from diverse sources, we offer a holistic view of the market, empowering you with the information needed to make strategic decisions.</p>
-            <a href="/contact/" class="btn-contact">Contact Us for More Info</a>
-        </div>
+    
+    <section id="coin-3d-visualization" class="service-detail coin-modeling">
+      <div class="container">
+          <h2>3D Coin Visualization</h2>
+          
+          <div class="intro-text">
+              <p class="highlight-text">Transform your coin photographs into interactive 3D digital models</p>
+              <p>Our revolutionary technology allows numismatists, collectors, and auction houses to create accurate three-dimensional representations of ancient Roman coins from simple photographs.</p>
+          </div>
+          
+          <div class="model-preview">
+              <div id="coin3DPreview" class="coin-model-container">
+                  <div class="coin-model-placeholder" id="placeholder">
+                      <div class="coin-rotate-animation"></div>
+                      <span class="model-label">Interactive Preview</span>
+                  </div>
+                  <canvas id="coin3DCanvas" class="hidden"></canvas>
+              </div>
+              <div class="upload-controls">
+                  <div class="upload-row">
+                      <div class="upload-box">
+                          <label for="obverseUpload">Obverse (Front)</label>
+                          <input type="file" id="obverseUpload" accept="image/*" class="file-input" />
+                          <div class="upload-preview" id="obversePreview">
+                              <span class="upload-icon">+</span>
+                          </div>
+                      </div>
+                      <div class="upload-box">
+                          <label for="reverseUpload">Reverse (Back)</label>
+                          <input type="file" id="reverseUpload" accept="image/*" class="file-input" />
+                          <div class="upload-preview" id="reversePreview">
+                              <span class="upload-icon">+</span>
+                          </div>
+                      </div>
+                  </div>
+                  <button id="generateModel" class="generate-btn" disabled>Generate 3D Model</button>
+              </div>
+          </div>
+      </div>
     </section>
+
+
+
+
+
 
     <!-- Footer -->
     <footer>
@@ -331,6 +358,9 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <script src="/assets/js/coin3d_generator.js"></script>
     <script src="/assets/js/zoom.js"></script>
     <script src="/assets/js/export-logic.js"></script>
     <script src="/assets/js/header.js"></script>
