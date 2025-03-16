@@ -441,7 +441,6 @@
   display: flex;
   justify-content: center;
   gap: 1.5rem;
-  margin-top: 3rem;
 }
 
 .insight-btn {
@@ -522,87 +521,157 @@
 
 
 /***************************************************
- * Authenticity Chack SECTION STYLES
+ * Authenticity Check SECTION STYLES
  ***************************************************/
-#authenticity-check {
-  padding: 4rem 0;
-}
 
-/* Modal for zoomed image */
-.zoomed {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(2);
-  max-width: 90vw;
-  max-height: 90vh;
-  z-index: 1000;
-  box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.8);
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-/* Create overlay when image is zoomed */
-.certificate-img {
-  transition: all 0.3s ease;
+.intro-content {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto 3rem;
 }
 
 .service-description {
   color: #495057;
   max-width: 800px;
-  margin: 0 auto 2.5rem;
+  margin: 0 auto;
   line-height: 1.8;
   font-size: 1.1rem;
+  text-align: center;
 }
 
+/* Authentication Features */
 .authentication-features {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  max-width: 1000px;
-  margin: 0 auto 3rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto 4rem;
   padding: 0;
   list-style: none;
 }
 
-.authentication-features li {
-  background: rgba(255, 255, 255, 0.9);
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease;
+.feature-card {
+  background: #ffffff;
+  padding: 2rem 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s ease;
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  align-items: flex-start;
+  gap: 1.5rem;
+  position: relative;
+  border: 1px solid rgba(0,0,0,0.06);
+  overflow: hidden;
 }
 
-.authentication-features li:hover {
-  transform: translateY(-5px);
+.feature-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: #ffcc00;
+  transition: width 0.4s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+.feature-card:hover::before {
+  width: 100%;
+}
+
+.icon-wrapper {
+  background: rgba(255, 204, 0, 0.15);
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.feature-card .fas {
+  font-size: 1.5rem;
+  color: #ffcc00;
+}
+
+.feature-content {
+  flex-grow: 1;
+}
+
+.feature-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+}
+
+.feature-description {
+  color: #6c757d;
+  font-size: 0.95rem;
+  display: block;
+  line-height: 1.5;
+}
+
+/* Certificate Display */
+.certificate-showcase {
+  padding: 2rem 0;
+}
+
+.certificate-showcase::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
 }
 
 .certificate-container {
-  max-width: 800px;
-  margin: 2rem auto;
+  max-width: 600px;
+  margin: 0 auto;
   position: relative;
 }
 
 .certificate-card {
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
   position: relative;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-  transition: transform 0.3s ease;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.certificate-border {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 1px solid rgba(255, 204, 0, 0.3);
+  border-radius: 18px;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .certificate-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-15px) rotateY(5deg);
+  box-shadow: 20px 30px 60px rgba(0, 0, 0, 0.18);
 }
 
 .certificate-img {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 12px;
+  transform: translateZ(0);
+  transition: all 0.5s ease;
+  filter: brightness(1.02);
 }
 
 .certificate-hover {
@@ -611,12 +680,13 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  z-index: 1;
 }
 
 .certificate-card:hover .certificate-hover {
@@ -624,12 +694,31 @@
 }
 
 .magnify-btn {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.1);
   border: none;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.magnify-btn .fas {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.magnify-btn .hover-text {
+  font-size: 0.7rem;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(-5px);
   transition: all 0.3s ease;
 }
 
@@ -638,20 +727,56 @@
   transform: scale(1.1);
 }
 
-.certificate-caption {
-  text-align: center;
-  color: #6c757d;
-  margin-top: 1rem;
-  font-style: italic;
-  font-size: 0.9rem;
+.magnify-btn:hover .hover-text {
+  opacity: 1;
+  transform: translateY(0);
 }
 
+.certificate-caption {
+  text-align: center;
+  color: #495057;
+  margin-top: 1.5rem;
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+.certificate-caption::before,
+.certificate-caption::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 30px;
+  height: 1px;
+  background: rgba(0,0,0,0.1);
+}
+
+.certificate-caption::before {
+  left: 30%;
+}
+
+.certificate-caption::after {
+  right: 30%;
+}
+
+/* Action Buttons */
 .action-buttons {
   display: flex;
   justify-content: center;
   gap: 1.5rem;
-  margin-top: 2.5rem;
+  margin-top: 3rem;
   flex-wrap: wrap;
+  position: relative;
+}
+
+.action-buttons::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
 }
 
 .btn {
@@ -663,32 +788,43 @@
   text-decoration: none;
   border-radius: 25px;
   transition: background-color 0.3s ease;
-  margin-top: 10px;
+  margin-top: 20px;
+  text-align: center;
 }
 
-.btn-primary:hover {
-  background-color: #ff9900;
+.btn:hover {
+  background-color: #ffcc00;
 }
 
-.btn-secondary:hover {
-  background: #ff9900;
+.btn-secondary {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #ffcc00;
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 25px;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+  text-align: center;
 }
 
-/* Add these lightbox styles to your CSS */
+/* Lightbox Styling Enhancements */
 .certificate-lightbox {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.95);
   z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+  backdrop-filter: blur(8px);
 }
 
 .certificate-lightbox.active {
@@ -709,38 +845,41 @@
   position: relative;
   max-width: 90%;
   max-height: 90%;
-  animation: zoomIn 0.3s ease forwards;
+  animation: zoomIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
 
 .lightbox-image {
   display: block;
   max-width: 100%;
   max-height: 85vh;
-  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
-  transition: opacity 0.3s ease;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  transition: opacity 0.4s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .lightbox-close {
   position: absolute;
-  top: -40px;
+  top: -60px;
   right: 0;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.1);
   border: none;
   color: #fff;
   font-size: 36px;
   cursor: pointer;
-  padding: 5px;
-  transition: transform 0.2s ease;
+  padding: 5px 15px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
 }
 
 .lightbox-close:hover {
-  transform: scale(1.2);
+  transform: rotate(90deg);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 @keyframes zoomIn {
   from {
-    transform: scale(0.9);
+    transform: scale(0.8);
     opacity: 0;
   }
   to {
@@ -749,7 +888,19 @@
   }
 }
 
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .authentication-features {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
 @media (max-width: 768px) {
+  #authenticity-check {
+    padding: 4rem 0;
+  }
+  
   .section-title {
     font-size: 2rem;
   }
@@ -759,15 +910,46 @@
     padding: 0 1rem;
   }
   
+  .feature-card {
+    padding: 1.5rem;
+  }
+  
+  .icon-wrapper {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .certificate-caption::before,
+  .certificate-caption::after {
+    display: none;
+  }
+  
   .action-buttons {
     flex-direction: column;
-    width: 100%;
-    padding: 0 1rem;
+    align-items: center;
+    gap: 1rem;
   }
   
   .btn {
-    width: 100%;
-    justify-content: center;
+    width: 90%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .feature-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .icon-wrapper {
+    margin-bottom: 0.5rem;
+  }
+  
+  .certificate-card:hover {
+    transform: translateY(-5px);
   }
 }
 
