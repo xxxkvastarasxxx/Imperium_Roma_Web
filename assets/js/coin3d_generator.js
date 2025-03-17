@@ -390,7 +390,7 @@ function initCoin3DGenerator() {
                 // Calculate normal vector (simplified)
                 const dx = (right - left) * 2.0;
                 const dy = (bottom - top) * 2.0;
-                const dz = 1.0;
+                // Z component is fixed at 1.0 for our simplified normal map
                 
                 // Convert to RGB format (128,128,255 is flat)
                 normalMapData[index] = Math.max(0, Math.min(255, 128 + dx * 127));
