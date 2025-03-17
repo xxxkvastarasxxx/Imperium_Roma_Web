@@ -1,95 +1,103 @@
-// Load required libraries
-document.addEventListener('DOMContentLoaded', function() {
-    // Check if the script is already loaded to avoid duplication
+document.addEventListener('DOMContentLoaded', () => {
     if (window.coin3DGeneratorLoaded) return;
     window.coin3DGeneratorLoaded = true;
-    
-    // Load Three.js dynamically if not present
-    if (typeof THREE === 'undefined') {
-        const threeScript = document.createElement('script');
-        threeScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-        document.head.appendChild(threeScript);
-        
-        const orbitControlsScript = document.createElement('script');
-        orbitControlsScript.src = 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js';
-        document.head.appendChild(orbitControlsScript);
-        
-        // Wait for scripts to load
-        threeScript.onload = function() {
-            orbitControlsScript.onload = initCoin3DGenerator;
-        };
-    } else {
-        initCoin3DGenerator();
-    }
+
+    // Load Three.js and dependencies
+    loadDependencies(['https://cdnjs.cloudflare.com/ajax/libs/three.js/r132/three.min.js',
+                      'https://cdn.jsdelivr.net/npm/three@0.132.0/examples/js/controls/OrbitControls.min.js'])
+        .then(initCoin3DGenerator)
+        .catch(err => {
+            console.error("Failed to load dependencies:", err);
+            alert("Failed to load required libraries. Please refresh the page.");
+        });
 });
 
+function loadDependencies(urls) {
+    return Promise.all(urls.map(url => {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = url;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
+    }));
+}
+
 function initCoin3DGenerator() {
-    // Elements
-    const obverseUpload = document.getElementById('obverseUpload');
-    const reverseUpload = document.getElementById('reverseUpload');
-    const obversePreview = document.getElementById('obversePreview');
-    const reversePreview = document.getElementById('reversePreview');
-    const generateBtn = document.getElementById('generateModel');
-    const placeholder = document.getElementById('placeholder');
-    const canvas = document.getElementById('coin3DCanvas');
+    // Element references
+    const elements = {
+        obverseUpload: document.getElementById('obverseUpload'),
+        reverseUpload: document.getElementById('reverseUpload'),
+        obversePreview: document.getElementById('obversePreview'),
+        reversePreview: document.getElementById('reversePreview'),
+        generateBtn: document.getElementById('generateModel'),
+        placeholder: document.getElementById('placeholder'),
+        canvas: document.getElementById('coin3DCanvas'),
+        container: document.getElementById('coin3DPreview')
+    };
     
     // State variables
-    let obverseImage = null;
-    let reverseImage = null;
-    let scene, camera, renderer, controls;
-    let coin, light;
-    let isGenerating = false;
-    let autoRotate = true;
-    
+    const state = {
+        obverseImage: null,
+        reverseImage: null,
+        isGenerating: false,
+        autoRotate: true,
+        scene: null,
+        camera: null,
+        renderer: null,
+        controls: null,
+        coin: null,
+        lights: [] // Store lights for potential animation
+    };
+
     // Initialize upload listeners
-    initializeUpload(obverseUpload, obversePreview, (img) => { obverseImage = img; updateGenerateButton(); });
-    initializeUpload(reverseUpload, reversePreview, (img) => { reverseImage = img; updateGenerateButton(); });
+    setupUpload(elements.obverseUpload, elements.obversePreview, img => {
+        state.obverseImage = img;
+        updateGenerateButton();
+    });
     
-    // Generate button click handler
-    generateBtn.addEventListener('click', function() {
-        if (obverseImage && reverseImage && !isGenerating) {
+    setupUpload(elements.reverseUpload, elements.reversePreview, img => {
+        state.reverseImage = img;
+        updateGenerateButton();
+    });
+    
+    // Toggle generate button based on uploads
+    function updateGenerateButton() {
+        elements.generateBtn.disabled = !(state.obverseImage && state.reverseImage);
+    }
+    
+    // Generate button functionality
+    elements.generateBtn.addEventListener('click', () => {
+        if (!state.isGenerating && state.obverseImage && state.reverseImage) {
             generateCoin3DModel();
         }
     });
     
-    // Function to handle file uploads
-    function initializeUpload(input, preview, callback) {
-        input.addEventListener('change', function(e) {
+    // Handle file uploads
+    function setupUpload(input, preview, callback) {
+        input.addEventListener('change', e => {
             const file = e.target.files[0];
             if (file && file.type.match('image.*')) {
                 const reader = new FileReader();
-                
-                reader.onload = function(e) {
+                reader.onload = event => {
                     const img = new Image();
-                    img.onload = function() {
-                        // Display preview
-                        preview.style.backgroundImage = `url(${e.target.result})`;
+                    img.onload = () => {
+                        preview.style.backgroundImage = `url(${event.target.result})`;
                         preview.innerHTML = '';
-                        
-                        // Call the callback with the image
                         callback(img);
                     };
-                    img.src = e.target.result;
+                    img.src = event.target.result;
                 };
-                
                 reader.readAsDataURL(file);
             }
         });
-        
-        // Make the preview clickable to trigger file input
-        preview.addEventListener('click', function() {
-            input.click();
-        });
-    }
-    
-    // Enable/disable generate button based on uploads
-    function updateGenerateButton() {
-        generateBtn.disabled = !(obverseImage && reverseImage);
+        preview.addEventListener('click', () => input.click());
     }
     
     // Generate 3D model from images
     function generateCoin3DModel() {
-        isGenerating = true;
+        state.isGenerating = true;
         
         // Show loading overlay
         const loadingOverlay = document.createElement('div');
@@ -98,211 +106,315 @@ function initCoin3DGenerator() {
             <div class="loading-spinner"></div>
             <div class="processing-text">Generating 3D model...</div>
         `;
-        document.getElementById('coin3DPreview').appendChild(loadingOverlay);
+        elements.container.appendChild(loadingOverlay);
         
-        // Simulate processing time (in a real implementation, this would be server-side)
+        // Give time for UI updates before heavy processing
         setTimeout(() => {
-            // Initialize Three.js scene
-            initThreeJS();
-            
-            // Create coin geometry from images
-            createCoinFromImages(obverseImage, reverseImage);
-            
-            // Hide placeholder, show canvas
-            placeholder.classList.add('hidden');
-            canvas.classList.remove('hidden');
-            
-            // Add controls to the scene
-            addControlButtons();
+            try {
+                // Initialize Three.js scene
+                initThreeJS();
+                
+                // Create coin from uploaded images
+                createCoin();
+                
+                // Hide placeholder, show canvas
+                elements.placeholder.classList.add('hidden');
+                elements.canvas.classList.remove('hidden');
+                
+                // Add control buttons
+                addControlButtons();
+                
+                // Force a resize to ensure proper rendering
+                window.dispatchEvent(new Event('resize'));
+            } catch (error) {
+                console.error("Error generating coin:", error);
+                alert("There was an error generating the 3D coin. Please try again.");
+            }
             
             // Remove loading overlay
             loadingOverlay.remove();
-            isGenerating = false;
-        }, 2500); // Simulate processing time
+            state.isGenerating = false;
+        }, 100);
     }
     
     // Initialize Three.js environment
     function initThreeJS() {
-        // Create scene
-        scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xf7f7f7);
+        // Scene setup
+        state.scene = new THREE.Scene();
+        state.scene.background = new THREE.Color(0xf7f7f7);
         
         // Camera setup
-        camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-        camera.position.z = 5;
+        const aspect = elements.canvas.clientWidth / elements.canvas.clientHeight || 1;
+        state.camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1000);
+        state.camera.position.z = 5;
         
-        // Renderer setup
-        renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
-        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
+        // Renderer setup with improved quality
+        state.renderer = new THREE.WebGLRenderer({ 
+            canvas: elements.canvas, 
+            antialias: true,
+            alpha: true,
+            preserveDrawingBuffer: true
+        });
         
-        // Controls setup
-        controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.1;
-        controls.enableZoom = true;
-        controls.autoRotate = autoRotate;
-        controls.autoRotateSpeed = 1.5;
+        // Update renderer size
+        updateRendererSize();
         
-        // Ambient light
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-        scene.add(ambientLight);
+        // Enhanced renderer settings for better quality
+        state.renderer.physicallyCorrectLights = true;
+        state.renderer.outputEncoding = THREE.sRGBEncoding;
+        state.renderer.shadowMap.enabled = true;
+        state.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        state.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        state.renderer.toneMappingExposure = 1.2;
         
-        // Point light
-        light = new THREE.PointLight(0xffffff, 1);
-        light.position.set(5, 5, 5);
-        scene.add(light);
+        // Controls setup with better defaults
+        state.controls = new THREE.OrbitControls(state.camera, state.renderer.domElement);
+        state.controls.enableDamping = true;
+        state.controls.dampingFactor = 0.1;
+        state.controls.enableZoom = true;
+        state.controls.autoRotate = state.autoRotate;
+        state.controls.autoRotateSpeed = 1.5;
+        state.controls.maxPolarAngle = Math.PI / 1.5;
+        state.controls.minDistance = 3;
+        state.controls.maxDistance = 10;
+        
+        // Enhanced lighting setup
+        setupEnhancedLighting();
         
         // Start animation loop
         animate();
     }
     
-    // Create coin mesh with textures from uploaded images
-    function createCoinFromImages(obverseImg, reverseImg) {
-        // Create textures from images
-        const obverseTexture = imageToTexture(obverseImg);
-        const reverseTexture = imageToTexture(reverseImg);
+    // Set up enhanced lighting for better visualization
+    function setupEnhancedLighting() {
+        // Clear any existing lights
+        state.lights.forEach(light => state.scene.remove(light));
+        state.lights = [];
         
-        // Generate normal maps from textures (simulated)
-        const obverseNormalMap = generateNormalMap(obverseImg);
-        const reverseNormalMap = generateNormalMap(reverseImg);
+        // Create subtle ambient light
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+        state.scene.add(ambientLight);
+        state.lights.push(ambientLight);
         
-        // Create coin geometry
-        const geometry = new THREE.CylinderGeometry(2, 2, 0.2, 64);
+        // Main directional light (from front-top-right)
+        const mainLight = new THREE.DirectionalLight(0xffffff, 1.0);
+        mainLight.position.set(5, 5, 5);
+        mainLight.castShadow = true;
+        mainLight.shadow.mapSize.width = 1024;
+        mainLight.shadow.mapSize.height = 1024;
+        mainLight.shadow.camera.near = 0.1;
+        mainLight.shadow.camera.far = 20;
+        mainLight.shadow.bias = -0.001;
+        state.scene.add(mainLight);
+        state.lights.push(mainLight);
         
-        // Create materials for obverse and reverse sides
-        const obverseMaterial = new THREE.MeshStandardMaterial({
-            map: obverseTexture,
-            normalMap: obverseNormalMap,
-            normalScale: new THREE.Vector2(0.5, 0.5),
-            metalness: 0.7,
-            roughness: 0.3
-        });
+        // Fill light (from front-bottom-left)
+        const fillLight = new THREE.DirectionalLight(0xffffee, 0.7);
+        fillLight.position.set(-5, -2, 5);
+        state.scene.add(fillLight);
+        state.lights.push(fillLight);
         
-        const reverseMaterial = new THREE.MeshStandardMaterial({
-            map: reverseTexture,
-            normalMap: reverseNormalMap,
-            normalScale: new THREE.Vector2(0.5, 0.5),
-            metalness: 0.7,
-            roughness: 0.3
-        });
+        // Rim light (from back)
+        const rimLight = new THREE.DirectionalLight(0xffffff, 0.4);
+        rimLight.position.set(0, 0, -10);
+        state.scene.add(rimLight);
+        state.lights.push(rimLight);
         
-        // Create edge material
-        const edgeMaterial = new THREE.MeshStandardMaterial({
-            color: 0xd4c19c,
-            metalness: 0.7,
-            roughness: 0.3
-        });
+        // Top light for extra detail
+        const topLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        topLight.position.set(0, 10, 0);
+        state.scene.add(topLight);
+        state.lights.push(topLight);
         
-        // Create coin with different materials for each part
-        const materials = [
-            edgeMaterial,    // side
-            reverseMaterial, // top
-            obverseMaterial  // bottom
-        ];
+        // Add point lights for specular highlights
+        const pointLight1 = new THREE.PointLight(0xffddaa, 0.6, 10);
+        pointLight1.position.set(2, 2, 3);
+        state.scene.add(pointLight1);
+        state.lights.push(pointLight1);
         
-        coin = new THREE.Mesh(geometry, materials);
-        
-        // Rotate to show face up
-        coin.rotation.x = Math.PI / 2;
-        
-        scene.add(coin);
+        const pointLight2 = new THREE.PointLight(0xaaddff, 0.4, 10);
+        pointLight2.position.set(-2, 1, 3);
+        state.scene.add(pointLight2);
+        state.lights.push(pointLight2);
     }
     
-    // Convert image to Three.js texture
-    function imageToTexture(img) {
+    // Create coin with uploaded images
+    function createCoin() {
+        // Create textures from the uploaded images
+        const obverseTexture = createTextureFromImage(state.obverseImage);
+        const reverseTexture = createTextureFromImage(state.reverseImage);
+        
+        // Generate normal maps for added detail
+        const obverseNormalMap = generateSimpleNormalMap(state.obverseImage);
+        const reverseNormalMap = generateSimpleNormalMap(state.reverseImage);
+        
+        // Create a cylinder for the coin with more segments for smoother edges
+        const geometry = new THREE.CylinderGeometry(2, 2, 0.2, 96, 2);
+        
+        // Create enhanced materials using the uploaded image textures
+        const materials = [
+            new THREE.MeshPhysicalMaterial({
+                color: 0xd4c19c,
+                metalness: 0.8,
+                roughness: 0.3,
+                envMapIntensity: 0.5,
+                clearcoat: 0.2,
+                clearcoatRoughness: 0.4
+            }), // Edge material with metallic finish
+            new THREE.MeshStandardMaterial({
+                map: reverseTexture,
+                normalMap: reverseNormalMap,
+                normalScale: new THREE.Vector2(0.5, 0.5),
+                metalness: 0.7,
+                roughness: 0.25,
+                envMapIntensity: 0.5
+            }), // Reverse (top) material
+            new THREE.MeshStandardMaterial({
+                map: obverseTexture,
+                normalMap: obverseNormalMap,
+                normalScale: new THREE.Vector2(0.5, 0.5),
+                metalness: 0.7,
+                roughness: 0.25,
+                envMapIntensity: 0.5
+            }) // Obverse (bottom) material
+        ];
+        
+        // Create the coin mesh
+        state.coin = new THREE.Mesh(geometry, materials);
+        
+        // Rotate to show face up
+        state.coin.rotation.x = Math.PI / 2;
+        
+        // Enable shadows
+        state.coin.castShadow = true;
+        state.coin.receiveShadow = true;
+        
+        // Add to scene
+        state.scene.add(state.coin);
+        
+    }
+    
+    // Create improved texture from uploaded image that perfectly fills the coin
+    function createTextureFromImage(image) {
+        // Create a canvas element
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         
-        // Make the canvas a power of 2 for Three.js
-        const size = Math.pow(2, Math.ceil(Math.log2(Math.max(img.width, img.height))));
+        // Use power-of-two dimensions for better performance
+        const size = Math.pow(2, Math.ceil(Math.log2(Math.max(image.width, image.height, 512))));
         canvas.width = size;
         canvas.height = size;
         
-        // Fill with transparent background and draw the image centered
-        ctx.clearRect(0, 0, size, size);
+        // Fill background with coin-like color
+        ctx.fillStyle = '#d4c19c';
+        ctx.fillRect(0, 0, size, size);
         
-        // Handle circular coins
+        // Create perfect circle mask
         ctx.beginPath();
-        ctx.arc(size/2, size/2, size/2, 0, 2 * Math.PI);
+        ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
         ctx.closePath();
         ctx.clip();
         
-        // Draw the image centered in the circular area
-        const scale = Math.min(size / img.width, size / img.height);
-        const x = (size - img.width * scale) / 2;
-        const y = (size - img.height * scale) / 2;
-        ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+        // Draw image to fill the entire circular area (100%)
+        // We'll use a different approach to fill the entire circle
+        let x, y, drawWidth, drawHeight;
         
-        // Create texture
+        if (image.width / image.height > 1) {
+            // Image is wider than tall
+            drawHeight = size;
+            drawWidth = size * (image.width / image.height);
+            x = (size - drawWidth) / 2;
+            y = 0;
+        } else {
+            // Image is taller than wide
+            drawWidth = size;
+            drawHeight = size * (image.height / image.width);
+            x = 0;
+            y = (size - drawHeight) / 2;
+        }
+        
+        // Draw image centered to fill the entire circle
+        ctx.drawImage(image, x, y, drawWidth, drawHeight);
+        
+        // Add subtle vignette effect to blend edges
+        addVignette(ctx, size);
+        
+        // Create texture from canvas
         const texture = new THREE.CanvasTexture(canvas);
-        texture.anisotropy = 16;
+        texture.anisotropy = 16; // Improve texture quality
+        texture.encoding = THREE.sRGBEncoding; // Proper color space
         
         return texture;
     }
     
-    // Generate a normal map from an image (simplified simulation)
-    function generateNormalMap(img) {
+    // Add vignette effect to help blend image edges
+    function addVignette(ctx, size) {
+        const gradient = ctx.createRadialGradient(
+            size / 2, size / 2, size / 2 * 0.7,
+            size / 2, size / 2, size / 2
+        );
+        
+        gradient.addColorStop(0, 'rgba(0,0,0,0)');
+        gradient.addColorStop(1, 'rgba(0,0,0,0.3)');
+        
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, size, size);
+    }
+    
+    // Generate a simple normal map for added texture detail
+    function generateSimpleNormalMap(image) {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         
-        // Make the canvas a power of 2 for Three.js
-        const size = Math.pow(2, Math.ceil(Math.log2(Math.max(img.width, img.height))));
+        const size = Math.pow(2, Math.ceil(Math.log2(Math.max(image.width, image.height, 512))));
         canvas.width = size;
         canvas.height = size;
         
         // Draw the image
-        ctx.drawImage(img, 0, 0, size, size);
-        
-        // Get image data
+        ctx.drawImage(image, 0, 0, size, size);
         const imageData = ctx.getImageData(0, 0, size, size);
         const data = imageData.data;
-        
-        // Simple edge detection for normal map effect
-        // In a real implementation, this would use more sophisticated algorithms
         const normalMapData = new Uint8ClampedArray(data.length);
         
+        // Simple edge detection for normal map effect
         for (let y = 1; y < size - 1; y++) {
             for (let x = 1; x < size - 1; x++) {
                 const index = (y * size + x) * 4;
                 
-                // Get brightness values of neighboring pixels
+                // Sample neighboring pixels
                 const left = getBrightness(data, index - 4);
                 const right = getBrightness(data, index + 4);
-                const up = getBrightness(data, index - size * 4);
-                const down = getBrightness(data, index + size * 4);
+                const top = getBrightness(data, index - size * 4);
+                const bottom = getBrightness(data, index + size * 4);
                 
-                // Calculate normal vector components based on differences
-                // This is a simplified sobel filter effect
-                const dx = (right - left) / 2;
-                const dy = (down - up) / 2;
-                const dz = 1.0; // Fixed z component
+                // Calculate normal vector (simplified)
+                const dx = (right - left) * 2.0;
+                const dy = (bottom - top) * 2.0;
+                const dz = 1.0;
                 
-                // Convert normal vector to RGB color
-                normalMapData[index] = Math.floor(dx * 127) + 127;     // Red: X component
-                normalMapData[index + 1] = Math.floor(dy * 127) + 127; // Green: Y component
-                normalMapData[index + 2] = Math.floor(dz * 127);       // Blue: Z component
-                normalMapData[index + 3] = 255; // Alpha
+                // Convert to RGB format (128,128,255 is flat)
+                normalMapData[index] = Math.max(0, Math.min(255, 128 + dx * 127));
+                normalMapData[index + 1] = Math.max(0, Math.min(255, 128 + dy * 127));
+                normalMapData[index + 2] = Math.max(0, Math.min(255, 255 - (Math.abs(dx) + Math.abs(dy)) * 63));
+                normalMapData[index + 3] = 255;
             }
         }
         
-        // Create a new ImageData object with the normal map data
-        const normalMapImageData = new ImageData(normalMapData, size, size);
-        ctx.putImageData(normalMapImageData, 0, 0);
+        const normalMapImage = new ImageData(normalMapData, size, size);
+        ctx.putImageData(normalMapImage, 0, 0);
         
-        // Create texture from the normal map canvas
         const normalMap = new THREE.CanvasTexture(canvas);
         normalMap.anisotropy = 16;
         
         return normalMap;
     }
     
-    // Helper function to calculate brightness from RGB
+    // Helper function to calculate brightness
     function getBrightness(data, index) {
         return (data[index] * 0.299 + data[index + 1] * 0.587 + data[index + 2] * 0.114) / 255;
     }
     
-    // Add control buttons for the 3D viewer
+    // Add control buttons
     function addControlButtons() {
         const controlsDiv = document.createElement('div');
         controlsDiv.className = 'model-controls';
@@ -322,67 +434,205 @@ function initCoin3DGenerator() {
                     <path fill="currentColor" d="M21,9L17,5V8H10V10H17V13M7,11L3,15L7,19V16H14V14H7V11Z" />
                 </svg>
             </button>
+            <button class="control-btn" id="zoomIn" title="Zoom In">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="currentColor" d="M15.5,14H14.71L14.43,13.73C15.41,12.59 16,11.11 16,9.5A6.5,6.5 0 0,0 9.5,3A6.5,6.5 0 0,0 3,9.5A6.5,6.5 0 0,0 9.5,16C11.11,16 12.59,15.41 13.73,14.43L14,14.71V15.5L19,20.5L20.5,19L15.5,14M9.5,14C7,14 5,12 5,9.5C5,7 7,5 9.5,5C12,5 14,7 14,9.5C14,12 12,14 9.5,14M12,10H10V12H9V10H7V9H9V7H10V9H12V10Z" />
+                </svg>
+            </button>
+            <button class="control-btn" id="zoomOut" title="Zoom Out">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="currentColor" d="M15.5,14H14.71L14.43,13.73C15.41,12.59 16,11.11 16,9.5A6.5,6.5 0 0,0 9.5,3A6.5,6.5 0 0,0 3,9.5A6.5,6.5 0 0,0 9.5,16C11.11,16 12.59,15.41 13.73,14.43L14,14.71V15.5L19,20.5L20.5,19L15.5,14M9.5,14C7,14 5,12 5,9.5C5,7 7,5 9.5,5C12,5 14,7 14,9.5C14,12 12,14 9.5,14M7,9H12V10H7V9Z" />
+                </svg>
+            </button>
+            <button class="control-btn" id="enhanceLighting" title="Enhance Lighting">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="currentColor" d="M12,6A6,6 0 0,1 18,12C18,14.22 16.79,16.16 15,17.2V19A1,1 0 0,1 14,20H10A1,1 0 0,1 9,19V17.2C7.21,16.16 6,14.22 6,12A6,6 0 0,1 12,6M14,21V22A1,1 0 0,1 13,23H11A1,1 0 0,1 10,22V21H14M20,11H23V13H20V11M1,11H4V13H1V11M13,1V4H11V1H13M4.92,3.5L7.05,5.64L5.63,7.05L3.5,4.93L4.92,3.5M16.95,5.63L19.07,3.5L20.5,4.93L18.37,7.05L16.95,5.63Z" />
+                </svg>
+            </button>
         `;
         
-        document.getElementById('coin3DPreview').appendChild(controlsDiv);
+        elements.container.appendChild(controlsDiv);
         
-        // Add event listeners
-        document.getElementById('rotateToggle').addEventListener('click', function() {
-            autoRotate = !autoRotate;
-            controls.autoRotate = autoRotate;
-            this.classList.toggle('active');
+        // Add event listeners to buttons
+        document.getElementById('rotateToggle').addEventListener('click', e => {
+            state.autoRotate = !state.autoRotate;
+            state.controls.autoRotate = state.autoRotate;
+            e.currentTarget.classList.toggle('active');
         });
         
-        document.getElementById('resetView').addEventListener('click', function() {
-            // Reset camera position
-            camera.position.set(0, 0, 5);
-            controls.target.set(0, 0, 0);
-            controls.update();
+        document.getElementById('resetView').addEventListener('click', () => {
+            state.camera.position.set(0, 0, 5);
+            state.controls.target.set(0, 0, 0);
+            state.controls.update();
         });
         
-        document.getElementById('toggleSide').addEventListener('click', function() {
-            // Flip the coin to see the other side
-            if (coin) {
-                // Animate the flip
-                const duration = 1000; // milliseconds
-                const start = performance.now();
+        document.getElementById('toggleSide').addEventListener('click', () => {
+            if (!state.coin) return;
+            
+            // Smooth coin flip animation
+            const duration = 1000; // milliseconds
+            const start = performance.now();
+            const initialRotation = state.coin.rotation.y;
+            
+            function flipAnimation(time) {
+                const elapsed = time - start;
+                const progress = Math.min(elapsed / duration, 1);
                 
-                function flipAnimation(time) {
-                    const elapsed = time - start;
-                    const progress = Math.min(elapsed / duration, 1);
-                    
-                    // Rotate around X axis
-                    coin.rotation.y = Math.PI * progress;
-                    
-                    if (progress < 1) {
-                        requestAnimationFrame(flipAnimation);
-                    }
+                // Enhanced easing for more realistic movement
+                const eased = easeInOutBack(progress);
+                state.coin.rotation.y = initialRotation + Math.PI * eased;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(flipAnimation);
                 }
-                
-                requestAnimationFrame(flipAnimation);
+            }
+            
+            requestAnimationFrame(flipAnimation);
+        });
+        
+        document.getElementById('zoomIn').addEventListener('click', () => {
+            state.camera.position.z = Math.max(state.controls.minDistance, state.camera.position.z - 0.5);
+        });
+        
+        document.getElementById('zoomOut').addEventListener('click', () => {
+            state.camera.position.z = Math.min(state.controls.maxDistance, state.camera.position.z + 0.5);
+        });
+        
+        // Cycle through different lighting presets
+        let lightingMode = 0;
+        document.getElementById('enhanceLighting').addEventListener('click', () => {
+            lightingMode = (lightingMode + 1) % 4;
+            
+            switch(lightingMode) {
+                case 0: // Standard
+                    setupEnhancedLighting();
+                    break;
+                case 1: // Dramatic
+                    setupDramaticLighting();
+                    break;
+                case 2: // Soft
+                    setupSoftLighting();
+                    break;
+                case 3: // Museum
+                    setupMuseumLighting();
+                    break;
             }
         });
     }
     
-    // Animation loop
-    function animate() {
-        requestAnimationFrame(animate);
+    // Alternative lighting setups
+    function setupDramaticLighting() {
+        state.lights.forEach(light => state.scene.remove(light));
+        state.lights = [];
         
-        if (controls) {
-            controls.update();
-        }
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
+        state.scene.add(ambientLight);
+        state.lights.push(ambientLight);
         
-        if (renderer && scene && camera) {
-            renderer.render(scene, camera);
-        }
+        const spotLight = new THREE.SpotLight(0xffffff, 1.5);
+        spotLight.position.set(5, 10, 5);
+        spotLight.angle = Math.PI / 6;
+        spotLight.penumbra = 0.2;
+        spotLight.decay = 1;
+        spotLight.distance = 30;
+        spotLight.castShadow = true;
+        state.scene.add(spotLight);
+        state.lights.push(spotLight);
+        
+        const rimLight = new THREE.DirectionalLight(0x9090ff, 0.5);
+        rimLight.position.set(-5, -2, -5);
+        state.scene.add(rimLight);
+        state.lights.push(rimLight);
     }
     
-    // Handle window resize
-    window.addEventListener('resize', function() {
-        if (camera && renderer) {
-            camera.aspect = canvas.clientWidth / canvas.clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    function setupSoftLighting() {
+        state.lights.forEach(light => state.scene.remove(light));
+        state.lights = [];
+        
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        state.scene.add(ambientLight);
+        state.lights.push(ambientLight);
+        
+        const hemisphereLight = new THREE.HemisphereLight(0xffffbb, 0x080820, 0.8);
+        state.scene.add(hemisphereLight);
+        state.lights.push(hemisphereLight);
+        
+        const softLight = new THREE.DirectionalLight(0xffffff, 0.6);
+            softLight.position.set(3, 3, 3);
+            state.scene.add(softLight);
+            state.lights.push(softLight);
+            
+            const fillLight = new THREE.DirectionalLight(0xffeedd, 0.4);
+            fillLight.position.set(-3, 2, 1);
+            state.scene.add(fillLight);
+            state.lights.push(fillLight);
+            }
+            
+            function setupMuseumLighting() {
+            state.lights.forEach(light => state.scene.remove(light));
+            state.lights = [];
+            
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+            state.scene.add(ambientLight);
+            state.lights.push(ambientLight);
+            
+            // Key light - simulates main museum spotlight
+            const keyLight = new THREE.SpotLight(0xffffeb, 1);
+            keyLight.position.set(5, 8, 5);
+            keyLight.angle = Math.PI / 8;
+            keyLight.penumbra = 0.3;
+            keyLight.castShadow = true;
+            state.scene.add(keyLight);
+            state.lights.push(keyLight);
+            
+            // Fill light - softer light from another direction
+            const fillLight = new THREE.SpotLight(0xffffee, 0.5);
+            fillLight.position.set(-5, 5, 5);
+            fillLight.angle = Math.PI / 6;
+            fillLight.penumbra = 0.5;
+            state.scene.add(fillLight);
+            state.lights.push(fillLight);
+            
+            // Edge highlight
+            const rimLight = new THREE.DirectionalLight(0xcceeff, 0.3);
+            rimLight.position.set(0, 0, -10);
+            state.scene.add(rimLight);
+            state.lights.push(rimLight);
+            }
+            
+            // Easing function for smooth animations
+            function easeInOutBack(x) {
+            const c1 = 1.70158;
+            const c2 = c1 * 1.525;
+            
+            return x < 0.5
+              ? (Math.pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2
+              : (Math.pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2;
+            }
+            
+            // Animation loop
+            function animate() {
+            requestAnimationFrame(animate);
+            
+            // Update controls
+            state.controls.update();
+            
+            // Render scene
+            state.renderer.render(state.scene, state.camera);
+            }
+            
+            // Update renderer size to match container
+            function updateRendererSize() {
+            if (!state.renderer) return;
+            
+            const width = elements.container.clientWidth;
+            const height = elements.container.clientHeight;
+            
+            state.renderer.setSize(width, height);
+            state.camera.aspect = width / height;
+            state.camera.updateProjectionMatrix();
+            }
+            
+            // Handle window resize
+            window.addEventListener('resize', updateRendererSize);
         }
-    });
-}
