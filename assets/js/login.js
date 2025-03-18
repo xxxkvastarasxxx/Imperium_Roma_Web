@@ -1,367 +1,312 @@
-/**
- * login.js - Authentication Script for Roman Numismatic Portal
- * Handles login, signup forms, validation, and authentication
- */
-
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize the page
-    updateDateTime();
-    setInterval(updateDateTime, 60000); // Update time every minute
-    setupTabs();
-    setupFormValidation();
-    setupPasswordToggle();
-    setupPasswordStrength();
-    
-    // Prefill the login form with the current user's info if available
-    if (localStorage.getItem('rememberedUser')) {
-        const user = JSON.parse(localStorage.getItem('rememberedUser'));
-        document.getElementById('login-username').value = user.username;
-        document.getElementById('remember-me').checked = true;
-    }
-    
-    // Auto-prefill the demo account
-    const demoUser = "xxxkvastarasxxx";
-    const demoUserInput = document.getElementById('login-username');
-    
-    if (demoUserInput.value === '') {
-        demoUserInput.value = demoUser;
-    }
-});
-
-/**
- * Update the current date and time display
- */
-function updateDateTime() {
-    const now = new Date();
-    const formattedDateTime = formatDateTime(now);
-    document.getElementById('current-date-time').textContent = formattedDateTime;
-}
-
-/**
- * Format date to YYYY-MM-DD HH:MM:SS
- */
-function formatDateTime(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-    
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
-
-/**
- * Setup tab navigation
- */
-function setupTabs() {
-    const tabButtons = document.querySelectorAll('.tab-btn');
+    // Tab switching functionality
+    const tabBtns = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
     
-    tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Remove active class from all buttons and contents
-            tabButtons.forEach(btn => btn.classList.remove('active'));
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all tabs
+            tabBtns.forEach(b => b.classList.remove('active'));
             tabContents.forEach(content => content.classList.remove('active'));
             
-            // Add active class to clicked button
-            this.classList.add('active');
-            
-            // Show corresponding content
-            const tabId = `${this.dataset.tab}-tab`;
+            // Add active class to clicked tab
+            btn.classList.add('active');
+            const tabId = `${btn.dataset.tab}-tab`;
             document.getElementById(tabId).classList.add('active');
-            
-            // Clear any error messages and form highlights when switching tabs
-            clearValidationState();
         });
     });
-}
-
-/**
- * Clear validation state when switching tabs
- */
-function clearValidationState() {
-    const errorMessages = document.querySelectorAll('.error-message');
-    const inputFields = document.querySelectorAll('input');
     
-    errorMessages.forEach(msg => msg.remove());
-    inputFields.forEach(input => input.classList.remove('input-error'));
-}
-
-/**
- * Setup form validation
- */
-function setupFormValidation() {
-    // Login form validation
+    // Password toggle functionality
+    const togglePasswordBtns = document.querySelectorAll('.toggle-password');
+    togglePasswordBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const passwordInput = this.previousElementSibling;
+            const icon = this.querySelector('i');
+            
+            // Toggle password visibility
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    });
+    
+    // Password strength meter
+    const passwordInput = document.getElementById('signup-password');
+    const meterSections = document.querySelectorAll('.meter-section');
+    const strengthText = document.querySelector('.strength-text');
+    
+    if (passwordInput) {
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            const strength = calculatePasswordStrength(password);
+            
+            // Reset all meter sections
+            meterSections.forEach(section => {
+                section.style.backgroundColor = '#1a1a1a';
+            });
+            
+            // Update meter based on strength
+            for (let i = 0; i < strength.score; i++) {
+                if (meterSections[i]) {
+                    meterSections[i].style.backgroundColor = getStrengthColor(strength.score);
+                }
+            }
+            
+            // Update strength text
+            strengthText.textContent = strength.message;
+            strengthText.style.color = getStrengthColor(strength.score);
+        });
+    }
+    
+    function calculatePasswordStrength(password) {
+        // Password length check
+        const length = password.length;
+        
+        // Initialize score
+        let score = 0;
+        let message = "Password strength";
+        
+        if (length === 0) {
+            return { score: 0, message: "Password strength" };
+        } else if (length < 6) {
+            score = 1;
+            message = "Very weak";
+        } else {
+            // Start with a base score based on length
+            score = Math.min(2 + Math.floor(length / 3), 4);
+            
+            // Check for various password components
+            const hasLowercase = /[a-z]/.test(password);
+            const hasUppercase = /[A-Z]/.test(password);
+            const hasNumbers = /\d/.test(password);
+            const hasSpecialChars = /[^a-zA-Z0-9]/.test(password);
+            
+            // Add points for complexity
+            const complexity = [hasLowercase, hasUppercase, hasNumbers, hasSpecialChars]
+                .filter(Boolean).length;
+            
+            // Adjust score based on complexity
+            score = Math.min(score, complexity + 1);
+            
+            // Set appropriate message
+            switch (score) {
+                case 1: 
+                    message = "Very weak"; 
+                    break;
+                case 2: 
+                    message = "Weak"; 
+                    break;
+                case 3: 
+                    message = "Medium"; 
+                    break;
+                case 4: 
+                    message = "Strong"; 
+                    break;
+            }
+        }
+        
+        return { score, message };
+    }
+    
+    function getStrengthColor(score) {
+        switch (score) {
+            case 0: 
+                return '#1a1a1a'; // Default
+            case 1: 
+                return '#ff3b30'; // Red - Very weak
+            case 2: 
+                return '#ff9500'; // Orange - Weak
+            case 3: 
+                return '#ffcc00'; // Yellow - Medium
+            case 4: 
+                return '#34c759'; // Green - Strong
+            default: 
+                return '#1a1a1a';
+        }
+    }
+    
+    // Form submission handling
     const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const username = document.getElementById('login-username').value.trim();
+            const username = document.getElementById('login-username').value;
             const password = document.getElementById('login-password').value;
-            const rememberMe = document.getElementById('remember-me').checked;
             
-            if (!validateLoginForm(username, password)) {
+            if (!username || !password) {
+                showFormNotification(loginForm, 'Please fill in all fields', 'error');
                 return;
             }
             
-            // Simulate login success
-            if (rememberMe) {
-                localStorage.setItem('rememberedUser', JSON.stringify({ username }));
-            } else {
-                localStorage.removeItem('rememberedUser');
-            }
+            // Simulate login success (would normally be handled by backend)
+            simulateLoading(loginForm, 'Entering the Roman Empire...');
             
-            // Redirect to domus page after successful login
-            showSuccessMessage(loginForm, 'Login successful! Redirecting to your Domus...');
-            setTimeout(() => {
-                window.location.href = 'domus.html';
-            }, 1500);
+            // In a real application, you would send this data to your server
+            console.log('Login attempt with:', { username, password });
         });
     }
     
-    // Signup form validation
-    const signupForm = document.getElementById('signup-form');
     if (signupForm) {
         signupForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const name = document.getElementById('signup-name').value.trim();
-            const username = document.getElementById('signup-username').value.trim();
-            const email = document.getElementById('signup-email').value.trim();
+            const name = document.getElementById('signup-name').value;
+            const username = document.getElementById('signup-username').value;
+            const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
             const confirmPassword = document.getElementById('signup-confirm').value;
             const agreeTerms = document.getElementById('agree-terms').checked;
             
-            if (!validateSignupForm(name, username, email, password, confirmPassword, agreeTerms)) {
+            if (!name || !username || !email || !password || !confirmPassword) {
+                showFormNotification(signupForm, 'Please fill in all fields', 'error');
                 return;
             }
             
-            // Simulate registration success
-            showSuccessMessage(signupForm, 'Account created successfully! Redirecting to your Domus...');
-            setTimeout(() => {
-                window.location.href = 'domus.html';
-            }, 1500);
+            if (password !== confirmPassword) {
+                showFormNotification(signupForm, 'Passwords do not match', 'error');
+                return;
+            }
+            
+            if (!agreeTerms) {
+                showFormNotification(signupForm, 'Please agree to terms and conditions', 'error');
+                return;
+            }
+            
+            // Simulate signup success
+            simulateLoading(signupForm, 'Creating your Roman Domus...');
+            
+            // In a real application, you would send this data to your server
+            console.log('Signup attempt with:', { name, username, email, password });
         });
     }
-}
-
-/**
- * Validate login form
- */
-function validateLoginForm(username, password) {
-    let isValid = true;
     
-    if (!username) {
-        showError('login-username', 'Username or email is required');
-        isValid = false;
-    }
-    
-    if (!password) {
-        showError('login-password', 'Password is required');
-        isValid = false;
-    }
-    
-    return isValid;
-}
-
-/**
- * Validate signup form
- */
-function validateSignupForm(name, username, email, password, confirmPassword, agreeTerms) {
-    let isValid = true;
-    
-    if (!name) {
-        showError('signup-name', 'Full name is required');
-        isValid = false;
-    }
-    
-    if (!username) {
-        showError('signup-username', 'Username is required');
-        isValid = false;
-    } else if (username.length < 3) {
-        showError('signup-username', 'Username must be at least 3 characters');
-        isValid = false;
-    }
-    
-    if (!email) {
-        showError('signup-email', 'Email is required');
-        isValid = false;
-    } else if (!isValidEmail(email)) {
-        showError('signup-email', 'Please enter a valid email address');
-        isValid = false;
-    }
-    
-    if (!password) {
-        showError('signup-password', 'Password is required');
-        isValid = false;
-    } else if (password.length < 8) {
-        showError('signup-password', 'Password must be at least 8 characters');
-        isValid = false;
-    }
-    
-    if (!confirmPassword) {
-        showError('signup-confirm', 'Please confirm your password');
-        isValid = false;
-    } else if (password !== confirmPassword) {
-        showError('signup-confirm', 'Passwords do not match');
-        isValid = false;
-    }
-    
-    if (!agreeTerms) {
-        showError('agree-terms', 'You must agree to the terms and conditions');
-        isValid = false;
-    }
-    
-    return isValid;
-}
-
-/**
- * Show error message for form field
- */
-function showError(inputId, message) {
-    const inputElement = document.getElementById(inputId);
-    inputElement.classList.add('input-error');
-    
-    // Remove any existing error message
-    const existingError = inputElement.parentElement.querySelector('.error-message');
-    if (existingError) {
-        existingError.remove();
-    }
-    
-    // Create error message element
-    const errorMessage = document.createElement('div');
-    errorMessage.className = 'error-message';
-    errorMessage.textContent = message;
-    
-    // Insert after input or its parent for checkbox
-    if (inputElement.type === 'checkbox') {
-        inputElement.parentElement.insertAdjacentElement('afterend', errorMessage);
-    } else {
-        inputElement.parentElement.insertAdjacentElement('afterend', errorMessage);
-    }
-    
-    // Add input event listener to clear error on typing
-    inputElement.addEventListener('input', function() {
-        this.classList.remove('input-error');
-        const errorMsg = this.parentElement.nextElementSibling;
-        if (errorMsg && errorMsg.classList.contains('error-message')) {
-            errorMsg.remove();
-        }
-    });
-    
-    if (inputElement.type === 'checkbox') {
-        inputElement.addEventListener('change', function() {
-            if (this.checked) {
-                this.classList.remove('input-error');
-                const errorMsg = this.parentElement.nextElementSibling;
-                if (errorMsg && errorMsg.classList.contains('error-message')) {
-                    errorMsg.remove();
-                }
+    // Confirm password validation
+    const confirmInput = document.getElementById('signup-confirm');
+    if (confirmInput) {
+        confirmInput.addEventListener('input', function() {
+            const password = document.getElementById('signup-password').value;
+            if (this.value && this.value !== password) {
+                this.style.borderColor = '#ff3b30';
+            } else if (this.value) {
+                this.style.borderColor = '#34c759';
+            } else {
+                this.style.borderColor = '#1a1a1a';
             }
         });
     }
-}
-
-/**
- * Show success message in form
- */
-function showSuccessMessage(formElement, message) {
-// Create success message element
-const successMessage = document.createElement('div');
-successMessage.className = 'success-message';
-successMessage.textContent = message;
-
-// Clear any existing error messages
-const existingErrors = formElement.querySelectorAll('.error-message');
-existingErrors.forEach(error => error.remove());
-
-// Clear error highlighting on inputs
-const inputFields = formElement.querySelectorAll('.input-error');
-inputFields.forEach(input => input.classList.remove('input-error'));
-
-// Add the success message to the form
-formElement.appendChild(successMessage);
-}
-
-/**
- * Validate email format
- */
-function isValidEmail(email) {
-const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-return regex.test(email);
-}
-
-/**
- * Setup password visibility toggle
- */
-function setupPasswordToggle() {
-const passwordFields = document.querySelectorAll('.password-field');
-
-passwordFields.forEach(field => {
-    const passwordInput = field.querySelector('input[type="password"]');
-    const toggleBtn = field.querySelector('.toggle-password');
     
-    if (toggleBtn && passwordInput) {
-        toggleBtn.addEventListener('click', function() {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            this.classList.toggle('showing-password');
-        });
-    }
-});
-}
-
-/**
- * Setup password strength indicator
- */
-function setupPasswordStrength() {
-const passwordInput = document.getElementById('signup-password');
-
-if (passwordInput) {
-    const strengthIndicator = document.createElement('div');
-    strengthIndicator.className = 'password-strength-meter';
-    passwordInput.parentElement.appendChild(strengthIndicator);
-    
-    passwordInput.addEventListener('input', function() {
-        const password = this.value;
-        const strength = calculatePasswordStrength(password);
+    // Helper functions
+    function showFormNotification(form, message, type) {
+        // Remove any existing notification
+        const existingNotification = form.querySelector('.form-notification');
+        if (existingNotification) {
+            existingNotification.remove();
+        }
         
-        // Update strength indicator
-        strengthIndicator.className = 'password-strength-meter';
-        strengthIndicator.classList.add(getStrengthClass(strength));
-        strengthIndicator.textContent = getStrengthText(strength);
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `form-notification ${type}`;
+        notification.innerHTML = `
+            <i class="fas ${type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check'}"></i>
+            <span>${message}</span>
+        `;
+        
+        // Insert after the button
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.insertAdjacentElement('afterend', notification);
+        
+        // Remove notification after 5 seconds
+        setTimeout(() => {
+            notification.classList.add('fade-out');
+            setTimeout(() => notification.remove(), 500);
+        }, 5000);
+    }
+    
+    function simulateLoading(form, message) {
+        // Disable form inputs and change button text
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        const inputs = form.querySelectorAll('input, button');
+        
+        inputs.forEach(input => input.disabled = true);
+        submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${message}`;
+        
+        // After 2 seconds, simulate success
+        setTimeout(() => {
+            inputs.forEach(input => input.disabled = false);
+            submitBtn.innerHTML = originalText;
+            showFormNotification(form, 'Success! Redirecting...', 'success');
+            
+            // Redirect after 1 more second (in a real app, this would navigate to dashboard)
+            setTimeout(() => {
+                window.location.href = '/domus/index.html';
+            }, 1000);
+        }, 2000);
+    }
+    
+    // Add subtle animation effects to Roman columns on scroll
+    window.addEventListener('scroll', function() {
+        const scrollPosition = window.scrollY;
+        const leftColumn = document.querySelector('.roman-column.left');
+        const rightColumn = document.querySelector('.roman-column.right');
+        
+        if (leftColumn && rightColumn) {
+            const parallaxAmount = scrollPosition * 0.1;
+            
+            leftColumn.style.transform = `translateY(${parallaxAmount}px)`;
+            rightColumn.style.transform = `translateY(-${parallaxAmount}px)`;
+        }
     });
-}
-}
-
-/**
- * Calculate password strength score (0-4)
- */
-function calculatePasswordStrength(password) {
-let score = 0;
-
-if (!password || password.length < 6) return score;
-
-if (password.length >= 8) score++;
-if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
-if (/\d/.test(password)) score++;
-if (/[^a-zA-Z0-9]/.test(password)) score++;
-
-return score;
-}
-
-/**
- * Get CSS class based on password strength
- */
-function getStrengthClass(strength) {
-const classes = ['very-weak', 'weak', 'medium', 'strong', 'very-strong'];
-return classes[strength] || 'weak';
-}
-
-/**
- * Get text description based on password strength
- */
-function getStrengthText(strength) {
-const texts = ['Very Weak', 'Weak', 'Medium', 'Strong', 'Very Strong'];
-return texts[strength] || 'Weak';
-}
+    
+    // Add CSS for notifications created by JS
+    const style = document.createElement('style');
+    style.textContent = `
+        .form-notification {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .form-notification.error {
+            background-color: rgba(255, 59, 48, 0.1);
+            border-left: 3px solid #ff3b30;
+            color: #ff3b30;
+        }
+        
+        .form-notification.success {
+            background-color: rgba(52, 199, 89, 0.1);
+            border-left: 3px solid #34c759;
+            color: #34c759;
+        }
+        
+        .form-notification.fade-out {
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+});
