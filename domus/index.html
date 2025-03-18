@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domus - Your Personal Cabinet</title>
+    <link rel="stylesheet" href="/assets/css/domus.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="domus-container">
+        <!-- Sidebar Navigation -->
+        <aside class="domus-sidebar">
+            <div class="sidebar-header">
+                <h2>DOMUS</h2>
+                <p class="latin-subtitle">Pecunia non olet</p>
+            </div>
+            
+            <div class="user-brief">
+                <div class="user-avatar">
+                    <img src="default-avatar.jpg" alt="User Avatar" id="user-avatar-small">
+                </div>
+                <div class="user-quick-info">
+                    <h3 id="user-nickname">Nickname</h3>
+                    <p id="user-rank">Numismatist Rank</p>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active"><a href="#dashboard"><i class="fas fa-columns"></i> Dashboard</a></li>
+                    <li><a href="#collection"><i class="fas fa-coins"></i> My Collection</a></li>
+                    <li><a href="#statistics"><i class="fas fa-chart-bar"></i> Statistics</a></li>
+                    <li><a href="#wishlist"><i class="fas fa-star"></i> Wishlist</a></li>
+                    <li><a href="#transactions"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+                    <li><a href="#profile"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="#settings"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="logout.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="domus-content">
+            <header class="content-header">
+                <div class="header-title">
+                    <h1>Dashboard</h1>
+                    <p>Welcome to your personal Domus, <span id="header-username">User</span></p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-notifications"><i class="fas fa-bell"></i><span class="notification-badge">3</span></button>
+                    <div class="search-box">
+                        <input type="text" placeholder="Search your collection...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Overview Section -->
+            <section class="dashboard-overview">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Coins</h3>
+                        <p class="stat-value" id="total-coins">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-balance-scale"></i></div>
+                    <div class="stat-info">
+                        <h3>Collection Value</h3>
+                        <p class="stat-value" id="collection-value">0 €</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+                    <div class="stat-info">
+                        <h3>Rarest Item</h3>
+                        <p class="stat-value" id="rarest-item">None</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <div class="stat-info">
+                        <h3>Oldest Coin</h3>
+                        <p class="stat-value" id="oldest-coin">None</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Collection Summary -->
+            <section class="collection-summary">
+                <h2 class="section-title">Collection Summary</h2>
+                <div class="collection-charts">
+                    <div class="chart-container">
+                        <h3>Coins by Era</h3>
+                        <div class="chart" id="era-chart">
+                            <!-- Chart will be rendered here by JS -->
+                            <div class="chart-placeholder">Chart Loading...</div>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Coins by Material</h3>
+                        <div class="chart" id="material-chart">
+                            <!-- Chart will be rendered here by JS -->
+                            <div class="chart-placeholder">Chart Loading...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Acquisitions -->
+            <section class="recent-acquisitions">
+                <h2 class="section-title">Recent Acquisitions</h2>
+                <div class="acquisition-list">
+                    <table class="acquisitions-table">
+                        <thead>
+                            <tr>
+                                <th>Coin</th>
+                                <th>Emperor/Period</th>
+                                <th>Year</th>
+                                <th>Acquired</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-acquisitions-body">
+                            <!-- Example row, will be populated by JS -->
+                            <tr>
+                                <td>
+                                    <div class="coin-preview">
+                                        <img src="placeholder-coin.jpg" alt="Coin">
+                                        <span>Denarius</span>
+                                    </div>
+                                </td>
+                                <td>Augustus</td>
+                                <td>27 BCE - 14 CE</td>
+                                <td>2025-03-10</td>
+                                <td>1,200 €</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="view-more">
+                    <a href="#collection" class="btn-view-more">View All Coins</a>
+                </div>
+            </section>
+
+            <!-- Member Profile Section -->
+            <section class="member-profile" id="profile-section">
+                <h2 class="section-title">Member Profile</h2>
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <img src="default-avatar.jpg" alt="Profile Picture" id="user-avatar-large">
+                            <button class="btn-change-avatar"><i class="fas fa-camera"></i></button>
+                        </div>
+                        <div class="profile-details">
+                            <h3 id="profile-nickname">Nickname</h3>
+                            <p id="profile-title">Numismatist Title</p>
+                            <p id="profile-join-date">Member since: March 2025</p>
+                            <div class="profile-badges">
+                                <span class="badge" title="Collector Level 3"><i class="fas fa-award"></i> L3</span>
+                                <span class="badge" title="Verified User"><i class="fas fa-check-circle"></i></span>
+                                <span class="badge" title="Premium Member"><i class="fas fa-crown"></i></span>
+                            </div>
+                        </div>
+                        <div class="profile-actions">
+                            <button class="btn-edit-profile"><i class="fas fa-edit"></i> Edit Profile</button>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-details-grid">
+                        <div class="profile-info-card">
+                            <h4><i class="fas fa-user"></i> Personal Information</h4>
+                            <div class="info-group">
+                                <label>Display Name:</label>
+                                <p id="profile-display-name">User's Display Name</p>
+                            </div>
+                            <div class="info-group">
+                                <label>Email:</label>
+                                <p id="profile-email">user@example.com</p>
+                            </div>
+                            <div class="info-group">
+                                <label>Location:</label>
+                                <p id="profile-location">Rome, Italy</p>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-info-card">
+                            <h4><i class="fas fa-chart-line"></i> Collector Statistics</h4>
+                            <div class="info-group">
+                                <label>Collection Size:</label>
+                                <p id="profile-collection-size">42 coins</p>
+                            </div>
+                            <div class="info-group">
+                                <label>Specialization:</label>
+                                <p id="profile-specialization">Republican Era</p>
+                            </div>
+                            <div class="info-group">
+                                <label>Completion Rate:</label>
+                                <div class="completion-bar">
+                                    <div class="completion-progress" style="width: 65%;">65%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-info-card">
+                            <h4><i class="fas fa-cog"></i> Preferences</h4>
+                            <div class="info-group">
+                                <label>Language:</label>
+                                <p id="profile-language">English</p>
+                            </div>
+                            <div class="info-group">
+                                <label>Currency:</label>
+                                <p id="profile-currency">EUR (€)</p>
+                            </div>
+                            <div class="info-group">
+                                <label>Display Mode:</label>
+                                <p id="profile-theme">Light Mode</p>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-info-card">
+                            <h4><i class="fas fa-medal"></i> Achievements</h4>
+                            <div class="achievements-grid">
+                                <div class="achievement-item">
+                                    <div class="achievement-icon"><i class="fas fa-star"></i></div>
+                                    <div class="achievement-info">
+                                        <h5>First Denarius</h5>
+                                        <p>Added first silver denarius to collection</p>
+                                    </div>
+                                </div>
+                                <div class="achievement-item">
+                                    <div class="achievement-icon"><i class="fas fa-book"></i></div>
+                                    <div class="achievement-info">
+                                        <h5>Historian</h5>
+                                        <p>Documented 10+ coins with full history</p>
+                                    </div>
+                                </div>
+                                <div class="achievement-item locked">
+                                    <div class="achievement-icon"><i class="fas fa-lock"></i></div>
+                                    <div class="achievement-info">
+                                        <h5>Augustus Collector</h5>
+                                        <p>Collect all Augustan era coins</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="domus-footer">
+        <p>&copy; 2025 Roman Numismatics. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="terms.html">Terms of Service</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="contact.html">Contact Us</a>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/assets/js/domus.js"></script>
+</body>
+</html>
