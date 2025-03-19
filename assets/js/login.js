@@ -250,20 +250,77 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 1000);
         }, 2000);
     }
-    
-    // Add subtle animation effects to Roman columns on scroll
-    window.addEventListener('scroll', function() {
-        const scrollPosition = window.scrollY;
-        const leftColumn = document.querySelector('.roman-column.left');
-        const rightColumn = document.querySelector('.roman-column.right');
+
+    // Add mouse shine effect
+    const createShineEffect = () => {
+        // Create shine element
+        const shine = document.createElement('div');
+        shine.className = 'mouse-shine';
+        document.body.appendChild(shine);
         
-        if (leftColumn && rightColumn) {
-            const parallaxAmount = scrollPosition * 0.1;
+        // Add CSS for shine effect with stronger visibility
+        const shineStyle = document.createElement('style');
+        shineStyle.textContent = `
+            .mouse-shine {
+                position: fixed;
+                width: 180px;
+                height: 180px;
+                border-radius: 50%;
+                background: radial-gradient(circle, rgba(255,204,0,0.3) 0%, rgba(255,204,0,0) 70%);
+                pointer-events: none;
+                z-index: 9999;
+                mix-blend-mode: screen;
+                transform: translate(-50%, -50%);
+                filter: blur(5px);
+                opacity: 1;
+                /* Removed transition for instant movement */
+            }
+        `;
+        document.head.appendChild(shineStyle);
+        
+        // Update shine position based on mouse movement - no delay or animation
+        document.addEventListener('mousemove', (e) => {
+            shine.style.left = e.clientX + 'px';
+            shine.style.top = e.clientY + 'px';
+            // Removed setTimeout animation for instant effect
+        });
+        
+        // Hide shine effect on the auth container
+        const authContainer = document.querySelector('.auth-container');
+        if (authContainer) {
+            authContainer.addEventListener('mouseenter', () => {
+                shine.style.opacity = '0';
+            });
             
-            leftColumn.style.transform = `translateY(${parallaxAmount}px)`;
-            rightColumn.style.transform = `translateY(-${parallaxAmount}px)`;
+            authContainer.addEventListener('mouseleave', () => {
+                shine.style.opacity = '1';
+            });
         }
-    });
+        
+        // Enhanced effect over interactive elements - still immediate change
+        const interactiveElements = document.querySelectorAll('button, a, input, .footer-logo img');
+        interactiveElements.forEach(element => {
+            // Skip if element is inside auth container
+            if (element.closest('.auth-container')) return;
+            
+            element.addEventListener('mouseenter', () => {
+                shine.style.width = '250px';
+                shine.style.height = '250px';
+                shine.style.background = 'radial-gradient(circle, rgba(255,204,0,0.4) 0%, rgba(255,204,0,0) 70%)';
+                shine.style.filter = 'blur(3px) brightness(1.2)';
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                shine.style.width = '180px';
+                shine.style.height = '180px';
+                shine.style.background = 'radial-gradient(circle, rgba(255,204,0,0.3) 0%, rgba(255,204,0,0) 70%)';
+                shine.style.filter = 'blur(5px) brightness(1)';
+            });
+        });
+    };
+
+    // Initialize shine effect
+    createShineEffect();
     
     // Add CSS for notifications created by JS
     const style = document.createElement('style');
