@@ -335,6 +335,11 @@ label {
     transition: color 0.3s ease;
 }
 
+/* Target the remember-me label specifically */
+label[for="remember-me"] {
+    margin-bottom: 0px;
+}
+
 .form-group:focus-within label {
     color: var(--yellow);
 }
@@ -353,6 +358,30 @@ label {
     font-size: 1.1rem;
     transition: all 0.3s ease;
     z-index: 1;
+}
+
+.input-with-icon i.fa-eye, 
+.input-with-icon i.fa-eye-slash {
+    left: auto;
+    right: 0px;
+    top:-8px;
+    color: var(--lightgrey);
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.input-with-icon i.fa-eye:hover, 
+.input-with-icon i.fa-eye-slash:hover {
+    color: var(--yellow);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.input-with-icon input:focus ~ i.fa-eye,
+.input-with-icon input:focus ~ i.fa-eye-slash {
+    color: var(--yellow);
 }
 
 .input-with-icon input {
@@ -398,7 +427,6 @@ label {
 
 .toggle-password:hover {
     color: var(--yellow);
-    background-color: rgba(255, 255, 255, 0.05);
 }
 
 /* Password Strength Meter */
@@ -496,6 +524,15 @@ label {
 }
 
 .forgot-password {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.back-to-login {
+    margin-top: 20px;
+    display: inline-block; /* Only take up the width of the content */
+    clear: both; /* Prevent float issues */
+    position: relative; /* Ensure proper positioning */
     font-size: 0.9rem;
     font-weight: 500;
 }
