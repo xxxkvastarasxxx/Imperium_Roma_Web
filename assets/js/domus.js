@@ -838,84 +838,191 @@ const DomusApp = (function() {
     /**
      * Handle notifications button click
      */
-        function handleNotifications() {
-            const notificationsPanel = document.createElement('div');
-            notificationsPanel.className = 'notifications-panel';
-            notificationsPanel.innerHTML = `
-                <div class="notifications-header">
-                    <h3><i class="fas fa-bell"></i> Notifications</h3>
-                    <button class="close-notifications"><i class="fas fa-times"></i></button>
-                </div>
-                <div class="notifications-list">
-                    <div class="notification-item unread">
-                        <div class="notification-icon"><i class="fas fa-coins"></i></div>
-                        <div class="notification-content">
-                            <h4>New Auction Alert</h4>
-                            <p>A Republican Denarius matching your wishlist is now available</p>
-                            <span class="notification-time">2 hours ago</span>
-                        </div>
+    function handleNotifications() {
+        // Check if panel already exists
+        const existingPanel = document.querySelector('.notifications-panel');
+        if (existingPanel) {
+            existingPanel.classList.remove('active');
+            setTimeout(() => {
+                existingPanel.remove();
+            }, 300);
+            return;
+        }
+        
+        // Use a persistent notifications array (create if it doesn't exist)
+        if (!window.domusNotifications) {
+            // Initialize with default notifications
+            window.domusNotifications = [
+                {
+                    icon: 'fas fa-coins',
+                    title: 'New Auction Alert',
+                    message: 'A Republican Denarius matching your wishlist is now available',
+                    time: '2 hours ago',
+                    read: false
+                },
+                {
+                    icon: 'fas fa-star',
+                    title: 'Collection Milestone',
+                    message: 'Congratulations! You\'ve reached 75+ coins in your collection',
+                    time: '1 day ago',
+                    read: false
+                },
+                {
+                    icon: 'fas fa-book',
+                    title: 'New Research Available',
+                    message: 'New article published on Republican minting techniques',
+                    time: '3 days ago',
+                    read: false
+                },
+                {
+                    icon: 'fas fa-calendar',
+                    title: 'Event Reminder',
+                    message: 'Virtual coin exhibition starts tomorrow',
+                    time: '5 days ago',
+                    read: false
+                }
+            ];
+        }
+        
+        const notificationsPanel = document.createElement('div');
+        notificationsPanel.className = 'notifications-panel';
+        
+        // Create header HTML
+        let panelHTML = `
+            <div class="notifications-header">
+                <h3><i class="fas fa-bell"></i> Notifications</h3>
+                <button class="close-notifications"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="notifications-list">
+        `;
+        
+        // Generate notifications based on the persistent state
+        window.domusNotifications.forEach((notification, index) => {
+            panelHTML += `
+                <div class="notification-item${notification.read ? '' : ' unread'}" data-index="${index}">
+                    <div class="notification-icon"><i class="${notification.icon}"></i></div>
+                    <div class="notification-content">
+                        <h4>${notification.title}</h4>
+                        <p>${notification.message}</p>
+                        <span class="notification-time">${notification.time}</span>
                     </div>
-                    <div class="notification-item">
-                        <div class="notification-icon"><i class="fas fa-star"></i></div>
-                        <div class="notification-content">
-                            <h4>Collection Milestone</h4>
-                            <p>Congratulations! You've reached 75+ coins in your collection</p>
-                            <span class="notification-time">1 day ago</span>
-                        </div>
-                    </div>
-                    <div class="notification-item">
-                        <div class="notification-icon"><i class="fas fa-book"></i></div>
-                        <div class="notification-content">
-                            <h4>New Research Available</h4>
-                            <p>New article published on Republican minting techniques</p>
-                            <span class="notification-time">3 days ago</span>
-                        </div>
-                    </div>
-                    <div class="notification-item">
-                        <div class="notification-icon"><i class="fas fa-calendar"></i></div>
-                        <div class="notification-content">
-                            <h4>Event Reminder</h4>
-                            <p>Virtual coin exhibition starts tomorrow</p>
-                            <span class="notification-time">5 days ago</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="notifications-footer">
-                    <button class="btn-mark-all-read">Mark all as read</button>
-                    <a href="#notifications" class="view-all-link">View all notifications</a>
                 </div>
             `;
-            
-            document.body.appendChild(notificationsPanel);
-            
-            // Animation for panel entrance
-            setTimeout(() => {
-                notificationsPanel.classList.add('active');
-            }, 10);
-            
-            // Close button functionality
-            const closeButton = notificationsPanel.querySelector('.close-notifications');
-            if (closeButton) {
-                closeButton.addEventListener('click', () => {
-                    notificationsPanel.classList.remove('active');
-                    setTimeout(() => {
-                        notificationsPanel.remove();
-                    }, 300);
+        });
+        
+        // Add footer HTML
+        panelHTML += `
+            </div>
+            <div class="notifications-footer">
+                <button class="btn-mark-all-read">Mark all as read</button>
+                <a href="#notifications" class="view-all-link">View all notifications</a>
+            </div>
+        `;
+        
+        notificationsPanel.innerHTML = panelHTML;
+        document.body.appendChild(notificationsPanel);
+        
+        // Animation for panel entrance
+        setTimeout(() => {
+            notificationsPanel.classList.add('active');
+        }, 10);
+        
+        // Update notification badge count
+        updateNotificationBadge();
+        
+        // Close button functionality
+        const closeButton = notificationsPanel.querySelector('.close-notifications');
+        if (closeButton) {
+            closeButton.addEventListener('click', () => {
+                closeNotificationsPanel(notificationsPanel);
+            });
+        }
+        
+        // Mark all as read functionality
+        const markAllReadButton = notificationsPanel.querySelector('.btn-mark-all-read');
+        if (markAllReadButton) {
+            markAllReadButton.addEventListener('click', () => {
+                const unreadItems = notificationsPanel.querySelectorAll('.notification-item.unread');
+                unreadItems.forEach(item => {
+                    const index = parseInt(item.getAttribute('data-index'));
+                    if (!isNaN(index) && window.domusNotifications[index]) {
+                        window.domusNotifications[index].read = true;
+                    }
+                    item.classList.remove('unread');
                 });
-            }
-            
-            // Mark all as read functionality
-            const markAllReadButton = notificationsPanel.querySelector('.btn-mark-all-read');
-            if (markAllReadButton) {
-                markAllReadButton.addEventListener('click', () => {
-                    const unreadItems = notificationsPanel.querySelectorAll('.notification-item.unread');
-                    unreadItems.forEach(item => {
-                        item.classList.remove('unread');
-                    });
-                    showToast('All notifications marked as read', 'success');
-                });
+                updateNotificationBadge();
+                showToast('All notifications marked as read', 'success');
+            });
+        }
+        
+        // Add click handler for individual notifications
+        const notificationItems = notificationsPanel.querySelectorAll('.notification-item');
+        notificationItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (item.classList.contains('unread')) {
+                    const index = parseInt(item.getAttribute('data-index'));
+                    if (!isNaN(index) && window.domusNotifications[index]) {
+                        window.domusNotifications[index].read = true;
+                    }
+                    item.classList.remove('unread');
+                    updateNotificationBadge();
+                }
+            });
+        });
+        
+        // Close panel when clicking outside of it
+        // Use setTimeout to avoid immediate closing when clicking the notifications button
+        setTimeout(() => {
+            document.addEventListener('click', handleOutsideClick);
+        }, 10);
+        
+        function handleOutsideClick(event) {
+            // Check if click is outside panel and not on the notifications button
+            if (!notificationsPanel.contains(event.target) && 
+                !DOM.notificationsBtn.contains(event.target)) {
+                closeNotificationsPanel(notificationsPanel);
+                document.removeEventListener('click', handleOutsideClick);
             }
         }
+    }
+
+    /**
+     * Close the notifications panel with animation
+     * @param {HTMLElement} panel - The notifications panel element
+     */
+    function closeNotificationsPanel(panel) {
+        panel.classList.remove('active');
+        setTimeout(() => {
+            panel.remove();
+        }, 300);
+    }
+
+    /**
+     * Update notification badge count
+     */
+    function updateNotificationBadge() {
+        // Count unread notifications from persistent storage
+        const unreadCount = window.domusNotifications ? 
+            window.domusNotifications.filter(n => !n.read).length : 0;
+        
+        // Get or create notification badge
+        let badge = document.querySelector('.notification-badge');
+        
+        if (!badge && DOM.notificationsBtn) {
+            badge = document.createElement('span');
+            badge.className = 'notification-badge';
+            DOM.notificationsBtn.appendChild(badge);
+        }
+        
+        if (badge) {
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+    }
         
         /**
          * Handle window resize event
