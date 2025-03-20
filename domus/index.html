@@ -44,12 +44,12 @@
         <aside class="domus-sidebar">
             <div class="sidebar-header">
                 <h2>DOMUS</h2>
-                <p class="latin-subtitle">Pecunia non olet</p>
+                <p class="latin-subtitle">Aurum potestas est</p>
             </div>
             
             <div class="user-brief">
                 <div class="user-avatar">
-                    <img src="default-avatar.jpg" alt="User Avatar" id="user-avatar-small">
+                    <img src="/assets/images/team/Taras-Tymoshenko.jpg" alt="User Avatar" id="user-avatar-small">
                 </div>
                 <div class="user-quick-info">
                     <h3 id="user-nickname">Nickname</h3>
@@ -70,7 +70,7 @@
             </nav>
             
             <div class="sidebar-footer">
-                <a href="logout.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a href="/login/"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </aside>
 
@@ -130,6 +130,7 @@
                         <h3>Coins by Era</h3>
                         <div class="chart" id="era-chart">
                             <!-- Chart will be rendered here by JS -->
+                            <canvas id="era-chart-canvas"></canvas>
                             <div class="chart-placeholder">Chart Loading...</div>
                         </div>
                     </div>
@@ -137,6 +138,7 @@
                         <h3>Coins by Material</h3>
                         <div class="chart" id="material-chart">
                             <!-- Chart will be rendered here by JS -->
+                            <canvas id="material-chart-canvas"></canvas>
                             <div class="chart-placeholder">Chart Loading...</div>
                         </div>
                     </div>
@@ -162,7 +164,7 @@
                             <tr>
                                 <td>
                                     <div class="coin-preview">
-                                        <img src="placeholder-coin.jpg" alt="Coin">
+                                        <img src="/assets/images/FeaturedCoinsOTD/08.07.24.1.1.jpg" alt="Coin">
                                         <span>Denarius</span>
                                     </div>
                                 </td>
@@ -185,7 +187,7 @@
                 <div class="profile-container">
                     <div class="profile-header">
                         <div class="profile-avatar">
-                            <img src="default-avatar.jpg" alt="Profile Picture" id="user-avatar-large">
+                            <img src="/assets/images/team/Taras-Tymoshenko.jpg" alt="Profile Picture" id="user-avatar-large">
                             <button class="btn-change-avatar"><i class="fas fa-camera"></i></button>
                         </div>
                         <div class="profile-details">
@@ -287,12 +289,19 @@
     </div>
 
     <!-- Footer -->
-    <footer class="domus-footer">
-        <p>&copy; 2025 Roman Numismatics. All rights reserved.</p>
-        <div class="footer-links">
-            <a href="terms.html">Terms of Service</a>
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="contact.html">Contact Us</a>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="/assets/images/icons/favicon.ico" alt="Imperium Roma Logo">
+                </div>
+                <p>&copy; 2024 Imperium Roma. All rights reserved.</p>
+                <ul class="footer-links">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="/contact/">Contact Us</a></li>
+                </ul>
+            </div>
         </div>
     </footer>
 
