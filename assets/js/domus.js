@@ -1,14 +1,3 @@
-/**
- * domus.js - JavaScript for Roman Numismatic Personal Cabinet
- * 
- * Enhanced version with improved architecture, performance optimizations,
- * and better user experience features.
- * 
- * @version 2.0
- * @author GitHub Copilot
- * @last-updated 2025-03-20
- */
-
 // Main application module using IIFE pattern
 const DomusApp = (function() {
     'use strict';

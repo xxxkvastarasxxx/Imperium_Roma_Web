@@ -1091,3 +1091,412 @@ footer p {
 .stat-card, .chart-container, .acquisition-list, .profile-container, .profile-info-card {
     backdrop-filter: blur(5px);
 }
+/* Responsive Styles - Optimized */
+/* Utility classes for responsive design */
+.mobile-only {
+    display: none !important;
+}
+
+.desktop-only {
+    display: block;
+}
+
+/* Large screens (1400px and down) */
+@media screen and (max-width: 1400px) {
+    .dashboard-overview {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+    }
+    
+    .collection-charts {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    
+    .chart {
+        height: 300px;
+    }
+}
+
+/* Medium desktop screens (1200px and down) */
+@media screen and (max-width: 1200px) {
+    :root {
+        --sidebar-width: 250px;
+    }
+    
+    .header-title h1 {
+        font-size: 32px;
+    }
+    
+    .profile-details-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+    
+    .chart {
+        height: 250px;
+    }
+    
+    .stat-card {
+        padding: 20px;
+    }
+    
+    .stat-icon {
+        width: 55px;
+        height: 55px;
+        font-size: 20px;
+    }
+    
+    .stat-value {
+        font-size: 26px;
+    }
+}
+
+/* Small desktop / Large tablet (992px and down) */
+@media screen and (max-width: 992px) {
+    :root {
+        --sidebar-width: 220px;
+    }
+    
+    .domus-content {
+        margin-left: var(--sidebar-width);
+        padding: 20px;
+    }
+    
+    .sidebar-header h2 {
+        font-size: 28px;
+    }
+    
+    .sidebar-nav ul li {
+        padding: 10px 15px;
+        margin: 6px 8px;
+    }
+    
+    .collection-charts {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .profile-avatar {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .header-title h1 {
+        font-size: 28px;
+    }
+    
+    .header-title p {
+        font-size: 14px;
+    }
+}
+
+/* Tablet (768px and down) */
+@media screen and (max-width: 768px) {
+    :root {
+        --sidebar-width: 0;
+        --header-height: 60px;
+    }
+    
+    .mobile-only {
+        display: block !important;
+    }
+    
+    .desktop-only {
+        display: none !important;
+    }
+    
+    body {
+        position: relative;
+        overflow-x: hidden;
+    }
+    
+    .domus-container {
+        flex-direction: column;
+    }
+    
+    .domus-sidebar {
+        width: 280px;
+        transform: translateX(-100%);
+        z-index: 1000;
+        box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .domus-sidebar.mobile-active {
+        transform: translateX(0);
+    }
+    
+    .domus-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 15px;
+    }
+    
+    .content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+    }
+    
+    .header-actions {
+        margin-top: 15px;
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .search-box {
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .search-box input {
+        width: 100%;
+    }
+    
+    .dashboard-overview {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .section-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    
+    .acquisitions-table {
+        min-width: 650px;
+    }
+    
+    .acquisition-list {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Touch-friendly adjustments */
+    .sidebar-nav ul li, 
+    .btn-notifications, 
+    .search-box button, 
+    .btn-view-more {
+        min-height: 44px;
+    }
+    
+    /* Mobile menu toggle */
+    .mobile-toggle {
+        display: block;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: var(--gradient-primary);
+        color: #000;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        z-index: 1001;
+    }
+    
+    /* Modal adjustments */
+    .notifications-panel {
+        width: 90%;
+        max-width: 350px;
+    }
+}
+
+/* Large mobile (640px and down) */
+@media screen and (max-width: 640px) {
+    .dashboard-overview {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-details-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .chart-container {
+        padding: 15px;
+    }
+    
+    .chart {
+        height: 220px;
+    }
+    
+    .profile-container {
+        padding: 20px;
+    }
+}
+
+/* Mobile portrait (576px and down) */
+@media screen and (max-width: 576px) {
+    .section-title {
+        font-size: 22px;
+    }
+    
+    .stat-card {
+        padding: 15px;
+    }
+    
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+        margin-right: 15px;
+    }
+    
+    .stat-value {
+        font-size: 24px;
+    }
+    
+    .profile-container {
+        padding: 15px;
+    }
+    
+    .profile-avatar img {
+        width: 100px;
+        height: 100px;
+        border-radius: 15px;
+    }
+    
+    .profile-details h3 {
+        font-size: 24px;
+    }
+    
+    .profile-title {
+        font-size: 16px;
+    }
+    
+    .notifications-panel {
+        width: 100%;
+        max-width: none;
+        right: 0;
+        left: 0;
+        border-radius: 0;
+        top: 0;
+        height: 100vh;
+    }
+    
+    .btn-view-more {
+        width: 100%;
+        padding: 14px 20px;
+    }
+    
+    .coin-preview img {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .header-title h1 {
+        font-size: 24px;
+    }
+}
+
+/* Small mobile (420px and down) */
+@media screen and (max-width: 420px) {
+    .content-header {
+        margin-bottom: 20px;
+    }
+    
+    .profile-badges {
+        flex-wrap: wrap;
+    }
+    
+    .badge {
+        margin-bottom: 5px;
+    }
+    
+    .sidebar-header h2 {
+        font-size: 24px;
+    }
+    
+    .latin-subtitle {
+        font-size: 12px;
+    }
+    
+    .profile-info-card {
+        padding: 15px;
+    }
+}
+
+/* Performance optimizations for mobile */
+@media screen and (max-width: 768px) {
+    .stat-card::before,
+    .chart-container, 
+    .acquisition-list, 
+    .profile-container, 
+    .profile-info-card {
+        backdrop-filter: none;
+    }
+    
+    /* Simplify animations for better performance */
+    .stat-card, 
+    .chart-container, 
+    .acquisition-list, 
+    .profile-container {
+        animation: none;
+    }
+    
+    /* Optimize shadows for better performance */
+    .domus-sidebar,
+    .stat-card,
+    .chart-container,
+    .acquisition-list,
+    .profile-container {
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* Accessibility and Print */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+@media print {
+    .domus-sidebar, 
+    .header-actions, 
+    .mobile-toggle,
+    .btn-view-more,
+    .sidebar-footer {
+        display: none !important;
+    }
+    
+    .domus-content {
+        margin-left: 0;
+        padding: 10px;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .stat-card, 
+    .chart-container, 
+    .acquisition-list,
+    .profile-container {
+        border: 1px solid #ddd;
+        box-shadow: none;
+        break-inside: avoid;
+        background: white;
+    }
+    
+    .section-title {
+        color: black;
+        border-bottom-color: #ccc;
+    }
+}
