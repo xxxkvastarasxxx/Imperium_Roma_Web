@@ -6,36 +6,28 @@
     <meta name="description" content="Domus: Your personal Roman home in the Imperium Roma platform. Manage your coin collection, track acquisitions, view statistics, and customise your numismatic journey." />
     <title>Domus | Personal Cabinet - Imperium Roma</title>
     
-    <!-- Apple Touch Icons -->
-    <!-- <link rel="apple-touch-icon" sizes="57x57" href="/assets/images/icons/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/assets/images/icons/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/assets/images/icons/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/assets/images/icons/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/assets/images/icons/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/assets/images/icons/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/assets/images/icons/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/assets/images/icons/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-icon-180x180.png"> -->
-
-    <!-- Favicon Icons -->
-    <!-- <link rel="icon" type="image/png" sizes="192x192" href="/assets/images/icons/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/assets/images/icons/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png"> -->
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/assets/images/icons/favicon.ico">
 
-    <!-- Web Manifest -->
-    <!-- <link rel="manifest" href="/assets/images/icons/manifest.json"> -->
-
-    <!-- Microsoft Tiles -->
-    <!-- <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/assets/images/icons/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff"> -->
-
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="/assets/css/domus.css">
+    <link rel="stylesheet" href="/domus/assets/css/domus.css">
+    
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Server-side data injection -->
+    <script>
+        // This block allows server templating to inject initial data
+        window.domusInitialData = {
+            user: ${user|json}, // Server will replace this with user data JSON
+            stats: ${stats|json}, // Server will replace with dashboard stats JSON
+            recentAcquisitions: ${recentAcquisitions|json}, // Server will replace with acquisitions JSON
+            notifications: ${notifications|json} // Server will replace with notifications JSON
+        };
+        
+        // Current timestamp from server
+        window.serverTimestamp = "${currentTimestamp}"; // Format: 2025-03-26 17:33:58
+    </script>
 </head>
 <body>
     <!-- Main Container -->
@@ -49,18 +41,18 @@
             
             <div class="user-brief">
                 <div class="user-avatar">
-                    <img src="/assets/images/team/Taras-Tymoshenko.jpg" alt="User Avatar" id="user-avatar-small">
+                    <img src="${user.avatar}" alt="${user.nickname}" id="user-avatar-small" data-user-avatar>
                 </div>
                 <div class="user-quick-info">
-                    <h3 id="user-nickname">Nickname</h3>
-                    <p id="user-rank">Numismatist Rank</p>
+                    <h3 id="user-nickname" data-user-nickname>${user.nickname}</h3>
+                    <p id="user-rank" data-user-rank>${user.rank}</p>
                 </div>
             </div>
             
             <nav class="sidebar-nav">
                 <ul>
                     <li class="active"><a href="#dashboard"><i class="fas fa-columns"></i> Dashboard</a></li>
-                    <li><a href="#collection"><i class="fas fa-coins"></i> My Collection</a></li>
+                    <li><a href="/domus/collection/"><i class="fas fa-coins"></i> My Collection</a></li>
                     <li><a href="#statistics"><i class="fas fa-chart-bar"></i> Statistics</a></li>
                     <li><a href="#wishlist"><i class="fas fa-star"></i> Wishlist</a></li>
                     <li><a href="#transactions"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
@@ -70,7 +62,7 @@
             </nav>
             
             <div class="sidebar-footer">
-                <a href="/login/"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a href="/auth/logout" data-logout-link><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </aside>
 
@@ -79,45 +71,48 @@
             <header class="content-header">
                 <div class="header-title">
                     <h1>Dashboard</h1>
-                    <p>Welcome to your personal Domus, <span id="header-username">User</span></p>
+                    <p>Welcome to your personal Domus, <span id="header-username" data-user-nickname>${user.nickname}</span></p>
                 </div>
                 <div class="header-actions">
-                    <button class="btn-notifications"><i class="fas fa-bell"></i><span class="notification-badge">4</span></button>
+                    <button class="btn-notifications" id="notifications-button">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" data-unread-count="${unreadNotificationsCount}">${unreadNotificationsCount}</span>
+                    </button>
                     <div class="search-box">
-                        <input type="text" placeholder="Search your collection...">
-                        <button><i class="fas fa-search"></i></button>
+                        <input type="text" id="search-input" placeholder="Search your collection...">
+                        <button id="search-button"><i class="fas fa-search"></i></button>
                     </div>
                 </div>
             </header>
 
             <!-- Dashboard Overview Section -->
             <section class="dashboard-overview">
-                <div class="stat-card">
+                <div class="stat-card" data-stat-type="total-coins">
                     <div class="stat-icon"><i class="fas fa-coins"></i></div>
                     <div class="stat-info">
                         <h3>Total Coins</h3>
-                        <p class="stat-value" id="total-coins">0</p>
+                        <p class="stat-value" id="total-coins" data-value="${stats.totalCoins}">${stats.totalCoins}</p>
                     </div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" data-stat-type="collection-value">
                     <div class="stat-icon"><i class="fas fa-balance-scale"></i></div>
                     <div class="stat-info">
                         <h3>Collection Value</h3>
-                        <p class="stat-value" id="collection-value">0 €</p>
+                        <p class="stat-value" id="collection-value" data-value="${stats.collectionValue}">${stats.collectionValue}</p>
                     </div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" data-stat-type="rarest-item">
                     <div class="stat-icon"><i class="fas fa-trophy"></i></div>
                     <div class="stat-info">
                         <h3>Rarest Item</h3>
-                        <p class="stat-value" id="rarest-item">None</p>
+                        <p class="stat-value" id="rarest-item" data-value="${stats.rarestItem}">${stats.rarestItem}</p>
                     </div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" data-stat-type="oldest-coin">
                     <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
                     <div class="stat-info">
                         <h3>Oldest Coin</h3>
-                        <p class="stat-value" id="oldest-coin">None</p>
+                        <p class="stat-value" id="oldest-coin" data-value="${stats.oldestCoin}">${stats.oldestCoin}</p>
                     </div>
                 </div>
             </section>
@@ -129,16 +124,14 @@
                     <div class="chart-container">
                         <h3>Coins by Era</h3>
                         <div class="chart" id="era-chart">
-                            <!-- Chart will be rendered here by JS -->
-                            <canvas id="era-chart-canvas"></canvas>
+                            <canvas id="era-chart-canvas" data-chart-data="${chartData.era|json}"></canvas>
                             <div class="chart-placeholder">Chart Loading...</div>
                         </div>
                     </div>
                     <div class="chart-container">
                         <h3>Coins by Material</h3>
                         <div class="chart" id="material-chart">
-                            <!-- Chart will be rendered here by JS -->
-                            <canvas id="material-chart-canvas"></canvas>
+                            <canvas id="material-chart-canvas" data-chart-data="${chartData.material|json}"></canvas>
                             <div class="chart-placeholder">Chart Loading...</div>
                         </div>
                     </div>
@@ -160,24 +153,33 @@
                             </tr>
                         </thead>
                         <tbody id="recent-acquisitions-body">
-                            <!-- Example row, will be populated by JS -->
-                            <tr>
+                            <!-- Server-side iteration for acquisitions -->
+                            ${each recentAcquisitions as acquisition}
+                            <tr data-acquisition-id="${acquisition.id}">
                                 <td>
                                     <div class="coin-preview">
-                                        <img src="/assets/images/FeaturedCoinsOTD/08.07.24.1.1.jpg" alt="Coin">
-                                        <span>Denarius</span>
+                                        <img src="${acquisition.image}" alt="${acquisition.name}">
+                                        <span>${acquisition.name}</span>
                                     </div>
                                 </td>
-                                <td>Augustus</td>
-                                <td>27 BCE - 14 CE</td>
-                                <td>2025-03-10</td>
-                                <td>1,200 €</td>
+                                <td>${acquisition.emperor}</td>
+                                <td>${acquisition.period}</td>
+                                <td>${formatDate(acquisition.acquired)}</td>
+                                <td>${acquisition.value}</td>
                             </tr>
+                            ${end}
+                            
+                            <!-- Placeholder row shown only if no acquisitions exist -->
+                            ${if recentAcquisitions.length === 0}
+                            <tr class="no-data-row">
+                                <td colspan="5" class="no-data-message">No recent acquisitions to display</td>
+                            </tr>
+                            ${end}
                         </tbody>
                     </table>
                 </div>
                 <div class="view-more">
-                    <a href="#collection" class="btn-view-more">View All Coins</a>
+                    <a href="/domus/collection/" class="btn-view-more">View All Coins</a>
                 </div>
             </section>
 
@@ -187,21 +189,22 @@
                 <div class="profile-container">
                     <div class="profile-header">
                         <div class="profile-avatar">
-                            <img src="/assets/images/team/Taras-Tymoshenko.jpg" alt="Profile Picture" id="user-avatar-large">
-                            <button class="btn-change-avatar"><i class="fas fa-camera"></i></button>
+                            <img src="${user.avatar}" alt="${user.displayName}" id="user-avatar-large" data-user-avatar>
+                            <button class="btn-change-avatar" id="change-avatar-btn"><i class="fas fa-camera"></i></button>
                         </div>
                         <div class="profile-details">
-                            <h3 id="profile-nickname">Nickname</h3>
-                            <p id="profile-title">Numismatist Title</p>
-                            <p id="profile-join-date">Member since: March 2025</p>
+                            <h3 id="profile-nickname" data-user-nickname>${user.nickname}</h3>
+                            <p id="profile-title" data-user-title>${user.title}</p>
+                            <p id="profile-join-date" data-join-date>Member since: ${user.joinDate}</p>
                             <div class="profile-badges">
-                                <span class="badge" title="Collector Level 3"><i class="fas fa-award"></i> L3</span>
-                                <span class="badge" title="Verified User"><i class="fas fa-check-circle"></i></span>
-                                <span class="badge" title="Premium Member"><i class="fas fa-crown"></i></span>
+                                <!-- Dynamic badges based on user achievements -->
+                                ${each user.badges as badge}
+                                <span class="badge" title="${badge.title}"><i class="${badge.icon}"></i> ${badge.text}</span>
+                                ${end}
                             </div>
                         </div>
                         <div class="profile-actions">
-                            <button class="btn-edit-profile"><i class="fas fa-edit"></i> Edit Profile</button>
+                            <button class="btn-edit-profile" id="edit-profile-btn"><i class="fas fa-edit"></i> Edit Profile</button>
                         </div>
                     </div>
                     
@@ -210,15 +213,15 @@
                             <h4><i class="fas fa-user"></i> Personal Information</h4>
                             <div class="info-group">
                                 <label>Display Name:</label>
-                                <p id="profile-display-name">User's Display Name</p>
+                                <p id="profile-display-name" data-user-display-name>${user.displayName}</p>
                             </div>
                             <div class="info-group">
                                 <label>Email:</label>
-                                <p id="profile-email">user@example.com</p>
+                                <p id="profile-email" data-user-email>${user.email}</p>
                             </div>
                             <div class="info-group">
                                 <label>Location:</label>
-                                <p id="profile-location">Rome, Italy</p>
+                                <p id="profile-location" data-user-location>${user.location}</p>
                             </div>
                         </div>
                         
@@ -226,16 +229,16 @@
                             <h4><i class="fas fa-chart-line"></i> Collector Statistics</h4>
                             <div class="info-group">
                                 <label>Collection Size:</label>
-                                <p id="profile-collection-size">42 coins</p>
+                                <p id="profile-collection-size" data-collection-size>${stats.collectionSize}</p>
                             </div>
                             <div class="info-group">
                                 <label>Specialization:</label>
-                                <p id="profile-specialization">Republican Era</p>
+                                <p id="profile-specialization" data-specialization>${user.specialization}</p>
                             </div>
                             <div class="info-group">
                                 <label>Completion Rate:</label>
                                 <div class="completion-bar">
-                                    <div class="completion-progress" style="width: 65%;">65%</div>
+                                    <div class="completion-progress" style="width: ${stats.completionRate}%;" data-completion-rate>${stats.completionRate}%</div>
                                 </div>
                             </div>
                         </div>
@@ -244,42 +247,33 @@
                             <h4><i class="fas fa-cog"></i> Preferences</h4>
                             <div class="info-group">
                                 <label>Language:</label>
-                                <p id="profile-language">English</p>
+                                <p id="profile-language" data-user-language>${user.preferences.language}</p>
                             </div>
                             <div class="info-group">
                                 <label>Currency:</label>
-                                <p id="profile-currency">EUR (€)</p>
+                                <p id="profile-currency" data-user-currency>${user.preferences.currency}</p>
                             </div>
                             <div class="info-group">
                                 <label>Display Mode:</label>
-                                <p id="profile-theme">Light Mode</p>
+                                <p id="profile-theme" data-user-theme>${user.preferences.theme}</p>
                             </div>
                         </div>
                         
                         <div class="profile-info-card">
                             <h4><i class="fas fa-medal"></i> Achievements</h4>
                             <div class="achievements-grid">
-                                <div class="achievement-item">
-                                    <div class="achievement-icon"><i class="fas fa-star"></i></div>
+                                <!-- Dynamic achievements -->
+                                ${each achievements as achievement}
+                                <div class="achievement-item ${achievement.unlocked ? '' : 'locked'}" data-achievement-id="${achievement.id}">
+                                    <div class="achievement-icon">
+                                        <i class="${achievement.unlocked ? achievement.icon : 'fas fa-lock'}"></i>
+                                    </div>
                                     <div class="achievement-info">
-                                        <h5>First Denarius</h5>
-                                        <p>Added first silver denarius to collection</p>
+                                        <h5>${achievement.title}</h5>
+                                        <p>${achievement.description}</p>
                                     </div>
                                 </div>
-                                <div class="achievement-item">
-                                    <div class="achievement-icon"><i class="fas fa-book"></i></div>
-                                    <div class="achievement-info">
-                                        <h5>Historian</h5>
-                                        <p>Documented 10+ coins with full history</p>
-                                    </div>
-                                </div>
-                                <div class="achievement-item locked">
-                                    <div class="achievement-icon"><i class="fas fa-lock"></i></div>
-                                    <div class="achievement-info">
-                                        <h5>Augustus Collector</h5>
-                                        <p>Collect all Augustan era coins</p>
-                                    </div>
-                                </div>
+                                ${end}
                             </div>
                         </div>
                     </div>
@@ -295,10 +289,10 @@
                 <div class="footer-logo">
                     <img src="/assets/images/icons/favicon.ico" alt="Imperium Roma Logo">
                 </div>
-                <p>&copy; 2024 Imperium Roma. All rights reserved.</p>
+                <p>&copy; ${currentYear} Imperium Roma. All rights reserved.</p>
                 <ul class="footer-links">
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="/privacy/">Privacy Policy</a></li>
+                    <li><a href="/terms/">Terms of Service</a></li>
                     <li><a href="/contact/">Contact Us</a></li>
                 </ul>
             </div>
@@ -307,6 +301,6 @@
 
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="/assets/js/domus.js"></script>
+    <script src="/domus/assets/js/domus.js"></script>
 </body>
 </html>
