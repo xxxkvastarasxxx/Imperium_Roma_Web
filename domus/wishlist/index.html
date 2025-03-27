@@ -39,8 +39,8 @@
             <nav class="sidebar-nav">
                 <ul>
                     <li><a href="/domus/#dashboard"><i class="fas fa-columns"></i> Dashboard</a></li>
-                    <li><a href="/domus/collection/"><i class="fas fa-coins"></i> My Collection</a></li>
                     <li><a href="/domus/#statistics"><i class="fas fa-chart-bar"></i> Statistics</a></li>
+                    <li><a href="/domus/collection/"><i class="fas fa-coins"></i> My Collection</a></li>
                     <li class="active"><a href="/domus/wishlist/"><i class="fas fa-star"></i> Wishlist</a></li>
                     <li><a href="/domus/#profile-section"><i class="fas fa-user"></i> Profile</a></li>
                     <li><a href="#settings"><i class="fas fa-cog"></i> Settings</a></li>
@@ -95,21 +95,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="wishlist-stats">
-                    <div class="stat-pill">
-                        <i class="fas fa-star"></i>
-                        <span id="wishlist-count">${wishlist.totalItems}</span> coins
-                    </div>
-                    <div class="stat-pill">
-                        <i class="fas fa-balance-scale"></i>
-                        <span id="wishlist-total-value">${wishlist.estimatedValue}</span>
-                    </div>
-                    <button class="btn-add-wish" id="add-wish-btn" data-modal-target="add-wish-modal">
-                        <i class="fas fa-plus"></i> Add To Wishlist
-                    </button>
-                </div>
-            </section>
 
             <!-- Filter Panel (hidden by default) -->
             <section class="filter-panel" id="filter-panel">
@@ -275,175 +260,6 @@
                     </select>
                 </div>
             </section>
-
-            <!-- Wishlist Item Detail Modal (hidden by default) -->
-            <div class="wishlist-detail-modal" id="wishlist-detail-modal">
-                <div class="modal-content">
-                    <button class="modal-close"><i class="fas fa-times"></i></button>
-                    <div class="wishlist-detail-layout">
-                        <div class="coin-gallery">
-                            <div class="main-coin-images">
-                                <img src="" alt="Coin" class="main-image" id="modal-main-image">
-                            </div>
-                        </div>
-                        <div class="wishlist-details" id="wishlist-detail-content">
-                            <!-- Wishlist item details will be populated dynamically -->
-                        </div>
-                    </div>
-                    <div class="detail-actions">
-                        <button class="btn-edit-wish-detail" id="modal-edit-btn"><i class="fas fa-edit"></i> Edit Details</button>
-                        <button class="btn-mark-acquired-detail" id="modal-acquire-btn"><i class="fas fa-check"></i> Mark as Acquired</button>
-                        <button class="btn-alert-settings" id="modal-alert-btn"><i class="fas fa-bell"></i> Alert Settings</button>
-                        <button class="btn-remove-wish-detail" id="modal-remove-btn"><i class="fas fa-trash"></i> Remove</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Add Wishlist Item Modal (hidden by default) -->
-            <div class="wishlist-detail-modal" id="add-wish-modal">
-                <div class="modal-content">
-                    <button class="modal-close"><i class="fas fa-times"></i></button>
-                    <form id="add-wish-form" action="/api/wishlist" method="POST">
-                        <h2>Add to Wishlist</h2>
-                        <div class="tab-navigation">
-                            <button type="button" class="tab-btn active" data-tab="search">Search Catalog</button>
-                            <button type="button" class="tab-btn" data-tab="manual">Manual Entry</button>
-                        </div>
-                        
-                        <div class="tab-content">
-                            <!-- Search Catalog Tab -->
-                            <div class="tab-pane active" id="search-tab">
-                                <div class="catalog-search">
-                                    <input type="text" id="catalog-search-input" placeholder="Search for coins in the catalog...">
-                                    <button type="button" class="btn-search-catalog"><i class="fas fa-search"></i></button>
-                                </div>
-                                <div class="catalog-results" id="catalog-results">
-                                    <!-- Search results will be populated here -->
-                                </div>
-                            </div>
-                            
-                            <!-- Manual Entry Tab -->
-                            <div class="tab-pane" id="manual-tab">
-                                <div class="form-grid">
-                                    <div class="form-group">
-                                        <label for="coin-title">Title/Description</label>
-                                        <input type="text" id="coin-title" name="title" required>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="coin-era">Era</label>
-                                        <select id="coin-era" name="era" required>
-                                            <option value="">Select Era</option>
-                                            <option value="republican">Republican</option>
-                                            <option value="early-empire">Early Empire</option>
-                                            <option value="high-empire">High Empire</option>
-                                            <option value="late-empire">Late Empire</option>
-                                            <option value="byzantine">Byzantine</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="coin-material">Material</label>
-                                        <select id="coin-material" name="material" required>
-                                            <option value="">Select Material</option>
-                                            <option value="gold">Gold</option>
-                                            <option value="silver">Silver</option>
-                                            <option value="bronze">Bronze</option>
-                                            <option value="copper">Copper</option>
-                                            <option value="billon">Billon</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="coin-denomination">Denomination</label>
-                                        <select id="coin-denomination" name="denomination" required>
-                                            <option value="">Select Denomination</option>
-                                            <option value="aureus">Aureus</option>
-                                            <option value="denarius">Denarius</option>
-                                            <option value="sestertius">Sestertius</option>
-                                            <option value="as">As</option>
-                                            <option value="follis">Follis</option>
-                                            <!-- Other denominations -->
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="coin-priority">Priority</label>
-                                        <select id="coin-priority" name="priority" required>
-                                            <option value="high">High Priority</option>
-                                            <option value="medium" selected>Medium Priority</option>
-                                            <option value="low">Low Priority</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="coin-est-value">Estimated Value</label>
-                                        <input type="number" id="coin-est-value" name="estimatedValue" min="0" step="1">
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="coin-max-price">Maximum Price Willing to Pay</label>
-                                        <input type="number" id="coin-max-price" name="maxPrice" min="0" step="1">
-                                    </div>
-                                    
-                                    <div class="form-group form-checkbox">
-                                        <label>
-                                            <input type="checkbox" name="enableAlerts" checked>
-                                            Enable Price Alerts
-                                        </label>
-                                    </div>
-                                    
-                                    <div class="form-group full-width">
-                                        <label for="coin-notes">Notes</label>
-                                        <textarea id="coin-notes" name="notes" rows="3"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button type="button" class="btn-secondary" id="cancel-add-wish">Cancel</button>
-                            <button type="submit" class="btn-primary" id="confirm-add-wish">Add to Wishlist</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Mark as Acquired Modal (hidden by default) -->
-            <div class="modal" id="mark-acquired-modal">
-                <div class="modal-content">
-                    <button class="modal-close"><i class="fas fa-times"></i></button>
-                    <h2>Mark as Acquired</h2>
-                    <p>Did you acquire this coin? You can add it directly to your collection.</p>
-                    
-                    <form id="mark-acquired-form">
-                        <div class="form-group">
-                            <label for="acquisition-date">Acquisition Date</label>
-                            <input type="date" id="acquisition-date" name="acquisitionDate" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="acquisition-price">Purchase Price</label>
-                            <input type="number" id="acquisition-price" name="purchasePrice" min="0" step="0.01" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="acquisition-source">Source/Seller</label>
-                            <input type="text" id="acquisition-source" name="source">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="acquisition-notes">Notes</label>
-                            <textarea id="acquisition-notes" name="notes" rows="3"></textarea>
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button type="button" class="btn-secondary" id="just-remove-btn">Just Remove from Wishlist</button>
-                            <button type="submit" class="btn-primary">Add to Collection</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
         </main>
     </div>
 
@@ -454,7 +270,7 @@
                 <div class="footer-logo">
                     <img src="/assets/images/icons/favicon.ico" alt="Imperium Roma Logo">
                 </div>
-                <p>&copy; ${currentYear} Imperium Roma. All rights reserved.</p>
+                <p>&copy; 2025 Imperium Roma. All rights reserved.</p>
                 <ul class="footer-links">
                     <li><a href="/privacy">Privacy Policy</a></li>
                     <li><a href="/terms">Terms of Service</a></li>
