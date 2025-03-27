@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Domus: Manage your Roman coin wishlist in the Imperium Roma platform. Track desired coins, set acquisition priorities, and receive notifications for coin availability." />
+    <title>My Wishlist | Domus - Imperium Roma</title>
+    
+    <link rel="icon" type="image/x-icon" href="/assets/images/icons/favicon.ico">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/domus/assets/css/domus.css">
+    <link rel="stylesheet" href="/domus/assets/css/wishlist.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="domus-container">
+        <!-- Sidebar Navigation -->
+        <aside class="domus-sidebar">
+            <div class="sidebar-header">
+                <h2>DOMUS</h2>
+                <p class="latin-subtitle">Aurum potestas est</p>
+            </div>
+            
+            <div class="user-brief">
+                <div class="user-avatar">
+                    <!-- Dynamic user avatar path -->
+                    <img src="${user.avatarPath}" alt="${user.displayName}" id="user-avatar-small">
+                </div>
+                <div class="user-quick-info">
+                    <h3 id="user-nickname">${user.nickname}</h3>
+                    <p id="user-rank">${user.rank}</p>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="/domus/#dashboard"><i class="fas fa-columns"></i> Dashboard</a></li>
+                    <li><a href="/domus/collection/"><i class="fas fa-coins"></i> My Collection</a></li>
+                    <li><a href="/domus/#statistics"><i class="fas fa-chart-bar"></i> Statistics</a></li>
+                    <li class="active"><a href="/domus/wishlist/"><i class="fas fa-star"></i> Wishlist</a></li>
+                    <li><a href="/domus/#profile-section"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="#settings"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="/auth/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="domus-content">
+            <header class="content-header">
+                <div class="header-title">
+                    <h1>My Wishlist</h1>
+                    <p>Keep track of coins you desire to acquire</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-notifications"><i class="fas fa-bell"></i><span class="notification-badge">${notifications.unreadCount}</span></button>
+                    <div class="search-box">
+                        <input type="text" id="wishlist-search" placeholder="Search your wishlist...">
+                        <button id="search-button"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Wishlist Controls -->
+            <section class="wishlist-controls">
+                <div class="filter-sort-container">
+                    <div class="filter-section">
+                        <button class="btn-filter"><i class="fas fa-filter"></i> Filter</button>
+                        <div class="active-filters" id="active-filters">
+                            <!-- Active filters will be populated dynamically -->
+                        </div>
+                    </div>
+                    <div class="view-sort-section">
+                        <div class="view-toggles">
+                            <button class="btn-view-toggle active" data-view="grid"><i class="fas fa-th"></i></button>
+                            <button class="btn-view-toggle" data-view="list"><i class="fas fa-list"></i></button>
+                        </div>
+                        <div class="sort-dropdown">
+                            <label for="sort-select">Sort by:</label>
+                            <select id="sort-select" name="sort">
+                                <option value="priority-desc">Priority (Highest)</option>
+                                <option value="priority-asc">Priority (Lowest)</option>
+                                <option value="date-added-desc">Date Added (Newest)</option>
+                                <option value="date-added-asc">Date Added (Oldest)</option>
+                                <option value="est-value-desc">Est. Value (Highest)</option>
+                                <option value="est-value-asc">Est. Value (Lowest)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wishlist-stats">
+                    <div class="stat-pill">
+                        <i class="fas fa-star"></i>
+                        <span id="wishlist-count">${wishlist.totalItems}</span> coins
+                    </div>
+                    <div class="stat-pill">
+                        <i class="fas fa-balance-scale"></i>
+                        <span id="wishlist-total-value">${wishlist.estimatedValue}</span>
+                    </div>
+                    <button class="btn-add-wish" id="add-wish-btn" data-modal-target="add-wish-modal">
+                        <i class="fas fa-plus"></i> Add To Wishlist
+                    </button>
+                </div>
+            </section>
+
+            <!-- Filter Panel (hidden by default) -->
+            <section class="filter-panel" id="filter-panel">
+                <h3>Filter Wishlist</h3>
+                <div class="filter-grid">
+                    <!-- Era filter options -->
+                    <div class="filter-column">
+                        <h4>Era</h4>
+                        <div class="filter-options" id="era-filters">
+                            ${filters.eras.map(era => `
+                            <label>
+                                <input type="checkbox" name="era" value="${era.value}" 
+                                    data-filter-id="${era.id}" ${era.selected ? 'checked' : ''}> 
+                                ${era.label}
+                            </label>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <!-- Material filter options -->
+                    <div class="filter-column">
+                        <h4>Material</h4>
+                        <div class="filter-options" id="material-filters">
+                            ${filters.materials.map(material => `
+                            <label>
+                                <input type="checkbox" name="material" value="${material.value}" 
+                                    data-filter-id="${material.id}" ${material.selected ? 'checked' : ''}> 
+                                ${material.label}
+                            </label>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <!-- Denomination filter options -->
+                    <div class="filter-column">
+                        <h4>Denomination</h4>
+                        <div class="filter-options" id="denomination-filters">
+                            ${filters.denominations.map(denom => `
+                            <label>
+                                <input type="checkbox" name="denomination" value="${denom.value}" 
+                                    data-filter-id="${denom.id}" ${denom.selected ? 'checked' : ''}> 
+                                ${denom.label}
+                            </label>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <!-- Priority filter options -->
+                    <div class="filter-column">
+                        <h4>Priority Level</h4>
+                        <div class="filter-options" id="priority-filters">
+                            <label>
+                                <input type="checkbox" name="priority" value="high" data-filter-id="priority-high"> 
+                                High Priority
+                            </label>
+                            <label>
+                                <input type="checkbox" name="priority" value="medium" data-filter-id="priority-medium"> 
+                                Medium Priority
+                            </label>
+                            <label>
+                                <input type="checkbox" name="priority" value="low" data-filter-id="priority-low"> 
+                                Low Priority
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn-clear-filters" id="clear-filters">Clear All</button>
+                    <button class="btn-apply-filters" id="apply-filters">Apply Filters</button>
+                </div>
+            </section>
+
+            <!-- Wishlist Grid -->
+            <section class="wishlist-grid" id="wishlist-container">
+                <!-- Wishlist Items will be populated dynamically -->
+                ${wishlistItems.map(item => `
+                <div class="wishlist-item" 
+                    data-wishlist-id="${item.id}"
+                    data-era="${item.era}" 
+                    data-material="${item.material}" 
+                    data-denomination="${item.denomination}" 
+                    data-priority="${item.priority}"
+                    data-date-added="${item.dateAdded}">
+                    <div class="priority-badge priority-${item.priority}">
+                        ${item.priority === 'high' ? '<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>' : 
+                          item.priority === 'medium' ? '<i class="fas fa-star"></i><i class="fas fa-star"></i>' : 
+                          '<i class="fas fa-star"></i>'}
+                    </div>
+                    <div class="coin-images">
+                        <img src="${item.imageUrl || '/assets/images/coin-placeholder.jpg'}" alt="${item.title}" class="coin-image">
+                    </div>
+                    <div class="wishlist-info">
+                        <h3>${item.title}</h3>
+                        <div class="coin-meta">
+                            <span class="denomination">${item.materialDisplay} ${item.denominationDisplay}</span>
+                            <span class="year">${item.yearDisplay}</span>
+                        </div>
+                        <div class="coin-quick-data">
+                            <span class="coin-value">Est. ${item.estimatedValueDisplay}</span>
+                            <div class="availability-status ${item.isAvailable ? 'available' : ''}">
+                                ${item.isAvailable ? '<i class="fas fa-check-circle"></i> Available' : '<i class="far fa-clock"></i> Watching'}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="price-alert">
+                        <span class="max-price">Max: ${item.maxPriceDisplay}</span>
+                        <span class="alert-status">
+                            ${item.alertsEnabled ? '<i class="fas fa-bell"></i>' : '<i class="fas fa-bell-slash"></i>'}
+                        </span>
+                    </div>
+                    <div class="wishlist-actions">
+                        <button class="btn-view-wish" data-wishlist-id="${item.id}"><i class="fas fa-search-plus"></i></button>
+                        <button class="btn-edit-wish" data-wishlist-id="${item.id}"><i class="fas fa-edit"></i></button>
+                        <button class="btn-mark-acquired" data-wishlist-id="${item.id}" title="Mark as Acquired"><i class="fas fa-check"></i></button>
+                        <button class="btn-remove-wish" data-wishlist-id="${item.id}" title="Remove from Wishlist"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+                `).join('')}
+                
+                <!-- Loading placeholder that appears during async operations -->
+                <div class="wishlist-item loading-placeholder" id="loading-placeholder" style="display: none;">
+                    <div class="coin-images placeholder"></div>
+                    <div class="wishlist-info">
+                        <div class="placeholder-line"></div>
+                        <div class="placeholder-line"></div>
+                        <div class="placeholder-line"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Empty State (shown when wishlist is empty) -->
+            <section class="empty-state" id="empty-state" style="${wishlistItems.length === 0 ? 'display: block;' : 'display: none;'}">
+                <div class="empty-state-content">
+                    <i class="fas fa-star empty-icon"></i>
+                    <h3>Your Wishlist is Empty</h3>
+                    <p>Start adding coins to your wishlist to track what you'd like to acquire next.</p>
+                    <button class="btn-add-wish" id="empty-add-wish-btn" data-modal-target="add-wish-modal">
+                        <i class="fas fa-plus"></i> Add Your First Wish
+                    </button>
+                </div>
+            </section>
+
+            <!-- Pagination -->
+            <section class="wishlist-pagination" id="pagination-container">
+                <button class="page-nav prev" id="prev-page" ${pagination.currentPage <= 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i></button>
+                <div class="page-numbers" id="page-numbers">
+                    <!-- Pagination will be populated dynamically -->
+                    ${pagination.pages.map(page => `
+                    <button class="page-num ${page.isCurrent ? 'active' : ''}" 
+                            data-page="${page.number}" 
+                            ${page.isEllipsis ? 'disabled' : ''}>
+                        ${page.isEllipsis ? '...' : page.number}
+                    </button>
+                    `).join('')}
+                </div>
+                <button class="page-nav next" id="next-page" ${pagination.currentPage >= pagination.totalPages ? 'disabled' : ''}><i class="fas fa-chevron-right"></i></button>
+                <div class="page-size-select">
+                    <label for="items-per-page">Show:</label>
+                    <select id="items-per-page" name="pageSize">
+                        <option value="20" ${pagination.pageSize == 20 ? 'selected' : ''}>20</option>
+                        <option value="50" ${pagination.pageSize == 50 ? 'selected' : ''}>50</option>
+                        <option value="100" ${pagination.pageSize == 100 ? 'selected' : ''}>100</option>
+                    </select>
+                </div>
+            </section>
+
+            <!-- Wishlist Item Detail Modal (hidden by default) -->
+            <div class="wishlist-detail-modal" id="wishlist-detail-modal">
+                <div class="modal-content">
+                    <button class="modal-close"><i class="fas fa-times"></i></button>
+                    <div class="wishlist-detail-layout">
+                        <div class="coin-gallery">
+                            <div class="main-coin-images">
+                                <img src="" alt="Coin" class="main-image" id="modal-main-image">
+                            </div>
+                        </div>
+                        <div class="wishlist-details" id="wishlist-detail-content">
+                            <!-- Wishlist item details will be populated dynamically -->
+                        </div>
+                    </div>
+                    <div class="detail-actions">
+                        <button class="btn-edit-wish-detail" id="modal-edit-btn"><i class="fas fa-edit"></i> Edit Details</button>
+                        <button class="btn-mark-acquired-detail" id="modal-acquire-btn"><i class="fas fa-check"></i> Mark as Acquired</button>
+                        <button class="btn-alert-settings" id="modal-alert-btn"><i class="fas fa-bell"></i> Alert Settings</button>
+                        <button class="btn-remove-wish-detail" id="modal-remove-btn"><i class="fas fa-trash"></i> Remove</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Add Wishlist Item Modal (hidden by default) -->
+            <div class="wishlist-detail-modal" id="add-wish-modal">
+                <div class="modal-content">
+                    <button class="modal-close"><i class="fas fa-times"></i></button>
+                    <form id="add-wish-form" action="/api/wishlist" method="POST">
+                        <h2>Add to Wishlist</h2>
+                        <div class="tab-navigation">
+                            <button type="button" class="tab-btn active" data-tab="search">Search Catalog</button>
+                            <button type="button" class="tab-btn" data-tab="manual">Manual Entry</button>
+                        </div>
+                        
+                        <div class="tab-content">
+                            <!-- Search Catalog Tab -->
+                            <div class="tab-pane active" id="search-tab">
+                                <div class="catalog-search">
+                                    <input type="text" id="catalog-search-input" placeholder="Search for coins in the catalog...">
+                                    <button type="button" class="btn-search-catalog"><i class="fas fa-search"></i></button>
+                                </div>
+                                <div class="catalog-results" id="catalog-results">
+                                    <!-- Search results will be populated here -->
+                                </div>
+                            </div>
+                            
+                            <!-- Manual Entry Tab -->
+                            <div class="tab-pane" id="manual-tab">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="coin-title">Title/Description</label>
+                                        <input type="text" id="coin-title" name="title" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="coin-era">Era</label>
+                                        <select id="coin-era" name="era" required>
+                                            <option value="">Select Era</option>
+                                            <option value="republican">Republican</option>
+                                            <option value="early-empire">Early Empire</option>
+                                            <option value="high-empire">High Empire</option>
+                                            <option value="late-empire">Late Empire</option>
+                                            <option value="byzantine">Byzantine</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="coin-material">Material</label>
+                                        <select id="coin-material" name="material" required>
+                                            <option value="">Select Material</option>
+                                            <option value="gold">Gold</option>
+                                            <option value="silver">Silver</option>
+                                            <option value="bronze">Bronze</option>
+                                            <option value="copper">Copper</option>
+                                            <option value="billon">Billon</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="coin-denomination">Denomination</label>
+                                        <select id="coin-denomination" name="denomination" required>
+                                            <option value="">Select Denomination</option>
+                                            <option value="aureus">Aureus</option>
+                                            <option value="denarius">Denarius</option>
+                                            <option value="sestertius">Sestertius</option>
+                                            <option value="as">As</option>
+                                            <option value="follis">Follis</option>
+                                            <!-- Other denominations -->
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="coin-priority">Priority</label>
+                                        <select id="coin-priority" name="priority" required>
+                                            <option value="high">High Priority</option>
+                                            <option value="medium" selected>Medium Priority</option>
+                                            <option value="low">Low Priority</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="coin-est-value">Estimated Value</label>
+                                        <input type="number" id="coin-est-value" name="estimatedValue" min="0" step="1">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="coin-max-price">Maximum Price Willing to Pay</label>
+                                        <input type="number" id="coin-max-price" name="maxPrice" min="0" step="1">
+                                    </div>
+                                    
+                                    <div class="form-group form-checkbox">
+                                        <label>
+                                            <input type="checkbox" name="enableAlerts" checked>
+                                            Enable Price Alerts
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="form-group full-width">
+                                        <label for="coin-notes">Notes</label>
+                                        <textarea id="coin-notes" name="notes" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" id="cancel-add-wish">Cancel</button>
+                            <button type="submit" class="btn-primary" id="confirm-add-wish">Add to Wishlist</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Mark as Acquired Modal (hidden by default) -->
+            <div class="modal" id="mark-acquired-modal">
+                <div class="modal-content">
+                    <button class="modal-close"><i class="fas fa-times"></i></button>
+                    <h2>Mark as Acquired</h2>
+                    <p>Did you acquire this coin? You can add it directly to your collection.</p>
+                    
+                    <form id="mark-acquired-form">
+                        <div class="form-group">
+                            <label for="acquisition-date">Acquisition Date</label>
+                            <input type="date" id="acquisition-date" name="acquisitionDate" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="acquisition-price">Purchase Price</label>
+                            <input type="number" id="acquisition-price" name="purchasePrice" min="0" step="0.01" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="acquisition-source">Source/Seller</label>
+                            <input type="text" id="acquisition-source" name="source">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="acquisition-notes">Notes</label>
+                            <textarea id="acquisition-notes" name="notes" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" id="just-remove-btn">Just Remove from Wishlist</button>
+                            <button type="submit" class="btn-primary">Add to Collection</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="/assets/images/icons/favicon.ico" alt="Imperium Roma Logo">
+                </div>
+                <p>&copy; ${currentYear} Imperium Roma. All rights reserved.</p>
+                <ul class="footer-links">
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                    <li><a href="/terms">Terms of Service</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Inject backend data as a global object for JavaScript to use
+        window.domusData = {
+            user: ${JSON.stringify(user)},
+            currentFilters: ${JSON.stringify(currentFilters)},
+            pagination: ${JSON.stringify(pagination)},
+            apiEndpoints: {
+                getWishlist: '/api/wishlist',
+                getWishlistItem: '/api/wishlist/:id',
+                addWishlistItem: '/api/wishlist',
+                updateWishlistItem: '/api/wishlist/:id',
+                deleteWishlistItem: '/api/wishlist/:id',
+                markAsAcquired: '/api/wishlist/:id/acquire',
+                searchCatalog: '/api/catalog/search',
+                getFilters: '/api/filters'
+            }
+        };
+    </script>
+    <script src="/domus/assets/js/domus.js"></script>
+    <script src="/domus/assets/js/wishlist.js"></script>
+</body>
+</html>
