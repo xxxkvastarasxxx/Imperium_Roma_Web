@@ -49,14 +49,13 @@
                 </div>
             </div>
             
-            <nav class="sidebar-nav">
+            <nav class="sidebar-nav"> 
                 <ul>
-                    <li class="active"><a href="#dashboard"><i class="fas fa-columns"></i> Dashboard</a></li>
+                    <li class="active"><a href="/domus/#dashboard"><i class="fas fa-columns"></i> Dashboard</a></li>
+                    <li><a href="/domus/#statistics"><i class="fas fa-chart-bar"></i> Statistics</a></li>
                     <li><a href="/domus/collection/"><i class="fas fa-coins"></i> My Collection</a></li>
-                    <li><a href="#statistics"><i class="fas fa-chart-bar"></i> Statistics</a></li>
-                    <li><a href="#wishlist"><i class="fas fa-star"></i> Wishlist</a></li>
-                    <li><a href="#transactions"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
-                    <li><a href="#profile"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="/domus/wishlist/"><i class="fas fa-star"></i> Wishlist</a></li>
+                    <li><a href="/domus/#profile-section"><i class="fas fa-user"></i> Profile</a></li>
                     <li><a href="#settings"><i class="fas fa-cog"></i> Settings</a></li>
                 </ul>
             </nav>
@@ -68,7 +67,7 @@
 
         <!-- Main Content Area -->
         <main class="domus-content">
-            <header class="content-header">
+            <header class="content-header" id="dashboard">
                 <div class="header-title">
                     <h1>Dashboard</h1>
                     <p>Welcome to your personal Domus, <span id="header-username" data-user-nickname>${user.nickname}</span></p>
@@ -118,11 +117,11 @@
             </section>
 
             <!-- Collection Summary -->
-            <section class="collection-summary">
+            <section class="collection-summary" id="statistics">
                 <h2 class="section-title">Collection Summary</h2>
                 <div class="collection-charts">
                     <div class="chart-container">
-                        <h3>Coins by Era</h3>
+                        <h3>Coins by Century</h3>
                         <div class="chart" id="era-chart">
                             <canvas id="era-chart-canvas" data-chart-data="${chartData.era|json}"></canvas>
                             <div class="chart-placeholder">Chart Loading...</div>
