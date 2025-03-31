@@ -1,0 +1,604 @@
+/* ===== SETTINGS PAGE STYLES ===== */
+
+/* Settings Tabs Navigation */
+.settings-tabs {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) #1a1a1a;
+}
+
+.tab-button {
+    background: rgba(0, 0, 0, 0.2);
+    color: #aaa;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 25px;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    transition: all var(--transition-speed);
+    white-space: nowrap;
+}
+
+.tab-button i {
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.tab-button:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--light-color);
+    transform: translateY(-3px);
+}
+
+.tab-button.active {
+    background: rgba(255, 204, 0, 0.1);
+    color: var(--primary-color);
+    border-color: rgba(255, 204, 0, 0.3);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Settings Content Sections */
+.settings-content {
+    position: relative;
+}
+
+.settings-section {
+    display: none;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.settings-section.active {
+    display: block;
+}
+
+.settings-card {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--card-shadow);
+    padding: 25px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all var(--transition-speed);
+    backdrop-filter: blur(5px);
+}
+
+.settings-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px);
+}
+
+.settings-card h3 {
+    font-size: 20px;
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+}
+
+.settings-card h3 i {
+    margin-right: 12px;
+    font-size: 18px;
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 15px;
+    color: #bbb;
+    margin-bottom: 8px;
+    font-weight: 400;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--light-color);
+    font-size: 15px;
+    transition: all var(--transition-speed);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.2);
+    outline: none;
+}
+
+.form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.form-hint {
+    font-size: 13px;
+    color: #777;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+/* Button Styles */
+.btn-primary {
+    background: var(--gradient-primary);
+    color: #000;
+    font-weight: 700;
+    padding: 12px 30px;
+    border-radius: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all var(--transition-speed);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    filter: brightness(var(--hover-brightness));
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--light-color);
+    padding: 12px 30px;
+    border-radius: 25px;
+    transition: all var(--transition-speed);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ff4747, #cc0000);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all var(--transition-speed);
+}
+
+.btn-danger:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* Toggle Switch */
+.toggle-setting {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.toggle-setting:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.toggle-setting span {
+    font-size: 15px;
+    color: var(--light-color);
+}
+
+.setting-description {
+    font-size: 13px;
+    color: #777;
+    margin-top: -15px;
+    margin-bottom: 20px;
+    padding-left: 5px;
+}
+
+/* Custom Toggle Switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 54px;
+    height: 28px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--primary-color);
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* Theme Preview Styles */
+.theme-preview-container {
+    margin-top: 20px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.theme-preview {
+    width: 100%;
+    height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all var(--transition-speed);
+}
+
+.preview-header {
+    height: 30px;
+    background: #000;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.preview-content {
+    height: 170px;
+    display: flex;
+}
+
+.preview-sidebar {
+    width: 60px;
+    background: #000;
+    height: 100%;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.preview-main {
+    flex: 1;
+    background: #1a1a1a;
+}
+
+/* Theme-specific Preview Styles */
+.theme-preview[data-theme="light"] .preview-main {
+    background: #f5f5f5;
+}
+
+.theme-preview[data-theme="light"] .preview-sidebar {
+    background: #e0e0e0;
+}
+
+.theme-preview[data-theme="dark"] .preview-main {
+    background: #1a1a1a;
+}
+
+.theme-preview[data-theme="dark"] .preview-sidebar {
+    background: #000;
+}
+
+.theme-preview[data-theme="imperial"] .preview-main {
+    background: #1a1a1a;
+    background-image: linear-gradient(135deg, rgba(255, 204, 0, 0.05) 25%, transparent 25%, transparent 50%, rgba(255, 204, 0, 0.05) 50%, rgba(255, 204, 0, 0.05) 75%, transparent 75%, transparent);
+    background-size: 20px 20px;
+}
+
+.theme-preview[data-theme="imperial"] .preview-sidebar {
+    background: #000;
+    border-right: 2px solid var(--primary-color);
+}
+
+.theme-preview[data-theme="republican"] .preview-main {
+    background: #1a1a1a;
+    background-image: linear-gradient(135deg, rgba(192, 192, 192, 0.05) 25%, transparent 25%, transparent 50%, rgba(192, 192, 192, 0.05) 50%, rgba(192, 192, 192, 0.05) 75%, transparent 75%, transparent);
+    background-size: 20px 20px;
+}
+
+.theme-preview[data-theme="republican"] .preview-sidebar {
+    background: #000;
+    border-right: 2px solid silver;
+}
+
+/* Visibility classes */
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+/* Two-Factor Auth Setup Section */
+#tfa-setup-section {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    text-align: center;
+    border: 1px dashed rgba(255, 204, 0, 0.2);
+}
+
+/* Danger Zone */
+.danger-action {
+    background: rgba(255, 0, 0, 0.05);
+    border-radius: var(--card-border-radius);
+    padding: 25px;
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.danger-info h4 {
+    color: #ff4747;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.danger-info p {
+    color: #bbb;
+    font-size: 14px;
+    max-width: 600px;
+}
+
+/* Account Deletion Confirmation Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-container {
+    background: #1a1a1a;
+    border-radius: var(--card-border-radius);
+    width: 95%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+    transform: scale(0.9);
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active .modal-container {
+    transform: scale(1);
+}
+
+.modal-header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 0, 0, 0.1);
+    position: relative;
+}
+
+.modal-title {
+    color: #ff4747;
+    font-size: 20px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.modal-title i {
+    margin-right: 10px;
+}
+
+.close-modal {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    background: transparent;
+    color: #aaa;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.close-modal:hover {
+    color: #ff4747;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-body p {
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.confirmation-input {
+    margin-bottom: 20px;
+}
+
+.confirmation-input label {
+    display: block;
+    margin-bottom: 10px;
+    color: #bbb;
+}
+
+.confirmation-input input {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--light-color);
+}
+
+.modal-footer {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.btn-modal-cancel {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ccc;
+    padding: 12px 25px;
+    border-radius: 25px;
+}
+
+.btn-modal-cancel:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.btn-confirm-delete {
+    background: linear-gradient(135deg, #ff4747, #cc0000);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: 700;
+}
+
+.btn-confirm-delete:disabled {
+    background: #555;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Responsive Styles for Settings Page */
+@media screen and (max-width: 992px) {
+    .settings-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+    
+    .tab-button {
+        padding: 10px 15px;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .settings-card h3 {
+        font-size: 18px;
+    }
+    
+    .danger-action {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .danger-info {
+        margin-bottom: 20px;
+    }
+    
+    .form-actions {
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .settings-tabs {
+        justify-content: flex-start;
+        margin-bottom: 20px;
+    }
+    
+    .tab-button {
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+    
+    .tab-button i {
+        margin-right: 5px;
+    }
+    
+    .settings-card {
+        padding: 15px;
+    }
+    
+    .toggle-setting {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .toggle-setting span {
+        margin-bottom: 10px;
+    }
+    
+    .modal-footer {
+        flex-direction: column-reverse;
+        gap: 15px;
+    }
+    
+    .btn-modal-cancel, 
+    .btn-confirm-delete {
+        width: 100%;
+        text-align: center;
+    }
+}
