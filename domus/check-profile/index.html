@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checking Profile | Imperium Roma</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+</head>
+<body>
+  <p id="status">Checking your status in the Roman Empire...</p>
+
+  <script>
+    const supabase = window.supabase.createClient(
+      'https://nodxtpjwgyjbghpaiajo.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vZHh0cGp3Z3lqYmdocGFpYWpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMxODg3MjEsImV4cCI6MjA1ODc2NDcyMX0.GX3liK9iN_kcug7OFh2EZUilNzVq2GxEblhidkUBOY0'
+    )
+
+    async function checkUserProfile() {
+      const { data: { session }, error } = await supabase.auth.getSession()
+
+      if (error || !session) {
+        document.getElementById('status').textContent = 'Not logged in. Redirecting...'
+        setTimeout(() => window.location.href = '/login', 1000)
+        return
+      }
+
+      const accessToken = session.access_token
+      console.log('Access Token:', accessToken)
+
+      const res = await fetch('http://localhost:8080/api/profile', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+
+      if (res.status === 404) {
+        document.getElementById('status').textContent = 'No profile found. Redirecting to profile creation...'
+        setTimeout(() => window.location.href = '/domus/create-profile', 1000)
+      } else if (res.ok) {
+        document.getElementById('status').textContent = 'Profile found. Redirecting to your Domus...'
+        setTimeout(() => window.location.href = '/domus', 1000)
+      } else {
+        document.getElementById('status').textContent = 'Unexpected error. Please try again later.'
+      }
+    }
+
+    checkUserProfile()
+  </script>
+</body>
+</html>

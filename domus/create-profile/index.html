@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Profile | Imperium Roma</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <style>
+    :root {
+      --primary: #9b2226;
+      --primary-light: #ae2a2f;
+      --secondary: #e9d8a6;
+      --background: #f8f9fa;
+      --text: #2b2b2b;
+      --error: #d62828;
+      --success: #588157;
+      --warning: #ffb703;
+      --info: #023e8a;
+    }
+    
+    body {
+      font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background-color: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+      margin-bottom: 30px;
+      border-bottom: 5px solid var(--secondary);
+    }
+    
+    h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      letter-spacing: 1px;
+    }
+    
+    .subtitle {
+      font-style: italic;
+      margin-top: 10px;
+    }
+    
+    .form-container {
+      background-color: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    
+    .help-text {
+      display: block;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 4px;
+    }
+    
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+    
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(155, 34, 38, 0.2);
+    }
+    
+    .input-group {
+      position: relative;
+    }
+    
+    .input-with-status {
+      padding-right: 40px;
+    }
+    
+    .input-status {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: none;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 14px;
+    }
+    
+    .status-checking {
+      display: block;
+      border: 2px solid #ccc;
+      border-top-color: var(--primary);
+      animation: spin 1s linear infinite;
+    }
+    
+    .status-valid {
+      display: block;
+      background-color: var(--success);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z'/%3E%3C/svg%3E");
+    }
+    
+    .status-invalid {
+      display: block;
+      background-color: var(--error);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z'/%3E%3C/svg%3E");
+    }
+    
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23131313%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 12px;
+      padding-right: 30px;
+    }
+    
+    button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 14px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      margin-top: 10px;
+    }
+    
+    button:hover {
+      background-color: var(--primary-light);
+    }
+    
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    
+    .error {
+      color: var(--error);
+      margin: 5px 0;
+      display: none;
+      font-size: 0.9rem;
+    }
+    
+    .status {
+      text-align: center;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 4px;
+      display: none;
+    }
+    
+    .status.error {
+      background-color: rgba(214, 40, 40, 0.1);
+      border: 1px solid var(--error);
+    }
+    
+    .status.success {
+      background-color: rgba(88, 129, 87, 0.1);
+      border: 1px solid var(--success);
+      color: var(--success);
+    }
+    
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s linear infinite;
+      vertical-align: middle;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .form-columns {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .form-column {
+      flex: 1;
+    }
+    
+    @media (max-width: 768px) {
+      .form-columns {
+        flex-direction: column;
+      }
+    }
+    
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      margin-left: 5px;
+      width: 16px;
+      height: 16px;
+      background-color: #ccc;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 16px;
+      font-size: 10px;
+      cursor: help;
+    }
+    
+    .tooltip::after {
+      content: "?";
+    }
+    
+    .tooltip .tooltip-text {
+      visibility: hidden;
+      width: 200px;
+      background-color: #555;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+    
+    .tooltip:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+    
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>IMPERIUM ROMA</h1>
+    <div class="subtitle">Establish Your Presence in the Empire</div>
+  </header>
+  
+  <div class="container">
+    <div class="form-container">
+      <h2>Create Your Roman Profile</h2>
+      <p>Welcome to the glorious Roman Empire! Before you can become a full citizen, we need some information about you.</p>
+      
+      <div id="status" class="status"></div>
+      
+      <form id="profileForm">
+        <div class="form-columns">
+          <div class="form-column">
+            <div class="form-group">
+              <label for="nickname">Roman Name (Cognomen) <span class="required">*</span></label>
+              <div class="input-group">
+                <input type="text" id="nickname" name="nickname" class="input-with-status" placeholder="e.g., marcusaurelius" required>
+                <div id="nicknameStatus" class="input-status"></div>
+              </div>
+              <span class="help-text">Your unique identity in the Empire (4-32 characters, lowercase, no spaces)</span>
+              <div id="nicknameError" class="error"></div>
+            </div>
+            
+            <div class="form-group">
+              <label for="first_name">First Name <span class="required">*</span></label>
+              <input type="text" id="first_name" name="first_name" placeholder="Your first name" required>
+              <div id="first_nameError" class="error"></div>
+            </div>
+            
+            <div class="form-group">
+              <label for="second_name">Family Name</label>
+              <input type="text" id="second_name" name="second_name" placeholder="Your family name">
+              <div id="second_nameError" class="error"></div>
+            </div>
+          </div>
+          
+          <div class="form-column">
+            <div class="form-group">
+              <label for="location">Location</label>
+              <select id="location" name="location">
+                <option value="">-- Select your territory (optional) --</option>
+                <!-- Will be populated by JavaScript -->
+              </select>
+              <span class="help-text">Your status will be influenced by where you reside</span>
+              <div id="locationError" class="error"></div>
+            </div>
+            
+            <div class="form-group">
+              <label for="currency">Preferred Currency 
+                <span class="tooltip">
+                  <span class="tooltip-text">The currency you prefer to use for transactions within the Empire</span>
+                </span>
+              </label>
+              <select id="currency" name="currency">
+                <option value="USD">USD - US Dollar</option>
+                <option value="EUR">EUR - Euro</option>
+                <option value="GBP">GBP - British Pound</option>
+                <option value="CHF">CHF - Swiss Franc</option>
+                <option value="UAH">UAH - Ukrainian Hryvnia</option>
+                <option value="PLN">PLN - Polish Złoty</option>
+              </select>
+              <div id="currencyError" class="error"></div>
+            </div>
+          </div>
+        </div>
+        
+        <button type="submit" id="submitButton" disabled>
+          <span id="loadingIndicator" class="loading hidden"></span>
+          Create Profile
+        </button>
+      </form>
+    </div>
+  </div>
+  
+  <footer>
+    <p>SPQR • Senatus Populusque Romanus • The Senate and People of Rome</p>
+  </footer>
+  
+  <script>
+    const supabase = window.supabase.createClient(
+      'https://nodxtpjwgyjbghpaiajo.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vZHh0cGp3Z3lqYmdocGFpYWpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMxODg3MjEsImV4cCI6MjA1ODc2NDcyMX0.GX3liK9iN_kcug7OFh2EZUilNzVq2GxEblhidkUBOY0'
+    );
+
+    // API endpoint - update with your server URL
+    const API_URL = 'http://localhost:8080';
+    
+    // Form validation state
+    const formState = {
+      nickname: { valid: false, checked: false },
+      first_name: { valid: false, checked: false }
+    };
+    
+    // Debounce function to limit API calls
+    function debounce(func, wait) {
+      let timeout;
+      return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
+    
+    // Check nickname availability with debounce
+    const checkNicknameAvailability = debounce(async (nickname) => {
+      // Convert to lowercase
+      nickname = nickname.toLowerCase();
+      
+      // Check for spaces and valid format
+      if (!nickname || nickname.length < 4 || /\s/.test(nickname) || !/^[a-z0-9]+$/.test(nickname)) {
+        updateInputStatus('nickname', 'invalid');
+        showError('nicknameError', 'Nickname must be 4-32 characters, lowercase letters/numbers only, no spaces');
+        formState.nickname.valid = false;
+        updateSubmitButton();
+        return;
+      }
+      
+      // Update input value to lowercase
+      document.getElementById('nickname').value = nickname;
+      
+      updateInputStatus('nickname', 'checking');
+      
+      try {
+        const response = await fetch(`${API_URL}/api/check-nickname?nickname=${encodeURIComponent(nickname)}`);
+        const result = await response.json();
+        
+        if (result.available) {
+          updateInputStatus('nickname', 'valid');
+          hideError('nicknameError');
+          formState.nickname.valid = true;
+        } else {
+          updateInputStatus('nickname', 'invalid');
+          showError('nicknameError', result.message || 'This nickname is not available');
+          formState.nickname.valid = false;
+        }
+      } catch (error) {
+        console.error('Error checking nickname:', error);
+        updateInputStatus('nickname', 'invalid');
+        showError('nicknameError', 'Could not verify nickname availability');
+        formState.nickname.valid = false;
+      }
+      
+      formState.nickname.checked = true;
+      updateSubmitButton();
+    }, 500);
+    
+    // Load countries list
+    async function loadCountries() {
+      try {
+        const response = await fetch('/assets/data/countries_list.json');
+        const countries = await response.json();
+        
+        const locationSelect = document.getElementById('location');
+        countries.forEach(country => {
+          const option = document.createElement('option');
+          option.value = country;
+          option.textContent = country;
+          locationSelect.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Error loading countries:', error);
+        showStatus('Could not load territories list', true);
+      }
+    }
+    
+    // Helper function to update input status indicators
+    function updateInputStatus(fieldId, status) {
+      const statusElement = document.getElementById(`${fieldId}Status`);
+      if (statusElement) {
+        statusElement.className = 'input-status';
+        statusElement.classList.add(`status-${status}`);
+      }
+    }
+    
+    // Helper function to show errors
+    function showError(elementId, message) {
+      const errorElement = document.getElementById(elementId);
+      if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+      }
+    }
+    
+    // Helper function to hide errors
+    function hideError(elementId) {
+      const errorElement = document.getElementById(elementId);
+      if (errorElement) {
+        errorElement.style.display = 'none';
+      }
+    }
+    
+    // Helper function to show status messages
+    function showStatus(message, isError = false) {
+      const statusElement = document.getElementById('status');
+      statusElement.textContent = message;
+      statusElement.className = `status ${isError ? 'error' : 'success'}`;
+      statusElement.style.display = 'block';
+      
+      // Scroll to status message
+      statusElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    
+    // Helper function to update submit button state
+    function updateSubmitButton() {
+      const submitButton = document.getElementById('submitButton');
+      submitButton.disabled = !(formState.nickname.valid && formState.first_name.valid);
+    }
+    
+    // Check if user is authenticated
+    async function checkAuth() {
+      try {
+        const { data, error } = await supabase.auth.getSession();
+        
+        if (error || !data || !data.session) {
+          showStatus('You must be logged in to create a profile.', true);
+          setTimeout(() => {
+            window.location.href = '/login';
+          }, 2000);
+          return null;
+        }
+        
+        return data.session;
+      } catch (error) {
+        console.error('Auth error:', error);
+        showStatus('Authentication error. Please try again.', true);
+        return null;
+      }
+    }
+    
+    // Initialize form
+    async function initForm() {
+      // Check authentication
+      await checkAuth();
+      
+      // Load countries list
+      await loadCountries();
+      
+      // Set up event listeners
+      document.getElementById('nickname').addEventListener('input', (e) => {
+        const value = e.target.value.trim().toLowerCase();
+        e.target.value = value.replace(/\s+/g, ''); // Remove any spaces
+        checkNicknameAvailability(value);
+      });
+      
+      // Validate first name
+      document.getElementById('first_name').addEventListener('input', (e) => {
+        const value = e.target.value.trim();
+        formState.first_name.checked = true;
+        if (!value) {
+          showError('first_nameError', 'First name is required');
+          formState.first_name.valid = false;
+        } else if (!/^[a-zA-ZÀ-ÖØ-öø-ÿ\s\-']+$/.test(value)) {
+          showError('first_nameError', 'First name contains invalid characters');
+          formState.first_name.valid = false;
+        } else {
+          hideError('first_nameError');
+          formState.first_name.valid = true;
+        }
+        updateSubmitButton();
+      });
+      
+      // Validate first and second names
+      document.getElementById('first_name').addEventListener('input', (e) => {
+        const value = e.target.value.trim();
+        if (value && !/^[a-zA-ZÀ-ÖØ-öø-ÿ\s\-']+$/.test(value)) {
+          showError('first_nameError', 'First name contains invalid characters');
+        } else {
+          hideError('first_nameError');
+        }
+      });
+      
+      document.getElementById('second_name').addEventListener('input', (e) => {
+        const value = e.target.value.trim();
+        if (value && !/^[a-zA-Z]+$/.test(value)) {
+          showError('second_nameError', 'Family name must contain only letters');
+        } else {
+          hideError('second_nameError');
+        }
+      });
+    }
+    
+    // Handle form submission
+    document.getElementById('profileForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      // Hide any previous status messages
+      document.getElementById('status').style.display = 'none';
+      
+      // Run all validations
+      const nickname = document.getElementById('nickname').value.trim();
+      if (!nickname || nickname.length < 4) {
+        showError('nicknameError', 'Please enter a valid nickname (at least 4 characters)');
+        return;
+      }
+      
+      const first_name = document.getElementById('first_name').value.trim();
+      if (!first_name) {
+        showError('first_nameError', 'Please enter your first name');
+        return;
+      }
+      
+      const location = document.getElementById('location').value;
+      
+      // Get session
+      const session = await checkAuth();
+      if (!session) return;
+      
+      // Get all form values
+      const formData = {
+        nickname,
+        first_name: document.getElementById('first_name').value.trim() || null,
+        second_name: document.getElementById('second_name').value.trim() || null,
+        location,
+        currency: document.getElementById('currency').value,
+        user_id: session.user?.id
+      };
+      
+      // Show loading state
+      const submitButton = document.getElementById('submitButton');
+      const loadingIndicator = document.getElementById('loadingIndicator');
+      submitButton.disabled = true;
+      loadingIndicator.classList.remove('hidden');
+      submitButton.textContent = ' Creating Profile...';
+      submitButton.prepend(loadingIndicator);
+      
+      try {
+        // Send data to API
+        const response = await fetch(`${API_URL}/api/profile`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session.access_token}`
+          },
+          body: JSON.stringify(formData)
+        });
+        
+        // Parse response
+        let result;
+        try {
+          result = await response.json();
+        } catch (e) {
+          result = { detail: "Could not parse server response" };
+        }
+        
+        if (response.ok) {
+          showStatus(`Welcome to the Empire, ${result.nickname || 'Citizen'}! Redirecting to your Domus...`);
+          setTimeout(() => {
+            window.location.href = '/domus';
+          }, 2000);
+        } else {
+          let errorMessage = "Something went wrong";
+          
+          if (result && result.detail) {
+            if (typeof result.detail === 'object' && result.detail.message) {
+              errorMessage = result.detail.message;
+              
+              if (result.detail.code === 'NICKNAME_TAKEN') {
+                checkNicknameAvailability(nickname); // Refresh nickname status
+              }
+            } else {
+              errorMessage = result.detail;
+            }
+          }
+          
+          showStatus(`Error: ${errorMessage}`, true);
+        }
+      } catch (error) {
+        console.error('API error:', error);
+        showStatus(`Request failed: ${error.message}`, true);
+      } finally {
+        submitButton.disabled = false;
+        loadingIndicator.classList.add('hidden');
+        submitButton.textContent = 'Create Profile';
+      }
+    });
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', initForm);
+  </script>
+</body>
+</html>
