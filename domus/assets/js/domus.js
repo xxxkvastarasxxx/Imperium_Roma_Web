@@ -1,3 +1,5 @@
+import { supabase, getAuthToken } from '/domus/assets/js/supabase-init.js';
+
 /**
  * Domus Dashboard Application
  * Backend-integrated version with full UI support
@@ -8,7 +10,7 @@ const DomusApp = (function() {
     
     // App configuration
     const CONFIG = {
-        apiEndpoint: '/api/v1',
+        apiEndpoint: 'http://localhost:8080/api',
         animationDuration: 300,
         chartColors: {
             eras: ['#ffcc00', '#e6b800', '#ccaa00', '#b39500', '#997f00'],
@@ -70,6 +72,7 @@ const DomusApp = (function() {
     // Data storage
     let appData = {
         user: null,
+        coins: null,
         stats: null,
         recentAcquisitions: null,
         notifications: null,
@@ -353,14 +356,42 @@ const DomusApp = (function() {
      */
     async function loadUserData() {
         try {
-            const response = await fetch(`${CONFIG.apiEndpoint}/user/profile`);
+            const token = await getAuthToken();
+            const response = await fetch(`${CONFIG.apiEndpoint}/profile`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            
             if (!response.ok) {
-                throw new Error(`HTTP error: ${response.status}`);
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(`HTTP error: ${response.status} - ${errorData.detail || response.statusText}`);
             }
             
-            const userData = await response.json();
-            appData.user = userData;
+            const profileData = await response.json();
+            console.log('User data loaded:', profileData);
             
+            // Adapt the API response to our application's user data structure
+            const userData = {
+                nickname: profileData.nickname || profileData.display_name || 'User',
+                rank: profileData.rank || 'Collector',
+                title: profileData.title || 'Numismatist',
+                displayName: profileData.first_name + ' ' + profileData.second_name || profileData.username || 'User',
+                email: profileData.email || '',
+                location: profileData.location || 'Not specified',
+                joinDate: new Date(profileData.join_date).toLocaleDateString('en', { year: 'numeric', month: 'long' }) || 'Recently joined',
+                specialization: profileData.specialization || 'General Collection',
+                avatar: profileData.avatar || '/assets/images/default-avatar.png',
+                preferences: {
+                    language: profileData.language || 'English',
+                    currency: profileData.currency || 'EUR (€)',
+                    theme: profileData.theme || 'Dark Mode'
+                }
+            };
+            
+            appData.user = userData;
             updateUIWithUserData(userData);
             return userData;
             
@@ -968,6 +999,8 @@ const DomusApp = (function() {
      * Handle avatar change button click
      */
     function handleAvatarChange() {
+        console.log("Avatar change button clicked");
+        
         // Create a hidden file input
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
@@ -975,75 +1008,209 @@ const DomusApp = (function() {
         fileInput.style.display = 'none';
         document.body.appendChild(fileInput);
         
-        // Trigger the file selection dialog
-        fileInput.click();
-        
-        // Handle file selection
-        fileInput.addEventListener('change', async () => {
+        // Set up the change event handler before clicking
+        fileInput.onchange = (event) => {
+            console.log("File selected:", event.target.files && event.target.files[0]?.name);
+            
             if (fileInput.files && fileInput.files[0]) {
-                try {
-                    // Show preview dialog
-                    showModalDialog({
-                        title: 'Upload Profile Picture',
-                        content: `
-                            <div class="avatar-upload-form">
-                                <div class="avatar-preview">
-                                    <img src="${URL.createObjectURL(fileInput.files[0])}" alt="New Avatar Preview">
-                                </div>
-                                <div class="upload-actions">
-                                    <p>Click "Upload" to use this as your new profile picture</p>
-                                    <p class="file-note">Maximum size: 2MB. Formats: JPG, PNG</p>
-                                </div>
-                            </div>
-                        `,
-                        confirmText: 'Upload',
-                        cancelText: 'Cancel',
-                        onConfirm: async () => {
-                            try {
-                                showToast('Uploading profile picture...', 'info');
-                                
-                                // Create form data
-                                const formData = new FormData();
-                                formData.append('avatar', fileInput.files[0]);
-                                
-                                // Upload to server
-                                const response = await fetch(`${CONFIG.apiEndpoint}/user/avatar`, {
-                                    method: 'POST',
-                                    body: formData
-                                });
-                                
-                                if (!response.ok) {
-                                    throw new Error('Failed to upload avatar');
-                                }
-                                
-                                const result = await response.json();
-                                
-                                // Update avatar in UI
-                                DOM.avatars.forEach(el => {
-                                    el.src = result.avatarUrl;
-                                    fadeIn(el, 500);
-                                });
-                                
-                                // Update local data
-                                appData.user.avatar = result.avatarUrl;
-                                
-                                showToast('Profile picture updated successfully!', 'success');
-                                
-                            } catch (error) {
-                                console.error('Error uploading avatar:', error);
-                                showToast('Failed to upload profile picture. Please try again.', 'error');
-                            }
-                        }
-                    });
-                    
-                } catch (error) {
-                    console.error('Error handling avatar:', error);
-                    showToast('Error processing image. Please try a different file.', 'error');
+                const file = fileInput.files[0];
+                
+                // Check file size (2MB limit)
+                if (file.size > 2 * 1024 * 1024) {
+                    showToast('File is too large. Maximum size is 2MB.', 'error');
+                    document.body.removeChild(fileInput);
+                    return;
                 }
+                
+                // Check file type
+                if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
+                    showToast('Only JPG and PNG formats are allowed.', 'error');
+                    document.body.removeChild(fileInput);
+                    return;
+                }
+                
+                // Use a simpler approach - just upload directly
+                uploadProfilePicture(file);
             }
             
-            // Clean up
+            // Always clean up the input element
             document.body.removeChild(fileInput);
+        };
+        
+        // Trigger the file selection dialog
+        fileInput.click();
+    }
+    
+    /**
+     * Upload profile picture directly
+     * @param {File} file - The image file to upload
+     */
+    async function uploadProfilePicture(file) {
+        console.log('Starting direct upload for:', file.name);
+        showToast('Uploading profile picture...', 'info');
+        
+        try {
+            // Get auth token
+            const token = await getAuthToken();
+            if (!token) {
+                throw new Error("Authentication failed - No token available");
+            }
+            
+            console.log("Got auth token:", token.substring(0, 10) + "...", "preparing FormData");
+            
+            // Debug the file
+            console.log("File details:", {
+                name: file.name,
+                type: file.type,
+                size: file.size + " bytes",
+                lastModified: new Date(file.lastModified).toISOString()
+            });
+            
+            // Create form data
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            // DEBUG: Check what's in the FormData
+            console.log("FormData contains 'file':", formData.has('file'));
+            
+            // Upload to server with detailed debugging
+            console.log("Sending fetch request to upload profile picture");
+            
+            // Make the request with more detailed options
+            const response = await fetch(`${CONFIG.apiEndpoint}/profile/picture`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                    // No Content-Type header - browser will set it with boundary
+                },
+                body: formData,
+                // Include credentials for cookies if needed
+                credentials: 'include'
+            });
+            
+            console.log("Received response:", {
+                status: response.status,
+                statusText: response.statusText,
+                headers: Object.fromEntries([...response.headers.entries()])
+            });
+            
+            // Read the response text
+            const responseText = await response.text();
+            console.log("Response body:", responseText);
+            
+            // Try a fallback approach if we get a 500 error
+            if (response.status === 500) {
+                console.log("Attempting fallback approach with direct API call...");
+                return await fallbackProfilePictureUpload(file, token);
+            }
+            
+            if (!response.ok) {
+                throw new Error(`Upload failed: ${response.status} - ${responseText || response.statusText}`);
+            }
+            
+            // Parse the JSON response
+            let result;
+            try {
+                result = JSON.parse(responseText);
+            } catch (e) {
+                console.error("Error parsing response JSON:", e);
+                throw new Error('Invalid JSON response from server');
+            }
+            
+            if (!result.picture_url) {
+                throw new Error('No picture URL in response');
+            }
+            
+            console.log("Upload successful, new picture URL:", result.picture_url);
+            
+            // Update avatar in UI with cache-busting
+            DOM.avatars.forEach(el => {
+                const newSrc = `${result.picture_url}?t=${Date.now()}`;
+                console.log(`Updating avatar element with new src: ${newSrc}`);
+                el.src = newSrc;
+                fadeIn(el, 500);
+            });
+            
+            // Update local data
+            appData.user.avatar = result.picture_url;
+            
+            showToast('Profile picture updated successfully!', 'success');
+            
+        } catch (error) {
+            console.error('Error uploading profile picture:', error);
+            showToast(`Failed to upload profile picture: ${error.message}`, 'error');
+        }
+    }
+    
+    /**
+     * Fallback method to upload profile picture with different approach
+     * @param {File} file - The image file to upload 
+     * @param {string} token - Auth token
+     * @returns {Promise} - Promise resolving to the upload result
+     */
+    async function fallbackProfilePictureUpload(file, token) {
+        console.log("Using fallback upload method");
+        
+        // Convert the file to base64 to send as JSON
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            
+            reader.onload = async () => {
+                try {
+                    const base64Data = reader.result.split(',')[1]; // Remove data URL prefix
+                    
+                    const response = await fetch(`${CONFIG.apiEndpoint}/profile/picture-base64`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            filename: file.name,
+                            contentType: file.type,
+                            data: base64Data
+                        })
+                    });
+                    
+                    console.log("Fallback approach response:", response.status, response.statusText);
+                    
+                    const responseText = await response.text();
+                    console.log("Fallback response body:", responseText);
+                    
+                    if (!response.ok) {
+                        throw new Error(`Fallback upload failed: ${response.status} - ${responseText}`);
+                    }
+                    
+                    // Parse the JSON response
+                    const result = JSON.parse(responseText);
+                    
+                    if (!result.picture_url) {
+                        throw new Error('No picture URL in fallback response');
+                    }
+                    
+                    // Update avatar in UI
+                    DOM.avatars.forEach(el => {
+                        const newSrc = `${result.picture_url}?t=${Date.now()}`;
+                        el.src = newSrc;
+                        fadeIn(el, 500);
+                    });
+                    
+                    // Update local data
+                    appData.user.avatar = result.picture_url;
+                    
+                    showToast('Profile picture updated successfully!', 'success');
+                    resolve(result);
+                    
+                } catch (error) {
+                    reject(error);
+                }
+            };
+            
+            reader.onerror = () => {
+                reject(new Error('Failed to read file data'));
+            };
+            
+            reader.readAsDataURL(file);
         });
     }
     
@@ -1600,21 +1767,47 @@ const DomusApp = (function() {
     }
     
     // Initialize application when DOM is ready
-    document.addEventListener('DOMContentLoaded', function() {
-        // Check if Chart.js is loaded - if not, load it dynamically
-        if (typeof Chart === 'undefined') {
-            console.log('Loading Chart.js dynamically...');
-            const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js';
-            script.integrity = 'sha256-+8RZJua0aEWg+QVVKg4LEzETdBQ1KdPxJUZ4YLe9pso=';
-            script.crossOrigin = 'anonymous';
-            script.onload = function() {
-                // Initialize app after Chart.js loads
-                DomusApp.init();
-            };
-            document.head.appendChild(script);
-        } else {
-            DomusApp.init();
+    document.addEventListener('DOMContentLoaded', async function() {
+        try {
+            // Check authentication
+            const token = await getAuthToken();
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+
+            // Rest of initialization
+            // Check if server injected initial data
+            checkServerData();
+            
+            // Cache DOM elements
+            cacheDOM();
+            
+            // Show loading state if not using SSR
+            if (!appData.user) {
+                showLoadingState();
+            }
+            
+            // Initialize functionality
+            loadData()
+                .then(() => {
+                    setupCharts();
+                    setupEventListeners();
+                    updateActiveSection();
+                    
+                    // Add fade-in animation to main content
+                    DOM.mainContent.classList.add('fade-in');
+                    
+                    // Hide loading overlay
+                    hideLoadingState();
+                })
+                .catch(error => {
+                    console.error('Initialization error:', error);
+                    showErrorMessage('Failed to initialize the dashboard. Please try refreshing the page.');
+                });
+        } catch (error) {
+            console.error('Auth initialization error:', error);
+            window.location.href = '/login';
         }
     });
     
