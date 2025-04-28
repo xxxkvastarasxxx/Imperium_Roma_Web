@@ -1279,9 +1279,9 @@ function loadAddCoinForm() {
             </div>
             
             <div class="form-group">
-                <label for="coin-era">Era*</label>
+                <label for="coin-era">Period*</label>
                 <select id="coin-era" name="era" required>
-                    <option value="">Select Era</option>
+                    <option value="">Select Period</option>
                     <option value="republic">Republican</option>
                     <option value="early-empire">Early Empire</option>
                     <option value="high-empire">High Empire</option>
@@ -1379,11 +1379,6 @@ function loadAddCoinForm() {
             <div class="form-group full-width">
                 <label for="coin-description">Description</label>
                 <textarea id="coin-description" name="description" rows="3"></textarea>
-            </div>
-            
-            <div class="form-group full-width">
-                <label for="coin-notes">Notes</label>
-                <textarea id="coin-notes" name="notes" rows="2"></textarea>
             </div>
             
             <div class="form-group image-upload">
