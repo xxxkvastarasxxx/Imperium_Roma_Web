@@ -11,7 +11,7 @@
     justify-content: space-between;
     align-items: center;
     background: rgba(0, 0, 0, 0.2);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius); /* Ensure --border-radius is defined in domus.css */
     padding: 15px 20px;
     border: 1px solid rgba(255, 255, 255, 0.05);
     margin-bottom: 15px;
@@ -38,7 +38,7 @@
     border-radius: 15px;
     padding: 5px 10px;
     font-size: 12px;
-    color: var(--primary-color);
+    color: var(--primary-color); /* Ensure --primary-color is defined in domus.css */
 }
 
 .active-filter-pill .remove-filter {
@@ -81,7 +81,9 @@
     justify-content: center;
     background: rgba(0, 0, 0, 0.2);
     color: #aaa;
-    transition: all var(--transition-speed);
+    transition: all var(--transition-speed); /* Ensure --transition-speed is defined */
+    border: none; /* Explicitly remove border if it's a button */
+    cursor: pointer;
 }
 
 .btn-view-toggle.active {
@@ -91,7 +93,7 @@
 
 .btn-view-toggle:hover:not(.active) {
     background: rgba(255, 255, 255, 0.05);
-    color: var(--light-color);
+    color: var(--light-color); /* Ensure --light-color is defined */
 }
 
 .sort-dropdown {
@@ -128,7 +130,15 @@
     align-items: center;
     gap: 8px;
     transition: all var(--transition-speed);
+    cursor: pointer;
 }
+/* Add visual indicator when filters are active */
+.btn-filter.has-filters {
+    border-color: rgba(255, 204, 0, 0.3);
+    color: var(--primary-color);
+    background: rgba(255, 204, 0, 0.05);
+}
+
 
 .btn-filter:hover {
     background: rgba(255, 255, 255, 0.05);
@@ -136,6 +146,8 @@
     border-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Note: .wishlist-stats and .stat-pill are in the CSS but not the latest HTML. */
+/* If needed, add the corresponding HTML structure. */
 .wishlist-stats {
     display: flex;
     align-items: center;
@@ -163,24 +175,36 @@
     font-size: 14px;
 }
 
-.btn-add-wish {
-    margin-left: auto;
-    padding: 10px 20px;
-    background: var(--gradient-primary);
+/* Generic button styling if needed, or rely on framework/domus.css */
+.btn {
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    text-align: center;
+    display: inline-flex; /* Use flex for icon alignment */
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.btn-primary {
+    background: var(--gradient-primary); /* Ensure --gradient-primary is defined */
     color: #000;
     font-weight: 700;
     border-radius: 25px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    padding: 10px 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     transition: all var(--transition-speed);
 }
-
-.btn-add-wish:hover {
+.btn-primary:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
 }
+/* Apply .btn-primary styles also to .btn-add-wish if it's used standalone */
+.btn-add-wish {
+    /* Inherits from .btn-primary if both classes are used */
+    /* Add specific overrides if needed */
+}
+
 
 /* Filter Panel */
 .filter-panel {
@@ -189,7 +213,7 @@
     padding: 20px;
     margin-bottom: 30px;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    display: none;
+    /* display: none; JS handles display */
     animation: slideDown 0.3s ease-out;
 }
 
@@ -242,6 +266,7 @@
     position: relative;
     cursor: pointer;
     transition: all var(--transition-speed);
+    flex-shrink: 0; /* Prevent checkbox from shrinking */
 }
 
 .filter-options input[type="checkbox"]:checked {
@@ -276,6 +301,7 @@
     border: 1px solid rgba(231, 76, 60, 0.2);
     border-radius: 20px;
     transition: all var(--transition-speed);
+    cursor: pointer;
 }
 
 .btn-clear-filters:hover {
@@ -289,6 +315,8 @@
     font-weight: 600;
     border-radius: 20px;
     transition: all var(--transition-speed);
+    border: none;
+    cursor: pointer;
 }
 
 .btn-apply-filters:hover {
@@ -306,13 +334,15 @@
 
 .wishlist-item {
     background: rgba(0, 0, 0, 0.2);
-    border-radius: var(--card-border-radius);
+    border-radius: var(--card-border-radius); /* Ensure --card-border-radius is defined */
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: var(--card-shadow);
+    box-shadow: var(--card-shadow); /* Ensure --card-shadow is defined */
     transition: all var(--transition-speed);
     animation: fadeIn 0.5s ease-out forwards;
     position: relative;
+    display: flex; /* Use flex for column layout */
+    flex-direction: column;
 }
 
 .wishlist-item:hover {
@@ -326,13 +356,14 @@
     height: 200px;
     overflow: hidden;
     position: relative;
-    background: #000;
+    background: #1a1a1a; /* Darker background for image contrast */
+    flex-shrink: 0; /* Prevent image container from shrinking */
 }
 
 .coin-image {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: contain; /* Use contain to see the whole coin */
     transition: transform 0.5s ease;
 }
 
@@ -351,6 +382,8 @@
     z-index: 5;
     color: #000;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    display: inline-flex; /* Align icons */
+    align-items: center;
 }
 
 .priority-high {
@@ -363,11 +396,12 @@
 
 .priority-low {
     background: linear-gradient(135deg, #c8a200, #a88700);
-    color: #fff;
+    color: rgba(255, 255, 255, 0.8); /* Lighter text for low prio */
 }
 
 .priority-badge i {
     margin-right: 2px;
+    font-size: 10px; /* Slightly smaller stars */
 }
 
 .priority-badge i:last-child {
@@ -378,13 +412,21 @@
 .wishlist-info {
     padding: 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    flex-grow: 1; /* Allow info section to grow */
 }
 
 .wishlist-info h3 {
     font-size: 18px;
+    margin-top: 0; /* Remove default margin */
     margin-bottom: 10px;
     color: var(--light-color);
     font-weight: 600;
+    line-height: 1.3; /* Adjust line height */
+    /* Ellipsis for long titles */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
 }
 
 .coin-meta {
@@ -394,6 +436,10 @@
     color: #aaa;
     font-size: 14px;
 }
+.coin-meta span { /* Prevent meta text wrapping awkwardly */
+    white-space: nowrap;
+}
+
 
 .coin-quick-data {
     display: flex;
@@ -410,7 +456,7 @@
 
 /* Availability Status */
 .availability-status {
-    display: flex;
+    display: inline-flex; /* Use inline-flex */
     align-items: center;
     gap: 5px;
     font-size: 13px;
@@ -418,13 +464,18 @@
     padding: 3px 8px;
     border-radius: 6px;
     background: rgba(0, 0, 0, 0.2);
+    border: 1px solid transparent; /* Add base border */
 }
 
 .availability-status.available {
     background: rgba(39, 174, 96, 0.1);
     color: #27ae60;
-    border: 1px solid rgba(39, 174, 96, 0.2);
+    border-color: rgba(39, 174, 96, 0.2);
 }
+.availability-status i {
+    font-size: 12px; /* Adjust icon size */
+}
+
 
 /* Price Alert Section */
 .price-alert {
@@ -433,6 +484,7 @@
     align-items: center;
     padding: 15px 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
 .max-price {
@@ -454,15 +506,14 @@
 /* Wishlist Actions */
 .wishlist-actions {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around; /* Space out buttons more evenly */
     gap: 10px;
     padding: 15px 20px;
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
-.btn-view-wish,
-.btn-edit-wish,
-.btn-mark-acquired,
-.btn-remove-wish {
+/* Shared button styles */
+.wishlist-actions button {
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -470,6 +521,9 @@
     align-items: center;
     justify-content: center;
     transition: all var(--transition-speed);
+    border: none; /* Remove default border */
+    cursor: pointer;
+    font-size: 14px; /* Adjust icon size slightly */
 }
 
 .btn-view-wish {
@@ -494,10 +548,7 @@
     border: 1px solid rgba(231, 76, 60, 0.2);
 }
 
-.btn-view-wish:hover,
-.btn-edit-wish:hover,
-.btn-mark-acquired:hover,
-.btn-remove-wish:hover {
+.wishlist-actions button:hover {
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
@@ -517,34 +568,57 @@
 
 /* List View for Wishlist */
 .wishlist-grid.list-view {
-    display: flex;
+    display: flex; /* Change grid to flex */
     flex-direction: column;
-    gap: 20px;
+    gap: 20px; /* Gap between list items */
 }
 
 .wishlist-grid.list-view .wishlist-item {
+    /* Use grid for internal layout of list item */
     display: grid;
-    grid-template-columns: 120px 1fr auto auto;
-    height: auto;
-    align-items: center;
+    grid-template-columns: 120px 1fr auto auto; /* Image, Info, Price, Actions */
+    grid-template-rows: auto; /* Single row */
+    height: auto; /* Let content determine height */
+    align-items: stretch; /* Stretch items vertically */
+    flex-direction: row; /* Override column flex direction */
 }
+.wishlist-grid.list-view .wishlist-item:hover {
+    transform: none; /* Disable hover transform in list view */
+    box-shadow: var(--card-shadow); /* Reset shadow */
+}
+
 
 .wishlist-grid.list-view .coin-images {
-    height: 120px;
+    height: 100%; /* Take full height of the row */
     width: 120px;
+    border-right: 1px solid rgba(255, 255, 255, 0.05); /* Separator */
 }
+.wishlist-grid.list-view .coin-image {
+     object-fit: cover; /* Cover might look better in list view */
+}
+
 
 .wishlist-grid.list-view .wishlist-info {
-    border-bottom: none;
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: none; /* Remove bottom border */
+    border-right: 1px solid rgba(255, 255, 255, 0.05); /* Separator */
+    padding: 15px 20px; /* Adjust padding */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+}
+.wishlist-grid.list-view .wishlist-info h3 {
+    white-space: normal; /* Allow title wrapping in list view */
+    overflow: visible;
+    text-overflow: clip;
 }
 
+
 .wishlist-grid.list-view .price-alert {
-    padding: 0 20px;
-    border-bottom: none;
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
-    height: 100%;
-    width: 120px;
+    padding: 15px 20px; /* Adjust padding */
+    border-bottom: none; /* Remove bottom border */
+    border-right: 1px solid rgba(255, 255, 255, 0.05); /* Separator */
+    height: auto; /* Let content determine height */
+    width: 150px; /* Fixed width for price section */
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
@@ -552,25 +626,46 @@
 }
 
 .wishlist-grid.list-view .wishlist-actions {
-    padding: 0 20px;
-    width: 120px;
+    padding: 15px 20px; /* Adjust padding */
+    width: 120px; /* Fixed width for actions */
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 12px;
+    gap: 12px; /* Adjust gap */
+    border-bottom: none; /* Remove bottom border */
 }
+
+.wishlist-grid.list-view .priority-badge {
+    /* Adjust position if needed for list view, maybe top-right? */
+     top: 10px;
+     left: auto;
+     right: 10px;
+     /* Or keep top-left if image is separate column */
+     /* left: 10px; right: auto; */
+}
+
 
 /* Loading Placeholder */
 .loading-placeholder {
     opacity: 0.7;
     pointer-events: none;
+    background: rgba(0, 0, 0, 0.2); /* Match item background */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--card-border-radius);
+    display: flex; /* Use flex for placeholder layout */
+    flex-direction: column;
 }
-
-.loading-placeholder .placeholder {
+.loading-placeholder .coin-images.placeholder { /* Target placeholder image area */
+    height: 200px;
     background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 100%);
     background-size: 200% 100%;
     animation: loading 1.5s infinite;
 }
+.loading-placeholder .wishlist-info { /* Target placeholder info area */
+     padding: 20px;
+     border: none;
+}
+
 
 .placeholder-line {
     height: 20px;
@@ -580,9 +675,17 @@
     background-size: 200% 100%;
     animation: loading 1.5s infinite;
 }
+.placeholder-line:first-child {
+    height: 24px; /* Larger for title */
+    width: 80%;
+}
+.placeholder-line:nth-child(2) {
+     width: 60%;
+}
 
 .placeholder-line:last-child {
-    width: 60%;
+    width: 70%;
+    margin-bottom: 0;
 }
 
 @keyframes loading {
@@ -600,6 +703,12 @@
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.empty-state-content { /* Added container for content */
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+
 .empty-icon {
     font-size: 60px;
     color: var(--primary-color);
@@ -616,20 +725,26 @@
 .empty-state p {
     color: #aaa;
     margin-bottom: 30px;
-    max-width: 400px;
+    line-height: 1.6;
+    /* max-width: 400px; Removed fixed width */
     margin-left: auto;
     margin-right: auto;
 }
+.empty-state .btn-add-wish { /* Style button within empty state */
+     /* Use btn-primary styles */
+}
+
 
 /* Pagination */
 .wishlist-pagination {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 10px; /* Reduced gap */
     margin-top: 30px;
     padding-top: 30px;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
 .page-nav {
@@ -643,6 +758,7 @@
     border-radius: 8px;
     color: #aaa;
     transition: all var(--transition-speed);
+    cursor: pointer;
 }
 
 .page-nav:not([disabled]):hover {
@@ -661,9 +777,10 @@
     gap: 8px;
 }
 
-.page-num {
-    width: 40px;
+.page-number, .page-ellipsis { /* Combine styles */
+    min-width: 40px; /* Use min-width */
     height: 40px;
+    padding: 0 10px; /* Add padding for wider numbers */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -672,23 +789,39 @@
     border-radius: 8px;
     color: #aaa;
     transition: all var(--transition-speed);
+    cursor: pointer;
+}
+.page-ellipsis {
+    cursor: default;
+    background: transparent;
+    border: none;
 }
 
-.page-num:hover:not(.active):not([disabled]) {
+
+.page-number:hover:not(.active):not([disabled]) {
     background: rgba(255, 255, 255, 0.05);
     color: var(--light-color);
 }
 
-.page-num.active {
+.page-number.active {
     background: var(--primary-color);
     color: #000;
     font-weight: 600;
+    border-color: var(--primary-color);
+}
+
+.results-summary { /* Style for the summary text */
+    color: #aaa;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 20px; /* Space below summary */
 }
 
 .page-size-select {
     display: flex;
     align-items: center;
     gap: 8px;
+    margin-left: 20px; /* Space from page numbers */
 }
 
 .page-size-select label {
@@ -707,64 +840,220 @@
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 16px;
+    cursor: pointer;
+}
+
+/* Modal Basic Styles (Ensure these are sufficient or add more) */
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7); animation: fadeIn 0.3s ease; }
+.modal-content { background-color: #1e1e1e; margin: 5% auto; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.1); width: 90%; max-width: 700px; position: relative; border-radius: var(--card-border-radius); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.close-modal { color: #aaa; position: absolute; top: 15px; right: 20px; font-size: 28px; font-weight: bold; line-height: 1; }
+.close-modal:hover, .close-modal:focus { color: var(--primary-color); text-decoration: none; cursor: pointer; }
+.modal-title { margin-top: 0; color: var(--primary-color); border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 15px; margin-bottom: 25px; }
+
+/* Form Styles within Modal */
+#add-wish-form .form-group { margin-bottom: 20px; }
+#add-wish-form label { display: block; margin-bottom: 8px; color: #aaa; font-size: 14px; }
+#add-wish-form input[type="text"],
+#add-wish-form input[type="number"],
+#add-wish-form select,
+#add-wish-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--light-color);
+    transition: border-color 0.2s;
+}
+#add-wish-form input:focus,
+#add-wish-form select:focus,
+#add-wish-form textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+#add-wish-form textarea { resize: vertical; min-height: 80px; }
+#add-wish-form select { appearance: none; /* Use same background image as other selects */ background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffcc00' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 15px center; background-size: 16px; padding-right: 40px; }
+
+#add-wish-form .form-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+#add-wish-form .btn-secondary { background: rgba(255, 255, 255, 0.1); color: #aaa; padding: 10px 20px; border-radius: 25px; transition: all var(--transition-speed); }
+#add-wish-form .btn-secondary:hover { background: rgba(255, 255, 255, 0.2); color: var(--light-color); }
+/* Loading/Submitting state for form */
+#add-wish-form.loading .form-fields,
+#add-wish-form.submitting .form-fields { opacity: 0.5; pointer-events: none; }
+#add-wish-form.submitting button[type="submit"] { cursor: wait; }
+
+
+/* Item Detail Modal Styles */
+#item-detail-modal .modal-content { max-width: 800px; }
+.item-detail-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+.item-detail-header h2 { margin: 0; color: var(--light-color); line-height: 1.2; flex-grow: 1; padding-right: 20px; }
+.item-detail-header .priority-badge { position: static; /* Remove absolute positioning */ }
+
+.item-detail-body { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px; }
+.item-detail-gallery .main-image { background: #111; border-radius: 8px; overflow: hidden; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1); }
+.item-detail-gallery .main-image img { display: block; width: 100%; height: auto; max-height: 400px; object-fit: contain; }
+.thumbnail-images { display: flex; gap: 10px; flex-wrap: wrap; }
+.thumbnail-images img { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: border-color 0.2s; }
+.thumbnail-images img:hover { border-color: var(--primary-color); }
+
+.item-detail-info h3 { color: var(--primary-color); font-size: 16px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.item-attributes { display: grid; grid-template-columns: auto 1fr; gap: 10px 15px; margin-bottom: 20px; font-size: 14px; }
+.item-attributes .label { color: #aaa; font-weight: 600; }
+.item-attributes .value { color: var(--light-color); }
+.item-attributes .value .fa-bell { margin-left: 5px; }
+.item-attributes .value .fa-bell-slash { margin-left: 5px; color: #777; }
+.item-attributes .value.available { color: #27ae60; font-weight: 600; }
+.item-attributes .value .fa-check-circle, .item-attributes .value .fa-clock { margin-right: 5px; }
+
+
+.item-description p, .item-notes p { color: #ccc; line-height: 1.6; font-size: 14px; margin-top: 0; }
+.item-notes { margin-top: 20px; }
+
+.item-detail-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+.item-detail-actions .btn { padding: 10px 20px; border-radius: 25px; font-weight: 600; }
+.item-detail-actions .btn-secondary { background: rgba(255, 255, 255, 0.1); color: #aaa; }
+.item-detail-actions .btn-secondary:hover { background: rgba(255, 255, 255, 0.2); color: var(--light-color); }
+.item-detail-actions .btn-success { background: rgba(39, 174, 96, 0.2); color: #27ae60; border: 1px solid rgba(39, 174, 96, 0.3); }
+.item-detail-actions .btn-success:hover { background: rgba(39, 174, 96, 0.3); }
+.item-detail-actions .btn-danger { background: rgba(231, 76, 60, 0.2); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.3); }
+.item-detail-actions .btn-danger:hover { background: rgba(231, 76, 60, 0.3); }
+
+
+/* Animations */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+    0% { opacity: 0; transform: translateY(-20px); max-height: 0; overflow: hidden; padding-top: 0; padding-bottom: 0; margin-bottom: 0;}
+    100% { opacity: 1; transform: translateY(0); max-height: 1000px; /* Adjust as needed */ overflow: visible; /* Restore original padding/margin */ padding: 20px; margin-bottom: 30px; }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+     .wishlist-grid.list-view .wishlist-item {
+         grid-template-columns: 100px 1fr auto; /* Image, Info, Combined Price/Actions */
+         grid-template-areas:
+             "img info actions"
+             "img price actions"; /* Example - adjust structure */
+         /* Simpler approach: stack price/actions */
+          grid-template-columns: 100px 1fr 100px; /* Image, Info, Actions */
+
+     }
+     .wishlist-grid.list-view .price-alert {
+         /* Move price alert into info or actions column */
+          display: none; /* Hide separate column */
+          /* Or integrate into .wishlist-info */
+     }
+     .wishlist-grid.list-view .wishlist-info {
+         border-right: none; /* Remove border if actions stack */
+     }
+
+     .item-detail-body { grid-template-columns: 1fr; } /* Stack image/details on smaller screens */
+}
+
+
+@media (max-width: 768px) {
+    .filter-sort-container {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch; /* Stretch items */
+    }
+    .filter-section {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .active-filters {
+        margin-top: 10px;
     }
 
-    /* Animations */
-    @keyframes fadeIn {
-        0% { opacity: 0; transform: translateY(10px); }
-        100% { opacity: 1; transform: translateY(0); }
+    .view-sort-section {
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+    }
+    .sort-dropdown label { display: none; } /* Hide label on small screens */
+
+    /* .wishlist-stats { flex-wrap: wrap; justify-content: center; } */
+
+    .btn-add-wish {
+        /* margin-left: 0; */ /* Handled by header-actions flex */
+        /* width: 100%; */ /* Don't make full width */
+        /* justify-content: center; */
+        /* margin-top: 15px; */
     }
 
-    @keyframes slideDown {
-        0% { opacity: 0; transform: translateY(-20px); }
-        100% { opacity: 1; transform: translateY(0); }
+    .filter-grid {
+        grid-template-columns: 1fr 1fr; /* Two columns on tablets */
     }
 
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-        .filter-sort-container {
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .view-sort-section {
-            width: 100%;
-            justify-content: space-between;
-        }
-        
-        .wishlist-stats {
-            flex-wrap: wrap;
-        }
-        
-        .btn-add-wish {
-            margin-left: 0;
-            width: 100%;
-            justify-content: center;
-            margin-top: 15px;
-        }
-        
-        .filter-grid {
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-        
-        .wishlist-grid.list-view .wishlist-item {
-            grid-template-columns: 1fr;
-        }
-        
-        .wishlist-grid.list-view .coin-images {
-            width: 100%;
-            height: 180px;
-        }
-        
-        .wishlist-grid.list-view .price-alert,
-        .wishlist-grid.list-view .wishlist-actions {
-            border-right: none;
-            width: 100%;
-            padding: 15px 20px;
-        }
-        
-        .wishlist-pagination {
-            flex-wrap: wrap;
-        }
+    .wishlist-grid {
+         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Slightly smaller cards */
+         gap: 20px;
     }
+
+    .wishlist-grid.list-view .wishlist-item {
+        grid-template-columns: 80px 1fr; /* Smaller image, rest is info/actions */
+        grid-template-rows: auto auto; /* Allow wrapping */
+        grid-template-areas:
+            "img info"
+            "img actions"; /* Stack actions below info */
+        align-items: center;
+    }
+
+    .wishlist-grid.list-view .coin-images {
+        width: 80px;
+        height: 100%; /* Fill row height */
+        grid-area: img;
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .wishlist-grid.list-view .wishlist-info {
+        grid-area: info;
+        padding: 10px 15px;
+    }
+    .wishlist-grid.list-view .price-alert {
+         display: none; /* Hide price alert column */
+    }
+
+
+    .wishlist-grid.list-view .wishlist-actions {
+        grid-area: actions;
+        width: 100%;
+        padding: 10px 15px;
+        justify-content: flex-start; /* Align buttons left */
+        gap: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+     .wishlist-grid.list-view .wishlist-actions button {
+         width: 32px; height: 32px; font-size: 12px;
+     }
+
+    .wishlist-pagination {
+        gap: 10px;
+        justify-content: center;
+    }
+    .page-numbers { display: none; } /* Hide number buttons on mobile */
+    .results-summary { order: -1; width: 100%; margin-bottom: 15px; } /* Move summary up */
+    .page-size-select { margin-left: 0; margin-top: 10px; width: 100%; justify-content: center; }
+
+
+    .modal-content { width: 95%; margin: 5% auto; padding: 20px; }
+    .item-detail-body { gap: 20px; }
+    .item-detail-actions { flex-wrap: wrap; justify-content: center; }
+}
+
+@media (max-width: 576px) {
+     .filter-grid {
+         grid-template-columns: 1fr; /* Single column */
+     }
+     .wishlist-grid {
+         grid-template-columns: 1fr; /* Single column */
+     }
+     .header-actions { flex-wrap: wrap; gap: 10px;}
+     .header-actions .search-box { width: 100%; order: 3; }
+     .header-actions .btn-primary { order: 1; flex-grow: 1;}
+     .header-actions .btn-notifications { order: 2;}
+
+}

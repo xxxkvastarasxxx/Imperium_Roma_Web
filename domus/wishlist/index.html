@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Domus: Manage your Roman coin wishlist in the Imperium Roma platform. Track desired coins, set acquisition priorities, and receive notifications for coin availability." />
+    <!-- Add CSRF token meta tag if your backend requires it -->
+    <meta name="csrf-token" content="YOUR_CSRF_TOKEN_HERE"> 
     <title>My Wishlist | Domus - Imperium Roma</title>
     
     <link rel="icon" type="image/x-icon" href="/assets/images/icons/favicon.ico">
@@ -26,13 +28,12 @@
             
             <div class="user-brief">
                 <div class="user-avatar">
-                    <!-- Dynamic user avatar path -->
-                    <img src="${user.avatarPath}" alt="${user.displayName}" id="user-avatar-small">
+                    <!-- Default avatar shown, JS will update if user.avatarUrl exists -->
+                    <img src="/assets/images/default-avatar.png" alt="User Avatar" id="user-avatar-small">
                 </div>
-                <div class="user-quick-info">T1a2r3a4s5
-                    T
-                    <h3 id="user-nickname">${user.nickname}</h3>
-                    <p id="user-rank">${user.rank}</p>
+                <div class="user-quick-info">
+                    <h3 id="user-nickname">User</h3>
+                    <p id="user-rank">Collector</p>
                 </div>
             </div>
             
@@ -60,7 +61,9 @@
                     <p>Keep track of coins you desire to acquire</p>
                 </div>
                 <div class="header-actions">
-                    <button class="btn-notifications"><i class="fas fa-bell"></i><span class="notification-badge">${notifications.unreadCount}</span></button>
+                     <!-- Add Wish Button -->
+                    <button class="btn-primary" id="add-wish-button"><i class="fas fa-plus"></i> Add Wish</button>
+                    <button class="btn-notifications"><i class="fas fa-bell"></i><span class="notification-badge">0</span></button>
                     <div class="search-box">
                         <input type="text" id="wishlist-search" placeholder="Search your wishlist...">
                         <button id="search-button"><i class="fas fa-search"></i></button>
@@ -95,69 +98,37 @@
                         </div>
                     </div>
                 </div>
+            </section> <!-- End Wishlist Controls -->
 
             <!-- Filter Panel (hidden by default) -->
-            <section class="filter-panel" id="filter-panel">
+            <section class="filter-panel" id="filter-panel" style="display: none;">
                 <h3>Filter Wishlist</h3>
                 <div class="filter-grid">
-                    <!-- Era filter options -->
+                    <!-- Filter options will be populated by server-side data injection -->
                     <div class="filter-column">
                         <h4>Era</h4>
                         <div class="filter-options" id="era-filters">
-                            ${filters.eras.map(era => `
-                            <label>
-                                <input type="checkbox" name="era" value="${era.value}" 
-                                    data-filter-id="${era.id}" ${era.selected ? 'checked' : ''}> 
-                                ${era.label}
-                            </label>
-                            `).join('')}
+                            <!-- Example: <label><input type="checkbox" name="era" value="republican"> Republican</label> -->
                         </div>
                     </div>
-                    
-                    <!-- Material filter options -->
                     <div class="filter-column">
                         <h4>Material</h4>
                         <div class="filter-options" id="material-filters">
-                            ${filters.materials.map(material => `
-                            <label>
-                                <input type="checkbox" name="material" value="${material.value}" 
-                                    data-filter-id="${material.id}" ${material.selected ? 'checked' : ''}> 
-                                ${material.label}
-                            </label>
-                            `).join('')}
+                             <!-- Example: <label><input type="checkbox" name="material" value="au"> Gold (AU)</label> -->
                         </div>
                     </div>
-                    
-                    <!-- Denomination filter options -->
                     <div class="filter-column">
                         <h4>Denomination</h4>
                         <div class="filter-options" id="denomination-filters">
-                            ${filters.denominations.map(denom => `
-                            <label>
-                                <input type="checkbox" name="denomination" value="${denom.value}" 
-                                    data-filter-id="${denom.id}" ${denom.selected ? 'checked' : ''}> 
-                                ${denom.label}
-                            </label>
-                            `).join('')}
+                             <!-- Example: <label><input type="checkbox" name="denomination" value="denarius"> Denarius</label> -->
                         </div>
                     </div>
-                    
-                    <!-- Priority filter options -->
                     <div class="filter-column">
                         <h4>Priority Level</h4>
                         <div class="filter-options" id="priority-filters">
-                            <label>
-                                <input type="checkbox" name="priority" value="high" data-filter-id="priority-high"> 
-                                High Priority
-                            </label>
-                            <label>
-                                <input type="checkbox" name="priority" value="medium" data-filter-id="priority-medium"> 
-                                Medium Priority
-                            </label>
-                            <label>
-                                <input type="checkbox" name="priority" value="low" data-filter-id="priority-low"> 
-                                Low Priority
-                            </label>
+                            <label><input type="checkbox" name="priority" value="high"> High Priority</label>
+                            <label><input type="checkbox" name="priority" value="medium"> Medium Priority</label>
+                            <label><input type="checkbox" name="priority" value="low"> Low Priority</label>
                         </div>
                     </div>
                 </div>
@@ -165,98 +136,56 @@
                     <button class="btn-clear-filters" id="clear-filters">Clear All</button>
                     <button class="btn-apply-filters" id="apply-filters">Apply Filters</button>
                 </div>
-            </section>
+            </section> <!-- End Filter Panel -->
 
-            <!-- Wishlist Grid -->
+            <!-- Results Summary (Optional) -->
+             <div id="results-summary" class="results-summary" style="margin: 10px 0;">
+                <!-- Populated by JS: e.g., Showing 1-20 of 55 items -->
+            </div>
+
+            <!-- Wishlist Container -->
             <section class="wishlist-grid" id="wishlist-container">
-                <!-- Wishlist Items will be populated dynamically -->
-                ${wishlistItems.map(item => `
-                <div class="wishlist-item" 
-                    data-wishlist-id="${item.id}"
-                    data-era="${item.era}" 
-                    data-material="${item.material}" 
-                    data-denomination="${item.denomination}" 
-                    data-priority="${item.priority}"
-                    data-date-added="${item.dateAdded}">
-                    <div class="priority-badge priority-${item.priority}">
-                        ${item.priority === 'high' ? '<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>' : 
-                          item.priority === 'medium' ? '<i class="fas fa-star"></i><i class="fas fa-star"></i>' : 
-                          '<i class="fas fa-star"></i>'}
-                    </div>
-                    <div class="coin-images">
-                        <img src="${item.imageUrl || '/assets/images/coin-placeholder.jpg'}" alt="${item.title}" class="coin-image">
-                    </div>
-                    <div class="wishlist-info">
-                        <h3>${item.title}</h3>
-                        <div class="coin-meta">
-                            <span class="denomination">${item.materialDisplay} ${item.denominationDisplay}</span>
-                            <span class="year">${item.yearDisplay}</span>
-                        </div>
-                        <div class="coin-quick-data">
-                            <span class="coin-value">Est. ${item.estimatedValueDisplay}</span>
-                            <div class="availability-status ${item.isAvailable ? 'available' : ''}">
-                                ${item.isAvailable ? '<i class="fas fa-check-circle"></i> Available' : '<i class="far fa-clock"></i> Watching'}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="price-alert">
-                        <span class="max-price">Max: ${item.maxPriceDisplay}</span>
-                        <span class="alert-status">
-                            ${item.alertsEnabled ? '<i class="fas fa-bell"></i>' : '<i class="fas fa-bell-slash"></i>'}
-                        </span>
-                    </div>
-                    <div class="wishlist-actions">
-                        <button class="btn-view-wish" data-wishlist-id="${item.id}"><i class="fas fa-search-plus"></i></button>
-                        <button class="btn-edit-wish" data-wishlist-id="${item.id}"><i class="fas fa-edit"></i></button>
-                        <button class="btn-mark-acquired" data-wishlist-id="${item.id}" title="Mark as Acquired"><i class="fas fa-check"></i></button>
-                        <button class="btn-remove-wish" data-wishlist-id="${item.id}" title="Remove from Wishlist"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div>
-                `).join('')}
+                <!-- Wishlist Items will be populated dynamically by JS -->
+                <!-- Example Structure (repeated for each item):
+                <div class="wishlist-item" data-wishlist-id="..."> ... </div> 
+                -->
                 
-                <!-- Loading placeholder that appears during async operations -->
+                <!-- Loading placeholder -->
                 <div class="wishlist-item loading-placeholder" id="loading-placeholder" style="display: none;">
                     <div class="coin-images placeholder"></div>
                     <div class="wishlist-info">
-                        <div class="placeholder-line"></div>
-                        <div class="placeholder-line"></div>
-                        <div class="placeholder-line"></div>
+                        <div class="placeholder-line" style="width: 80%; height: 20px; background-color: #eee; margin-bottom: 10px;"></div>
+                        <div class="placeholder-line" style="width: 60%; height: 16px; background-color: #eee; margin-bottom: 10px;"></div>
+                        <div class="placeholder-line" style="width: 70%; height: 16px; background-color: #eee;"></div>
                     </div>
                 </div>
-            </section>
+            </section> <!-- End Wishlist Container -->
 
             <!-- Empty State (shown when wishlist is empty) -->
-            <section class="empty-state" id="empty-state" style="${wishlistItems.length === 0 ? 'display: block;' : 'display: none;'}">
-                <div class="empty-state-content">
-                    <i class="fas fa-star empty-icon"></i>
+            <section class="empty-state" id="empty-state" style="display: none;">
+                 <div class="empty-state-content">
+                    <i class="fas fa-star empty-icon" style="font-size: 4em; color: #ccc; margin-bottom: 20px;"></i>
                     <h3>Your Wishlist is Empty</h3>
                     <p>Start adding coins to your wishlist to track what you'd like to acquire next.</p>
-                    <button class="btn-add-wish" id="empty-add-wish-btn" data-modal-target="add-wish-modal">
+                    <button class="btn-add-wish btn-primary" id="empty-add-wish-btn">
                         <i class="fas fa-plus"></i> Add Your First Wish
                     </button>
                 </div>
-            </section>
+            </section> <!-- End Empty State -->
 
             <!-- Pagination -->
-            <section class="wishlist-pagination" id="pagination-container">
-                <button class="page-nav prev" id="prev-page" ${pagination.currentPage <= 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i></button>
+            <section class="wishlist-pagination" id="pagination-container" style="display: none;"> <!-- Initially hidden, shown by JS if needed -->
+                <button class="page-nav prev" id="prev-page" disabled><i class="fas fa-chevron-left"></i></button>
                 <div class="page-numbers" id="page-numbers">
                     <!-- Pagination will be populated dynamically -->
-                    ${pagination.pages.map(page => `
-                    <button class="page-num ${page.isCurrent ? 'active' : ''}" 
-                            data-page="${page.number}" 
-                            ${page.isEllipsis ? 'disabled' : ''}>
-                        ${page.isEllipsis ? '...' : page.number}
-                    </button>
-                    `).join('')}
                 </div>
-                <button class="page-nav next" id="next-page" ${pagination.currentPage >= pagination.totalPages ? 'disabled' : ''}><i class="fas fa-chevron-right"></i></button>
+                <button class="page-nav next" id="next-page" disabled><i class="fas fa-chevron-right"></i></button>
                 <div class="page-size-select">
                     <label for="items-per-page">Show:</label>
                     <select id="items-per-page" name="pageSize">
-                        <option value="20" ${pagination.pageSize == 20 ? 'selected' : ''}>20</option>
-                        <option value="50" ${pagination.pageSize == 50 ? 'selected' : ''}>50</option>
-                        <option value="100" ${pagination.pageSize == 100 ? 'selected' : ''}>100</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
                     </select>
                 </div>
             </section>
@@ -280,26 +209,153 @@
         </div>
     </footer>
 
+    <!-- Add/Edit Wishlist Item Modal -->
+    <div id="add-wish-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">Add to Wishlist</h2>
+            <form id="add-wish-form">
+                <input type="hidden" name="item-id" value=""> <!-- Populated when editing -->
+                <div class="form-fields">
+                    <!-- Add form fields for title, era, material, denomination, year, value, price, priority, description, notes etc. -->
+                    <div class="form-group">
+                        <label for="wish-title">Coin Title/Description:</label>
+                        <input type="text" id="wish-title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="wish-era">Period:</label>
+                        <select id="wish-era" name="era">
+                            <!-- Options populated dynamically or hardcoded -->
+                            <option value="">Select Period</option>
+                            <option value="republican">Republican</option>
+                            <option value="imperial">Early Empire</option>
+                            <option value="imperial">High Empire</option>
+                            <option value="imperial">Late Empire</option>
+                            <option value="imperial">Byzantine</option>
+                        </select>
+                    </div>
+                     <div class="form-group">
+                        <label for="wish-material">Material:</label>
+                        <select id="wish-material" name="material">
+                            <option value="">Select Material</option>
+                            <option value="au">Gold</option>
+                            <option value="ar">Silver</option>
+                            <option value="ae">Bronze</option>
+                            <option value="ae">Copper</option>
+                            <option value="ae">Billon</option>
+                        </select>
+                    </div>
+                     <div class="form-group">
+                        <label for="wish-denomination">Denomination:</label>
+                        <select id="wish-denomination" name="denomination">
+                           <option value="">Select Denomination</option>
+                           <option value="aureus">Aureus</option>
+                           <option value="denarius">Denarius</option>
+                           <option value="sestertius">Sestertius</option>
+                           <option value="sestertius">As</option>
+                           <option value="sestertius">Follis</option>
+                        </select>
+                    </div>
+                     <div class="form-group">
+                        <label for="wish-year">Year/Range:</label>
+                        <input type="text" id="wish-year" name="year">
+                    </div>
+                     <div class="form-group">
+                        <label for="wish-estimated-value">Estimated Value ($):</label>
+                        <input type="number" id="wish-estimated-value" name="estimated-value" step="0.01">
+                    </div>
+                     <div class="form-group">
+                        <label for="wish-description">Description:</label>
+                        <textarea id="wish-description" name="description" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Add Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Item Detail Modal -->
+    <div id="item-detail-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="item-detail-content">
+                <!-- Content populated by JS -->
+                <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- JavaScript -->
     <script>
         // Inject backend data as a global object for JavaScript to use
+        // --- PLACEHOLDER DATA --- Replace with actual server-side injection
         window.domusData = {
-            user: ${JSON.stringify(user)},
-            currentFilters: ${JSON.stringify(currentFilters)},
-            pagination: ${JSON.stringify(pagination)},
+            user: {
+                nickname: "Taras",
+                rank: "Numismatist",
+                avatarUrl: "/assets/images/user-avatar-placeholder.png" 
+            },
+            // Example filter structure - adjust based on your actual data model
+            filters: {
+                eras: [
+                    { id: 'era-rep', value: 'republican', label: 'Republican', selected: false },
+                    { id: 'era-imp', value: 'imperial', label: 'Imperial', selected: false },
+                    { id: 'era-pro', value: 'provincial', label: 'Provincial', selected: false }
+                ],
+                materials: [
+                    { id: 'mat-au', value: 'au', label: 'Gold (AU)', selected: false },
+                    { id: 'mat-ar', value: 'ar', label: 'Silver (AR)', selected: false },
+                    { id: 'mat-ae', value: 'ae', label: 'Bronze (AE)', selected: false }
+                ],
+                denominations: [
+                     { id: 'den-aur', value: 'aureus', label: 'Aureus', selected: false },
+                     { id: 'den-den', value: 'denarius', label: 'Denarius', selected: false },
+                     { id: 'den-ses', value: 'sestertius', label: 'Sestertius', selected: false }
+                ]
+                // Priority is handled directly via checkboxes in the HTML
+            },
+            // Initial state - these would be dynamically set by the server
+            wishlistItems: [ 
+                // Server should populate this array initially, or leave empty if none
+                // Example item:
+                /* {
+                    id: "wish123",
+                    title: "Denarius of Augustus",
+                    era: "imperial", material: "ar", denomination: "denarius", priority: "medium", dateAdded: "2025-04-15T10:00:00Z",
+                    imageUrl: "/assets/images/coin-placeholder.jpg",
+                    materialDisplay: "Silver", denominationDisplay: "Denarius", yearDisplay: "27 BC - 14 AD",
+                    estimatedValue: 150, estimatedValueDisplay: "$150.00",
+                    isAvailable: false, alertsEnabled: true, maxPrice: 200, maxPriceDisplay: "$200.00"
+                 } */
+            ],
+            pagination: {
+                currentPage: 1,
+                totalPages: 1, // Server calculates this
+                pageSize: 20,
+                totalItems: 0 // Server calculates this
+                // pages array is generated client-side in updatePagination
+            },
+             currentFilters: { 
+                 // Example: { era: ['imperial'], priority: ['high'] }
+                 // Server populates this based on current URL params or session
+             },
             apiEndpoints: {
+                // Use :id notation for placeholders that JS will replace
                 getWishlist: '/api/wishlist',
-                getWishlistItem: '/api/wishlist/:id',
-                addWishlistItem: '/api/wishlist',
-                updateWishlistItem: '/api/wishlist/:id',
-                deleteWishlistItem: '/api/wishlist/:id',
-                markAsAcquired: '/api/wishlist/:id/acquire',
-                searchCatalog: '/api/catalog/search',
-                getFilters: '/api/filters'
+                getWishlistItem: '/api/wishlist/:id', // JS replaces :id
+                addWishlistItem: '/api/wishlist',      // POST
+                updateWishlistItem: '/api/wishlist/:id', // PUT, JS replaces :id
+                deleteWishlistItem: '/api/wishlist/:id', // DELETE, JS replaces :id
+                markAsAcquired: '/api/wishlist/:id/acquire', // POST, JS replaces :id
+                searchCatalog: '/api/catalog/search', // Example, if needed elsewhere
+                getFilters: '/api/filters' // Example, if filters are dynamic
             }
         };
     </script>
     <script src="/domus/assets/js/domus.js"></script>
-    <script src="/domus/assets/js/wishlist.js"></script>
+    <script src="/domus/assets/js/wishlist.js"></script> 
 </body>
 </html>
