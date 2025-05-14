@@ -258,7 +258,24 @@
                     </div>
                      <div class="form-group">
                         <label for="wish-year">Year/Range:</label>
-                        <input type="text" id="wish-year" name="year">
+                        <div class="year-range-inputs">
+                            <div class="year-input">
+                                <input type="number" id="wish-year-from" name="year-from" placeholder="Year">
+                                <select id="wish-year-from-era" name="year-from-era">
+                                    <option value="BC">BC</option>
+                                    <option value="AD">AD</option>
+                                </select>
+                            </div>
+                            <span class="year-range-separator">to</span>
+                            <div class="year-input">
+                                <input type="number" id="wish-year-to" name="year-to" placeholder="Year">
+                                <select id="wish-year-to-era" name="year-to-era">
+                                    <option value="BC">BC</option>
+                                    <option value="AD">AD</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div></div>
                     </div>
                      <div class="form-group">
                         <label for="wish-estimated-value">Estimated Value ($):</label>
