@@ -1,8 +1,5 @@
-// Supabase via CDN
-const supabase = window.supabase.createClient(
-    'https://nodxtpjwgyjbghpaiajo.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vZHh0cGp3Z3lqYmdocGFpYWpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMxODg3MjEsImV4cCI6MjA1ODc2NDcyMX0.GX3liK9iN_kcug7OFh2EZUilNzVq2GxEblhidkUBOY0'
-  )
+import { supabase } from '/assets/js/supabaseClient.js';
+import { API_BASE_URL, REDIRECT_AFTER_LOGIN } from '/assets/js/config.js';
   
 document.addEventListener('DOMContentLoaded', function() {
     // Tab switching functionality
@@ -158,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
             await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: 'http://localhost:5500/domus/check-profile'
+                    redirectTo: REDIRECT_AFTER_LOGIN
                 }
             });
         });
