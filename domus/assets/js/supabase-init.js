@@ -1,9 +1,4 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-
-const supabaseUrl = 'https://nodxtpjwgyjbghpaiajo.supabase.co'
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5vZHh0cGp3Z3lqYmdocGFpYWpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMxODg3MjEsImV4cCI6MjA1ODc2NDcyMX0.GX3liK9iN_kcug7OFh2EZUilNzVq2GxEblhidkUBOY0'
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+import { supabase } from "/assets/js/supabaseClient.js"
 
 // Initialize auth state change listener
 supabase.auth.onAuthStateChange((event, session) => {

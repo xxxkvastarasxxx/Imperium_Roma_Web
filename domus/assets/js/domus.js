@@ -1,4 +1,8 @@
-import { supabase, getAuthToken } from '/domus/assets/js/supabase-init.js';
+import { supabase } from '/assets/js/supabaseClient.js';
+import { getAuthToken } from '/domus//assets/js/supabase-init.js';
+import { API_BASE_URL } from '/assets/js/config.js';
+
+console.log('getAuthToken:', getAuthToken());
 
 /**
  * Domus Dashboard Application
@@ -10,7 +14,7 @@ const DomusApp = (function() {
     
     // App configuration
     const CONFIG = {
-        apiEndpoint: 'http://localhost:8080/api',
+        apiEndpoint: API_BASE_URL,
         animationDuration: 300,
         chartColors: {
             eras: ['#ffcc00', '#e6b800', '#ccaa00', '#b39500', '#997f00'],
@@ -383,13 +387,14 @@ const DomusApp = (function() {
                 location: profileData.location || 'Not specified',
                 joinDate: new Date(profileData.join_date).toLocaleDateString('en', { year: 'numeric', month: 'long' }) || 'Recently joined',
                 specialization: profileData.specialization || 'General Collection',
-                avatar: profileData.avatar || '/assets/images/default-avatar.png',
+                avatar_url: profileData.avatar_url || '/assets/images/default-avatar.png',
                 preferences: {
                     language: profileData.language || 'English',
                     currency: profileData.currency || 'EUR (€)',
                     theme: profileData.theme || 'Dark Mode'
                 }
             };
+            console.log('Processed user data:', userData);
             
             appData.user = userData;
             updateUIWithUserData(userData);
@@ -435,7 +440,7 @@ const DomusApp = (function() {
         
         // Update avatars
         DOM.avatars.forEach(el => {
-            el.src = userData.avatar;
+            el.src = userData.avatar_url;  // Changed from userData.avatar to userData.avatar_url
             el.alt = `${userData.nickname}'s Avatar`;
             
             // Add fade-in effect for avatar
@@ -1650,7 +1655,7 @@ const DomusApp = (function() {
             location: "London, England",
             joinDate: "January 2024",
             specialization: "Republican Era", 
-            avatar: "/assets/images/team/Taras-Tymoshenko.jpg",
+            avatar_url: "/assets/images/team/Taras-Tymoshenko.jpg", // Changed from avatar to avatar_url
             preferences: {
                 language: "English",
                 currency: "GBP (£)",
