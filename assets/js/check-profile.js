@@ -1,5 +1,5 @@
 import { supabase } from '/assets/js/supabaseClient.js';
-import { API_BASE_URL, REDIRECT_AFTER_LOGIN } from '/assets/js/config.js';
+import { API_BASE_URL, REDIRECT_AFTER_PROFILE_CHECK } from '/assets/js/config.js';
 
 async function checkUserProfile() {
   try {
@@ -48,7 +48,7 @@ async function checkUserProfile() {
       setTimeout(() => window.location.href = '/domus/create-profile', 1000);
     } else if (res.ok) {
       document.getElementById('status').textContent = 'Profile found. Redirecting to your Domus...';
-      setTimeout(() => window.location.href = REDIRECT_AFTER_LOGIN, 1000);
+      setTimeout(() => window.location.href = REDIRECT_AFTER_PROFILE_CHECK, 1000);
     } else {
       document.getElementById('status').textContent = 'Unexpected error. Please try again later.';
     }
