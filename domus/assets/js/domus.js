@@ -452,39 +452,6 @@ const DomusApp = (function() {
     }
     
     /**
-     * Load dashboard statistics
-     * @returns {Promise} Promise that resolves with dashboard stats
-     */
-    async function loadDashboardStats() {
-        try {
-            const response = await fetch(`${CONFIG.apiEndpoint}/dashboard/stats`);
-            if (!response.ok) {
-                throw new Error(`HTTP error: ${response.status}`);
-            }
-            
-            const stats = await response.json();
-            appData.stats = stats;
-            
-            updateUIWithStats(stats);
-            return stats;
-            
-        } catch (error) {
-            console.error('Failed to load dashboard stats:', error);
-            
-            // Fallback to mock data in development
-            if (isDevelopment()) {
-                console.warn('Using mock stats data');
-                const mockStats = getMockStatsData();
-                appData.stats = mockStats;
-                updateUIWithStats(mockStats);
-                return mockStats;
-            } else {
-                throw error;
-            }
-        }
-    }
-    
-    /**
      * Update UI with stats data
      * @param {Object} stats - Stats data object
      */
@@ -503,6 +470,106 @@ const DomusApp = (function() {
         // Save chart data for later
         appData.eraDistribution = stats.eraDistribution;
         appData.materialDistribution = stats.materialDistribution;
+    }
+    
+    /**
+     * Load dashboard statistics
+     * @returns {Promise} Promise that resolves with dashboard stats
+     */
+    async function loadDashboardStats() {
+        try {
+            // Get the current user
+            const { data: { user } } = await supabase.auth.getUser();
+            
+            if (!user) {
+                throw new Error('No authenticated user found');
+            }
+            
+            // Make parallel requests for all stats data
+            const [
+                { data: coinCount, error: coinCountError }, 
+                { data: collectionValue, error: collectionValueError }, 
+                { data: oldestCoin, error: oldestCoinError },
+                { data: periodDistribution, error: periodError },
+                { data: materialDistribution, error: materialError }
+            ] = await Promise.all([
+                supabase.rpc('user_coin_count', { uid: user.id }),
+                supabase.rpc('user_collection_value', { uid: user.id }),
+                supabase.rpc('user_oldest_coin', { uid: user.id }),
+                supabase.rpc('user_distribution_by_period', { uid: user.id }),
+                supabase.rpc('user_distribution_by_material', { uid: user.id })
+            ]);
+            
+            // Check for errors
+            if (coinCountError) throw new Error(`Error fetching coin count: ${coinCountError.message}`);
+            if (collectionValueError) throw new Error(`Error fetching collection value: ${collectionValueError.message}`);
+            if (oldestCoinError) throw new Error(`Error fetching oldest coin: ${oldestCoinError.message}`);
+            if (periodError) throw new Error(`Error fetching period distribution: ${periodError.message}`);
+            if (materialError) throw new Error(`Error fetching material distribution: ${materialError.message}`);
+            
+            console.log('Total coins:', coinCount);
+            console.log('Collection value:', collectionValue);
+            console.log('Oldest coin data:', oldestCoin);
+            console.log('Distribution by period:', periodDistribution);
+            console.log('Distribution by material:', materialDistribution);
+            
+            // Format the oldest coin string
+            const oldestCoinDisplay = oldestCoin?.length ? 
+                `${oldestCoin[0].title} (${oldestCoin[0].year})` : 
+                'No coins in collection';
+            
+            // Format collection value with Euro symbol
+            const formattedValue = collectionValue ? 
+                new Intl.NumberFormat('en-US', { 
+                    style: 'currency', 
+                    currency: 'EUR',
+                    maximumFractionDigits: 0
+                }).format(collectionValue) : 
+                '0 €';
+            
+            // Prepare era distribution data for charts
+            const eraDistributionData = periodDistribution?.map(item => ({
+                name: item.period_name || 'Unknown',
+                count: item.coin_count
+            })) || [];
+            
+            // Prepare material distribution data for charts
+            const materialDistributionData = materialDistribution?.map(item => ({
+                name: item.material_name || 'Unknown',
+                count: item.coin_count
+            })) || [];
+            
+            // Create stats object
+            const stats = {
+                totalCoins: coinCount || 0,
+                collectionValue: formattedValue,
+                rarestItem: "Brutus Aureus (42 BC)", // Placeholder - would need additional RPC function
+                oldestCoin: oldestCoinDisplay,
+                collectionSize: `${coinCount || 0} coins`,
+                specialization: appData.user?.specialization || 'General Collection',
+                completionRate: coinCount ? Math.min(Math.round((coinCount / 100) * 100), 100) : 0, // Placeholder calculation
+                eraDistribution: eraDistributionData,
+                materialDistribution: materialDistributionData
+            };
+            
+            appData.stats = stats;
+            updateUIWithStats(stats);
+            return stats;
+            
+        } catch (error) {
+            console.error('Failed to load dashboard stats:', error);
+            
+            // Fallback to mock data in development
+            if (isDevelopment()) {
+                console.warn('Using mock stats data');
+                const mockStats = getMockStatsData();
+                appData.stats = mockStats;
+                updateUIWithStats(mockStats);
+                return mockStats;
+            } else {
+                throw error;
+            }
+        }
     }
     
     /**
