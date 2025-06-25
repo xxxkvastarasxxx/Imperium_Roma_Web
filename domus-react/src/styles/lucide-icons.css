@@ -1,0 +1,54 @@
+/* Lucide Icon Styles */
+.animate-spin {
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Sidebar Icons */
+.domus-nav a svg {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  stroke: var(--light-color);
+}
+
+.domus-nav a.active svg {
+  stroke: var(--primary-color);
+}
+
+/* Header Icons */
+.search-button svg,
+.notification-bell svg,
+.user-dropdown svg {
+  stroke: var(--light-color);
+}
+
+.dropdown-menu a svg,
+.dropdown-menu button svg {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Loading Spinner */
+.loading-container svg {
+  color: var(--primary-color);
+  margin-bottom: 12px;
+}
+
+/* Button Icons */
+button svg {
+  vertical-align: middle;
+}
+
+/* Toggle Button */
+.sidebar-toggle svg {
+  stroke: var(--light-color);
+}
