@@ -1,0 +1,129 @@
+/* Table Styles */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  padding: 18px 25px;
+  background-color: var(--bg-secondary);
+  color: var(--primary-color);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table td {
+  padding: 18px 25px;
+  border-top: 1px solid var(--border-color);
+}
+
+.table-hover tr:hover td {
+  background-color: var(--primary-transparent-10);
+}
+
+.table-striped tr:nth-child(even) td {
+  background-color: var(--bg-secondary);
+}
+
+.table-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--tertiary-color);
+  background-color: var(--bg-element);
+  border-radius: 0;
+}
+
+/* Coin Preview Styles within Table */
+.coin-preview {
+  display: flex;
+  align-items: center;
+}
+
+.coin-preview img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+  border: 1px solid var(--primary-transparent-30);
+}
+
+.view-more {
+  margin-top: 0;
+  padding: 20px 25px;
+  text-align: right;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Standardized table styles for all cards */
+.card .table-container {
+  margin: 0;
+  width: 100%;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.card .table th {
+  padding: 18px 25px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.card .table td {
+  padding: 18px 25px;
+}
+
+/* Specific styles for Recent Acquisitions to match other cards exactly */
+.card.recent-acquisitions {
+  background-color: var(--overlay-dark);
+  border: 1px solid var(--border-color);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--card-shadow);
+  margin-bottom: 25px;
+}
+
+.card.recent-acquisitions .section-header {
+  padding: 20px 25px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: transparent;
+}
+
+.card.recent-acquisitions .section-title {
+  font-family: "Cinzel", serif;
+  color: var(--primary-color);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.card.recent-acquisitions .section-subtitle {
+  color: var(--accent-color);
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.card.recent-acquisitions .table th {
+  padding: 18px 25px;
+  background-color: var(--bg-secondary);
+  color: var(--primary-color);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.card.recent-acquisitions .table td {
+  padding: 18px 25px;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-light);
+}
+
+.card.recent-acquisitions .view-more {
+  padding: 20px 25px;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+}
+

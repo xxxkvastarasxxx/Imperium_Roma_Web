@@ -1,23 +1,28 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { UserProvider, useUser } from './contexts/UserContext';
-import { useEffect } from 'react';
-import { initAuthStateChangeListener } from './services/supabase';
-import { Loader } from 'lucide-react';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { UserProvider, useUser } from "./contexts/UserContext";
+import { useEffect } from "react";
+import { initAuthStateChangeListener } from "./services/supabase";
+import { Loader } from "lucide-react";
+import "./App.css";
 
 // Імпорт компонентів
-import Layout from './components/layout/Layout';
-import Dashboard from './pages/Dashboard';
-import Collection from './pages/Collection';
-import Wishlist from './pages/Wishlist';
-import Settings from './pages/Settings';
-import CreateProfile from './pages/CreateProfile';
-import CheckProfile from './pages/CheckProfile';
+import Layout from "./components/layout/Layout";
+import Dashboard from "./pages/Dashboard"; // Use the new fixed dashboard
+import Collection from "./pages/Collection";
+import Wishlist from "./pages/Wishlist";
+import Settings from "./pages/Settings";
+import CreateProfile from "./pages/CreateProfile";
+import CheckProfile from "./pages/CheckProfile";
 
 // Рендер захищених маршрутів, які потребують авторизації
 function PrivateRoute({ children }) {
   const { user, loading } = useUser();
-  
+
   // Поки завантажуються дані, показуємо завантаження
   if (loading) {
     return (
@@ -27,23 +32,23 @@ function PrivateRoute({ children }) {
       </div>
     );
   }
-  
+
   // Якщо користувач не авторизований, перенаправляємо на сторінку входу
   if (!user) {
     return <Navigate to="/login" replace />;
   }
-  
+
   return children;
 }
 
 function AppContent() {
   const { loading } = useUser();
-  
+
   useEffect(() => {
     // Ініціалізуємо прослуховувач зміни стану авторизації
     initAuthStateChangeListener();
   }, []);
-  
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -52,45 +57,54 @@ function AppContent() {
       </div>
     );
   }
-  
+
   return (
     <Layout>
       <Routes>
-        <Route 
-          path="/" 
+        <Route
+          path="/"
           element={
             <PrivateRoute>
               <Dashboard />
             </PrivateRoute>
-          } 
+          }
         />
-        <Route 
-          path="/collection" 
+        <Route
+          path="/collection"
           element={
             <PrivateRoute>
               <Collection />
             </PrivateRoute>
-          } 
+          }
         />
-        <Route 
-          path="/wishlist" 
+        <Route
+          path="/wishlist"
           element={
             <PrivateRoute>
               <Wishlist />
             </PrivateRoute>
-          } 
+          }
         />
-        <Route 
-          path="/settings" 
+        <Route
+          path="/settings"
           element={
             <PrivateRoute>
               <Settings />
             </PrivateRoute>
-          } 
+          }
         />
         <Route path="/check-profile" element={<CheckProfile />} />
         <Route path="/create-profile" element={<CreateProfile />} />
-        
+        <Route
+          path="/ui-example"
+          element={
+            <PrivateRoute>
+              {/* Using the same Dashboard component for UI example */}
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+
         {/* Маршрут за замовчуванням */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
@@ -108,4 +122,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

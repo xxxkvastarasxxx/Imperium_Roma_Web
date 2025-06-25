@@ -1,0 +1,13 @@
+/* ===== UI COMPONENTS STYLES ===== */
+@import "./variables.css";
+@import "./components/Button.css";
+@import "./components/Card.css";
+@import "./components/SectionTitle.css";
+@import "./components/Table.css";
+@import "./components/Badge.css";
+@import "./components/StatCard.css";
+@import "./components/Chart.css";
+@import "./components/ActivityItem.css";
+@import "./components/ProfileCard.css";
+
+/* Add imports for new component styles here */

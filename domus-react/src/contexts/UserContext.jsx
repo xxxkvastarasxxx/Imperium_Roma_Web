@@ -1,47 +1,79 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { supabase } from '../services/supabase';
+import { createContext, useContext, useState, useEffect } from "react";
+import { supabase } from "../services/supabase";
 
 // Створюємо контекст для користувача
 const UserContext = createContext();
 
 export function UserProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // Створюємо тестового користувача для розробки
+  const developerModeUser = {
+    id: "dev-user-id",
+    nickname: "Marcus Aurelius",
+    avatar: "/assets/images/general/Marcus.jpg",
+    rank: "Emperor",
+    title: "Imperial Collector",
+    joinDate: "2024-01-15",
+    level: "Advanced",
+    reputation: "Excellent",
+    badges: [
+      { icon: "🏅", text: "Premium Member", title: "Premium Member Badge" },
+      { icon: "⭐", text: "Top Collector", title: "Top Collector Badge" },
+      { icon: "🏛️", text: "History Buff", title: "History Expert Badge" },
+    ],
+  };
+
+  const [user, setUser] = useState(developerModeUser);
+  const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState(null);
   const [recentAcquisitions, setRecentAcquisitions] = useState([]);
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      text: "Your auction for Trajan Denarius ends in 2 hours",
+      read: false,
+    },
+    {
+      id: 2,
+      text: "New auction matching your watchlist: Constantine Follis",
+      read: false,
+    },
+    { id: 3, text: "Price update for item in your wishlist", read: true },
+  ]);
 
   // Завантаження даних користувача при ініціалізації
   useEffect(() => {
     async function loadUserData() {
       try {
         // Перевіряємо чи є активна сесія
-        const { data: { session }, error } = await supabase.auth.getSession();
-        
+        const {
+          data: { session },
+          error,
+        } = await supabase.auth.getSession();
+
         if (error) {
           console.error("Error getting session:", error);
           setLoading(false);
           return;
         }
-        
+
         if (!session) {
           console.log("No active session found");
           setLoading(false);
           return;
         }
-        
+
         // Отримуємо дані користувача
         const { data: userData, error: userError } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
+          .from("profiles")
+          .select("*")
+          .eq("id", session.user.id)
           .single();
-        
+
         if (userError) {
           console.error("Error fetching user data:", userError);
         } else if (userData) {
           setUser(userData);
-          
+
           // Тут можна додати завантаження статистики та інших даних
           // наприклад: loadUserStats(userData.id);
         }
@@ -51,7 +83,7 @@ export function UserProvider({ children }) {
         setLoading(false);
       }
     }
-    
+
     loadUserData();
   }, []);
 
@@ -59,18 +91,18 @@ export function UserProvider({ children }) {
   useEffect(() => {
     const { data: authSubscription } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        if (event === 'SIGNED_IN' && session) {
+        if (event === "SIGNED_IN" && session) {
           // Оновлюємо дані користувача при вході
           const { data, error } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', session.user.id)
+            .from("profiles")
+            .select("*")
+            .eq("id", session.user.id)
             .single();
-            
+
           if (!error && data) {
             setUser(data);
           }
-        } else if (event === 'SIGNED_OUT') {
+        } else if (event === "SIGNED_OUT") {
           setUser(null);
         }
       }
@@ -93,20 +125,39 @@ export function UserProvider({ children }) {
 
       // Update the profile in Supabase
       const { error } = await supabase
-        .from('profiles')
+        .from("profiles")
         .update(updatedData)
-        .eq('id', user.id);
+        .eq("id", user.id);
 
       if (error) {
-        console.error('Error updating user profile:', error);
+        console.error("Error updating user profile:", error);
         return false;
       }
 
       // Update local state
-      setUser(prev => ({ ...prev, ...updatedData }));
+      setUser((prev) => ({ ...prev, ...updatedData }));
       return true;
     } catch (err) {
-      console.error('Exception in updateUserProfile:', err);
+      console.error("Exception in updateUserProfile:", err);
+      return false;
+    }
+  };
+
+  // Функція для виходу з системи
+  const logout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+
+      if (error) {
+        console.error("Error signing out:", error);
+        return false;
+      }
+
+      // В режимі розробки повертаємо developerModeUser для тестування
+      setUser(developerModeUser);
+      return true;
+    } catch (err) {
+      console.error("Exception in logout:", err);
       return false;
     }
   };
@@ -123,6 +174,7 @@ export function UserProvider({ children }) {
     setRecentAcquisitions,
     setNotifications,
     updateUserProfile,
+    logout,
     // Додаткові функції можна додавати тут
   };
 

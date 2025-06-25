@@ -1,72 +1,118 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { useUser } from '../../contexts/UserContext';
-import { LayoutDashboard, Coins, Heart, Settings, UserCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useUser } from "../../contexts/UserContext";
+import {
+  LayoutDashboard,
+  Coins,
+  Heart,
+  Settings,
+  UserCircle,
+  ChevronLeft,
+  ChevronRight,
+  LogOut,
+  Trophy,
+  BookOpen,
+  Component,
+} from "lucide-react";
 
 export default function Sidebar() {
-  const { user } = useUser();
+  const { user, logout } = useUser();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const navigate = useNavigate();
 
-  if (!user) return null;
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    try {
+      await logout();
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   return (
-    <aside className={`domus-sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+    <aside className={`domus-sidebar ${isCollapsed ? "collapsed" : ""}`}>
       <div className="sidebar-header">
         <h2>DOMUS</h2>
         <p className="latin-subtitle">Aurum potestas est</p>
-        <button 
-          className="sidebar-toggle" 
+        <button
+          className="sidebar-toggle"
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
           {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
         </button>
       </div>
-      
+
       <div className="user-brief">
         <div className="user-avatar">
-          <img 
-            src={user.avatar || '/assets/images/default-avatar.png'} 
-            alt={user.nickname || 'User'} 
+          <img
+            src={user.avatar || "/assets/images/default-avatar.png"}
+            alt={user.nickname || "User"}
             id="user-avatar-small"
           />
         </div>
         <div className="user-quick-info">
-          <h3 id="user-nickname">{user.nickname || 'User'}</h3>
-          <p id="user-rank">{user.rank || 'Novice'}</p>
+          <h3 id="user-nickname">{user.nickname || "User"}</h3>
+          <p id="user-rank">{user.rank || "Novice"}</p>
         </div>
       </div>
-      
+
       <nav className="domus-nav">
         <ul>
           <li>
-            <NavLink to="/" end className={({ isActive }) => isActive ? 'active' : ''}>
+            <NavLink
+              to="/"
+              end
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
               <LayoutDashboard size={18} />
               <span>Dashboard</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to="/collection" className={({ isActive }) => isActive ? 'active' : ''}>
+            <NavLink
+              to="/collection"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
               <Coins size={18} />
               <span>Collection</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to="/wishlist" className={({ isActive }) => isActive ? 'active' : ''}>
+            <NavLink
+              to="/wishlist"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
               <Heart size={18} />
               <span>Wishlist</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to="/settings" className={({ isActive }) => isActive ? 'active' : ''}>
+            <NavLink
+              to="/profile"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              <UserCircle size={18} />
+              <span>Profile</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/settings"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
               <Settings size={18} />
               <span>Settings</span>
             </NavLink>
           </li>
         </ul>
       </nav>
-      
+
       <div className="sidebar-footer">
-        <p>Imperium Roma &copy; {new Date().getFullYear()}</p>
+        <button onClick={handleLogout} className="logout-link">
+          <LogOut size={18} />
+          <span>Logout</span>
+        </button>
       </div>
     </aside>
   );

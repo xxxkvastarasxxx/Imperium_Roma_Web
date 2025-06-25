@@ -1,0 +1,64 @@
+/* ActivityItem Styles */
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  background-color: var(--overlay-darker);
+  border-radius: var(--border-radius);
+  padding: 12px 15px;
+}
+
+.activity-icon {
+  width: 30px;
+  height: 30px;
+  background-color: var(--bg-input);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.activity-info {
+  flex: 1;
+}
+
+.activity-text {
+  margin-bottom: 5px;
+}
+
+.activity-time {
+  font-size: 12px;
+  color: var(--tertiary-color);
+}
+
+.activity-item.addition .activity-icon {
+  background-color: rgba(40, 167, 69, 0.2);
+  color: rgb(40, 167, 69);
+}
+
+.activity-item.purchase .activity-icon {
+  background-color: rgba(255, 204, 0, 0.2);
+  color: var(--primary-color);
+}
+
+.activity-item.update .activity-icon {
+  background-color: rgba(13, 110, 253, 0.2);
+  color: rgb(13, 110, 253);
+}
+
+.activity-item.verification .activity-icon {
+  background-color: rgba(23, 162, 184, 0.2);
+  color: rgb(23, 162, 184);
+}
+
+.view-more {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}

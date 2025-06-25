@@ -1,0 +1,57 @@
+/* Section Header Styles */
+.section-header {
+  display: flex;
+  align-items: flex-start; /* Align items to the top */
+  justify-content: space-between;
+  padding: 15px 20px;
+  border: none;
+  box-shadow: none;
+  margin: 0;
+}
+
+.section-title-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+.title-with-icon {
+  display: inline-flex;
+  align-items: flex-start; /* Align items to the top */
+  gap: 10px;
+  line-height: 1;
+}
+
+.section-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+  height: 20px; /* Match icon size */
+  width: 20px; /* Match icon size */
+  position: relative;
+  top: 2px; /* Adjust for top alignment */
+  margin-top: 0; /* Remove any top margin */
+}
+
+.section-title {
+  font-family: "Cinzel", serif;
+  color: var(--primary-color);
+  font-size: 18px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  line-height: 1;
+  display: inline-flex;
+  align-items: flex-start; /* Align text to top */
+  height: 20px; /* Consistent height with icon */
+  font-weight: 600;
+}
+
+.section-subtitle {
+  color: var(--accent-color);
+  font-size: 13px;
+  margin-top: 5px; /* Fix for section subtitle */
+  font-weight: normal;
+}

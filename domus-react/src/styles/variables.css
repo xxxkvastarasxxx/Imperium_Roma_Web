@@ -1,0 +1,75 @@
+/* ===== COLOR VARIABLES ===== */
+:root {
+  /* Primary Color Palette */
+  --primary-color: #ffcc00; /* Yellow - Main brand color */
+  --primary-dark: #e6b800; /* Darker yellow for hover states */
+  --primary-light: #ffd633; /* Lighter yellow for highlights */
+  --primary-transparent-10: rgba(
+    255,
+    204,
+    0,
+    0.1
+  ); /* 10% transparent primary */
+  --primary-transparent-15: rgba(
+    255,
+    204,
+    0,
+    0.15
+  ); /* 15% transparent primary */
+  --primary-transparent-30: rgba(
+    255,
+    204,
+    0,
+    0.3
+  ); /* 30% transparent primary */
+
+  /* Secondary Color Palette */
+  --secondary-color: #cc9900; /* Darker yellow for secondary elements */
+  --tertiary-color: #666666; /* Medium Grey for tertiary elements */
+  --accent-color: #ff9900; /* Orange accent for highlights */
+
+  /* Neutral Colors */
+  --dark-color: #222; /* Dark Grey */
+  --darker-color: #111; /* Darker Grey for backgrounds */
+  --darkest-color: #000000; /* Black for main background */
+  --light-color: white; /* White */
+  --border-dark: #1a1a1a; /* Dark border color */
+
+  /* Text Colors */
+  --text-dark: #333; /* Grey text */
+  --text-light: white; /* White text */
+  --text-muted: rgba(255, 255, 255, 0.5); /* Muted text */
+
+  /* Background and Border Colors */
+  --background-color: #000000; /* Main background color (alias for bg-color) */
+  --bg-color: #000000; /* Main background color */
+  --bg-secondary: #111; /* Secondary background */
+  --bg-element: #222; /* Element background */
+  --bg-input: rgba(255, 255, 255, 0.1); /* Input background */
+  --bg-hover: rgba(255, 255, 255, 0.05); /* Hover background */
+  --border-color: #1a1a1a; /* Border color */
+  --border-light: rgba(255, 255, 255, 0.1); /* Light border */
+
+  /* Overlay Colors */
+  --overlay-dark: rgba(0, 0, 0, 0.3); /* Dark overlay */
+  --overlay-darker: rgba(0, 0, 0, 0.2); /* Slightly darker overlay */
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #ffcc00, #e6b800);
+  --gradient-dark: linear-gradient(135deg, #333, #222);
+
+  /* Shadows */
+  --card-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  --elevated-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+  /* Layout variables */
+  --sidebar-width: 280px;
+  --header-height: 70px;
+  --transition-speed: 0.3s;
+
+  /* UI Elements */
+  --border-radius: 12px;
+  --card-border-radius: 16px;
+  --button-radius: 20px;
+  --hover-brightness: 1.05;
+}

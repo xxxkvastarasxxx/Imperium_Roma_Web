@@ -1,0 +1,46 @@
+/* Card Component Styles */
+.card {
+  background-color: var(--overlay-dark);
+  border-radius: var(--card-border-radius);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  margin-bottom: 25px;
+  border: 1px solid var(--border-color);
+}
+
+.card-content {
+  padding: 25px;
+}
+
+.card-content > .table-container {
+  margin: -25px;
+  width: calc(100% + 50px);
+}
+
+.card-no-padding .card-content {
+  padding: 0;
+}
+
+/* Standard section header for all cards */
+.card .section-header {
+  padding: 20px 25px;
+  border: none;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Chart card styles */
+.chart-card .chart-container {
+  padding: 20px;
+  height: 300px;
+  position: relative;
+}
+
+.card .chart-placeholder {
+  padding: 40px 25px;
+  text-align: center;
+  color: var(--tertiary-color);
+  background-color: var(--bg-secondary);
+}

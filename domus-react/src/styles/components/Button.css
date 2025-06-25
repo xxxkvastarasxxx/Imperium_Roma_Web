@@ -1,0 +1,101 @@
+/* Button Component Styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon-left {
+  margin-right: 8px;
+}
+
+.btn-icon-right {
+  margin-left: 8px;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--text-dark);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+}
+
+.btn-secondary {
+  background-color: var(--tertiary-color);
+  color: var(--text-light);
+}
+
+.btn-secondary:hover {
+  background-color: var(--accent-color);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary-transparent-10);
+}
+
+.btn-text {
+  background-color: transparent;
+  color: var(--primary-color);
+  padding: 8px;
+}
+
+.btn-text:hover {
+  background-color: var(--primary-transparent-10);
+}
+
+.btn-default {
+  background-color: var(--dark-color);
+  color: var(--text-light);
+}
+
+.btn-default:hover {
+  background-color: var(--tertiary-color);
+}
+
+.btn-small {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.btn-medium {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+.btn-large {
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.btn-full-width {
+  width: 100%;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
