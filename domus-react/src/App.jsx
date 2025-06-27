@@ -8,7 +8,7 @@ import { UserProvider, useUser } from "./contexts/UserContext";
 import { useEffect } from "react";
 import { initAuthStateChangeListener } from "./services/supabase";
 import { Loader } from "lucide-react";
-import "./App.css";
+import "./styles/App.css";
 
 // Імпорт компонентів
 import Layout from "./components/layout/Layout";
@@ -18,6 +18,7 @@ import Wishlist from "./pages/Wishlist";
 import Settings from "./pages/Settings";
 import CreateProfile from "./pages/CreateProfile";
 import CheckProfile from "./pages/CheckProfile";
+import Profile from "./pages/Profile";
 
 // Рендер захищених маршрутів, які потребують авторизації
 function PrivateRoute({ children }) {
@@ -90,6 +91,14 @@ function AppContent() {
           element={
             <PrivateRoute>
               <Settings />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <Profile />
             </PrivateRoute>
           }
         />

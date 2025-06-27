@@ -4,14 +4,8 @@ import {
   Loader,
   Coins,
   Award,
-  Heart,
   CalendarDays,
-  Scale,
-  History,
-  BarChart2,
   PieChart,
-  UserCircle,
-  Star,
   DollarSign,
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -22,7 +16,6 @@ import {
   Table,
   Button,
   ChartPlaceholder,
-  ProfileCard,
 } from "../components/ui";
 
 export default function Dashboard() {
@@ -328,9 +321,9 @@ export default function Dashboard() {
               <canvas ref={eraChartRef}></canvas>
             </div>
           ) : (
-            <ChartPlaceholder 
-              text="No data available for era distribution" 
-              icon={<PieChart size={32} />} 
+            <ChartPlaceholder
+              text="No data available for era distribution"
+              icon={<PieChart size={32} />}
             />
           )}
         </Card>
@@ -345,9 +338,9 @@ export default function Dashboard() {
               <canvas ref={materialChartRef}></canvas>
             </div>
           ) : (
-            <ChartPlaceholder 
-              text="No data available for material distribution" 
-              icon={<PieChart size={32} />} 
+            <ChartPlaceholder
+              text="No data available for material distribution"
+              icon={<PieChart size={32} />}
             />
           )}
         </Card>
@@ -395,46 +388,6 @@ export default function Dashboard() {
             View Full Collection
           </Button>
         </div>
-      </Card>
-
-      <Card
-        title="My Profile"
-        icon={<UserCircle size={18} />}
-        className="profile-card"
-      >
-        <ProfileCard
-          avatar={user.avatar || "/assets/images/general/marcus.png"}
-          name={user.nickname}
-          rank="Gold Collector"
-          badges={[
-            {
-              icon: <Award size={16} />,
-              text: "Expert",
-              title: "Expert Collector",
-            },
-            {
-              icon: <Star size={16} />,
-              text: "Verified",
-              title: "Verified Account",
-            },
-          ]}
-          stats={[
-            { label: "Collection Items", value: stats.totalCoins },
-            { label: "Wishlist", value: stats.wishlistCount },
-          ]}
-          actions={[
-            {
-              label: "Edit Profile",
-              onClick: () => console.log("Edit profile"),
-              variant: "primary",
-            },
-            {
-              label: "View Public Profile",
-              onClick: () => console.log("View public profile"),
-              variant: "outline",
-            },
-          ]}
-        />
       </Card>
     </div>
   );

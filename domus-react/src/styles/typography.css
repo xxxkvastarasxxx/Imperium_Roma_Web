@@ -1,0 +1,115 @@
+/* ===== TYPOGRAPHY STANDARDS ===== */
+@import "./variables.css";
+
+/* ===== UNIVERSAL TYPOGRAPHY RESET ===== */
+* {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-normal);
+}
+
+/* ===== HEADING STANDARDS ===== */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-family-heading);
+  color: var(--primary);
+  margin: 0;
+  padding: 0;
+  line-height: var(--line-height-tight);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* H1 - Page Titles */
+h1 {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: 8px;
+}
+
+/* H2 - Section Titles */
+h2 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: 6px;
+}
+
+/* H3 - Subsection Titles */
+h3 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: 5px;
+}
+
+/* H4 - Card Titles */
+h4 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: 4px;
+}
+
+/* H5 - Component Titles */
+h5 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: 3px;
+}
+
+/* H6 - Small Titles */
+h6 {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: 2px;
+}
+
+/* ===== PARAGRAPH AND TEXT STANDARDS ===== */
+p {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--text-light);
+}
+
+/* Small text */
+small {
+  font-size: var(--font-size-sm);
+  color: var(--tertiary);
+}
+
+/* ===== SPECIAL TYPOGRAPHY CLASSES ===== */
+.page-title {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--primary);
+  margin-bottom: 5px;
+}
+
+.section-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--tertiary);
+  margin-top: 5px;
+}
+
+.card-title {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--primary);
+}
+
+.date-text {
+  font-size: var(--font-size-sm);
+  color: var(--tertiary);
+  font-weight: var(--font-weight-normal);
+}

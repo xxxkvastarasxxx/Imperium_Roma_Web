@@ -1,4 +1,5 @@
-/* Table Styles */
+/* ===== TABLE COMPONENT STYLES ===== */
+
 .table-container {
   width: 100%;
   overflow-x: auto;
@@ -13,18 +14,20 @@
   text-align: left;
   padding: 18px 25px;
   background-color: var(--bg-secondary);
-  color: var(--primary-color);
-  font-weight: 600;
-  border-bottom: 1px solid var(--border-color);
+  color: var(--primary);
+  font-weight: var(--font-weight-semibold);
+  border-bottom: 1px solid var(--border-main);
+  font-size: var(--font-size-sm);
 }
 
 .table td {
   padding: 18px 25px;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-main);
+  font-size: var(--font-size-sm);
 }
 
 .table-hover tr:hover td {
-  background-color: var(--primary-transparent-10);
+  background-color: var(--primary-10);
 }
 
 .table-striped tr:nth-child(even) td {
@@ -34,12 +37,12 @@
 .table-empty {
   padding: 40px 20px;
   text-align: center;
-  color: var(--tertiary-color);
+  color: var(--tertiary);
   background-color: var(--bg-element);
   border-radius: 0;
 }
 
-/* Coin Preview Styles within Table */
+/* ===== COIN PREVIEW STYLES ===== */
 .coin-preview {
   display: flex;
   align-items: center;
@@ -51,17 +54,19 @@
   border-radius: 50%;
   object-fit: cover;
   margin-right: 10px;
-  border: 1px solid var(--primary-transparent-30);
+  border: 1px solid var(--primary-30);
 }
 
+/* ===== VIEW MORE SECTION ===== */
 .view-more {
   margin-top: 0;
   padding: 20px 25px;
   text-align: right;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-main);
+  background-color: var(--bg-secondary);
 }
 
-/* Standardized table styles for all cards */
+/* ===== CARD TABLE OVERRIDES ===== */
 .card .table-container {
   margin: 0;
   width: 100%;
@@ -72,58 +77,9 @@
 .card .table th {
   padding: 18px 25px;
   background-color: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-main);
 }
 
 .card .table td {
   padding: 18px 25px;
 }
-
-/* Specific styles for Recent Acquisitions to match other cards exactly */
-.card.recent-acquisitions {
-  background-color: var(--overlay-dark);
-  border: 1px solid var(--border-color);
-  border-radius: var(--card-border-radius);
-  box-shadow: var(--card-shadow);
-  margin-bottom: 25px;
-}
-
-.card.recent-acquisitions .section-header {
-  padding: 20px 25px;
-  border-bottom: 1px solid var(--border-color);
-  background-color: transparent;
-}
-
-.card.recent-acquisitions .section-title {
-  font-family: "Cinzel", serif;
-  color: var(--primary-color);
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.card.recent-acquisitions .section-subtitle {
-  color: var(--accent-color);
-  font-size: 13px;
-  margin-top: 5px;
-}
-
-.card.recent-acquisitions .table th {
-  padding: 18px 25px;
-  background-color: var(--bg-secondary);
-  color: var(--primary-color);
-  font-weight: 600;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.card.recent-acquisitions .table td {
-  padding: 18px 25px;
-  border-top: 1px solid var(--border-color);
-  color: var(--text-light);
-}
-
-.card.recent-acquisitions .view-more {
-  padding: 20px 25px;
-  border-top: 1px solid var(--border-color);
-  background-color: var(--bg-secondary);
-}
-

@@ -36,8 +36,6 @@
 }
 
 .section-title {
-  font-family: "Cinzel", serif;
-  color: var(--primary-color);
   font-size: 18px;
   margin: 0;
   padding: 0;
@@ -50,7 +48,6 @@
 }
 
 .section-subtitle {
-  color: var(--accent-color);
   font-size: 13px;
   margin-top: 5px; /* Fix for section subtitle */
   font-weight: normal;

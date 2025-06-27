@@ -1,0 +1,137 @@
+/* ===== RESPONSIVE DESIGN SYSTEM ===== */
+@import "./variables.css";
+
+/* Breakpoint Variables */
+:root {
+  --bp-xs: 576px;
+  --bp-sm: 768px;
+  --bp-md: 992px;
+  --bp-lg: 1200px;
+  --bp-xl: 1400px;
+}
+
+/* ===== MOBILE FIRST RESPONSIVE GRID ===== */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 25px;
+  width: 100%;
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
+/* Desktop */
+@media (min-width: 992px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+}
+
+/* Large Desktop */
+@media (min-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  }
+}
+
+/* ===== RESPONSIVE LAYOUT ADJUSTMENTS ===== */
+
+/* Medium screens and below */
+@media (max-width: 992px) {
+  .domus-content {
+    padding: 15px;
+    overflow-y: auto;
+  }
+
+  .domus-sidebar {
+    transform: translateX(-100%);
+    box-shadow: var(--elevated-shadow);
+    z-index: 100;
+  }
+
+  .domus-sidebar.show {
+    transform: translateX(0);
+  }
+
+  .domus-main {
+    margin-left: 0;
+    width: 100%;
+    overflow: auto;
+  }
+
+  .domus-header {
+    padding: 0 20px;
+  }
+
+  .search-container {
+    width: 250px;
+  }
+}
+
+/* Small screens */
+@media (max-width: 576px) {
+  .domus-header {
+    padding: 0 15px;
+  }
+
+  .search-container {
+    width: 180px;
+  }
+
+  .domus-content {
+    padding: 10px;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
+
+  .dashboard-container {
+    gap: 15px;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
+
+  .card-content {
+    padding: 20px;
+  }
+
+  .table th,
+  .table td {
+    padding: 12px 15px;
+  }
+
+  .section-header {
+    padding: 15px 20px;
+  }
+}
+
+/* ===== RESPONSIVE TYPOGRAPHY ===== */
+@media (max-width: 768px) {
+  h1 {
+    font-size: var(--font-size-3xl);
+  }
+
+  h2 {
+    font-size: var(--font-size-2xl);
+  }
+
+  h3 {
+    font-size: var(--font-size-xl);
+  }
+}
+
+@media (max-width: 576px) {
+  h1 {
+    font-size: var(--font-size-2xl);
+  }
+
+  h2 {
+    font-size: var(--font-size-xl);
+  }
+
+  h3 {
+    font-size: var(--font-size-lg);
+  }
+}
