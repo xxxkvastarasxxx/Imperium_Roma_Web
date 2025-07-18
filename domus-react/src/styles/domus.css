@@ -74,6 +74,11 @@ body {
   overflow: auto;
 }
 
+.domus-container.sidebar-collapsed .domus-main {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}
+
 /* ===== SIDEBAR STYLES ===== */
 .domus-sidebar {
   width: var(--sidebar-width);
@@ -93,6 +98,40 @@ body {
 
 .domus-sidebar.collapsed {
   width: 80px;
+}
+
+.domus-sidebar.collapsed .sidebar-header h2 {
+  font-size: 24px;
+  letter-spacing: 0;
+}
+
+.domus-sidebar.collapsed .sidebar-header h2::after {
+  content: "D";
+}
+
+.domus-sidebar.collapsed .sidebar-header h2 {
+  text-indent: -9999px;
+  position: relative;
+}
+
+.domus-sidebar.collapsed .sidebar-header h2::after {
+  text-indent: 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.domus-sidebar.collapsed .latin-subtitle {
+  display: none;
+}
+
+.domus-sidebar.collapsed .user-quick-info {
+  display: none;
+}
+
+.domus-sidebar.collapsed .sidebar-footer .logout-link span {
+  display: none;
 }
 
 .sidebar-header {
@@ -115,21 +154,7 @@ body {
   color: var(--tertiary);
 }
 
-.sidebar-toggle {
-  position: absolute;
-  top: 20px;
-  right: 15px;
-  background: none;
-  border: none;
-  color: var(--tertiary);
-  font-size: 16px;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.sidebar-toggle:hover {
-  color: var(--primary);
-}
+/* Removed old sidebar-toggle styles */
 
 .user-brief {
   display: flex;
@@ -145,12 +170,21 @@ body {
   border-radius: 50%;
   margin-right: 15px;
   border: 2px solid var(--primary);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-secondary);
+  background-image: url('/assets/emperor.svg'); /* Заглушка */
+  background-size: cover;
+  background-position: center;
 }
 
 .user-avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .user-info h4 {
@@ -331,7 +365,8 @@ body {
   font-size: var(--font-size-sm);
 }
 
-.header-right {
+.header-right,
+.header-controls {
   display: flex;
   align-items: center;
   gap: 20px;
@@ -341,13 +376,14 @@ body {
   display: flex;
   align-items: center;
   width: 300px;
+  position: relative;
 }
 
 .search-input {
   background-color: var(--bg-input);
   border: none;
   border-radius: 20px;
-  padding: 8px 15px;
+  padding: 8px 40px 8px 15px;
   color: var(--text-light);
   width: 100%;
   font-size: 14px;
@@ -357,17 +393,37 @@ body {
   color: var(--text-muted);
 }
 
+.search-button {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-button:hover {
+  color: var(--primary);
+}
+
 .search-icon {
   position: absolute;
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--tertiary);
+  color: var(--text-light);
   width: 16px;
   height: 16px;
 }
 
-.notification-btn {
+.notification-btn,
+.notification-bell {
   position: relative;
   background: none;
   border: none;
@@ -375,9 +431,18 @@ body {
   font-size: 18px;
   cursor: pointer;
   padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.notification-badge {
+.notification-btn:hover,
+.notification-bell:hover {
+  color: var(--primary);
+}
+
+.notification-badge,
+.notification-count {
   position: absolute;
   top: 4px;
   right: 4px;
@@ -386,6 +451,12 @@ body {
   font-size: 10px;
   padding: 2px 5px;
   border-radius: 8px;
+  font-weight: bold;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ===== CONTENT AREA STYLES ===== */
@@ -468,19 +539,32 @@ body {
   border-left-color: var(--primary-color);
 }
 
-.domus-nav a i {
-  font-size: 18px;
-  width: 24px;
-  margin-right: 15px;
-  text-align: center;
+.domus-nav a {
+  color: var(--text-light);
+}
+
+.domus-nav a svg {
+  fill: var(--text-light);
+}
+
+.domus-nav a.active {
+  color: var(--primary-color);
+}
+
+.domus-nav a.active svg {
+  fill: var(--primary-color);
+}
+
+.domus-nav a span {
+  opacity: 1;
+  transition: opacity 0.2s;
 }
 
 .domus-sidebar.collapsed .domus-nav a span {
   display: none;
 }
 
-.search-container {
-}
+/* Removed empty search container rule */
 
 .search-button {
   background: none;
@@ -536,6 +620,8 @@ body {
   border-radius: 50%;
   margin-right: 10px;
   border: 2px solid var(--primary-color);
+  flex-shrink: 0;
+  object-fit: cover;
 }
 
 .username {
@@ -1005,4 +1091,22 @@ body {
     gap: 15px;
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
   }
+}
+
+.domus-header .sidebar-toggle {
+  background: none;
+  border: none;
+  color: var(--text-light);
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.2s;
+  margin-right: 20px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.domus-header .sidebar-toggle:hover {
+  color: var(--primary);
 }

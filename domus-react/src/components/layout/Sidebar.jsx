@@ -6,7 +6,7 @@ import {
   Coins,
   Heart,
   Settings,
-  UserCircle,
+  User,
   ChevronLeft,
   ChevronRight,
   LogOut,
@@ -15,9 +15,8 @@ import {
   Component,
 } from "lucide-react";
 
-export default function Sidebar() {
+export default function Sidebar({ isCollapsed }) {
   const { user, logout } = useUser();
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = async (e) => {
@@ -35,21 +34,19 @@ export default function Sidebar() {
       <div className="sidebar-header">
         <h2>DOMUS</h2>
         <p className="latin-subtitle">Aurum potestas est</p>
-        <button
-          className="sidebar-toggle"
-          onClick={() => setIsCollapsed(!isCollapsed)}
-        >
-          {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-        </button>
       </div>
 
       <div className="user-brief">
         <div className="user-avatar">
-          <img
-            src={user.avatar || "/assets/images/default-avatar.png"}
-            alt={user.nickname || "User"}
-            id="user-avatar-small"
-          />
+          {user.avatar ? (
+            <img
+              src={user.avatar}
+              alt={user.nickname || "User"}
+              id="user-avatar-small"
+            />
+          ) : (
+            <User size={24} color="var(--primary)" />
+          )}
         </div>
         <div className="user-quick-info">
           <h3 id="user-nickname">{user.nickname || "User"}</h3>
@@ -92,7 +89,7 @@ export default function Sidebar() {
               to="/profile"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              <UserCircle size={18} />
+              <User size={18} />
               <span>Profile</span>
             </NavLink>
           </li>

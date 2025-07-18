@@ -8,7 +8,7 @@ import { UserProvider, useUser } from "./contexts/UserContext";
 import { useEffect } from "react";
 import { initAuthStateChangeListener } from "./services/supabase";
 import { Loader } from "lucide-react";
-import "./styles/App.css";
+import "./App.css";
 
 // Імпорт компонентів
 import Layout from "./components/layout/Layout";

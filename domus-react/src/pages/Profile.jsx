@@ -25,7 +25,7 @@ export default function Profile() {
           noPadding={true}
         >
           <ProfileCard
-            avatar={user.avatar || "/assets/images/general/marcus.png"}
+            avatar={user.avatar || "/assets/emperor.svg"}
             name={user.nickname}
             rank="Gold Collector"
             badges={[

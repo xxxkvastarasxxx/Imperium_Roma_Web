@@ -17,19 +17,13 @@
   width: 20px;
   height: 20px;
   margin-right: 12px;
-  stroke: var(--light-color);
 }
 
 .domus-nav a.active svg {
   stroke: var(--primary-color);
 }
 
-/* Header Icons */
-.search-button svg,
-.notification-bell svg,
-.user-dropdown svg {
-  stroke: var(--light-color);
-}
+/* Header Icons - кольори контролюються через батьківські елементи */
 
 .dropdown-menu a svg,
 .dropdown-menu button svg {
@@ -48,7 +42,4 @@ button svg {
   vertical-align: middle;
 }
 
-/* Toggle Button */
-.sidebar-toggle svg {
-  stroke: var(--light-color);
-}
+/* Removed unnecessary sidebar-toggle svg styles */

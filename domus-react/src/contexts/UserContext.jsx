@@ -9,7 +9,7 @@ export function UserProvider({ children }) {
   const developerModeUser = {
     id: "dev-user-id",
     nickname: "Marcus Aurelius",
-    avatar: "/assets/images/general/Marcus.jpg",
+    avatar: "/assets/emperor.svg",
     rank: "Emperor",
     title: "Imperial Collector",
     joinDate: "2024-01-15",
