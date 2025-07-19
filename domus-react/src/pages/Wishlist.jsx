@@ -1,8 +1,24 @@
 import { useState, useEffect } from "react";
 import { useUser } from "../contexts/UserContext";
 import { supabase } from "../services/supabase";
-import Layout from "../components/layout/Layout";
+import {
+  Heart,
+  Search,
+  Filter,
+  Grid3X3,
+  List,
+  Eye,
+  ShoppingCart,
+  Trash2,
+  Plus,
+  Loader,
+  DollarSign,
+  Calendar,
+  Star,
+} from "lucide-react";
+import { Card, Button, StatCard } from "../components/ui";
 import "../styles/domus.css";
+import "../styles/enhanced-pages.css";
 
 function Wishlist() {
   const { user } = useUser();
@@ -121,142 +137,183 @@ function Wishlist() {
   };
 
   return (
-    <Layout>
-      <div className="wishlist-container">
-        <header className="wishlist-header">
-          <h1>My Wishlist</h1>
-          <p>Track the coins you desire for your collection.</p>
+    <div className="dashboard-container">
+      <div className="header-title">
+        <h1>My Wishlist</h1>
+        <p className="date">Track the coins you desire for your collection</p>
+      </div>
 
-          <div className="wishlist-tools">
-            <div className="wishlist-search">
+      {/* Wishlist Stats */}
+      <div className="dashboard-overview">
+        <StatCard
+          icon={<Heart size={22} />}
+          title="Wishlist Items"
+          value={wishlistItems.length.toString()}
+          trendDirection="up"
+          trendValue="3%"
+          subtitle="Last 30 days"
+        />
+
+        <StatCard
+          icon={<DollarSign size={22} />}
+          title="Target Budget"
+          value={`${wishlistItems.reduce((sum, item) => sum + parseFloat(item.target_price || 0), 0).toFixed(0)} €`}
+          subtitle="Total target prices"
+        />
+
+        <StatCard
+          icon={<Star size={22} />}
+          title="High Priority"
+          value={wishlistItems.filter(item => item.priority === 3).length.toString()}
+          subtitle="Important items"
+        />
+      </div>
+
+      {/* Wishlist Tools */}
+      <Card
+        title="Wishlist Tools"
+        icon={<Filter size={18} />}
+        className="wishlist-tools-card"
+      >
+        <div className="collection-tools">
+          <div className="collection-search">
+            <div className="search-input-container">
+              <Search size={18} className="search-icon" />
               <input
                 type="text"
                 placeholder="Search your wishlist..."
                 value={filter}
                 onChange={handleFilterChange}
+                className="search-input"
               />
-              <button>
-                <i className="fas fa-search"></i>
-              </button>
             </div>
+          </div>
 
-            <div className="wishlist-sort-options">
-              <select value={sortBy} onChange={handleSortChange}>
+          <div className="collection-controls">
+            <div className="sort-controls">
+              <select value={sortBy} onChange={handleSortChange} className="sort-select">
                 <option value="priority">Priority</option>
                 <option value="name">Name</option>
                 <option value="price">Target Price</option>
                 <option value="date">Date Added</option>
               </select>
-              <button onClick={toggleSortDirection}>
-                <i
-                  className={`fas fa-sort-${
-                    sortDirection === "asc" ? "up" : "down"
-                  }`}
-                ></i>
-              </button>
-
-              <button className="add-wishlist-item">
-                <i className="fas fa-plus"></i> Add to Wishlist
-              </button>
+              <Button
+                variant="outline"
+                onClick={toggleSortDirection}
+                className="sort-direction-btn"
+              >
+                {sortDirection === "asc" ? "↑" : "↓"}
+              </Button>
             </div>
+
+            <Button variant="primary" className="add-wishlist-btn">
+              <Plus size={16} />
+              Add to Wishlist
+            </Button>
           </div>
-        </header>
+        </div>
+      </Card>
 
-        <div className="wishlist-content">
-          {loading ? (
-            <div className="loading-indicator">
-              <div className="spinner"></div>
-              <p>Loading your wishlist from the scrolls of Rome...</p>
-            </div>
-          ) : sortedItems.length === 0 ? (
-            <div className="empty-wishlist">
-              <i className="fas fa-scroll"></i>
-              <h2>Your wishlist is empty</h2>
-              <p>Add coins you desire to start building your wishlist.</p>
-              <button className="add-wishlist-item">
-                <i className="fas fa-plus"></i> Add First Item
-              </button>
-            </div>
-          ) : (
-            <div className="wishlist-items">
-              {sortedItems.map((item) => {
-                const coinDetails = item.coin_details || {};
-                const priorityInfo = getPriorityInfo(item.priority);
+      {/* Wishlist Content */}
+      <Card
+        title="Wishlist Items"
+        icon={<Heart size={18} />}
+        subtitle={`${sortedItems.length} coins on your wishlist`}
+        className="wishlist-content-card"
+        noPadding={true}
+      >
+        {loading ? (
+          <div className="dashboard-loading">
+            <Loader className="animate-spin" size={48} />
+            <p>Loading your wishlist from the scrolls of Rome...</p>
+          </div>
+        ) : sortedItems.length === 0 ? (
+          <div className="empty-state">
+            <Heart size={64} className="empty-state-icon" />
+            <h3>Your wishlist is empty</h3>
+            <p>Add coins you desire to start building your wishlist.</p>
+            <Button variant="primary" className="add-wishlist-btn">
+              <Plus size={16} />
+              Add First Item
+            </Button>
+          </div>
+        ) : (
+          <div className="wishlist-items grid-view">
+            {sortedItems.map((item) => {
+              const coinDetails = item.coin_details || {};
+              const priorityInfo = getPriorityInfo(item.priority);
 
-                return (
-                  <div className="wishlist-item" key={item.id}>
-                    <div className="wishlist-item-image">
-                      <img
-                        src={
-                          coinDetails.image_obverse ||
-                          "/assets/images/coin-placeholder.jpg"
-                        }
-                        alt={coinDetails.name || "Desired coin"}
-                      />
-                    </div>
-
-                    <div className="wishlist-item-details">
-                      <h3>{coinDetails.name || "Unnamed Coin"}</h3>
-                      <p className="wishlist-emperor">
-                        {coinDetails.emperor || "Unknown Emperor"}
-                      </p>
-                      <p className="wishlist-period">
-                        {coinDetails.period || "Unknown Period"}
-                      </p>
-
-                      {item.notes && (
-                        <p className="wishlist-notes">{item.notes}</p>
-                      )}
-
-                      <div className="wishlist-item-meta">
-                        <span
-                          className={`priority-badge ${priorityInfo.className}`}
-                        >
-                          {priorityInfo.label} Priority
-                        </span>
-
-                        {item.target_price && (
-                          <span className="target-price">
-                            <i className="fas fa-tag"></i> Target:{" "}
-                            {item.target_price} €
-                          </span>
-                        )}
-
-                        <span className="date-added">
-                          <i className="fas fa-calendar-alt"></i>
-                          {new Date(item.date_added).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="wishlist-item-actions">
-                      <button
-                        className="action-btn edit"
-                        title="Edit Wishlist Item"
-                      >
-                        <i className="fas fa-edit"></i>
-                      </button>
-                      <button
-                        className="action-btn found"
-                        title="Mark as Found"
-                      >
-                        <i className="fas fa-check"></i>
-                      </button>
-                      <button
-                        className="action-btn remove"
-                        title="Remove from Wishlist"
-                      >
-                        <i className="fas fa-times"></i>
-                      </button>
+              return (
+                <div className="coin-item-card wishlist-item-card" key={item.id}>
+                  <div className="coin-images">
+                    <img
+                      src={
+                        coinDetails.image_obverse ||
+                        "/assets/images/coin-placeholder.jpg"
+                      }
+                      alt={coinDetails.name || "Desired coin"}
+                      className="coin-image"
+                    />
+                    <div className={`priority-indicator ${priorityInfo.className}`}>
+                      <Star size={14} />
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </div>
-    </Layout>
+
+                  <div className="coin-details">
+                    <h3>{coinDetails.name || "Unnamed Coin"}</h3>
+                    <p className="coin-emperor">
+                      {coinDetails.emperor || "Unknown Emperor"}
+                    </p>
+                    <p className="coin-period">
+                      {coinDetails.period || "Unknown Period"}
+                    </p>
+
+                    {item.notes && (
+                      <p className="coin-notes">{item.notes}</p>
+                    )}
+
+                    <div className="coin-meta">
+                      <span className={`priority-badge ${priorityInfo.className}`}>
+                        {priorityInfo.label} Priority
+                      </span>
+
+                      {item.target_price && (
+                        <span className="target-price">
+                          <DollarSign size={14} />
+                          Target: {item.target_price} €
+                        </span>
+                      )}
+
+                      <span className="coin-date-added">
+                        <Calendar size={14} />
+                        {new Date(item.date_added).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="coin-actions">
+                    <Button variant="outline" size="sm" title="View Details">
+                      <Eye size={16} />
+                    </Button>
+                    <Button variant="outline" size="sm" title="Mark as Found" className="success">
+                      <ShoppingCart size={16} />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      title="Remove from Wishlist"
+                      className="danger"
+                    >
+                      <Trash2 size={16} />
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </Card>
+    </div>
   );
 }
 

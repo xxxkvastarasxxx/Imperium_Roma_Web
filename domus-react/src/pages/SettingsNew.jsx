@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 import { Card, Button } from "../components/ui";
 import "../styles/domus.css";
-import "../styles/enhanced-pages.css";
 
 function Settings() {
   const { user, updateUserProfile } = useUser();

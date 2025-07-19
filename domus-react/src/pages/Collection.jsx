@@ -1,8 +1,23 @@
 import { useState, useEffect } from "react";
 import { useUser } from "../contexts/UserContext";
 import { supabase } from "../services/supabase";
-import Layout from "../components/layout/Layout";
+import {
+  Coins,
+  Search,
+  Filter,
+  Grid3X3,
+  List,
+  Eye,
+  Edit,
+  Trash2,
+  Plus,
+  Loader,
+  DollarSign,
+  Calendar,
+} from "lucide-react";
+import { Card, Button, StatCard } from "../components/ui";
 import "../styles/domus.css";
+import "../styles/enhanced-pages.css";
 
 function Collection() {
   const { user } = useUser();
@@ -118,152 +133,195 @@ function Collection() {
   };
 
   return (
-    <Layout>
-      <div className="collection-container">
-        <header className="collection-header">
-          <h1>My Coin Collection</h1>
-          <p>Manage and view all items in your Roman numismatic collection.</p>
+    <div className="dashboard-container">
+      <div className="header-title">
+        <h1>My Collection</h1>
+        <p className="date">Manage and view all items in your Roman numismatic collection</p>
+      </div>
 
-          <div className="collection-tools">
-            <div className="collection-search">
+      {/* Collection Stats */}
+      <div className="dashboard-overview">
+        <StatCard
+          icon={<Coins size={22} />}
+          title="Total Coins"
+          value={coins.length.toString()}
+          trendDirection="up"
+          trendValue="5%"
+          subtitle="Last 30 days"
+        />
+
+        <StatCard
+          icon={<DollarSign size={22} />}
+          title="Collection Value"
+          value={`${coins.reduce((sum, coin) => sum + parseFloat(coin.coin_details?.estimated_value || 0), 0).toFixed(0)} €`}
+          trendDirection="up"
+          trendValue="8.5%"
+          subtitle="Estimated"
+        />
+
+        <StatCard
+          icon={<Calendar size={22} />}
+          title="Latest Addition"
+          value={coins.length > 0 ? new Date(Math.max(...coins.map(c => new Date(c.date_added)))).toLocaleDateString() : "None"}
+          subtitle="Most recent coin"
+        />
+      </div>
+
+      {/* Collection Tools */}
+      <Card
+        title="Collection Tools"
+        icon={<Filter size={18} />}
+        className="collection-tools-card"
+      >
+        <div className="collection-tools">
+          <div className="collection-search">
+            <div className="search-input-container">
+              <Search size={18} className="search-icon" />
               <input
                 type="text"
                 placeholder="Search your collection..."
                 value={filter}
                 onChange={handleFilterChange}
+                className="search-input"
               />
-              <button>
-                <i className="fas fa-search"></i>
-              </button>
-            </div>
-
-            <div className="collection-view-options">
-              <div className="sort-controls">
-                <select value={sortBy} onChange={handleSortChange}>
-                  <option value="dateAdded">Date Added</option>
-                  <option value="name">Name</option>
-                  <option value="emperor">Emperor</option>
-                  <option value="period">Period</option>
-                  <option value="value">Value</option>
-                </select>
-                <button onClick={toggleSortDirection}>
-                  <i
-                    className={`fas fa-sort-${
-                      sortDirection === "asc" ? "up" : "down"
-                    }`}
-                  ></i>
-                </button>
-              </div>
-
-              <button
-                className="view-mode-toggle"
-                onClick={toggleViewMode}
-                title={
-                  viewMode === "grid"
-                    ? "Switch to List View"
-                    : "Switch to Grid View"
-                }
-              >
-                <i
-                  className={`fas fa-${viewMode === "grid" ? "list" : "th"}`}
-                ></i>
-              </button>
             </div>
           </div>
-        </header>
 
-        <div className="collection-content">
-          {loading ? (
-            <div className="loading-indicator">
-              <div className="spinner"></div>
-              <p>Loading your treasures from the vaults of Rome...</p>
+          <div className="collection-controls">
+            <div className="sort-controls">
+              <select value={sortBy} onChange={handleSortChange} className="sort-select">
+                <option value="dateAdded">Date Added</option>
+                <option value="name">Name</option>
+                <option value="emperor">Emperor</option>
+                <option value="period">Period</option>
+                <option value="value">Value</option>
+              </select>
+              <Button
+                variant="outline"
+                onClick={toggleSortDirection}
+                className="sort-direction-btn"
+              >
+                {sortDirection === "asc" ? "↑" : "↓"}
+              </Button>
             </div>
-          ) : sortedCoins.length === 0 ? (
-            <div className="empty-collection">
-              <i className="fas fa-scroll"></i>
-              <h2>Your collection is empty</h2>
-              <p>
-                Explore the markets of Rome or add your first coin to begin your
-                collection.
-              </p>
-              <button className="add-coin-btn">
-                <i className="fas fa-plus"></i> Add First Coin
-              </button>
+
+            <div className="view-controls">
+              <Button
+                variant={viewMode === "grid" ? "primary" : "outline"}
+                onClick={() => setViewMode("grid")}
+                className="view-mode-btn"
+              >
+                <Grid3X3 size={16} />
+              </Button>
+              <Button
+                variant={viewMode === "list" ? "primary" : "outline"}
+                onClick={() => setViewMode("list")}
+                className="view-mode-btn"
+              >
+                <List size={16} />
+              </Button>
             </div>
-          ) : (
-            <div
-              className={`collection-items ${
-                viewMode === "grid" ? "grid-view" : "list-view"
-              }`}
-            >
-              {sortedCoins.map((coin) => {
-                const coinDetails = coin.coin_details || {};
-                return (
-                  <div className="coin-item" key={coin.id}>
-                    <div className="coin-images">
-                      <img
-                        src={
-                          coinDetails.image_obverse ||
-                          "/assets/images/coin-placeholder.jpg"
-                        }
-                        alt={`Obverse of ${coinDetails.name}`}
-                        className="coin-image obverse"
-                      />
-                      <img
-                        src={
-                          coinDetails.image_reverse ||
-                          "/assets/images/coin-placeholder.jpg"
-                        }
-                        alt={`Reverse of ${coinDetails.name}`}
-                        className="coin-image reverse"
-                      />
-                    </div>
-                    <div className="coin-details">
-                      <h3>{coinDetails.name || "Unknown Coin"}</h3>
-                      <p className="coin-emperor">
-                        {coinDetails.emperor || "Unknown Emperor"}
-                      </p>
-                      <p className="coin-period">
-                        {coinDetails.period || "Unknown Period"}
-                      </p>
-                      <p className="coin-material">
-                        {coinDetails.material || "Unknown Material"}
-                      </p>
-                      <div className="coin-meta">
-                        <span className="coin-value">
-                          <i className="fas fa-balance-scale"></i>
-                          {coinDetails.estimated_value
-                            ? `${coinDetails.estimated_value} €`
-                            : "Not valued"}
-                        </span>
-                        <span className="coin-date-added">
-                          <i className="fas fa-calendar-alt"></i>
-                          {new Date(coin.date_added).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="coin-actions">
-                      <button className="action-btn view" title="View Details">
-                        <i className="fas fa-eye"></i>
-                      </button>
-                      <button className="action-btn edit" title="Edit Coin">
-                        <i className="fas fa-edit"></i>
-                      </button>
-                      <button
-                        className="action-btn remove"
-                        title="Remove from Collection"
-                      >
-                        <i className="fas fa-trash"></i>
-                      </button>
+          </div>
+        </div>
+      </Card>
+
+      {/* Collection Content */}
+      <Card
+        title="Collection Items"
+        icon={<Coins size={18} />}
+        subtitle={`${sortedCoins.length} coins in your collection`}
+        className="collection-content-card"
+        noPadding={true}
+      >
+        {loading ? (
+          <div className="dashboard-loading">
+            <Loader className="animate-spin" size={48} />
+            <p>Loading your treasures from the vaults of Rome...</p>
+          </div>
+        ) : sortedCoins.length === 0 ? (
+          <div className="empty-state">
+            <Coins size={64} className="empty-state-icon" />
+            <h3>Your collection is empty</h3>
+            <p>
+              Explore the markets of Rome or add your first coin to begin your
+              collection.
+            </p>
+            <Button variant="primary" className="add-coin-btn">
+              <Plus size={16} />
+              Add First Coin
+            </Button>
+          </div>
+        ) : (
+          <div className={`collection-items ${viewMode === "grid" ? "grid-view" : "list-view"}`}>
+            {sortedCoins.map((coin) => {
+              const coinDetails = coin.coin_details || {};
+              return (
+                <div className="coin-item-card" key={coin.id}>
+                  <div className="coin-images">
+                    <img
+                      src={
+                        coinDetails.image_obverse ||
+                        "/assets/images/coin-placeholder.jpg"
+                      }
+                      alt={`Obverse of ${coinDetails.name}`}
+                      className="coin-image obverse"
+                    />
+                    <img
+                      src={
+                        coinDetails.image_reverse ||
+                        "/assets/images/coin-placeholder.jpg"
+                      }
+                      alt={`Reverse of ${coinDetails.name}`}
+                      className="coin-image reverse"
+                    />
+                  </div>
+                  <div className="coin-details">
+                    <h3>{coinDetails.name || "Unknown Coin"}</h3>
+                    <p className="coin-emperor">
+                      {coinDetails.emperor || "Unknown Emperor"}
+                    </p>
+                    <p className="coin-period">
+                      {coinDetails.period || "Unknown Period"}
+                    </p>
+                    <p className="coin-material">
+                      {coinDetails.material || "Unknown Material"}
+                    </p>
+                    <div className="coin-meta">
+                      <span className="coin-value">
+                        <DollarSign size={14} />
+                        {coinDetails.estimated_value
+                          ? `${coinDetails.estimated_value} €`
+                          : "Not valued"}
+                      </span>
+                      <span className="coin-date-added">
+                        <Calendar size={14} />
+                        {new Date(coin.date_added).toLocaleDateString()}
+                      </span>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </div>
-    </Layout>
+                  <div className="coin-actions">
+                    <Button variant="outline" size="sm" title="View Details">
+                      <Eye size={16} />
+                    </Button>
+                    <Button variant="outline" size="sm" title="Edit Coin">
+                      <Edit size={16} />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      title="Remove from Collection"
+                      className="danger"
+                    >
+                      <Trash2 size={16} />
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </Card>
+    </div>
   );
 }
 

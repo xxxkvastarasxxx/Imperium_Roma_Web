@@ -1,6 +1,7 @@
 import { useUser } from "../contexts/UserContext";
-import { Award, Star, UserCircle } from "lucide-react";
-import { Card, ProfileCard } from "../components/ui";
+import { Award, Star, UserCircle, Edit, Settings } from "lucide-react";
+import { Card, ProfileCard, Button } from "../components/ui";
+import "../styles/enhanced-pages.css";
 
 export default function Profile() {
   const { user } = useUser();
@@ -11,7 +12,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="profile-page">
+    <div className="dashboard-container">
       <div className="header-title">
         <h1>My Profile</h1>
         <p className="date">Manage your account and collection preferences</p>
@@ -51,9 +52,10 @@ export default function Profile() {
                 variant: "primary",
               },
               {
-                label: "View Public Profile",
-                onClick: () => console.log("View public profile"),
+                label: "Settings",
+                onClick: () => window.location.href = "/settings",
                 variant: "outline",
+                icon: <Settings size={16} />,
               },
             ]}
           />
