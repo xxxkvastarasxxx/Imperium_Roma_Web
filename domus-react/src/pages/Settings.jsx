@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useUser } from "../contexts/UserContext";
-import { supabase } from "../services/supabase";
+import { supabase, deleteUserAccount } from "../services/supabase";
 import {
   Settings as SettingsIcon,
   User,
@@ -12,6 +12,10 @@ import {
   Eye,
   EyeOff,
   Loader,
+  Trash2,
+  AlertTriangle,
+  Mail,
+  Lock,
 } from "lucide-react";
 import { Card, Button } from "../components/ui";
 import "../styles/domus.css";
@@ -40,6 +44,15 @@ function Settings() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
   const [avatar, setAvatar] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [emailChangeData, setEmailChangeData] = useState({
+    newEmail: "",
+    password: "",
+    showConfirm: false,
+  });
+  const [isChangingEmail, setIsChangingEmail] = useState(false);
 
   // Initialize form data from user context
   useEffect(() => {
@@ -129,6 +142,104 @@ function Settings() {
     }
   };
 
+  // Handle profile deletion
+  const handleDeleteProfile = async () => {
+    if (deleteConfirmText !== "DELETE") {
+      setMessage({ 
+        type: "error", 
+        text: "Please type 'DELETE' to confirm account deletion" 
+      });
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      await deleteUserAccount(user.id);
+      
+      // Success message (user will be redirected)
+      setMessage({ 
+        type: "success", 
+        text: "Account deleted successfully. Redirecting..." 
+      });
+
+      // Redirect to login page after a short delay
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 2000);
+      
+    } catch (error) {
+      console.error("Error deleting profile:", error);
+      setMessage({ type: "error", text: error.message });
+      setIsDeleting(false);
+    }
+  };
+
+  // Reset delete confirmation
+  const resetDeleteConfirm = () => {
+    setShowDeleteConfirm(false);
+    setDeleteConfirmText("");
+  };
+
+  // Handle email change
+  const handleEmailChange = async () => {
+    if (!emailChangeData.newEmail || !emailChangeData.password) {
+      setMessage({
+        type: "error",
+        text: "Please provide both new email and current password"
+      });
+      return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailChangeData.newEmail)) {
+      setMessage({
+        type: "error",
+        text: "Please enter a valid email address"
+      });
+      return;
+    }
+
+    setIsChangingEmail(true);
+    try {
+      // Update email with Supabase
+      const { error } = await supabase.auth.updateUser({
+        email: emailChangeData.newEmail
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      setMessage({
+        type: "info",
+        text: "Email change confirmation sent! Check your new email to confirm the change."
+      });
+
+      // Reset form
+      setEmailChangeData({
+        newEmail: "",
+        password: "",
+        showConfirm: false,
+      });
+
+    } catch (error) {
+      console.error("Error changing email:", error);
+      setMessage({ type: "error", text: error.message });
+    } finally {
+      setIsChangingEmail(false);
+    }
+  };
+
+  // Reset email change form
+  const resetEmailChange = () => {
+    setEmailChangeData({
+      newEmail: "",
+      password: "",
+      showConfirm: false,
+    });
+  };
+
   return (
     <div className="dashboard-container">
       <div className="header-title">
@@ -178,6 +289,14 @@ function Settings() {
             <Shield size={16} />
             Privacy
           </Button>
+          <Button
+            variant={activeTab === "account" ? "primary" : "outline"}
+            onClick={() => setActiveTab("account")}
+            className="tab-button"
+          >
+            <AlertTriangle size={16} />
+            Account
+          </Button>
         </div>
       </div>
 
@@ -213,19 +332,6 @@ function Settings() {
                   onChange={handleInputChange}
                   className="form-input"
                   placeholder="Enter your nickname"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className="form-input"
-                  placeholder="Enter your email"
                 />
               </div>
 
@@ -271,6 +377,114 @@ function Settings() {
                   </Button>
                 </div>
               </div>
+            </div>
+          </Card>
+        )}
+
+        {activeTab === "profile" && (
+          <Card
+            title="Email Management"
+            icon={<Mail size={18} />}
+            subtitle="Change your email address (requires confirmation)"
+            className="settings-card email-card"
+          >
+            <div className="email-section">
+              <div className="current-email">
+                <label>Current Email:</label>
+                <span className="current-email-display">{user?.email}</span>
+              </div>
+
+              {!emailChangeData.showConfirm ? (
+                <div className="email-change-prompt">
+                  <p className="email-change-info">
+                    <Mail size={16} />
+                    To change your email address, you'll need to verify the new email. 
+                    A confirmation link will be sent to your new address.
+                  </p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setEmailChangeData({...emailChangeData, showConfirm: true})}
+                    className="change-email-btn"
+                  >
+                    <Mail size={16} />
+                    Change Email
+                  </Button>
+                </div>
+              ) : (
+                <div className="email-change-form">
+                  <div className="form-group">
+                    <label htmlFor="newEmail">New Email Address</label>
+                    <input
+                      type="email"
+                      id="newEmail"
+                      value={emailChangeData.newEmail}
+                      onChange={(e) => setEmailChangeData({
+                        ...emailChangeData,
+                        newEmail: e.target.value
+                      })}
+                      className="form-input"
+                      placeholder="Enter your new email address"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="currentPassword">Current Password</label>
+                    <input
+                      type="password"
+                      id="currentPassword"
+                      value={emailChangeData.password}
+                      onChange={(e) => setEmailChangeData({
+                        ...emailChangeData,
+                        password: e.target.value
+                      })}
+                      className="form-input"
+                      placeholder="Enter your current password"
+                    />
+                  </div>
+
+                  <div className="email-change-warning">
+                    <AlertTriangle size={16} />
+                    <div>
+                      <p><strong>Important:</strong></p>
+                      <ul>
+                        <li>A confirmation link will be sent to your new email</li>
+                        <li>Your old email will remain active until confirmed</li>
+                        <li>You must click the confirmation link to complete the change</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="email-change-actions">
+                    <Button
+                      type="button"
+                      variant="primary"
+                      onClick={handleEmailChange}
+                      disabled={isChangingEmail || !emailChangeData.newEmail || !emailChangeData.password}
+                    >
+                      {isChangingEmail ? (
+                        <>
+                          <Loader className="animate-spin" size={16} />
+                          Sending Confirmation...
+                        </>
+                      ) : (
+                        <>
+                          <Mail size={16} />
+                          Send Confirmation
+                        </>
+                      )}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={resetEmailChange}
+                      disabled={isChangingEmail}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           </Card>
         )}
@@ -419,6 +633,193 @@ function Settings() {
                       Show Acquisitions
                     </label>
                   </div>
+                </div>
+              </div>
+            </div>
+          </Card>
+        )}
+
+        {activeTab === "account" && (
+          <Card
+            title="Account Management"
+            icon={<AlertTriangle size={18} />}
+            subtitle="Manage your account and data"
+            className="settings-card"
+          >
+            <div className="form-grid">
+              <div className="form-group form-group-full">
+                <div className="account-section">
+                  <h4>Email Management</h4>
+                  <div className="current-email">
+                    <label>Current Email:</label>
+                    <span className="current-email-display">{user?.email}</span>
+                  </div>
+
+                  {!emailChangeData.showConfirm ? (
+                    <div className="email-change-prompt">
+                      <p className="email-change-info">
+                        <Mail size={16} />
+                        To change your email address, you'll need to verify the new email. 
+                        A confirmation link will be sent to your new address.
+                      </p>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setEmailChangeData({...emailChangeData, showConfirm: true})}
+                        className="change-email-btn"
+                      >
+                        <Mail size={16} />
+                        Change Email
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="email-change-form">
+                      <div className="form-group">
+                        <label htmlFor="newEmail">New Email Address</label>
+                        <input
+                          type="email"
+                          id="newEmail"
+                          value={emailChangeData.newEmail}
+                          onChange={(e) => setEmailChangeData({
+                            ...emailChangeData,
+                            newEmail: e.target.value
+                          })}
+                          className="form-input"
+                          placeholder="Enter your new email address"
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="currentPassword">Current Password</label>
+                        <input
+                          type="password"
+                          id="currentPassword"
+                          value={emailChangeData.password}
+                          onChange={(e) => setEmailChangeData({
+                            ...emailChangeData,
+                            password: e.target.value
+                          })}
+                          className="form-input"
+                          placeholder="Enter your current password"
+                        />
+                      </div>
+
+                      <div className="email-change-warning">
+                        <AlertTriangle size={16} />
+                        <div>
+                          <p><strong>Important:</strong></p>
+                          <ul>
+                            <li>You'll receive a confirmation email at the new address</li>
+                            <li>Your current email will remain active until you confirm the change</li>
+                            <li>This process may take a few minutes to complete</li>
+                          </ul>
+                        </div>
+                      </div>
+
+                      <div className="email-change-actions">
+                        <Button
+                          type="button"
+                          variant="primary"
+                          onClick={handleEmailChange}
+                          disabled={isChangingEmail || !emailChangeData.newEmail || !emailChangeData.password}
+                        >
+                          {isChangingEmail ? (
+                            <>
+                              <Loader className="animate-spin" size={16} />
+                              Sending Verification...
+                            </>
+                          ) : (
+                            <>
+                              <Mail size={16} />
+                              Send Verification Email
+                            </>
+                          )}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => setEmailChangeData({
+                            newEmail: "",
+                            password: "",
+                            showConfirm: false
+                          })}
+                          disabled={isChangingEmail}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="form-group form-group-full">
+                <div className="account-section">
+                  <h4>Delete Account</h4>
+                  <p className="account-warning">
+                    <AlertTriangle size={16} />
+                    This action cannot be undone. Deleting your account will permanently remove:
+                  </p>
+                  <ul className="account-warning-list">
+                    <li>Your profile and personal information</li>
+                    <li>Your entire coin collection data</li>
+                    <li>Your wishlist items</li>
+                    <li>All historical data and preferences</li>
+                  </ul>
+                  
+                  {!showDeleteConfirm ? (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="danger delete-account-btn"
+                      onClick={() => setShowDeleteConfirm(true)}
+                    >
+                      <Trash2 size={16} />
+                      Delete Account
+                    </Button>
+                  ) : (
+                    <div className="delete-confirmation">
+                      <p className="delete-confirm-text">
+                        To confirm deletion, type <strong>DELETE</strong> in the field below:
+                      </p>
+                      <input
+                        type="text"
+                        value={deleteConfirmText}
+                        onChange={(e) => setDeleteConfirmText(e.target.value)}
+                        className="form-input delete-confirm-input"
+                        placeholder="Type DELETE to confirm"
+                      />
+                      <div className="delete-actions">
+                        <Button
+                          type="button"
+                          variant="primary"
+                          className="danger"
+                          onClick={handleDeleteProfile}
+                          disabled={isDeleting || deleteConfirmText !== "DELETE"}
+                        >
+                          {isDeleting ? (
+                            <>
+                              <Loader className="animate-spin" size={16} />
+                              Deleting Account...
+                            </>
+                          ) : (
+                            <>
+                              <Trash2 size={16} />
+                              Permanently Delete Account
+                            </>
+                          )}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={resetDeleteConfirm}
+                          disabled={isDeleting}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

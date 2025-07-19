@@ -1,6 +1,7 @@
 import { useUser } from "../contexts/UserContext";
-import { Award, Star, UserCircle, Edit, Settings } from "lucide-react";
+import { Award, Star, UserCircle, Edit, Settings, Shield } from "lucide-react";
 import { Card, ProfileCard, Button } from "../components/ui";
+import { Link } from "react-router-dom";
 import "../styles/enhanced-pages.css";
 
 export default function Profile() {

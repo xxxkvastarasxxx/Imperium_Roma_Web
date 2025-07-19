@@ -4,8 +4,10 @@
   --primary: #ffcc00;
   --primary-dark: #e6b800;
   --primary-light: #ffd633;
+  --primary-5: rgba(255, 204, 0, 0.05);
   --primary-10: rgba(255, 204, 0, 0.1);
   --primary-15: rgba(255, 204, 0, 0.15);
+  --primary-20: rgba(255, 204, 0, 0.2);
   --primary-30: rgba(255, 204, 0, 0.3);
 
   /* ===== SECONDARY COLORS ===== */
@@ -13,12 +15,48 @@
   --tertiary: #666666;
   --accent: #ff9900;
 
+  /* ===== STATUS COLORS ===== */
+  --success: #22c55e;
+  --success-dark: #16a34a;
+  --success-light: #4ade80;
+  --success-5: rgba(34, 197, 94, 0.05);
+  --success-10: rgba(34, 197, 94, 0.1);
+  --success-20: rgba(34, 197, 94, 0.2);
+  --success-30: rgba(34, 197, 94, 0.3);
+
+  --warning: #f59e0b;
+  --warning-dark: #d97706;
+  --warning-light: #fbbf24;
+  --warning-5: rgba(245, 158, 11, 0.05);
+  --warning-10: rgba(245, 158, 11, 0.1);
+  --warning-20: rgba(245, 158, 11, 0.2);
+  --warning-30: rgba(245, 158, 11, 0.3);
+
+  --error: #ef4444;
+  --error-dark: #dc2626;
+  --error-light: #f87171;
+  --error-5: rgba(239, 68, 68, 0.05);
+  --error-10: rgba(239, 68, 68, 0.1);
+  --error-20: rgba(239, 68, 68, 0.2);
+  --error-30: rgba(239, 68, 68, 0.3);
+
   /* ===== BACKGROUND COLORS ===== */
   --bg-main: #000000;
   --bg-secondary: #111111;
   --bg-element: #222222;
   --bg-input: rgba(255, 255, 255, 0.1);
   --bg-hover: rgba(255, 255, 255, 0.05);
+
+  /* ===== NEW UI VARIABLES ===== */
+  --background: var(--bg-element);
+  --background-secondary: var(--bg-secondary);
+  --text-primary: var(--text-light);
+  --text-muted: rgba(255, 255, 255, 0.7);
+  --border: var(--border-light);
+  --border-light: rgba(255, 255, 255, 0.05);
+  --radius: var(--border-radius);
+  --radius-sm: var(--border-radius-sm);
+  --radius-lg: var(--border-radius-lg);
 
   /* ===== TEXT COLORS ===== */
   --text-light: #ffffff;

@@ -98,3 +98,35 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* ===== STATUS BUTTON STYLES ===== */
+.btn.success {
+  color: var(--success);
+  border-color: var(--success-30);
+}
+
+.btn.success:hover:not(:disabled) {
+  background: var(--success-10);
+  border-color: var(--success);
+}
+
+.btn.danger {
+  color: var(--error);
+  border-color: var(--error-30);
+}
+
+.btn.danger:hover:not(:disabled) {
+  background: var(--error-10);
+  border-color: var(--error);
+}
+
+.btn-primary.danger {
+  background: var(--error);
+  color: white;
+  border-color: var(--error);
+}
+
+.btn-primary.danger:hover:not(:disabled) {
+  background: var(--error-dark);
+  border-color: var(--error-dark);
+}
