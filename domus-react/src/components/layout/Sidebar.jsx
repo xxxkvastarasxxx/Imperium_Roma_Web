@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useMemo } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
 import {
@@ -7,17 +7,44 @@ import {
   Heart,
   Settings,
   User,
-  ChevronLeft,
-  ChevronRight,
   LogOut,
-  Trophy,
-  BookOpen,
-  Component,
 } from "lucide-react";
 
-export default function Sidebar({ isCollapsed }) {
+const Sidebar = ({ isCollapsed = false }) => {
   const { user, logout } = useUser();
   const navigate = useNavigate();
+
+  const navigationItems = useMemo(
+    () => [
+      {
+        to: "/",
+        icon: LayoutDashboard,
+        label: "Dashboard",
+        end: true,
+      },
+      {
+        to: "/collection",
+        icon: Coins,
+        label: "Collection",
+      },
+      {
+        to: "/wishlist",
+        icon: Heart,
+        label: "Wishlist",
+      },
+      {
+        to: "/profile",
+        icon: User,
+        label: "Profile",
+      },
+      {
+        to: "/settings",
+        icon: Settings,
+        label: "Settings",
+      },
+    ],
+    []
+  );
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -29,88 +56,80 @@ export default function Sidebar({ isCollapsed }) {
     }
   };
 
+  const UserAvatar = () => (
+    <div className="sidebar-user-avatar">
+      {user?.avatar ? (
+        <img
+          src={user.avatar}
+          alt={user.nickname || "User"}
+          className="avatar-image"
+        />
+      ) : (
+        <User size={isCollapsed ? 20 : 24} />
+      )}
+    </div>
+  );
+
+  const NavigationItem = ({ item }) => {
+    const Icon = item.icon;
+    return (
+      <li className="sidebar-nav-item">
+        <NavLink
+          to={item.to}
+          end={item.end}
+          className={({ isActive }) =>
+            `sidebar-nav-link ${isActive ? "active" : ""}`
+          }
+          title={isCollapsed ? item.label : undefined}
+        >
+          <Icon size={18} className="nav-icon" />
+          {!isCollapsed && <span className="nav-text">{item.label}</span>}
+        </NavLink>
+      </li>
+    );
+  };
+
   return (
-    <aside className={`domus-sidebar ${isCollapsed ? "collapsed" : ""}`}>
+    <aside className={`sidebar ${isCollapsed ? "sidebar--collapsed" : ""}`}>
+      {/* Header */}
       <div className="sidebar-header">
-        <h2>DOMUS</h2>
-        <p className="latin-subtitle">Aurum potestas est</p>
+        <div className="sidebar-brand">{isCollapsed ? "D" : "DOMUS"}</div>
+        {!isCollapsed && <p className="sidebar-subtitle">Aurum potestas est</p>}
       </div>
 
-      <div className="user-brief">
-        <div className="user-avatar">
-          {user.avatar ? (
-            <img
-              src={user.avatar}
-              alt={user.nickname || "User"}
-              id="user-avatar-small"
-            />
-          ) : (
-            <User size={24} color="var(--primary)" />
-          )}
-        </div>
-        <div className="user-quick-info">
-          <h3 id="user-nickname">{user.nickname || "User"}</h3>
-          <p id="user-rank">{user.rank || "Novice"}</p>
-        </div>
+      {/* User Section */}
+      <div className="sidebar-user">
+        <UserAvatar />
+        {!isCollapsed && (
+          <div className="sidebar-user-info">
+            <h4 className="user-name">{user?.nickname || "User"}</h4>
+            <p className="user-rank">{user?.rank || "Novice"}</p>
+          </div>
+        )}
       </div>
 
-      <nav className="domus-nav">
-        <ul>
-          <li>
-            <NavLink
-              to="/"
-              end
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              <LayoutDashboard size={18} />
-              <span>Dashboard</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/collection"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              <Coins size={18} />
-              <span>Collection</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/wishlist"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              <Heart size={18} />
-              <span>Wishlist</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/profile"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              <User size={18} />
-              <span>Profile</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/settings"
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              <Settings size={18} />
-              <span>Settings</span>
-            </NavLink>
-          </li>
+      {/* Navigation */}
+      <nav className="sidebar-nav">
+        <ul className="sidebar-nav-list">
+          {navigationItems.map((item, index) => (
+            <NavigationItem key={index} item={item} />
+          ))}
         </ul>
       </nav>
 
+      {/* Footer */}
       <div className="sidebar-footer">
-        <button onClick={handleLogout} className="logout-link">
-          <LogOut size={18} />
-          <span>Logout</span>
+        <button
+          onClick={handleLogout}
+          className="sidebar-logout-btn"
+          title={isCollapsed ? "Logout" : undefined}
+        >
+          <LogOut size={18} className="logout-icon" />
+          {!isCollapsed && <span className="logout-text">Logout</span>}
         </button>
       </div>
     </aside>
   );
-}
+};
+
+export default Sidebar;

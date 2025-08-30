@@ -6,6 +6,7 @@ import App from "./App.jsx";
 // Імпортуємо стилі
 import "./styles/domus.css";
 import "./styles/lucide-icons.css";
+import "./styles/components/Sidebar.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

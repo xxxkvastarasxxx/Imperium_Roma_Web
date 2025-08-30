@@ -46,6 +46,7 @@
   --bg-element: #222222;
   --bg-input: rgba(255, 255, 255, 0.1);
   --bg-hover: rgba(255, 255, 255, 0.05);
+  --bg-tooltip: rgba(0, 0, 0, 0.9);
 
   /* ===== NEW UI VARIABLES ===== */
   --background: var(--bg-element);
