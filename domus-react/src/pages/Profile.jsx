@@ -1,7 +1,6 @@
 import { useUser } from "../contexts/UserContext";
-import { Award, Star, UserCircle, Edit, Settings, Shield } from "lucide-react";
-import { Card, ProfileCard, Button } from "../components/ui";
-import { Link } from "react-router-dom";
+import { UserCircle, Settings } from "lucide-react";
+import { Card, ProfileCard } from "../components/ui";
 import "../styles/enhanced-pages.css";
 
 export default function Profile() {
@@ -30,18 +29,6 @@ export default function Profile() {
             avatar={user.avatar || "/assets/emperor.svg"}
             name={user.nickname}
             rank="Gold Collector"
-            badges={[
-              {
-                icon: <Award size={16} />,
-                text: "Expert",
-                title: "Expert Collector",
-              },
-              {
-                icon: <Star size={16} />,
-                text: "Verified",
-                title: "Verified Account",
-              },
-            ]}
             stats={[
               { label: "Collection Items", value: stats.totalCoins },
               { label: "Wishlist", value: stats.wishlistCount },
@@ -54,7 +41,7 @@ export default function Profile() {
               },
               {
                 label: "Settings",
-                onClick: () => window.location.href = "/settings",
+                onClick: () => (window.location.href = "/settings"),
                 variant: "outline",
                 icon: <Settings size={16} />,
               },

@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Badge from "./Badge";
 import Button from "./Button";
 
 /**
@@ -9,7 +8,6 @@ import Button from "./Button";
  * @param {string} props.avatar - URL аватару користувача
  * @param {string} props.name - Ім'я користувача
  * @param {string} props.rank - Ранг/статус користувача
- * @param {Array} [props.badges] - Бейджі користувача (опціонально)
  * @param {Array} [props.stats] - Статистика користувача (опціонально)
  * @param {Array} [props.actions] - Кнопки дії (опціонально)
  * @param {boolean} [props.editable=false] - Чи можна редагувати аватар
@@ -19,7 +17,6 @@ export default function ProfileCard({
   avatar,
   name,
   rank,
-  badges = [],
   stats = [],
   actions = [],
   editable = false,
@@ -44,19 +41,6 @@ export default function ProfileCard({
         <div className="profile-details">
           <h3>{name}</h3>
           <p className="profile-rank">{rank}</p>
-
-          {badges.length > 0 && (
-            <div className="profile-badges">
-              {badges.map((badge, index) => (
-                <Badge
-                  key={`badge-${index}`}
-                  icon={badge.icon}
-                  text={badge.text}
-                  title={badge.title}
-                />
-              ))}
-            </div>
-          )}
         </div>
       </div>
 
@@ -95,13 +79,6 @@ ProfileCard.propTypes = {
   avatar: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   rank: PropTypes.string.isRequired,
-  badges: PropTypes.arrayOf(
-    PropTypes.shape({
-      icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
-      text: PropTypes.string.isRequired,
-      title: PropTypes.string,
-    })
-  ),
   stats: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,

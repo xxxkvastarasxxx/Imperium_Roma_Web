@@ -15,11 +15,6 @@ export function UserProvider({ children }) {
     joinDate: "2024-01-15",
     level: "Advanced",
     reputation: "Excellent",
-    badges: [
-      { icon: "🏅", text: "Premium Member", title: "Premium Member Badge" },
-      { icon: "⭐", text: "Top Collector", title: "Top Collector Badge" },
-      { icon: "🏛️", text: "History Buff", title: "History Expert Badge" },
-    ],
   };
 
   const [user, setUser] = useState(developerModeUser);
