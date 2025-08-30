@@ -16,6 +16,7 @@ import {
   Table,
   Button,
   ChartPlaceholder,
+  LoadingOverlay,
 } from "../components/ui";
 
 export default function Dashboard() {
@@ -257,27 +258,20 @@ export default function Dashboard() {
     };
   }, [loading, chartData]);
 
-  if (loading) {
-    return (
-      <div className="dashboard-loading">
-        <Loader className="animate-spin" size={48} />
-        <p>Loading your dashboard...</p>
-      </div>
-    );
-  }
-
   return (
     <div className="dashboard-container">
-      <div className="header-title">
-        <h1>Welcome back, {user.nickname}</h1>
-        <p className="date">
-          {new Date().toLocaleDateString("en-US", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}
-        </p>
+      <LoadingOverlay 
+        isVisible={loading} 
+        message="Loading dashboard data..." 
+        fullScreen={true}
+      />
+      
+      {/* Dashboard Header */}
+      <div className="dashboard-header">
+        <div className="user-welcome">
+          <h1>Welcome back, {user?.displayName || "Collector"}!</h1>
+          <p>Here's an overview of your collection</p>
+        </div>
       </div>
 
       <div className="dashboard-overview">

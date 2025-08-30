@@ -16,7 +16,7 @@ import {
   Calendar,
   Star,
 } from "lucide-react";
-import { Card, Button, StatCard } from "../components/ui";
+import { Card, Button, StatCard, LoadingOverlay } from "../components/ui";
 import "../styles/domus.css";
 import "../styles/enhanced-pages.css";
 
@@ -138,6 +138,12 @@ function Wishlist() {
 
   return (
     <div className="dashboard-container">
+      <LoadingOverlay 
+        isVisible={loading} 
+        message="Loading your wishlist..." 
+        fullScreen={true}
+      />
+      
       <div className="header-title">
         <h1>My Wishlist</h1>
         <p className="date">Track the coins you desire for your collection</p>

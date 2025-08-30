@@ -1,0 +1,366 @@
+/* Loading Overlay Styles */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(31, 37, 55, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  border-radius: inherit;
+  transition: all 0.3s ease;
+}
+
+.loading-overlay.full-screen {
+  position: fixed;
+  border-radius: 0;
+  z-index: 9999;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 32px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  animation: fadeInScale 0.3s ease-out;
+  max-width: 400px;
+  text-align: center;
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.loading-spinner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner-circle {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(212, 175, 55, 0.2);
+  border-top: 4px solid #d4af37;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  position: relative;
+  
+  /* Добавляем красивое свечение */
+  box-shadow: 
+    0 0 20px rgba(212, 175, 55, 0.3),
+    0 0 40px rgba(212, 175, 55, 0.1);
+}
+
+.spinner-circle::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  border: 2px solid transparent;
+  border-top: 2px solid rgba(212, 175, 55, 0.5);
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite reverse;
+}
+
+.spinner-icon {
+  color: #d4af37;
+  animation: spin 1s linear infinite;
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.3));
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-message {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  text-align: center;
+  opacity: 0.9;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Loading skeleton styles */
+.skeleton {
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 0.1) 25%, 
+    rgba(255, 255, 255, 0.2) 50%, 
+    rgba(255, 255, 255, 0.1) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-text {
+  height: 16px;
+  margin-bottom: 8px;
+}
+
+.skeleton-text.large {
+  height: 24px;
+}
+
+.skeleton-text.small {
+  height: 12px;
+}
+
+.skeleton-card {
+  height: 200px;
+  margin-bottom: 16px;
+}
+
+.skeleton-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+/* Loading states for specific components */
+.card.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.table.loading tbody tr {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.loading-form {
+  position: relative;
+}
+
+.loading-form.loading .form-content {
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Button loading states */
+.button.loading {
+  position: relative;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.button-spinner {
+  display: inline-flex;
+  margin-right: 8px;
+}
+
+.button-spinner-circle {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.button.loading::after {
+  display: none;
+}
+
+/* Inline loading states */
+.inline-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #d4af37;
+  font-size: 14px;
+}
+
+.inline-loading .spinner-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Loading state variations */
+.loading-dots {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.loading-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d4af37;
+  animation: loadingDots 1.4s ease-in-out infinite both;
+}
+
+.loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+.loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes loadingDots {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Progress bar loading */
+.loading-progress {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 16px;
+}
+
+.loading-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #d4af37, #f4d03f);
+  border-radius: 2px;
+  animation: progressIndeterminate 2s ease-in-out infinite;
+}
+
+@keyframes progressIndeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Card loading states */
+.card-loading {
+  padding: 24px;
+}
+
+.card-loading .skeleton-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.card-loading .skeleton-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Table loading states */
+.table-loading {
+  position: relative;
+}
+
+.table-loading tbody {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.table-loading::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: tableShimmer 1.5s infinite;
+}
+
+@keyframes tableShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .loading-content {
+    padding: 24px;
+    gap: 12px;
+    margin: 16px;
+    max-width: calc(100vw - 32px);
+  }
+  
+  .loading-message {
+    font-size: 14px;
+  }
+  
+  .spinner-icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .loading-content {
+    padding: 20px;
+    gap: 8px;
+  }
+  
+  .spinner-icon {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Dark theme adjustments */
+@media (prefers-color-scheme: dark) {
+  .loading-overlay {
+    background: rgba(15, 20, 30, 0.9);
+  }
+  
+  .loading-content {
+    background: rgba(31, 37, 55, 0.8);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+  
+  .skeleton {
+    background: linear-gradient(90deg, 
+      rgba(255, 255, 255, 0.05) 25%, 
+      rgba(255, 255, 255, 0.15) 50%, 
+      rgba(255, 255, 255, 0.05) 75%
+    );
+  }
+}

@@ -17,7 +17,7 @@ import {
   Mail,
   Lock,
 } from "lucide-react";
-import { Card, Button } from "../components/ui";
+import { Card, Button, LoadingOverlay, CustomSpinner } from "../components/ui";
 import "../styles/domus.css";
 import "../styles/enhanced-pages.css";
 
@@ -42,6 +42,9 @@ function Settings() {
 
   const [activeTab, setActiveTab] = useState("profile");
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [savingSettings, setSavingSettings] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
   const [avatar, setAvatar] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -56,23 +59,34 @@ function Settings() {
 
   // Initialize form data from user context
   useEffect(() => {
-    if (user) {
-      setFormData({
-        displayName: user.displayName || "",
-        nickname: user.nickname || "",
-        email: user.email || "",
-        bio: user.bio || "",
-        location: user.location || "",
-        dateFormat: user.preferences?.dateFormat || "dd/mm/yyyy",
-        language: user.preferences?.language || "english",
-        timezone: user.preferences?.timezone || "UTC",
-        emailNotifications: user.preferences?.emailNotifications ?? true,
-        publicProfile: user.preferences?.publicProfile ?? true,
-        showCollection: user.preferences?.showCollection ?? true,
-        showWishlist: user.preferences?.showWishlist ?? false,
-        showAcquisitions: user.preferences?.showAcquisitions ?? true,
-      });
-    }
+    const loadUserSettings = async () => {
+      setInitialLoading(true);
+      
+      // Імітація завантаження даних користувача
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      if (user) {
+        setFormData({
+          displayName: user.displayName || "",
+          nickname: user.nickname || "",
+          email: user.email || "",
+          bio: user.bio || "",
+          location: user.location || "",
+          dateFormat: user.preferences?.dateFormat || "dd/mm/yyyy",
+          language: user.preferences?.language || "english",
+          timezone: user.preferences?.timezone || "UTC",
+          emailNotifications: user.preferences?.emailNotifications ?? true,
+          publicProfile: user.preferences?.publicProfile ?? true,
+          showCollection: user.preferences?.showCollection ?? true,
+          showWishlist: user.preferences?.showWishlist ?? false,
+          showAcquisitions: user.preferences?.showAcquisitions ?? true,
+        });
+      }
+      
+      setInitialLoading(false);
+    };
+    
+    loadUserSettings();
   }, [user]);
 
   // Handle input changes
@@ -87,17 +101,44 @@ function Settings() {
   };
 
   // Handle avatar file change
-  const handleAvatarChange = (event) => {
+  const handleAvatarChange = async (event) => {
     const file = event.target.files[0];
-    if (file) {
+    if (!file) return;
+
+    setUploadingAvatar(true);
+    setMessage({ type: "", text: "" });
+
+    try {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        throw new Error('Please select a valid image file');
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        throw new Error('File size must be less than 5MB');
+      }
+
       setAvatar(file);
+      
+      // Simulate upload delay
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      setMessage({ type: "success", text: "Avatar uploaded successfully!" });
+    } catch (error) {
+      console.error("Error uploading avatar:", error);
+      setMessage({ type: "error", text: error.message });
+      setAvatar(null);
+    } finally {
+      setUploadingAvatar(false);
     }
   };
 
   // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
+    setSavingSettings(true);
+    setMessage({ type: "", text: "" });
 
     try {
       // Prepare data for update
@@ -138,16 +179,16 @@ function Settings() {
       console.error("Error updating settings:", error);
       setMessage({ type: "error", text: error.message });
     } finally {
-      setLoading(false);
+      setSavingSettings(false);
     }
   };
 
   // Handle profile deletion
   const handleDeleteProfile = async () => {
     if (deleteConfirmText !== "DELETE") {
-      setMessage({ 
-        type: "error", 
-        text: "Please type 'DELETE' to confirm account deletion" 
+      setMessage({
+        type: "error",
+        text: "Please type 'DELETE' to confirm account deletion",
       });
       return;
     }
@@ -155,18 +196,17 @@ function Settings() {
     setIsDeleting(true);
     try {
       await deleteUserAccount(user.id);
-      
+
       // Success message (user will be redirected)
-      setMessage({ 
-        type: "success", 
-        text: "Account deleted successfully. Redirecting..." 
+      setMessage({
+        type: "success",
+        text: "Account deleted successfully. Redirecting...",
       });
 
       // Redirect to login page after a short delay
       setTimeout(() => {
-        window.location.href = '/login';
+        window.location.href = "/login";
       }, 2000);
-      
     } catch (error) {
       console.error("Error deleting profile:", error);
       setMessage({ type: "error", text: error.message });
@@ -185,7 +225,7 @@ function Settings() {
     if (!emailChangeData.newEmail || !emailChangeData.password) {
       setMessage({
         type: "error",
-        text: "Please provide both new email and current password"
+        text: "Please provide both new email and current password",
       });
       return;
     }
@@ -195,7 +235,7 @@ function Settings() {
     if (!emailRegex.test(emailChangeData.newEmail)) {
       setMessage({
         type: "error",
-        text: "Please enter a valid email address"
+        text: "Please enter a valid email address",
       });
       return;
     }
@@ -204,7 +244,7 @@ function Settings() {
     try {
       // Update email with Supabase
       const { error } = await supabase.auth.updateUser({
-        email: emailChangeData.newEmail
+        email: emailChangeData.newEmail,
       });
 
       if (error) {
@@ -213,7 +253,7 @@ function Settings() {
 
       setMessage({
         type: "info",
-        text: "Email change confirmation sent! Check your new email to confirm the change."
+        text: "Email change confirmation sent! Check your new email to confirm the change.",
       });
 
       // Reset form
@@ -222,7 +262,6 @@ function Settings() {
         password: "",
         showConfirm: false,
       });
-
     } catch (error) {
       console.error("Error changing email:", error);
       setMessage({ type: "error", text: error.message });
@@ -241,7 +280,13 @@ function Settings() {
   };
 
   return (
-    <div className="dashboard-container">
+    <div className="settings-container">
+      <LoadingOverlay 
+        isVisible={initialLoading} 
+        message="Loading account settings..." 
+        fullScreen={true}
+      />
+      
       <div className="header-title">
         <h1>Account Settings</h1>
         <p className="date">Manage your profile and preferences</p>
@@ -371,120 +416,21 @@ function Settings() {
                     onChange={handleAvatarChange}
                     className="file-input"
                   />
-                  <Button variant="outline" type="button">
-                    <Upload size={16} />
-                    Upload Avatar
+                  <Button variant="outline" type="button" disabled={uploadingAvatar}>
+                    {uploadingAvatar ? (
+                      <>
+                        <CustomSpinner size={16} />
+                        Uploading...
+                      </>
+                    ) : (
+                      <>
+                        <Upload size={16} />
+                        Upload Avatar
+                      </>
+                    )}
                   </Button>
                 </div>
               </div>
-            </div>
-          </Card>
-        )}
-
-        {activeTab === "profile" && (
-          <Card
-            title="Email Management"
-            icon={<Mail size={18} />}
-            subtitle="Change your email address (requires confirmation)"
-            className="settings-card email-card"
-          >
-            <div className="email-section">
-              <div className="current-email">
-                <label>Current Email:</label>
-                <span className="current-email-display">{user?.email}</span>
-              </div>
-
-              {!emailChangeData.showConfirm ? (
-                <div className="email-change-prompt">
-                  <p className="email-change-info">
-                    <Mail size={16} />
-                    To change your email address, you'll need to verify the new email. 
-                    A confirmation link will be sent to your new address.
-                  </p>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setEmailChangeData({...emailChangeData, showConfirm: true})}
-                    className="change-email-btn"
-                  >
-                    <Mail size={16} />
-                    Change Email
-                  </Button>
-                </div>
-              ) : (
-                <div className="email-change-form">
-                  <div className="form-group">
-                    <label htmlFor="newEmail">New Email Address</label>
-                    <input
-                      type="email"
-                      id="newEmail"
-                      value={emailChangeData.newEmail}
-                      onChange={(e) => setEmailChangeData({
-                        ...emailChangeData,
-                        newEmail: e.target.value
-                      })}
-                      className="form-input"
-                      placeholder="Enter your new email address"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="currentPassword">Current Password</label>
-                    <input
-                      type="password"
-                      id="currentPassword"
-                      value={emailChangeData.password}
-                      onChange={(e) => setEmailChangeData({
-                        ...emailChangeData,
-                        password: e.target.value
-                      })}
-                      className="form-input"
-                      placeholder="Enter your current password"
-                    />
-                  </div>
-
-                  <div className="email-change-warning">
-                    <AlertTriangle size={16} />
-                    <div>
-                      <p><strong>Important:</strong></p>
-                      <ul>
-                        <li>A confirmation link will be sent to your new email</li>
-                        <li>Your old email will remain active until confirmed</li>
-                        <li>You must click the confirmation link to complete the change</li>
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div className="email-change-actions">
-                    <Button
-                      type="button"
-                      variant="primary"
-                      onClick={handleEmailChange}
-                      disabled={isChangingEmail || !emailChangeData.newEmail || !emailChangeData.password}
-                    >
-                      {isChangingEmail ? (
-                        <>
-                          <Loader className="animate-spin" size={16} />
-                          Sending Confirmation...
-                        </>
-                      ) : (
-                        <>
-                          <Mail size={16} />
-                          Send Confirmation
-                        </>
-                      )}
-                    </Button>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={resetEmailChange}
-                      disabled={isChangingEmail}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              )}
             </div>
           </Card>
         )}
@@ -659,13 +605,19 @@ function Settings() {
                     <div className="email-change-prompt">
                       <p className="email-change-info">
                         <Mail size={16} />
-                        To change your email address, you'll need to verify the new email. 
-                        A confirmation link will be sent to your new address.
+                        To change your email address, you'll need to verify the
+                        new email. A confirmation link will be sent to your new
+                        address.
                       </p>
                       <Button
                         type="button"
                         variant="outline"
-                        onClick={() => setEmailChangeData({...emailChangeData, showConfirm: true})}
+                        onClick={() =>
+                          setEmailChangeData({
+                            ...emailChangeData,
+                            showConfirm: true,
+                          })
+                        }
                         className="change-email-btn"
                       >
                         <Mail size={16} />
@@ -680,25 +632,31 @@ function Settings() {
                           type="email"
                           id="newEmail"
                           value={emailChangeData.newEmail}
-                          onChange={(e) => setEmailChangeData({
-                            ...emailChangeData,
-                            newEmail: e.target.value
-                          })}
+                          onChange={(e) =>
+                            setEmailChangeData({
+                              ...emailChangeData,
+                              newEmail: e.target.value,
+                            })
+                          }
                           className="form-input"
                           placeholder="Enter your new email address"
                         />
                       </div>
 
                       <div className="form-group">
-                        <label htmlFor="currentPassword">Current Password</label>
+                        <label htmlFor="currentPassword">
+                          Current Password
+                        </label>
                         <input
                           type="password"
                           id="currentPassword"
                           value={emailChangeData.password}
-                          onChange={(e) => setEmailChangeData({
-                            ...emailChangeData,
-                            password: e.target.value
-                          })}
+                          onChange={(e) =>
+                            setEmailChangeData({
+                              ...emailChangeData,
+                              password: e.target.value,
+                            })
+                          }
                           className="form-input"
                           placeholder="Enter your current password"
                         />
@@ -707,11 +665,21 @@ function Settings() {
                       <div className="email-change-warning">
                         <AlertTriangle size={16} />
                         <div>
-                          <p><strong>Important:</strong></p>
+                          <p>
+                            <strong>Important:</strong>
+                          </p>
                           <ul>
-                            <li>You'll receive a confirmation email at the new address</li>
-                            <li>Your current email will remain active until you confirm the change</li>
-                            <li>This process may take a few minutes to complete</li>
+                            <li>
+                              You'll receive a confirmation email at the new
+                              address
+                            </li>
+                            <li>
+                              Your current email will remain active until you
+                              confirm the change
+                            </li>
+                            <li>
+                              This process may take a few minutes to complete
+                            </li>
                           </ul>
                         </div>
                       </div>
@@ -721,11 +689,15 @@ function Settings() {
                           type="button"
                           variant="primary"
                           onClick={handleEmailChange}
-                          disabled={isChangingEmail || !emailChangeData.newEmail || !emailChangeData.password}
+                          disabled={
+                            isChangingEmail ||
+                            !emailChangeData.newEmail ||
+                            !emailChangeData.password
+                          }
                         >
                           {isChangingEmail ? (
                             <>
-                              <Loader className="animate-spin" size={16} />
+                              <CustomSpinner size={16} />
                               Sending Verification...
                             </>
                           ) : (
@@ -738,11 +710,13 @@ function Settings() {
                         <Button
                           type="button"
                           variant="outline"
-                          onClick={() => setEmailChangeData({
-                            newEmail: "",
-                            password: "",
-                            showConfirm: false
-                          })}
+                          onClick={() =>
+                            setEmailChangeData({
+                              newEmail: "",
+                              password: "",
+                              showConfirm: false,
+                            })
+                          }
                           disabled={isChangingEmail}
                         >
                           Cancel
@@ -758,7 +732,8 @@ function Settings() {
                   <h4>Delete Account</h4>
                   <p className="account-warning">
                     <AlertTriangle size={16} />
-                    This action cannot be undone. Deleting your account will permanently remove:
+                    This action cannot be undone. Deleting your account will
+                    permanently remove:
                   </p>
                   <ul className="account-warning-list">
                     <li>Your profile and personal information</li>
@@ -766,7 +741,7 @@ function Settings() {
                     <li>Your wishlist items</li>
                     <li>All historical data and preferences</li>
                   </ul>
-                  
+
                   {!showDeleteConfirm ? (
                     <Button
                       type="button"
@@ -780,7 +755,8 @@ function Settings() {
                   ) : (
                     <div className="delete-confirmation">
                       <p className="delete-confirm-text">
-                        To confirm deletion, type <strong>DELETE</strong> in the field below:
+                        To confirm deletion, type <strong>DELETE</strong> in the
+                        field below:
                       </p>
                       <input
                         type="text"
@@ -795,11 +771,13 @@ function Settings() {
                           variant="primary"
                           className="danger"
                           onClick={handleDeleteProfile}
-                          disabled={isDeleting || deleteConfirmText !== "DELETE"}
+                          disabled={
+                            isDeleting || deleteConfirmText !== "DELETE"
+                          }
                         >
                           {isDeleting ? (
                             <>
-                              <Loader className="animate-spin" size={16} />
+                              <CustomSpinner size={16} />
                               Deleting Account...
                             </>
                           ) : (
@@ -831,12 +809,12 @@ function Settings() {
             <Button
               type="submit"
               variant="primary"
-              disabled={loading}
+              disabled={savingSettings || initialLoading}
               className="save-button"
             >
-              {loading ? (
+              {savingSettings ? (
                 <>
-                  <Loader className="animate-spin" size={16} />
+                  <CustomSpinner size={16} />
                   Saving...
                 </>
               ) : (

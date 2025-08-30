@@ -15,7 +15,7 @@ import {
   DollarSign,
   Calendar,
 } from "lucide-react";
-import { Card, Button, StatCard } from "../components/ui";
+import { Card, Button, StatCard, LoadingOverlay } from "../components/ui";
 import "../styles/domus.css";
 import "../styles/enhanced-pages.css";
 
@@ -134,6 +134,12 @@ function Collection() {
 
   return (
     <div className="dashboard-container">
+      <LoadingOverlay 
+        isVisible={loading} 
+        message="Loading your collection..." 
+        fullScreen={true}
+      />
+      
       <div className="header-title">
         <h1>My Collection</h1>
         <p className="date">Manage and view all items in your Roman numismatic collection</p>
