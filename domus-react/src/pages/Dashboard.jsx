@@ -260,12 +260,12 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-container">
-      <LoadingOverlay 
-        isVisible={loading} 
-        message="Loading dashboard data..." 
+      <LoadingOverlay
+        isVisible={loading}
+        message="Loading dashboard data..."
         fullScreen={true}
       />
-      
+
       {/* Dashboard Header */}
       <div className="dashboard-header">
         <div className="user-welcome">

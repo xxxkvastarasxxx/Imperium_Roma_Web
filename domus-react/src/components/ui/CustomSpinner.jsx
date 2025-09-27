@@ -13,12 +13,7 @@ const CustomSpinner = ({ size = 16, className = "" }) => {
     bottom: `${Math.max(1, size / 8)}px`,
   };
 
-  return (
-    <div 
-      className={`button-spinner-circle ${className}`}
-      style={style}
-    />
-  );
+  return <div className={`button-spinner-circle ${className}`} style={style} />;
 };
 
 export default CustomSpinner;

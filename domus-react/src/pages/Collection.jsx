@@ -134,15 +134,17 @@ function Collection() {
 
   return (
     <div className="dashboard-container">
-      <LoadingOverlay 
-        isVisible={loading} 
-        message="Loading your collection..." 
+      <LoadingOverlay
+        isVisible={loading}
+        message="Loading your collection..."
         fullScreen={true}
       />
-      
+
       <div className="header-title">
         <h1>My Collection</h1>
-        <p className="date">Manage and view all items in your Roman numismatic collection</p>
+        <p className="date">
+          Manage and view all items in your Roman numismatic collection
+        </p>
       </div>
 
       {/* Collection Stats */}
@@ -159,7 +161,13 @@ function Collection() {
         <StatCard
           icon={<DollarSign size={22} />}
           title="Collection Value"
-          value={`${coins.reduce((sum, coin) => sum + parseFloat(coin.coin_details?.estimated_value || 0), 0).toFixed(0)} €`}
+          value={`${coins
+            .reduce(
+              (sum, coin) =>
+                sum + parseFloat(coin.coin_details?.estimated_value || 0),
+              0
+            )
+            .toFixed(0)} €`}
           trendDirection="up"
           trendValue="8.5%"
           subtitle="Estimated"
@@ -168,7 +176,13 @@ function Collection() {
         <StatCard
           icon={<Calendar size={22} />}
           title="Latest Addition"
-          value={coins.length > 0 ? new Date(Math.max(...coins.map(c => new Date(c.date_added)))).toLocaleDateString() : "None"}
+          value={
+            coins.length > 0
+              ? new Date(
+                  Math.max(...coins.map((c) => new Date(c.date_added)))
+                ).toLocaleDateString()
+              : "None"
+          }
           subtitle="Most recent coin"
         />
       </div>
@@ -195,7 +209,11 @@ function Collection() {
 
           <div className="collection-controls">
             <div className="sort-controls">
-              <select value={sortBy} onChange={handleSortChange} className="sort-select">
+              <select
+                value={sortBy}
+                onChange={handleSortChange}
+                className="sort-select"
+              >
                 <option value="dateAdded">Date Added</option>
                 <option value="name">Name</option>
                 <option value="emperor">Emperor</option>
@@ -258,7 +276,11 @@ function Collection() {
             </Button>
           </div>
         ) : (
-          <div className={`collection-items ${viewMode === "grid" ? "grid-view" : "list-view"}`}>
+          <div
+            className={`collection-items ${
+              viewMode === "grid" ? "grid-view" : "list-view"
+            }`}
+          >
             {sortedCoins.map((coin) => {
               const coinDetails = coin.coin_details || {};
               return (

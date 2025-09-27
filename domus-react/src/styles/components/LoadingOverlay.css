@@ -63,11 +63,9 @@
   border-radius: 50%;
   animation: spin 1s linear infinite;
   position: relative;
-  
+
   /* Добавляем красивое свечение */
-  box-shadow: 
-    0 0 20px rgba(212, 175, 55, 0.3),
-    0 0 40px rgba(212, 175, 55, 0.1);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3), 0 0 40px rgba(212, 175, 55, 0.1);
 }
 
 .spinner-circle::before {
@@ -90,8 +88,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .loading-message {
@@ -106,9 +108,10 @@
 
 /* Loading skeleton styles */
 .skeleton {
-  background: linear-gradient(90deg, 
-    rgba(255, 255, 255, 0.1) 25%, 
-    rgba(255, 255, 255, 0.2) 50%, 
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 25%,
+    rgba(255, 255, 255, 0.2) 50%,
     rgba(255, 255, 255, 0.1) 75%
   );
   background-size: 200% 100%;
@@ -222,11 +225,17 @@
   animation: loadingDots 1.4s ease-in-out infinite both;
 }
 
-.loading-dots span:nth-child(1) { animation-delay: -0.32s; }
-.loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+.loading-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+.loading-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
 
 @keyframes loadingDots {
-  0%, 80%, 100% {
+  0%,
+  80%,
+  100% {
     transform: scale(0);
     opacity: 0.5;
   }
@@ -310,8 +319,12 @@
 }
 
 @keyframes tableShimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 /* Responsive adjustments */
@@ -322,11 +335,11 @@
     margin: 16px;
     max-width: calc(100vw - 32px);
   }
-  
+
   .loading-message {
     font-size: 14px;
   }
-  
+
   .spinner-icon {
     width: 32px;
     height: 32px;
@@ -338,7 +351,7 @@
     padding: 20px;
     gap: 8px;
   }
-  
+
   .spinner-icon {
     width: 28px;
     height: 28px;
@@ -350,16 +363,17 @@
   .loading-overlay {
     background: rgba(15, 20, 30, 0.9);
   }
-  
+
   .loading-content {
     background: rgba(31, 37, 55, 0.8);
     border-color: rgba(255, 255, 255, 0.15);
   }
-  
+
   .skeleton {
-    background: linear-gradient(90deg, 
-      rgba(255, 255, 255, 0.05) 25%, 
-      rgba(255, 255, 255, 0.15) 50%, 
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.05) 25%,
+      rgba(255, 255, 255, 0.15) 50%,
       rgba(255, 255, 255, 0.05) 75%
     );
   }

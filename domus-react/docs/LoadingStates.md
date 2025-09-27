@@ -5,30 +5,33 @@
 ## Компоненти
 
 ### LoadingOverlay
+
 Головний компонент для відображення оверлею завантаження.
 
 ```jsx
-import { LoadingOverlay } from '../components/ui';
+import { LoadingOverlay } from "../components/ui";
 
-<LoadingOverlay 
-  isVisible={loading} 
-  message="Loading data..." 
+<LoadingOverlay
+  isVisible={loading}
+  message="Loading data..."
   fullScreen={true}
   className="custom-loading"
-/>
+/>;
 ```
 
 **Props:**
+
 - `isVisible` (boolean): Чи показувати оверлей
 - `message` (string): Текст повідомлення (за замовчуванням: "Loading...")
 - `fullScreen` (boolean): Чи займати весь екран
 - `className` (string): Додаткові CSS класи
 
 ### LoadingButton
+
 Кнопка з вбудованим станом завантаження.
 
 ```jsx
-import { LoadingButton } from '../components/ui';
+import { LoadingButton } from "../components/ui";
 
 <LoadingButton
   loading={isSubmitting}
@@ -36,16 +39,18 @@ import { LoadingButton } from '../components/ui';
   onClick={handleSave}
 >
   Save Changes
-</LoadingButton>
+</LoadingButton>;
 ```
 
 **Props:**
+
 - `loading` (boolean): Стан завантаження
 - `loadingText` (string): Текст під час завантаження
 - `loadingIcon` (ReactNode): Іконка завантаження
 - Всі інші props від звичайного Button
 
 ### SkeletonLoader
+
 Компонент для відображення скелетної анімації завантаження.
 
 ```jsx
@@ -57,6 +62,7 @@ import { SkeletonLoader } from '../components/ui';
 ```
 
 **Props:**
+
 - `type` (string): Тип скелету ("text", "card", "avatar")
 - `width` (string): Ширина
 - `height` (string): Висота
@@ -64,10 +70,11 @@ import { SkeletonLoader } from '../components/ui';
 - `className` (string): Додаткові CSS класи
 
 ### LoadingForm
+
 Форма з автоматичним управлінням станом завантаження.
 
 ```jsx
-import { LoadingForm } from '../components/ui';
+import { LoadingForm } from "../components/ui";
 
 <LoadingForm
   onSubmit={handleSubmit}
@@ -77,10 +84,11 @@ import { LoadingForm } from '../components/ui';
   loadingMessage="Processing your request..."
 >
   {/* Form fields */}
-</LoadingForm>
+</LoadingForm>;
 ```
 
 **Props:**
+
 - `onSubmit` (function): Обробник відправки форми
 - `loading` (boolean): Зовнішній стан завантаження
 - `submitText` (string): Текст кнопки відправки
@@ -91,10 +99,11 @@ import { LoadingForm } from '../components/ui';
 ## Хуки
 
 ### useLoading
+
 Хук для управління простими станами завантаження.
 
 ```jsx
-import { useLoading } from '../hooks/useLoading';
+import { useLoading } from "../hooks/useLoading";
 
 const { loading, error, startLoading, stopLoading, withLoading } = useLoading();
 
@@ -108,54 +117,53 @@ const handleSave = async () => {
 ```
 
 ### useMultipleLoading
+
 Хук для управління кількома станами завантаження.
 
 ```jsx
-import { useMultipleLoading } from '../hooks/useLoading';
+import { useMultipleLoading } from "../hooks/useLoading";
 
-const { 
-  startLoading, 
-  stopLoading, 
-  isLoading, 
-  isAnyLoading 
-} = useMultipleLoading({
-  save: false,
-  upload: false,
-  delete: false
-});
+const { startLoading, stopLoading, isLoading, isAnyLoading } =
+  useMultipleLoading({
+    save: false,
+    upload: false,
+    delete: false,
+  });
 
 // Використання
 const handleSave = async () => {
-  startLoading('save');
+  startLoading("save");
   try {
     await saveData();
   } finally {
-    stopLoading('save');
+    stopLoading("save");
   }
 };
 ```
 
 ### useApi
+
 Хук для API запитів з автоматичним управлінням станами завантаження.
 
 ```jsx
-import { useApi } from '../hooks/useApi';
+import { useApi } from "../hooks/useApi";
 
 const { data, loading, error, refetch } = useApi(
   () => fetchUserData(),
   [], // dependencies
   {
-    onSuccess: (data) => console.log('Success:', data),
-    onError: (error) => console.error('Error:', error)
+    onSuccess: (data) => console.log("Success:", data),
+    onError: (error) => console.error("Error:", error),
   }
 );
 ```
 
 ### usePaginatedApi
+
 Хук для пагінованих API запитів.
 
 ```jsx
-import { usePaginatedApi } from '../hooks/useApi';
+import { usePaginatedApi } from "../hooks/useApi";
 
 const {
   data,
@@ -164,13 +172,14 @@ const {
   goToPage,
   nextPage,
   previousPage,
-  changePageSize
+  changePageSize,
 } = usePaginatedApi(fetchPaginatedData);
 ```
 
 ## Стилі
 
 ### CSS Класи
+
 - `.loading-overlay` - Основний оверлей
 - `.loading-overlay.full-screen` - Повноекранний оверлей
 - `.skeleton` - Базовий скелет
@@ -179,6 +188,7 @@ const {
 - `.inline-loading` - Інлайн індикатор завантаження
 
 ### Анімації
+
 - `spin` - Обертання спінера
 - `shimmer` - Shimmer ефект для скелетів
 - `fadeInScale` - Появлення оверлею
@@ -188,15 +198,16 @@ const {
 ## Приклади використання
 
 ### Dashboard з повноекранним завантаженням
+
 ```jsx
 function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   return (
     <div className="dashboard-container">
-      <LoadingOverlay 
-        isVisible={loading} 
-        message="Loading dashboard data..." 
+      <LoadingOverlay
+        isVisible={loading}
+        message="Loading dashboard data..."
         fullScreen={true}
       />
       {/* Dashboard content */}
@@ -206,6 +217,7 @@ function Dashboard() {
 ```
 
 ### Форма з локальним завантаженням
+
 ```jsx
 function SettingsForm() {
   const [saving, setSaving] = useState(false);
@@ -229,6 +241,7 @@ function SettingsForm() {
 ```
 
 ### Список з скелетним завантаженням
+
 ```jsx
 function CoinList() {
   const { data: coins, loading } = useApi(fetchCoins);
@@ -236,7 +249,7 @@ function CoinList() {
   if (loading) {
     return (
       <div>
-        {Array.from({length: 5}, (_, i) => (
+        {Array.from({ length: 5 }, (_, i) => (
           <SkeletonLoader key={i} type="card" height="120px" />
         ))}
       </div>
@@ -245,7 +258,9 @@ function CoinList() {
 
   return (
     <div>
-      {coins.map(coin => <CoinCard key={coin.id} coin={coin} />)}
+      {coins.map((coin) => (
+        <CoinCard key={coin.id} coin={coin} />
+      ))}
     </div>
   );
 }

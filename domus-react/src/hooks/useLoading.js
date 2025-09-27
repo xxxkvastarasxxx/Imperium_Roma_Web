@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
 /**
  * Custom hook for managing loading states
@@ -23,17 +23,20 @@ export const useLoading = (initialState = false) => {
     setError(errorMessage);
   }, []);
 
-  const withLoading = useCallback(async (asyncFunction) => {
-    try {
-      startLoading();
-      const result = await asyncFunction();
-      stopLoading();
-      return result;
-    } catch (err) {
-      setLoadingError(err.message || 'An error occurred');
-      throw err;
-    }
-  }, [startLoading, stopLoading, setLoadingError]);
+  const withLoading = useCallback(
+    async (asyncFunction) => {
+      try {
+        startLoading();
+        const result = await asyncFunction();
+        stopLoading();
+        return result;
+      } catch (err) {
+        setLoadingError(err.message || "An error occurred");
+        throw err;
+      }
+    },
+    [startLoading, stopLoading, setLoadingError]
+  );
 
   return {
     loading,
@@ -54,23 +57,32 @@ export const useMultipleLoading = (initialStates = {}) => {
   const [loadingStates, setLoadingStates] = useState(initialStates);
 
   const setLoading = useCallback((key, isLoading) => {
-    setLoadingStates(prev => ({
+    setLoadingStates((prev) => ({
       ...prev,
-      [key]: isLoading
+      [key]: isLoading,
     }));
   }, []);
 
-  const startLoading = useCallback((key) => {
-    setLoading(key, true);
-  }, [setLoading]);
+  const startLoading = useCallback(
+    (key) => {
+      setLoading(key, true);
+    },
+    [setLoading]
+  );
 
-  const stopLoading = useCallback((key) => {
-    setLoading(key, false);
-  }, [setLoading]);
+  const stopLoading = useCallback(
+    (key) => {
+      setLoading(key, false);
+    },
+    [setLoading]
+  );
 
-  const isLoading = useCallback((key) => {
-    return loadingStates[key] || false;
-  }, [loadingStates]);
+  const isLoading = useCallback(
+    (key) => {
+      return loadingStates[key] || false;
+    },
+    [loadingStates]
+  );
 
   const isAnyLoading = useCallback(() => {
     return Object.values(loadingStates).some(Boolean);

@@ -61,10 +61,10 @@ function Settings() {
   useEffect(() => {
     const loadUserSettings = async () => {
       setInitialLoading(true);
-      
+
       // Імітація завантаження даних користувача
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
+      await new Promise((resolve) => setTimeout(resolve, 800));
+
       if (user) {
         setFormData({
           displayName: user.displayName || "",
@@ -82,10 +82,10 @@ function Settings() {
           showAcquisitions: user.preferences?.showAcquisitions ?? true,
         });
       }
-      
+
       setInitialLoading(false);
     };
-    
+
     loadUserSettings();
   }, [user]);
 
@@ -110,20 +110,20 @@ function Settings() {
 
     try {
       // Validate file type
-      if (!file.type.startsWith('image/')) {
-        throw new Error('Please select a valid image file');
+      if (!file.type.startsWith("image/")) {
+        throw new Error("Please select a valid image file");
       }
 
       // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        throw new Error('File size must be less than 5MB');
+        throw new Error("File size must be less than 5MB");
       }
 
       setAvatar(file);
-      
+
       // Simulate upload delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
       setMessage({ type: "success", text: "Avatar uploaded successfully!" });
     } catch (error) {
       console.error("Error uploading avatar:", error);
@@ -281,12 +281,12 @@ function Settings() {
 
   return (
     <div className="settings-container">
-      <LoadingOverlay 
-        isVisible={initialLoading} 
-        message="Loading account settings..." 
+      <LoadingOverlay
+        isVisible={initialLoading}
+        message="Loading account settings..."
         fullScreen={true}
       />
-      
+
       <div className="header-title">
         <h1>Account Settings</h1>
         <p className="date">Manage your profile and preferences</p>
@@ -416,7 +416,11 @@ function Settings() {
                     onChange={handleAvatarChange}
                     className="file-input"
                   />
-                  <Button variant="outline" type="button" disabled={uploadingAvatar}>
+                  <Button
+                    variant="outline"
+                    type="button"
+                    disabled={uploadingAvatar}
+                  >
                     {uploadingAvatar ? (
                       <>
                         <CustomSpinner size={16} />

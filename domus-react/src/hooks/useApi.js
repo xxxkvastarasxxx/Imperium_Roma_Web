@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 
 /**
  * Custom hook for API requests with loading states
@@ -8,44 +8,47 @@ import { useState, useEffect, useCallback } from 'react';
  * @returns {object} - Object containing data, loading state, error, and refetch function
  */
 export const useApi = (apiFunction, dependencies = [], options = {}) => {
-  const { 
-    initialData = null, 
+  const {
+    initialData = null,
     executeOnMount = true,
     onSuccess,
-    onError 
+    onError,
   } = options;
 
   const [data, setData] = useState(initialData);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const execute = useCallback(async (...args) => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      const result = await apiFunction(...args);
-      
-      setData(result);
-      
-      if (onSuccess) {
-        onSuccess(result);
+  const execute = useCallback(
+    async (...args) => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const result = await apiFunction(...args);
+
+        setData(result);
+
+        if (onSuccess) {
+          onSuccess(result);
+        }
+
+        return result;
+      } catch (err) {
+        const errorMessage = err.message || "An error occurred";
+        setError(errorMessage);
+
+        if (onError) {
+          onError(err);
+        }
+
+        throw err;
+      } finally {
+        setLoading(false);
       }
-      
-      return result;
-    } catch (err) {
-      const errorMessage = err.message || 'An error occurred';
-      setError(errorMessage);
-      
-      if (onError) {
-        onError(err);
-      }
-      
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [apiFunction, onSuccess, onError]);
+    },
+    [apiFunction, onSuccess, onError]
+  );
 
   const refetch = useCallback(() => {
     return execute();
@@ -75,12 +78,7 @@ export const useApi = (apiFunction, dependencies = [], options = {}) => {
  * @returns {object} - Object containing paginated data and controls
  */
 export const usePaginatedApi = (apiFunction, options = {}) => {
-  const {
-    initialPage = 1,
-    initialPageSize = 10,
-    onSuccess,
-    onError
-  } = options;
+  const { initialPage = 1, initialPageSize = 10, onSuccess, onError } = options;
 
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState({
@@ -94,47 +92,59 @@ export const usePaginatedApi = (apiFunction, options = {}) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchData = useCallback(async (page = pagination.currentPage, pageSize = pagination.pageSize) => {
-    try {
-      setLoading(true);
-      setError(null);
+  const fetchData = useCallback(
+    async (page = pagination.currentPage, pageSize = pagination.pageSize) => {
+      try {
+        setLoading(true);
+        setError(null);
 
-      const result = await apiFunction({ page, pageSize });
-      
-      setData(result.data || []);
-      setPagination({
-        currentPage: result.pagination?.currentPage || page,
-        pageSize: result.pagination?.pageSize || pageSize,
-        totalPages: result.pagination?.totalPages || 0,
-        totalItems: result.pagination?.totalItems || 0,
-        hasNextPage: result.pagination?.hasNextPage || false,
-        hasPreviousPage: result.pagination?.hasPreviousPage || false,
-      });
+        const result = await apiFunction({ page, pageSize });
 
-      if (onSuccess) {
-        onSuccess(result);
+        setData(result.data || []);
+        setPagination({
+          currentPage: result.pagination?.currentPage || page,
+          pageSize: result.pagination?.pageSize || pageSize,
+          totalPages: result.pagination?.totalPages || 0,
+          totalItems: result.pagination?.totalItems || 0,
+          hasNextPage: result.pagination?.hasNextPage || false,
+          hasPreviousPage: result.pagination?.hasPreviousPage || false,
+        });
+
+        if (onSuccess) {
+          onSuccess(result);
+        }
+
+        return result;
+      } catch (err) {
+        const errorMessage = err.message || "An error occurred";
+        setError(errorMessage);
+
+        if (onError) {
+          onError(err);
+        }
+
+        throw err;
+      } finally {
+        setLoading(false);
       }
+    },
+    [
+      apiFunction,
+      pagination.currentPage,
+      pagination.pageSize,
+      onSuccess,
+      onError,
+    ]
+  );
 
-      return result;
-    } catch (err) {
-      const errorMessage = err.message || 'An error occurred';
-      setError(errorMessage);
-      
-      if (onError) {
-        onError(err);
+  const goToPage = useCallback(
+    (page) => {
+      if (page >= 1 && page <= pagination.totalPages) {
+        fetchData(page, pagination.pageSize);
       }
-      
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, [apiFunction, pagination.currentPage, pagination.pageSize, onSuccess, onError]);
-
-  const goToPage = useCallback((page) => {
-    if (page >= 1 && page <= pagination.totalPages) {
-      fetchData(page, pagination.pageSize);
-    }
-  }, [fetchData, pagination.totalPages, pagination.pageSize]);
+    },
+    [fetchData, pagination.totalPages, pagination.pageSize]
+  );
 
   const nextPage = useCallback(() => {
     if (pagination.hasNextPage) {
@@ -148,9 +158,12 @@ export const usePaginatedApi = (apiFunction, options = {}) => {
     }
   }, [goToPage, pagination.hasPreviousPage, pagination.currentPage]);
 
-  const changePageSize = useCallback((newPageSize) => {
-    fetchData(1, newPageSize);
-  }, [fetchData]);
+  const changePageSize = useCallback(
+    (newPageSize) => {
+      fetchData(1, newPageSize);
+    },
+    [fetchData]
+  );
 
   const refetch = useCallback(() => {
     return fetchData(pagination.currentPage, pagination.pageSize);

@@ -16,12 +16,14 @@
 Додаток включає комплексну систему управління станами завантаження:
 
 ### Компоненти
+
 - **LoadingOverlay** - Оверлей завантаження для повноекранних та локальних станів
 - **LoadingButton** - Кнопки з вбудованими станами завантаження
 - **SkeletonLoader** - Скелетна анімація для плавного завантаження контенту
 - **LoadingForm** - Форми з автоматичним управлінням завантаженням
 
 ### Хуки
+
 - **useLoading** - Простое управління станами завантаження
 - **useMultipleLoading** - Управління кількома станами одночасно
 - **useApi** - API запити з автоматичними станами завантаження
@@ -30,21 +32,25 @@
 ## Початок роботи
 
 ### Встановлення залежностей
+
 \`\`\`bash
 npm install
 \`\`\`
 
 ### Запуск в режимі розробки
+
 \`\`\`bash
 npm run dev
 \`\`\`
 
 ### Збірка для продакшну
+
 \`\`\`bash
 npm run build
 \`\`\`
 
 ### Перегляд збірки
+
 \`\`\`bash
 npm run preview
 \`\`\`
@@ -54,33 +60,34 @@ npm run preview
 \`\`\`
 src/
 ├── components/
-│   ├── ui/                    # UI компоненти
-│   │   ├── LoadingOverlay.jsx # Оверлей завантаження
-│   │   ├── LoadingButton.jsx  # Кнопка з завантаженням
-│   │   ├── SkeletonLoader.jsx # Скелетна анімація
-│   │   └── LoadingForm.jsx    # Форма з завантаженням
-│   ├── layout/               # Компоненти розмітки
-│   └── features/             # Функціональні компоненти
-├── pages/                    # Сторінки додатку
-│   ├── Dashboard.jsx         # Головна сторінка
-│   ├── Collection.jsx        # Управління колекцією
-│   ├── Wishlist.jsx          # Список бажань
-│   ├── Settings.jsx          # Налаштування
-│   └── Profile.jsx           # Профіль користувача
-├── hooks/                    # Custom хуки
-│   ├── useLoading.js         # Хуки для завантаження
-│   └── useApi.js             # API хуки
-├── contexts/                 # React контексти
-├── services/                 # Сервіси (API, Supabase)
-├── styles/                   # Стилі
-│   ├── components/           # Стилі компонентів
-│   └── pages/                # Стилі сторінок
-└── utils/                    # Утиліти
+│ ├── ui/ # UI компоненти
+│ │ ├── LoadingOverlay.jsx # Оверлей завантаження
+│ │ ├── LoadingButton.jsx # Кнопка з завантаженням
+│ │ ├── SkeletonLoader.jsx # Скелетна анімація
+│ │ └── LoadingForm.jsx # Форма з завантаженням
+│ ├── layout/ # Компоненти розмітки
+│ └── features/ # Функціональні компоненти
+├── pages/ # Сторінки додатку
+│ ├── Dashboard.jsx # Головна сторінка
+│ ├── Collection.jsx # Управління колекцією
+│ ├── Wishlist.jsx # Список бажань
+│ ├── Settings.jsx # Налаштування
+│ └── Profile.jsx # Профіль користувача
+├── hooks/ # Custom хуки
+│ ├── useLoading.js # Хуки для завантаження
+│ └── useApi.js # API хуки
+├── contexts/ # React контексти
+├── services/ # Сервіси (API, Supabase)
+├── styles/ # Стилі
+│ ├── components/ # Стилі компонентів
+│ └── pages/ # Стилі сторінок
+└── utils/ # Утиліти
 \`\`\`
 
 ## Використання станів завантаження
 
 ### Повноекранне завантаження
+
 \`\`\`jsx
 import { LoadingOverlay } from '../components/ui';
 
@@ -92,30 +99,33 @@ import { LoadingOverlay } from '../components/ui';
 \`\`\`
 
 ### Кнопка з завантаженням
+
 \`\`\`jsx
 import { LoadingButton } from '../components/ui';
 
 <LoadingButton
-  loading={saving}
-  loadingText="Saving..."
-  onClick={handleSave}
->
-  Save Changes
-</LoadingButton>
-\`\`\`
+loading={saving}
+loadingText="Saving..."
+onClick={handleSave}
+
+> Save Changes
+> </LoadingButton>
+> \`\`\`
 
 ### Скелетне завантаження
+
 \`\`\`jsx
 import { SkeletonLoader } from '../components/ui';
 
 {loading ? (
-  <SkeletonLoader type="card" count={5} height="200px" />
+<SkeletonLoader type="card" count={5} height="200px" />
 ) : (
-  renderActualContent()
+renderActualContent()
 )}
 \`\`\`
 
 ### Хук для API
+
 \`\`\`jsx
 import { useApi } from '../hooks/useApi';
 
@@ -151,6 +161,7 @@ npm run build
 ## Документація
 
 Детальна документація доступна в папці \`docs/\`:
+
 - [Loading States](./docs/LoadingStates.md) - Система станів завантаження
 - [Components](./docs/Components.md) - Опис компонентів
 - [API](./docs/API.md) - Документація API

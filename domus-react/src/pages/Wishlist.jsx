@@ -138,12 +138,12 @@ function Wishlist() {
 
   return (
     <div className="dashboard-container">
-      <LoadingOverlay 
-        isVisible={loading} 
-        message="Loading your wishlist..." 
+      <LoadingOverlay
+        isVisible={loading}
+        message="Loading your wishlist..."
         fullScreen={true}
       />
-      
+
       <div className="header-title">
         <h1>My Wishlist</h1>
         <p className="date">Track the coins you desire for your collection</p>
@@ -163,14 +163,18 @@ function Wishlist() {
         <StatCard
           icon={<DollarSign size={22} />}
           title="Target Budget"
-          value={`${wishlistItems.reduce((sum, item) => sum + parseFloat(item.target_price || 0), 0).toFixed(0)} €`}
+          value={`${wishlistItems
+            .reduce((sum, item) => sum + parseFloat(item.target_price || 0), 0)
+            .toFixed(0)} €`}
           subtitle="Total target prices"
         />
 
         <StatCard
           icon={<Star size={22} />}
           title="High Priority"
-          value={wishlistItems.filter(item => item.priority === 3).length.toString()}
+          value={wishlistItems
+            .filter((item) => item.priority === 3)
+            .length.toString()}
           subtitle="Important items"
         />
       </div>
@@ -197,7 +201,11 @@ function Wishlist() {
 
           <div className="collection-controls">
             <div className="sort-controls">
-              <select value={sortBy} onChange={handleSortChange} className="sort-select">
+              <select
+                value={sortBy}
+                onChange={handleSortChange}
+                className="sort-select"
+              >
                 <option value="priority">Priority</option>
                 <option value="name">Name</option>
                 <option value="price">Target Price</option>
@@ -250,7 +258,10 @@ function Wishlist() {
               const priorityInfo = getPriorityInfo(item.priority);
 
               return (
-                <div className="coin-item-card wishlist-item-card" key={item.id}>
+                <div
+                  className="coin-item-card wishlist-item-card"
+                  key={item.id}
+                >
                   <div className="coin-images">
                     <img
                       src={
@@ -260,7 +271,9 @@ function Wishlist() {
                       alt={coinDetails.name || "Desired coin"}
                       className="coin-image"
                     />
-                    <div className={`priority-indicator ${priorityInfo.className}`}>
+                    <div
+                      className={`priority-indicator ${priorityInfo.className}`}
+                    >
                       <Star size={14} />
                     </div>
                   </div>
@@ -274,12 +287,12 @@ function Wishlist() {
                       {coinDetails.period || "Unknown Period"}
                     </p>
 
-                    {item.notes && (
-                      <p className="coin-notes">{item.notes}</p>
-                    )}
+                    {item.notes && <p className="coin-notes">{item.notes}</p>}
 
                     <div className="coin-meta">
-                      <span className={`priority-badge ${priorityInfo.className}`}>
+                      <span
+                        className={`priority-badge ${priorityInfo.className}`}
+                      >
                         {priorityInfo.label} Priority
                       </span>
 
@@ -301,7 +314,12 @@ function Wishlist() {
                     <Button variant="outline" size="sm" title="View Details">
                       <Eye size={16} />
                     </Button>
-                    <Button variant="outline" size="sm" title="Mark as Found" className="success">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      title="Mark as Found"
+                      className="success"
+                    >
                       <ShoppingCart size={16} />
                     </Button>
                     <Button

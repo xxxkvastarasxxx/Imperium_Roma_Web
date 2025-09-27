@@ -16,15 +16,15 @@ export default function Profile() {
   useEffect(() => {
     const loadProfileData = async () => {
       setLoading(true);
-      
+
       // Імітація завантаження даних профілю
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       setStats({
         totalCoins: 147,
         wishlistCount: 23,
       });
-      
+
       setLoading(false);
     };
 
@@ -33,12 +33,12 @@ export default function Profile() {
 
   return (
     <div className="dashboard-container">
-      <LoadingOverlay 
-        isVisible={loading} 
-        message="Loading profile data..." 
+      <LoadingOverlay
+        isVisible={loading}
+        message="Loading profile data..."
         fullScreen={true}
       />
-      
+
       <div className="header-title">
         <h1>My Profile</h1>
         <p className="date">Manage your account and collection preferences</p>

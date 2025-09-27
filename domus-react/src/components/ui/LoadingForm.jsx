@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { LoadingButton, LoadingOverlay } from '../ui';
+import { useState } from "react";
+import { LoadingButton, LoadingOverlay } from "../ui";
 
 /**
  * Enhanced form component with built-in loading states
  */
-const LoadingForm = ({ 
-  onSubmit, 
-  children, 
+const LoadingForm = ({
+  onSubmit,
+  children,
   loading = false,
   disabled = false,
   loadingMessage = "Processing...",
@@ -14,13 +14,13 @@ const LoadingForm = ({
   submitLoadingText = "Submitting...",
   showOverlay = false,
   className = "",
-  ...props 
+  ...props
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (loading || disabled || isSubmitting) {
       return;
     }
@@ -29,7 +29,7 @@ const LoadingForm = ({
       setIsSubmitting(true);
       await onSubmit(e);
     } catch (error) {
-      console.error('Form submission error:', error);
+      console.error("Form submission error:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -38,22 +38,22 @@ const LoadingForm = ({
   const isLoading = loading || isSubmitting;
 
   return (
-    <form 
-      {...props} 
-      className={`loading-form ${className} ${isLoading ? 'loading' : ''}`}
+    <form
+      {...props}
+      className={`loading-form ${className} ${isLoading ? "loading" : ""}`}
       onSubmit={handleSubmit}
     >
       {showOverlay && (
-        <LoadingOverlay 
-          isVisible={isLoading} 
-          message={loadingMessage}
-        />
+        <LoadingOverlay isVisible={isLoading} message={loadingMessage} />
       )}
-      
-      <div className="form-content" style={{ opacity: isLoading && !showOverlay ? 0.6 : 1 }}>
+
+      <div
+        className="form-content"
+        style={{ opacity: isLoading && !showOverlay ? 0.6 : 1 }}
+      >
         {children}
       </div>
-      
+
       <div className="form-actions">
         <LoadingButton
           type="submit"
