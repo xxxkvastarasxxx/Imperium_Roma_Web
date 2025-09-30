@@ -263,7 +263,7 @@ nav ul li a.active {
 
 
 .banner h2 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', Arial, sans-serif;
     font-size: 44px;
     position: relative;
     z-index: 2;
@@ -344,7 +344,7 @@ footer {
     text-align: center;
     padding: 40px 20px;
     border-top: 2px solid #444;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', Arial, sans-serif;
 }
 
 .footer-content {

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;700&family=Montserrat:wght@400;700&display=swap');
+
 /* Main Banner */
 .banner {
     position: relative;
@@ -33,7 +35,7 @@
 }
 
 .banner h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', Arial, sans-serif;
     font-size: 48px;
     margin-bottom: 10px;
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
