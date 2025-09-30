@@ -100,7 +100,7 @@ header a:hover {
 }
 
 .logo span {
-    font-size: 1.5rem;
+    font-size: 1.625rem;
     font-weight: bold;
 }
 
@@ -264,7 +264,7 @@ nav ul li a.active {
 
 .banner h2 {
     font-family: 'Playfair Display', serif;
-    font-size: 36px;
+    font-size: 44px;
     position: relative;
     z-index: 2;
     color: var(--white);
@@ -343,7 +343,6 @@ footer {
     color: #fff;
     text-align: center;
     padding: 40px 20px;
-    margin-top: 40px;
     border-top: 2px solid #444;
     font-family: 'Inter', sans-serif;
 }
@@ -362,7 +361,7 @@ footer {
 
 footer p {
     margin: 10px 0;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .footer-links {
@@ -380,10 +379,9 @@ footer p {
 }
 
 .footer-links li a {
-    color: var(--yellow);
+    color: grey;
     text-decoration: none;
-    font-size: 14px;
-    transition: color 0.3s ease;
+    font-size: 15px;
 }
 
 .footer-links li a:hover {
@@ -395,11 +393,11 @@ footer p {
 }
 
 .introduction h2, .featured-coins h2, .daily-news h2 {
-    font-size: 36px;
+    font-size: 40px;
 }
 
 .introduction p, .featured-coins p, .daily-news p {
-    font-size: 18px;
+    font-size: 19px;
 }
 
 /* Large Screens (1200px and up) */
@@ -411,7 +409,7 @@ footer p {
     }
 
     .banner h2 {
-        font-size: 48px;
+        font-size: 56px;
     }
 
     .footer-logo img {
@@ -426,7 +424,7 @@ footer p {
     }
 
     .banner h2 {
-        font-size: 40px;
+        font-size: 46px;
     }
 
     .footer-logo img {
@@ -442,7 +440,7 @@ footer p {
     }
 
     .banner h2 {
-        font-size: 32px;
+        font-size: 36px;
     }
 
     .introduction, .featured-coins, .daily-news {
@@ -450,7 +448,7 @@ footer p {
     }
 
     .introduction h2, .featured-coins h2, .daily-news h2 {
-        font-size: 28px;
+        font-size: 32px;
     }
 
     .footer-logo img {
@@ -479,7 +477,7 @@ footer p {
     }
 
     .banner h2 {
-        font-size: 24px;
+        font-size: 28px;
     }
 
     .introduction, .featured-coins, .daily-news {
@@ -487,7 +485,7 @@ footer p {
     }
 
     .introduction h2, .featured-coins h2, .daily-news h2 {
-        font-size: 24px;
+        font-size: 28px;
     }
 
     .footer-logo img {
@@ -516,7 +514,7 @@ footer p {
     }
 
     .banner h2 {
-        font-size: 20px;
+        font-size: 22px;
     }
 
     .introduction, .featured-coins, .daily-news {
@@ -524,7 +522,7 @@ footer p {
     }
 
     .introduction h2, .featured-coins h2, .daily-news h2 {
-        font-size: 20px;
+        font-size: 22px;
     }
 
     .footer-logo img {
