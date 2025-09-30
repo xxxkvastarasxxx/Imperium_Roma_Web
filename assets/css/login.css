@@ -18,7 +18,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Times New Roman', serif;
+    font-family: 'Montserrat', Arial, sans-serif;
 }
 
 body {
@@ -514,7 +514,7 @@ label[for="remember-me"] {
 
 .remember-me input[type="checkbox"]:checked:after {
     content: '\f00c';
-    font-family: 'Font Awesome 6 Free';
+    font-family: 'Montserrat', Arial, sans-serif;
     font-weight: 900;
     position: absolute;
     top: 1px;

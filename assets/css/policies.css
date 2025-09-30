@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;700&family=Montserrat:wght@400;700&display=swap');
+
 /* Colors */
 :root {
     --background: #000000;
@@ -15,7 +17,7 @@
 body {
     background-color: var(--background);
     color: var(--white);
-    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    font-family: 'Montserrat', Arial, sans-serif;
     line-height: 1.8;
     margin: 0;
     padding: 0;

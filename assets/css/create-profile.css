@@ -11,7 +11,7 @@
   }
   
   body {
-    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+    font-family: 'Montserrat', Arial, sans-serif;
     background-color: var(--background);
     color: var(--text);
     line-height: 1.6;
@@ -81,7 +81,7 @@
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 1rem;
-    font-family: inherit;
+    font-family: 'Montserrat', Arial, sans-serif;
   }
   
   input:focus, select:focus {

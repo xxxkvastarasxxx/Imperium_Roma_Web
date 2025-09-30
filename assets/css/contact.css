@@ -62,7 +62,7 @@
 }
 
 .font-inter {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', Arial, sans-serif;
 }
 
 .content-text-title-text p {
@@ -147,7 +147,7 @@
 
 /* Text Styling */
 .banner h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Montserrat', Arial, sans-serif;
     font-size: 48px;
     margin-bottom: 10px;
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
@@ -226,7 +226,7 @@
 .contact-section h2 {
     font-size: 36px;
     margin-bottom: 20px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', Arial, sans-serif;
     text-transform: uppercase;
     letter-spacing: 2px;
 }
@@ -237,7 +237,7 @@
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Montserrat', Arial, sans-serif;
 }
 
 .contact-form {
@@ -291,7 +291,7 @@ input[type="file"] {
 #file-chosen {
     font-style: italic;
     color: white;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Montserrat', Arial, sans-serif;
     flex-grow: 1;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -315,7 +315,7 @@ input[type="file"] {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Montserrat', Arial, sans-serif;
 }
 
 #fileList li button {
@@ -326,7 +326,7 @@ input[type="file"] {
     cursor: pointer;
     border-radius: 5px;
     font-weight: bold;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', Arial, sans-serif;
 }
 
 #fileList li button:hover {
@@ -349,7 +349,7 @@ input[type="file"] {
     display: block;
     font-weight: bold;
     margin-bottom: 10px;
-    font-family: 'Montserrat', sans-serif;
+    font-family:'Montserrat', Arial, sans-serif;
     text-align: left;
 }
 
@@ -363,7 +363,7 @@ input[type="file"] {
     background-color: #222;
     color: white;
     border-radius: 5px;
-    font-family: 'Roboto', sans-serif;
+    font-family:'Montserrat', Arial, sans-serif;
     transition: border-color 0.3s ease;
 }
 
@@ -394,7 +394,7 @@ input[type="file"] {
     border-radius: 25px;
     transition: background-color 0.3s ease;
     cursor: pointer;
-    font-family: 'Montserrat', sans-serif;
+    font-family:'Montserrat', Arial, sans-serif;
     text-transform: uppercase;
     margin-top: 20px;
 }
@@ -449,7 +449,7 @@ footer {
     padding: 40px 20px;
     margin-top: 40px;
     border-top: 2px solid #444;
-    font-family: 'Inter', sans-serif;
+    font-family:'Montserrat', Arial, sans-serif;
 }
 
 .footer-content {
