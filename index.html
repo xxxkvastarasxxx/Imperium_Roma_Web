@@ -255,8 +255,20 @@
                 </figure>
             </div>
 
-            <section class="domus-why-join" aria-labelledby="why-join-title">
+            <section class="domus-why-join" aria-labelledby="why-join-title" data-allow-motion="true">
                 <h3 id="why-join-title">Why join Domus?</h3>
+                <!-- Animated connector line (desktop only) -->
+                <svg class="features-connector" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true" role="presentation">
+                    <defs>
+                        <linearGradient id="features-connector-stroke" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#ffcc00" stop-opacity="0.9"/>
+                            <stop offset="50%" stop-color="#ffcc00" stop-opacity="0.6"/>
+                            <stop offset="100%" stop-color="#ffcc00" stop-opacity="0.9"/>
+                        </linearGradient>
+                    </defs>
+                    <path id="features-connector-path" d="" />
+                    <g id="features-connector-pulses"></g>
+                </svg>
                 <div class="domus-features">
                     <div class="feature-card">
                         <div class="feature-icon">
@@ -466,6 +478,7 @@
     <script src="/assets/js/header.js"></script>
     <script src="/assets/js/hamburger.js"></script>
     <script src="/assets/js/drifting-objects.js"></script>
+    <script src="/assets/js/domus-features.js"></script>
     <script src="/assets/js/collision.js"></script>
     <script src="/assets/js/parallax.js"></script>
     <script src="/assets/js/news.js"></script>

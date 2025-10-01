@@ -1856,6 +1856,8 @@
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: clamp(16px, 2.4vw, 28px);
     margin-bottom: clamp(28px, 6vw, 56px);
+    position: relative;
+    z-index: 1;
 }
 
 .feature-card {
@@ -1864,11 +1866,84 @@
     padding: clamp(20px, 3vw, 28px) clamp(16px, 2.4vw, 24px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    will-change: transform;
 }
 
 .feature-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Staggered layout: alternate vertical offsets on desktop */
+.domus-features .feature-card:nth-child(1),
+.domus-features .feature-card:nth-child(3) {
+    transform: translateY(-14px);
+}
+.domus-features .feature-card:nth-child(2),
+.domus-features .feature-card:nth-child(4) {
+    transform: translateY(14px);
+}
+.domus-features .feature-card:hover { transform: translateY(-18px); }
+
+/* Animated connector line under the cards */
+.features-connector {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 38px; /* initial; JS will update */
+    width: 100%;
+    height: 220px; /* initial; JS will update */
+    display: none; /* hidden by default; enabled on wider screens */
+    margin: 0 auto;
+    pointer-events: none;
+    z-index: 0;
+}
+.features-connector path {
+    fill: none;
+    stroke: url(#features-connector-stroke);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,.10));
+    stroke-dasharray: 14 14;
+    animation: dash-move 5.5s linear infinite;
+}
+@keyframes dash-move {
+    to { stroke-dashoffset: -160; }
+}
+/* Pulsing is simulated via gradient and dash offset; nodes not needed */
+/* Reintroduce small pulse dots via JS for alignment with card centers */
+.features-connector .pulse {
+    fill: #ffcc00;
+    opacity: .9;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,.18));
+    transform-origin: center;
+    animation: pulse-scale 1.8s ease-in-out infinite;
+}
+@keyframes pulse-scale {
+    0%, 100% { r: 3.5; opacity: .8; }
+    50% { r: 6.5; opacity: 1; }
+}
+.domus-why-join:hover .features-connector path {
+    filter: drop-shadow(0 3px 8px rgba(0,0,0,.16));
+}
+
+/* Enable connector and keep stagger only on >= 900px where grid is multi-column */
+@media (min-width: 900px) {
+    .features-connector { display: block; }
+}
+
+/* On small screens, remove staggering for readability */
+@media (max-width: 768px) {
+    .domus-features .feature-card { transform: none; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .domus-why-join:not([data-allow-motion="true"]) .features-connector path,
+    .domus-why-join:not([data-allow-motion="true"]) .features-connector .pulse {
+        animation: none !important;
+    }
 }
 
 .feature-icon {
@@ -2012,6 +2087,7 @@
 .domus-why-join {
     margin: clamp(20px, 3vw, 28px) auto clamp(28px, 5vw, 40px);
     text-align: left;
+    position: relative;
 }
 .domus-why-join h3 {
     text-align: center;
@@ -2314,6 +2390,21 @@
 .domus-faq h3 { color: var(--domus-ink); }
 .domus-faq details { border: 1px solid var(--domus-border); }
 .domus-tour .domus-note { color: var(--domus-muted); }
+
+/* Large-screen zigzag placement for the 4 feature cards */
+@media (min-width: 1024px) {
+    /* Two-row zigzag: 1 & 3 top row, 2 & 4 bottom row */
+    .domus-features {
+        grid-template-columns: repeat(4, minmax(220px, 1fr));
+        grid-template-rows: auto auto;
+    }
+    .domus-features .feature-card { transform: none; }
+    .domus-features .feature-card:hover { transform: translateY(-6px); }
+    .domus-features .feature-card:nth-child(1) { grid-column: 1; grid-row: 1; }
+    .domus-features .feature-card:nth-child(2) { grid-column: 2; grid-row: 2; }
+    .domus-features .feature-card:nth-child(3) { grid-column: 3; grid-row: 1; }
+    .domus-features .feature-card:nth-child(4) { grid-column: 4; grid-row: 2; }
+}
 
 /* Domus CTA button polish (scoped) */
 .domus-tour .domus-button {
