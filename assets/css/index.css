@@ -114,11 +114,11 @@
 
 .btn-primary {
     background: transparent;
-    color: white;
+    color: #ffcc00;
     padding: 10px 20px;
     text-decoration: none;
     border-radius: 999px;
-    border: 1.5px solid white;
+    border: 1.5px solid #ffcc00;
     font-family: 'Montserrat', Arial, sans-serif; 
     font-weight: 700;
     text-transform: uppercase;
@@ -128,7 +128,7 @@
 
 .btn-primary:hover,
 .btn-primary:focus-visible {
-    background: white;
+    background: #ffcc00;
     color: var(--cta-ink);
     outline: none;
     transform: translateY(-1px) scale(1.02);
@@ -224,7 +224,7 @@
     width: 64px;
     height: 3px;
     border-radius: 3px;
-    background: linear-gradient(90deg, black 100%);
+    background: linear-gradient(90deg, #ffcc00 100%);
 }
 
 .overlay-frame p {
@@ -465,7 +465,7 @@
 }
 
 .news-content .read-link {
-    color: #fff !important;
+    color: #ffcc00 !important;
     text-decoration: none;
     font-weight: bold;
     transition: color 0.2s ease;
@@ -564,7 +564,7 @@
 
 .parallax-content-font {
     font-size: 2rem;
-    color: white;
+    color: #ffcc00;
     text-align: center;
     animation: fadeInUp 1s ease-in-out;
 }
@@ -672,7 +672,7 @@
 
 .footer-links a:hover,
 .footer-links a:focus-visible {
-    color: grey;
+    color: #ffcc00;
     outline: none;
 }
 
@@ -716,7 +716,7 @@
     width: 100%;
     padding: 12px 14px;
     border-radius: 999px;
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1px solid #ffcc00;
     background: rgba(255,255,255,0.04);
     color: #e9ecef;
 }
@@ -728,9 +728,9 @@
 .newsletter-btn {
     padding: 12px 22px;
     border-radius: 999px;
-    border: 1.5px solid white;
+    border: 1.5px solid #ffcc00;
     background: transparent;
-    color: white;
+    color: #ffcc00;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.4px;
@@ -739,8 +739,8 @@
 
 .newsletter-btn:hover,
 .newsletter-btn:focus-visible {
-    background: white;
-    color: var(--cta-ink);
+    background:#ffcc00;
+    color: black;
     outline: none;
     transform: translateY(-1px) scale(1.02);
     box-shadow: 0 6px 16px rgba(0,0,0,0.35);
@@ -772,7 +772,7 @@
 }
 
 .social-link:hover {
-    background: white;
+    background: #ffcc00;
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
@@ -918,14 +918,14 @@
 }
 
 .carousel-control:hover {
-    background: rgba(216, 178, 74, 0.18); /* uses same hue as --cta */
+    background: #ffcc00; /* uses same hue as --cta */
     transform: translateY(-50%) scale(1.06);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    box-shadow: 0 6px 16px #ffcc00;
 }
 
 .carousel-control:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.5);
+    box-shadow: 0 0 0 3px #ffcc00;
 }
 
 .carousel-control.prev {
@@ -1047,8 +1047,8 @@
 .promote-lot-btn {
     padding: 14px 26px;
     background: transparent;
-    color: white;
-    border: 1.5px solid white;
+    color: #ffcc00;
+    border: 1.5px solid #ffcc00;
     border-radius: 999px;
     text-decoration: none;
     font-family: 'Montserrat', Arial, sans-serif;
@@ -1062,7 +1062,7 @@
 
 .promote-lot-btn:hover,
 .promote-lot-btn:focus-visible {
-    background: white;
+    background: #ffcc00;
     color: var(--cta-ink);
     transform: translateY(-1px) scale(1.02);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
@@ -1822,7 +1822,7 @@
 /* Domus Tour Section */
 .domus-tour {
     background-color: white;
-    padding: 80px 20px;
+    padding: clamp(56px, 7vw, 96px) 20px;
     text-align: center;
     position: relative;
 }
@@ -1833,34 +1833,35 @@
 }
 
 .domus-header {
-    margin-bottom: 60px;
+    margin-bottom: clamp(32px, 5vw, 64px);
 }
 
 .domus-header h2 {
     font-family: 'Montserrat', Arial, sans-serif;
-    font-size: 44px;
+    font-size: clamp(28px, 4.2vw, 40px);
+    line-height: 1.15;
     color: black;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 .domus-subheading {
-    font-size: 20px;
+    font-size: clamp(16px, 2.2vw, 20px);
     color: #666;
-    max-width: 600px;
+    max-width: 680px;
     margin: 0 auto;
 }
 
 .domus-features {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
-    margin-bottom: 60px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: clamp(16px, 2.4vw, 28px);
+    margin-bottom: clamp(28px, 6vw, 56px);
 }
 
 .feature-card {
     background: #f9f9f9;
-    border-radius: 10px;
-    padding: 30px 20px;
+    border-radius: 12px;
+    padding: clamp(20px, 3vw, 28px) clamp(16px, 2.4vw, 24px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -1871,33 +1872,33 @@
 }
 
 .feature-icon {
-    background: white;
-    width: 80px;
-    height: 80px;
+    background: #ffcc00;
+    width: clamp(64px, 6vw, 80px);
+    height: clamp(64px, 6vw, 80px);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 20px;
+    margin: 0 auto clamp(12px, 2vw, 18px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
 .feature-icon img {
-    width: 40px;
-    height: 40px;
+    width: clamp(32px, 3.2vw, 40px);
+    height: clamp(32px, 3.2vw, 40px);
     object-fit: contain;
 }
 
 .feature-card h3 {
-    font-size: 22px;
+    font-size: clamp(18px, 2.2vw, 22px);
     color: black;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .feature-card p {
-    font-size: 17px;
+    font-size: clamp(14px, 2vw, 16px);
     color: #666;
-    line-height: 1.5;
+    line-height: 1.55;
 }
 
 .domus-cta {
@@ -1906,26 +1907,27 @@
 
 .domus-button {
     display: inline-block;
-    padding: 14px 32px;
-    background: black;
-    color: white;
+    padding: clamp(12px, 1.4vw, 16px) clamp(24px, 2.6vw, 32px);
+    background: #ffcc00;
+    color: black;
     text-decoration: none;
     border-radius: 30px;
-    border-color: black;;
-    font-size: 20px;
+    border-color: #ffcc00;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: clamp(16px, 1.6vw, 18px);
     font-weight: 700;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .domus-button:hover {
     background: white;
-    color: black;
+    color: #ffcc00;
     transform: translateY(-3px);
 }
 
 .domus-note {
-    font-size: 17px;
+    font-size: clamp(14px, 1.8vw, 16px);
     color: #777;
 }
 
@@ -1942,44 +1944,44 @@
 .domus-trust li {
     border: 1px solid #e7e7e7;
     color: #444;
-    background: #fbfbfb;
+    background: #ffcc00;
     padding: 6px 12px;
     border-radius: 999px;
-    font-size: 14px;
+    font-size: clamp(12px, 1.6vw, 14px);
 }
 
 /* At-a-glance stats */
 .domus-stats {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    margin: 28px auto 42px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: clamp(12px, 2vw, 24px);
+    margin: clamp(20px, 3.8vw, 36px) auto clamp(28px, 4.4vw, 44px);
 }
 .domus-stats .stat {
     background: #fafafa;
     border: 1px solid #efefef;
     border-radius: 12px;
-    padding: 16px;
+    padding: clamp(12px, 1.6vw, 18px);
     box-shadow: 0 2px 8px rgba(0,0,0,.04);
 }
 .domus-stats .stat strong {
     display: block;
-    font-size: 34px;
+    font-size: clamp(24px, 4vw, 34px);
     color: black;
     line-height: 1.1;
 }
 .domus-stats .stat span {
     display: block;
-    font-size: 15px;
+    font-size: clamp(13px, 1.8vw, 15px);
     color: #777;
 }
 
 /* Visual tour gallery */
 .domus-tour-media {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin: 0 auto 50px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: clamp(12px, 1.8vw, 20px);
+    margin: 0 auto clamp(32px, 5vw, 56px);
 }
 .tour-shot {
     background: #f9f9f9;
@@ -2000,22 +2002,22 @@
     display: block;
 }
 .tour-shot figcaption {
-    padding: 10px 12px;
-    font-size: 15px;
+    padding: clamp(8px, 1.4vw, 12px) clamp(10px, 1.6vw, 14px);
+    font-size: clamp(13px, 1.8vw, 15px);
     color: #555;
     background: #fff;
 }
 
 /* Why join list */
 .domus-why-join {
-    margin: 24px auto 40px;
+    margin: clamp(20px, 3vw, 28px) auto clamp(28px, 5vw, 40px);
     text-align: left;
 }
 .domus-why-join h3 {
     text-align: center;
     color: black;
-    margin-bottom: 16px;
-    font-size: 24px;
+    margin-bottom: clamp(12px, 2.4vw, 18px);
+    font-size: clamp(20px, 2.6vw, 24px);
 }
 .domus-why-join .benefits {
     list-style: none;
@@ -2049,14 +2051,14 @@
 
 /* How it works steps */
 .domus-steps {
-    margin: 40px auto 46px;
+    margin: clamp(32px, 5vw, 44px) auto clamp(36px, 5.2vw, 48px);
     text-align: left;
 }
 .domus-steps h3 {
     text-align: center;
     color: #222;
-    margin-bottom: 16px;
-    font-size: 24px;
+    margin-bottom: clamp(12px, 2.4vw, 18px);
+    font-size: clamp(20px, 2.6vw, 24px);
 }
 .domus-steps .steps {
     counter-reset: step;
@@ -2064,8 +2066,8 @@
     padding: 0;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: clamp(12px, 2vw, 18px);
     max-width: 1100px;
 }
 .domus-steps .steps li {
@@ -2073,8 +2075,8 @@
     border: 1px solid #efefef;
     background: #fff;
     border-radius: 14px;
-    padding: 16px 14px 16px 56px;
-    min-height: 78px;
+    padding: clamp(14px, 1.8vw, 16px) clamp(12px, 1.6vw, 14px) clamp(14px, 1.8vw, 16px) clamp(48px, 4.8vw, 56px);
+    min-height: clamp(68px, 9vw, 78px);
     box-shadow: 0 2px 10px rgba(0,0,0,.04);
 }
 .domus-steps .steps li::before {
@@ -2083,27 +2085,27 @@
     position: absolute;
     left: 14px;
     top: 14px;
-    width: 32px;
-    height: 32px;
+    width: clamp(28px, 4vw, 32px);
+    height: clamp(28px, 4vw, 32px);
     border-radius: 50%;
     border: 1px solid #111;
     color: #111;
     display: grid;
     place-items: center;
     font-weight: 700;
-    background: #fff;
+    background: #ffcc00;
 }
 .domus-steps .step-label {
     display: block;
     color: #111;
     font-weight: 700;
-    font-size: 17px;
+    font-size: clamp(16px, 2.2vw, 18px);
     margin-bottom: 4px;
 }
 .domus-steps .step-note {
     display: block;
     color: #666;
-    font-size: 15px;
+    font-size: clamp(14px, 1.9vw, 15px);
 }
 
 /* Testimonials */
@@ -2121,8 +2123,8 @@
     padding: 0;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(12px, 2vw, 16px);
     max-width: 1000px;
 }
 .domus-testimonials .quotes li {
@@ -2164,13 +2166,13 @@
     text-align: center;
     color: #222;
     margin-bottom: 14px;
-    font-size: 24px;
+    font-size: clamp(20px, 2.6vw, 24px);
 }
 .domus-faq details {
     border: 1px solid #efefef;
     border-radius: 12px;
     background: #fff;
-    padding: 12px 14px;
+    padding: clamp(10px, 1.8vw, 14px) clamp(12px, 2vw, 16px);
     margin-bottom: 10px;
     transition: box-shadow .2s ease, border-color .2s ease;
 }
@@ -2201,7 +2203,7 @@
 .domus-faq p {
     margin: 10px 0 0;
     color: #555;
-    font-size: 15px;
+    font-size: clamp(14px, 1.9vw, 15px);
 }
 
 /* CTA tweaks inside white section */
@@ -2223,26 +2225,17 @@
 
 /* Responsive for Domus enhancements */
 @media (max-width: 1024px) {
-    .domus-stats { grid-template-columns: repeat(3, 1fr); }
-    .domus-tour-media { grid-template-columns: repeat(3, 1fr); }
-    .domus-testimonials .quotes { grid-template-columns: 1fr 1fr; }
-    .domus-steps .steps { grid-template-columns: repeat(4, 1fr); }
+    /* Let auto-fit handle columns; adjust gaps if needed */
+    .domus-tour-media { gap: clamp(12px, 1.6vw, 18px); }
 }
 
 @media (max-width: 900px) {
-    .domus-stats { grid-template-columns: 1fr 1fr; }
-    .domus-tour-media { grid-template-columns: 1fr 1fr; }
     .domus-why-join .benefits { grid-template-columns: 1fr 1fr; }
-    .domus-steps .steps { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 600px) {
-    .domus-stats { grid-template-columns: 1fr; }
-    .domus-tour-media { grid-template-columns: 1fr; }
     .domus-why-join .benefits { grid-template-columns: 1fr; }
-    .domus-testimonials .quotes { grid-template-columns: 1fr; }
-    .domus-steps .steps { grid-template-columns: 1fr; }
-    .domus-steps .steps li { padding-left: 54px; }
+    .domus-steps .steps li { padding-left: clamp(44px, 7.2vw, 54px); }
 }
 
 /* Domus: Visual Enhancements */
@@ -2268,7 +2261,7 @@
     height: 4px;
     margin: 10px auto 0;
     border-radius: 4px;
-    background: linear-gradient(90deg, black 100%);
+    background: linear-gradient(90deg, #ffcc00 100%);
 }
 
 .domus-subheading { color: var(--domus-muted); }
@@ -2326,7 +2319,7 @@
 .domus-tour .domus-button {
     font-weight: 800;
     letter-spacing: .3px;
-    border: 1px solid #111;
+    border: 1px solid #ffcc00;
     box-shadow: none;
     transition: transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
 }
@@ -2376,16 +2369,16 @@
 /* Auction card CTAs (e.g., VIEW DETAILS): white button style */
 .auction-highlights .carousel a:not(.carousel-control),
 .auction-highlights .carousel button:not(.carousel-control) {
-    background: #fff !important;
+    background: #ffcc00 !important;
     color: #333 !important;
-    border: 1px solid #d9d9d9 !important;
+    border: 1px solid #ffcc00 !important;
     box-shadow: none !important;
 }
 .auction-highlights .carousel a:not(.carousel-control):hover,
 .auction-highlights .carousel button:not(.carousel-control):hover {
-    background: #eee !important;
+    background: transparent!important;
     border-color: #c9c9c9 !important;
-    color: #333 !important;
+    color: #ffcc00 !important;
 }
 
 /* Mobile: put Explore and Policies in two columns on the same row */
