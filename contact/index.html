@@ -122,18 +122,66 @@
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer class="site-footer" aria-labelledby="footer-title">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <img src="/assets/images/icons/favicon.ico" alt="Imperium Roma Logo">
+            <h2 id="footer-title" class="sr-only">Imperium Roma Footer</h2>
+            <div class="footer-grid">
+                <!-- Brand / About -->
+                <div class="footer-col brand">
+                    <div class="brand-row">
+                        <img src="/assets/images/icons/favicon.ico" alt="Imperium Roma Logo" class="brand-logo">
+                        <span class="brand-name">Imperium Roma</span>
+                    </div>
+                    <p class="brand-text">Tools and insights for identifying, cataloging, and researching Roman Imperial coinage - built for collectors, scholars, and enthusiasts.</p>
                 </div>
-                <p>&copy; 2024 Imperium Roma. All rights reserved.</p>
-                <ul class="footer-links">
-                    <li><a href="/policies/privacy_policy/">Privacy Policy</a></li>
-                    <li><a href="/policies/terms_of_use/">Terms of Service</a></li>
-                    <li><a href="/contact/">Contact Us</a></li>
-                </ul>
+
+                <!-- Explore -->
+                <nav class="footer-col" aria-label="Explore">
+                    <h3 class="footer-title">Explore</h3>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about/">About</a></li>
+                        <li><a href="/services/">Services</a></li>
+                        <li><a href="/contact/">Contact</a></li>
+                        <li><a href="/domus/">Domus</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Policies -->
+                <nav class="footer-col" aria-label="Policies">
+                    <h3 class="footer-title">Policies</h3>
+                    <ul class="footer-links">
+                        <li><a href="/policies/privacy_policy/">Privacy Policy</a></li>
+                        <li><a href="/policies/terms_of_use/">Terms of Use</a></li>
+                        <li><a href="/policies/delete_user_data/">Delete User Data</a></li>
+                    </ul>
+                </nav>
+
+                <!-- Newsletter -->
+                <div class="footer-col newsletter">
+                    <h3 class="footer-title">Newsletter</h3>
+                    <p class="newsletter-text">Occasional highlights and updates. No spam.</p>
+                    <form class="newsletter-form" action="#" method="post" onsubmit="return false" aria-label="Newsletter signup">
+                        <label for="newsletter-email" class="sr-only">Email</label>
+                        <input type="email" id="newsletter-email" class="newsletter-input" placeholder="Enter your email" autocomplete="email">
+                        <button type="submit" class="newsletter-btn">Subscribe</button>
+                    </form>
+                    <div class="footer-social" aria-label="Social links">
+                        <a href="#" class="social-link" aria-label="Facebook" title="Facebook" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/images/icons/facebook.png" alt="Facebook" width="24" height="24" loading="lazy" decoding="async" onerror="this.src='/assets/images/icons/favicon.ico'">
+                        </a>
+                        <a href="#" class="social-link" aria-label="TikTok" title="TikTok" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/images/icons/tik-tok.png" alt="TikTok" width="24" height="24" loading="lazy" decoding="async" onerror="this.src='/assets/images/icons/favicon.ico'">
+                        </a>
+                        <a href="#" class="social-link" aria-label="YouTube" title="YouTube" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/images/icons/youtube.png" alt="YouTube" width="24" height="24" loading="lazy" decoding="async" onerror="this.src='/assets/images/icons/favicon.ico'">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="copyright">&copy; 2024 Imperium Roma. All rights reserved.</p>
             </div>
         </div>
     </footer>
