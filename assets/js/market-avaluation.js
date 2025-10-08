@@ -77,12 +77,12 @@ document.addEventListener("DOMContentLoaded", () => {
           datasets: [{
             label: 'Average Price',
             data: [670, 820, 708, 934, 980, 1100],
-            borderColor: '#d4af37',
+            borderColor: '#ffcc00',
             borderWidth: 3,
             tension: 0.4,
             fill: {
               target: 'origin',
-              above: 'rgba(212, 175, 55, 0.08)'
+              above: 'rgba(255, 204, 0, 0.10)'
             },
             pointRadius: 0
           }]
@@ -98,10 +98,11 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           },
           scales: {
-            x: { grid: { display: false } },
+            x: { grid: { display: false }, ticks: { color: '#000' } },
             y: {
-              grid: { color: '#f1f3f5' },
+              grid: { color: 'rgba(0,0,0,0.08)' },
               ticks: {
+                color: '#000',
                 callback: (value) => formatCurrency(value)
               }
             }
@@ -115,19 +116,27 @@ document.addEventListener("DOMContentLoaded", () => {
           labels: ['Auctions', 'Private Sales'],
           datasets: [{
             data: [65, 35],
-            backgroundColor: [
-              'rgba(212, 175, 55, 0.8)',
-              'rgba(166, 124, 0, 0.8)'
-            ],
+            backgroundColor: ['#ffcc00', 'rgba(0,0,0,0.15)'],
             borderWidth: 0,
-            hoverOffset: 10
+            // Keep segments within the ring on hover (no outward pop-out)
+            hoverOffset: 0,
+            // Reduce overall radius so there is safe space for tooltips within canvas
+            radius: '92%'
           }]
         },
         options: {
           cutout: '75%',
+          // Add internal padding so tooltips have room inside the canvas
+          layout: { padding: 24 },
+      // Only activate hover when the pointer is inside the ring area
+      interaction: { mode: 'nearest', intersect: true },
           plugins: {
             ...baseChartConfig.plugins,
             tooltip: {
+        position: 'nearest',
+        padding: 8,
+        caretPadding: 6,
+        displayColors: false,
               callbacks: {
                 label: (context) => `${context.label}: ${context.parsed}%`
               }
