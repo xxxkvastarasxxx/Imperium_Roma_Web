@@ -107,35 +107,71 @@
 
 /* Main Container */
 .market-analysis {
-  background:#f4f4f4;
-  padding: 4rem 0;
+  background: #ffffff;
+  padding: 4.5rem 0 5rem;
+  position: relative;
+}
+
+/* Constrain width and add horizontal padding */
+.market-analysis .container {
+  width: min(92%, 1200px);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+  .market-analysis .container { padding: 0 16px; }
+}
+
+/* gold divider line same as About page */
+.market-analysis::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #ffcc00, transparent);
+}
+
+/* Bottom divider under the action buttons */
+.market-analysis::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #ffcc00, transparent);
+}
+
+/* Reusable gold divider element */
+.gold-divider {
+  height: 4px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, #ffcc00, transparent);
+  border-radius: 2px;
+  margin: 18px 0 22px;
 }
 
 /* Section Header */
 .section-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
 }
 
 .section-title {
-  font-size: 32px;
-  font-weight: 700;
-  background: #333;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 0.5rem;
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: #000;
+  margin-bottom: 0.6rem;
 }
+.section-title .accent { color: #ffcc00; }
 
-.section-subtext {
-  color: #6c757d;
-  font-size: 1.1rem;
-}
+.section-subtext { color: rgba(0,0,0,0.65); font-size: 1.05rem; }
 
-.highlight {
-  color: #6c757d;
-  font-weight: 600;
-}
+.highlight { color: #000; font-weight: 600; }
 
 /* Grid Layout */
 .analysis-grid {
@@ -161,20 +197,96 @@
 /* Common Card Styles */
 .analysis-card {
   background: #ffffff;
-  border-radius: 1.5rem;
-  padding: 2rem; /* Increased from 1.5rem */
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  border: 1px solid rgba(0,0,0,0.06);
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   height: 100%;
+  will-change: transform; /* promote to own layer for smoother hover */
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .analysis-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.06);
+  transform: translateY(-6px);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.18);
+  border-color: rgba(255,204,0,0.25);
+}
+
+/* Keep card steady when hovering buttons inside it to prevent perceived background movement */
+.analysis-card:has(.insight-btn:hover),
+.analysis-card:has(.insight-actions:hover) {
+  transform: none !important;
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12) !important;
+  border-color: rgba(0,0,0,0.06) !important;
+}
+
+/* Price Trajectory – visual refinements */
+.trend-card { background: #ffffff; }
+
+.trend-card .card-header {
+  margin-bottom: 0.85rem; /* a bit tighter like the mock */
+}
+
+/* Make chips feel like soft pills, active with subtle gold fill */
+.trend-card .time-filter { gap: 0.6rem; }
+.trend-card .time-filter button {
+  padding: 0.38rem 0.9rem;
+  height: 36px;
+  min-width: 44px;
+  border-radius: 999px;
+  border: 1px solid #ffcc00;
+  background: #ffffff;
+  color: #000;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.trend-card .time-filter button.active {
+  background: rgba(255, 204, 0, 0.2);
+  border-color: #ffcc00;
+  color: #000;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04);
+}
+
+/* Chart backplate: subtle warm backdrop with gentle inset */
+.trend-card .chart-container {
+  height: 280px; /* larger graph area */
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.04);
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  .trend-card .chart-container { height: 240px; }
+}
+
+@media (max-width: 768px) {
+  .trend-card .chart-container { height: 220px; }
+}
+
+/* Annotations: cleaner colors and soft pill */
+.trend-card .chart-annotation {
+  margin-top: 1.1rem;
+  display: flex;
+  flex-direction: column; /* stack into two rows */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.5rem;
+}
+
+.peak-marker { color: #ffcc00; font-weight: 600; }
+.growth-badge {
+  background: #ffffff;
+  color: #000;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
 }
 
 .card-header {
@@ -196,19 +308,23 @@
 }
 
 .time-filter button {
-  padding: 0.35rem 0.85rem;
-  border-radius: 1rem;
-  border: 1px solid #dee2e6;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,204,0,0.35);
   background: #fff;
+  color: #7a6b00;
   cursor: pointer;
   font-size: 0.85rem;
-  transition: all 0.3s ease;
-  min-width: 45px; /* Added for consistent button sizing */
+  font-weight: 600;
+  transition: all 0.2s ease;
+  min-width: 45px; /* consistent sizing */
 }
 
 .time-filter button.active {
-  background: #fff9d9;
-  border-color: #ffdf7e;
+  background: rgba(255, 204, 0, 0.15);
+  border-color: #ffcc00;
+  color: #614f00;
+  box-shadow: inset 0 0 0 1.5px rgba(255,204,0,0.3);
 }
 
 /* Chart Containers */
@@ -226,12 +342,10 @@
   font-size: 0.9rem;
 }
 
-.peak-marker {
-  color: #d4af37;
-}
+.peak-marker { color: #ffcc00; }
 
 .growth-badge {
-  background: #e9ecef;
+  background: #ffffff;
   padding: 0.3rem 0.7rem;
   border-radius: 1rem;
   font-size: 0.85rem;
@@ -250,6 +364,15 @@
   height: 250px;
   margin: 0 auto;
   perspective: 1000px;
+}
+
+.coin-display::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  filter: blur(6px);
+  z-index: 0;
 }
 
 .auto-spin-coin {
@@ -363,7 +486,7 @@
 
 /* Distribution Card */
 .distribution-card {
-  background: linear-gradient(135deg, #fff9f5 0%, #ffffff 100%);
+  background: #ffffff;
   display: flex;
   flex-direction: column;
 }
@@ -378,8 +501,8 @@
 
 .donut-chart-container {
   position: relative;
-  width: 220px;
-  height: 220px;
+  width: 240px; /* was 220px */
+  height: 240px; /* was 220px */
   margin: 0 auto;
 }
 
@@ -388,9 +511,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: #d4af37;
+  font-size: 2.3rem;
+  font-weight: 800;
+  color: #ffcc00;
 }
 
 .chart-legend {
@@ -413,27 +536,22 @@
   border-radius: 50%;
 }
 
-.auction .color-swatch {
-  background: linear-gradient(135deg, #d4af37 0%, #a67c00 100%);
-}
-
-.private .color-swatch {
-  background: linear-gradient(135deg, #e5e5e5 0%, #b0b0b0 100%);
-}
+.auction .color-swatch { background: #ffcc00; }
+.private .color-swatch { background: rgba(0,0,0,0.2); }
 
 /* Volume Indicator */
 .volume-indicator {
-  margin-top: 1.5rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 0.5rem;
+  margin-top: 1.25rem;
+  background: #ffffff;
+  border-radius: 999px;
+  padding: 0.4rem;
   position: relative;
 }
 
 .volume-bar {
   height: 8px;
-  background: linear-gradient(90deg, #ffdf7e, #d4af37);
-  border-radius: 4px;
+  background: #ffcc00;
+  border-radius: 999px;
   width: 65%;
   position: relative;
 }
@@ -442,37 +560,47 @@
 .insight-actions {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1rem;
+  /* Push actions to the bottom of the card regardless of content height */
+  margin-top: auto;
+  padding-top: 1rem; /* consistent breathing room from content above */
 }
 
 .insight-btn {
   display: inline-block;
-  padding: 10px 20px;
-  background-color: #ffcc00;
+  padding: 12px 22px;
+  background: #ffcc00;
   color: #000;
-  font-weight: bold;
+  font-weight: 800;
   text-decoration: none;
-  border-radius: 25px;
-  transition: background-color 0.3s ease;
-  margin-top: 20px;
+  border-radius: 999px;
+  border: 1px solid transparent; /* reserve space to avoid layout shift on hover */
   text-align: center;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .insight-btn:hover {
-  background-color: #ff9900;
+  background: white;
+  color: #ffcc00;
+  border: 1px solid #ffcc00;
+}
+
+.insight-btn:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
 }
 
 /* Overlay and Tooltip */
 .contextual-tooltip {
-  display: none;
+  transition: box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .chart-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.22), inset 0 0 0 1.5px #000;
   background: rgba(0,0,0,0.8);
   display: none;
   align-items: center;
@@ -1181,6 +1309,7 @@
 #coin-3d-visualization {
   padding: 64px 0;
   color: #333;
+  background-color: #ffffff; /* match Market Insights section */
 }
 
 #coin-3d-visualization .container {
@@ -1553,23 +1682,27 @@
 
 /* Services Section */
 .services {
-    padding: 80px 20px;
-    background-color: #111;
-    color: white;
-    text-align: center;
+  padding: 50px 20px;
+  background-color: var(--background);
+  color: white;
+  text-align: center;
 }
 
+
+/* Match "Our Story" heading styling */
 .services h2 {
-    font-size: 36px;
-    margin-bottom: 8px;
-    font-weight: bold;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #ffcc00;
 }
 
 .services p {
-    font-size: 18px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
 }
 
 .services-description {
@@ -1585,25 +1718,30 @@
 .service-item {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 12px; /* tighter spacing between elements */
     height: 100%;
     padding: 20px;
-    background-color: #1a1a1a;
+  background-color: #1a1a1a;
     border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     color: white;
     text-align: left;
-    min-height: 340px;
+  min-height: 280px; /* reduce card height to shrink empty space */
 }
 
 .service-item h3 {
-    font-size: 24px;
+  font-size: 24px;
+  text-align: center;
+  width: 100%;
+  margin: 0; /* let gap control spacing */
 }
 
 .service-item p {
     font-size: 16px;
     color: #bbb;
+  margin: 0; /* tighter spacing with gap */
 }
 
 /* Service Detail Buttons */
@@ -1616,7 +1754,11 @@
     text-decoration: none;
     border-radius: 25px;
     transition: background-color 0.3s ease;
-    margin-top: 10px;
+  /* Pin the button to the bottom so all cards align their CTAs */
+  margin-top: auto;
+  /* Lift it slightly from the very bottom for better breathing room */
+  margin-bottom: 12px;
+  align-self: center; /* center button horizontally */
 }
 
 .btn-service:hover {
@@ -1634,6 +1776,18 @@
     justify-content: center;
     margin: 0 auto;
     text-align: center;
+  position: relative; /* allow top divider */
+}
+
+/* Gold divider between consecutive service sections */
+.service-detail + .service-detail::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #ffcc00, transparent);
 }
 
 .service-detail h2 {
