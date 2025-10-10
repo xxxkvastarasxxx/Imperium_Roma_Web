@@ -1,25 +1,8 @@
-document.addEventListener("DOMContentLoaded", () => {
+﻿document.addEventListener("DOMContentLoaded", () => {
   const exportLink = document.getElementById("export-report");
-  const chartContainer = document.querySelector(".analysis-grid");
 
   exportLink.addEventListener("click", async (e) => {
     e.preventDefault();
-
-    if (!chartContainer) {
-      console.warn("Chart container not found.");
-      return;
-    }
-
-    // Separate references for different chart elements
-    const priceChart = document.querySelector(".trend-card");
-    const coinSpotlight = document.querySelector(".coin-spotlight");
-    // Will be used in the Market Liquidity Analysis section
-    const marketDistribution = document.querySelector(".distribution-card");
-
-    // Prepare date/time
-    const now = new Date();
-    const dateFormatted = now.toISOString().split('T')[0];
-    const timeFormatted = now.toLocaleTimeString();
 
     // Check if required libraries are loaded
     if (!window.jspdf || !window.html2canvas) {
@@ -27,731 +10,924 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Show loading indicator
+    // Validate that charts are fully loaded before proceeding
+    const validateCharts = () => {
+      const errors = [];
+      
+      // Check price chart
+      const priceCanvas = document.querySelector(".trend-card canvas");
+      if (!priceCanvas) {
+        errors.push("Price chart canvas not found");
+      } else if (priceCanvas.width === 0 || priceCanvas.height === 0) {
+        errors.push(`Price chart not initialized (dimensions: ${priceCanvas.width}x${priceCanvas.height})`);
+      }
+      
+      // Check market distribution chart
+      const marketCanvas = document.querySelector(".distribution-card canvas");
+      if (!marketCanvas) {
+        errors.push("Market distribution chart canvas not found");
+      } else if (marketCanvas.width === 0 || marketCanvas.height === 0) {
+        errors.push(`Market distribution chart not initialized (dimensions: ${marketCanvas.width}x${marketCanvas.height})`);
+      }
+      
+      return errors;
+    };
+
+    const chartErrors = validateCharts();
+    if (chartErrors.length > 0) {
+      console.error("Chart validation failed:", chartErrors);
+      alert("Charts are not fully loaded yet. Please wait a moment and try again.\n\nIssues found:\n" + chartErrors.join("\n"));
+      return;
+    }
+
+    console.log("All charts validated successfully, proceeding with export...");
+
+    // Show professional loading indicator with progress
     const loadingIndicator = document.createElement("div");
-    loadingIndicator.className = "export-loading";
-    loadingIndicator.innerHTML = `
-      <div class="spinner"></div>
-      <p>Generating detailed report...</p>
+    loadingIndicator.id = "pdf-loading-indicator";
+    loadingIndicator.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      font-family: 'Montserrat', Arial, sans-serif;
     `;
+    loadingIndicator.innerHTML = `
+      <div style="
+        border: 4px solid rgba(255,204,0,0.3);
+        border-top: 4px solid #ffcc00;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+      "></div>
+      <p id="loading-status" style="color: white; font-size: 16px; font-weight: 500; margin-bottom: 10px;">Preparing Report...</p>
+      <p id="loading-progress" style="color: #ffcc00; font-size: 12px; font-weight: 400;">0%</p>
+    `;
+    
+    const spinnerStyle = document.createElement('style');
+    spinnerStyle.textContent = `
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(spinnerStyle);
     document.body.appendChild(loadingIndicator);
 
+    // Helper function to update loading status
+    const updateLoadingStatus = (message, progress) => {
+      const statusEl = document.getElementById('loading-status');
+      const progressEl = document.getElementById('loading-progress');
+      if (statusEl) statusEl.textContent = message;
+      if (progressEl) progressEl.textContent = `${progress}%`;
+    };
+
     try {
-      // Initialize jsPDF with professional settings
+      updateLoadingStatus('Initializing PDF Generator...', 5);
+      updateLoadingStatus('Initializing PDF Generator...', 5);
+
+      // Get current date
+      const now = new Date();
+      const dateFormatted = now.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+      const timeFormatted = now.toLocaleTimeString('en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      });
+
+      // Initialize jsPDF
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "px",
         format: "a4",
-        hotfixes: ["px_scaling"],
         compress: true,
+        putOnlyUsedFonts: true,
+        floatPrecision: 16
       });
 
-      // Dimensions and spacing constants
+      // Constants
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
       const margin = 40;
       const contentWidth = pageWidth - margin * 2;
-      const lineSpacing = 15;
-      const primaryColor = [44, 62, 80]; // Dark blue
-      const accentColor = [212, 175, 55]; // Gold
-      const subtitleColor = [99, 110, 114]; // Gray blue
-      const textColor = [60, 60, 60]; // Dark gray
-      const lightTextColor = [128, 128, 128]; // Light gray
       
-      // Helper functions for consistent styling
-      const styles = {
-        sectionTitle: () => {
-          pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(14);
-          pdf.setTextColor(...primaryColor);
-        },
-        
-        subSectionTitle: () => {
-          pdf.setFont("helvetica", "bold");
-          pdf.setFontSize(12);
-          pdf.setTextColor(...textColor);
-        },
-        
-        bodyText: () => {
-          pdf.setFont("helvetica", "normal");
-          pdf.setFontSize(10);
-          pdf.setTextColor(...textColor);
-        },
-        
-        noteText: () => {
-          pdf.setFont("helvetica", "italic");
-          pdf.setFontSize(9);
-          pdf.setTextColor(...lightTextColor);
-        },
-        
-        sectionDivider: (y, fullWidth = true) => {
-          pdf.setDrawColor(...accentColor);
-          pdf.setLineWidth(0.5);
-          
-          const startX = margin;
-          const endX = fullWidth ? pageWidth - margin : startX + contentWidth / 2;
-          
-          pdf.line(startX, y, endX, y);
-          return y + lineSpacing * 0.8;
-        },
-        
-        bulletPoint: (text, x, y) => {
-          pdf.setFont("helvetica", "normal");
-          pdf.setFontSize(10);
-          pdf.setTextColor(...textColor);
-          
-          // Draw bullet point
-          pdf.circle(x, y - 2.5, 1.2, 'F');
-          pdf.text(text, x + 8, y);
-          
-          return y + lineSpacing;
-        },
-        
-        addGoldAccentBox: (x, y, width, height) => {
-          // Add gold accent background
-          pdf.setFillColor(250, 242, 215); // Light gold background
-          pdf.rect(x, y, width, height, 'F');
-          
-          // Add gold border
-          pdf.setDrawColor(...accentColor);
-          pdf.setLineWidth(1);
-          pdf.rect(x, y, width, height, 'S');
+      // Colors matching the design
+      const black = [0, 0, 0];
+      const gold = [255, 204, 0];
+      const darkGray = [51, 51, 51];
+      const lightGray = [128, 128, 128];
+      const bgGray = [250, 250, 250];
+      const white = [255, 255, 255];
+
+      // Helper function for better canvas capture
+      const captureElement = async (element, options = {}) => {
+        if (!element) {
+          throw new Error("Element not found");
         }
+
+        // Wait a bit for any animations to complete
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        const defaultOptions = {
+          scale: 3,
+          useCORS: true,
+          allowTaint: false,
+          backgroundColor: '#ffffff',
+          logging: false,
+          removeContainer: true,
+          imageTimeout: 15000,
+          letterRendering: true,
+          windowWidth: element.scrollWidth,
+          windowHeight: element.scrollHeight,
+          onclone: (clonedDoc) => {
+            // Ensure charts are visible in cloned document
+            const chartCanvases = clonedDoc.querySelectorAll('canvas');
+            chartCanvases.forEach(canvas => {
+              canvas.style.display = 'block';
+              canvas.style.visibility = 'visible';
+            });
+          }
+        };
+
+        const canvas = await html2canvas(element, { ...defaultOptions, ...options });
+        return canvas.toDataURL("image/png", 0.95);
       };
-      
+
+      updateLoadingStatus('Creating Cover Page...', 10);
+
       let yPosition = margin;
-      
+      updateLoadingStatus('Creating Cover Page...', 10);
+
       /************************************************
        * COVER PAGE
        ************************************************/
-      // Background tint for cover page
-      pdf.setFillColor(250, 250, 250);
+      
+      // Background
+      pdf.setFillColor(...bgGray);
       pdf.rect(0, 0, pageWidth, pageHeight, 'F');
       
-      // Header accent bar
-      pdf.setFillColor(...accentColor);
-      pdf.rect(0, 0, pageWidth, 15, 'F');
+      // Top gold bar
+      pdf.setFillColor(...gold);
+      pdf.rect(0, 0, pageWidth, 8, 'F');
       
-      // Add logo
-      const logoImg = new Image();
-      logoImg.src = "/assets/images/imperium-roma-logo.png";
-
-      try {
-        await new Promise((resolve, reject) => {
-          logoImg.onload = resolve;
-          logoImg.onerror = reject;
-          setTimeout(() => reject(new Error("Logo loading timed out")), 1500);
-        });
-        
-        // Center logo
-        const logoWidth = 80;
-        const logoHeight = 80;
-        const logoX = (pageWidth - logoWidth) / 2;
-        
-        pdf.addImage(logoImg, "PNG", logoX, margin + 20, logoWidth, logoHeight);
-        yPosition = margin + 120;
-      } catch (err) {
-        console.warn("Could not load logo, using text instead:", err);
-        pdf.setFont("helvetica", "bold");
-        pdf.setFontSize(24);
-        pdf.setTextColor(...accentColor);
-        
-        // Center text
-        const text = "IMPERIUM ROMA";
-        const textWidth = pdf.getStringUnitWidth(text) * 24 / pdf.internal.scaleFactor;
-        const textX = (pageWidth - textWidth) / 2;
-        
-        pdf.text(text, textX, margin + 60);
-        yPosition = margin + 90;
-      }
-
-      // Title with box decoration
-      const titleText = "Marcus Aurelius Denarius";
+      yPosition = 80;
+      
+      // Main Title - "Marcus Aurelius Denarius"
       pdf.setFont("helvetica", "bold");
-      pdf.setFontSize(24);
-      pdf.setTextColor(...primaryColor);
+      pdf.setFontSize(32);
+      pdf.setTextColor(...black);
       
-      // Measure and center title
-      const titleWidth = pdf.getStringUnitWidth(titleText) * 24 / pdf.internal.scaleFactor;
-      const titleX = (pageWidth - titleWidth) / 2;
+      const titlePart1 = "Marcus Aurelius Denarius";
+      const titlePart1Width = pdf.getStringUnitWidth(titlePart1) * 32 / pdf.internal.scaleFactor;
+      pdf.text(titlePart1, (pageWidth - titlePart1Width) / 2, yPosition);
       
-      // Add decorative box
-      const boxPadding = 20;
-      const boxHeight = 40;
-      styles.addGoldAccentBox(
-        titleX - boxPadding, 
-        yPosition - 5, 
-        titleWidth + (boxPadding * 2), 
-        boxHeight
-      );
+      yPosition += 45;
       
-      pdf.text(titleText, titleX, yPosition + boxHeight/2);
-      yPosition += boxHeight + 30;
-
+      // "Market Insights" in gold
+      pdf.setFontSize(32);
+      pdf.setTextColor(...gold);
+      const titlePart2 = "Market Insights";
+      const titlePart2Width = pdf.getStringUnitWidth(titlePart2) * 32 / pdf.internal.scaleFactor;
+      pdf.text(titlePart2, (pageWidth - titlePart2Width) / 2, yPosition);
+      
+      yPosition += 45;
+      
       // Subtitle
-      const subtitleText = "Market Analysis Report";
-      pdf.setFontSize(18);
-      pdf.setTextColor(...subtitleColor);
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(13);
+      pdf.setTextColor(...lightGray);
+      const subtitle = "Interactive analysis for RIC III Marcus Aurelius 171";
+      const subtitleWidth = pdf.getStringUnitWidth(subtitle) * 13 / pdf.internal.scaleFactor;
+      pdf.text(subtitle, (pageWidth - subtitleWidth) / 2, yPosition);
       
-      // Measure and center subtitle
-      const subtitleWidth = pdf.getStringUnitWidth(subtitleText) * 18 / pdf.internal.scaleFactor;
-      const subtitleX = (pageWidth - subtitleWidth) / 2;
+      yPosition += 60;
       
-      pdf.text(subtitleText, subtitleX, yPosition);
-      yPosition += lineSpacing * 3;
+      // Decorative gold line
+      pdf.setDrawColor(...gold);
+      pdf.setLineWidth(3);
+      pdf.line(margin + 80, yPosition, pageWidth - margin - 80, yPosition);
       
-      // Add decorative coin image if available
-      try {
-        const coinImg = await html2canvas(coinSpotlight, { 
-          scale: 2,
-          backgroundColor: null
-        });
-        const coinData = coinImg.toDataURL("image/png");
-        
-        // Place coin image centrally
-        const coinImgWidth = 200;
-        const coinImgHeight = 200;
-        const coinImgX = (pageWidth - coinImgWidth) / 2;
-        
-        pdf.addImage(coinData, "PNG", coinImgX, yPosition, coinImgWidth, coinImgHeight);
-        yPosition += coinImgHeight + lineSpacing;
-      } catch (err) {
-        console.warn("Could not add coin image to cover:", err);
-        yPosition += 100; // Add space anyway
-      }
+      yPosition += 40;
       
-      // Date and reference with elegantly styled box
-      const dateBoxY = pageHeight - 100;
-      const dateBoxHeight = 60;
+      // Report info box with enhanced styling
+      pdf.setFillColor(...white);
+      pdf.setDrawColor(...gold);
+      pdf.setLineWidth(2);
+      pdf.roundedRect(margin + 20, yPosition, contentWidth - 40, 100, 8, 8, 'FD');
       
-      styles.addGoldAccentBox(margin, dateBoxY, contentWidth, dateBoxHeight);
+      // Add subtle shadow effect with gray border
+      pdf.setDrawColor(200, 200, 200);
+      pdf.setLineWidth(0.5);
+      pdf.roundedRect(margin + 22, yPosition + 2, contentWidth - 40, 100, 8, 8, 'S');
       
       pdf.setFont("helvetica", "normal");
       pdf.setFontSize(11);
-      pdf.setTextColor(...textColor);
+      pdf.setTextColor(...darkGray);
       
-      pdf.text("Report Date:", margin + 15, dateBoxY + 20);
-      pdf.text("Reference:", margin + 15, dateBoxY + 40);
+      const infoBoxX = margin + 40;
+      pdf.text("Report Generated:", infoBoxX, yPosition + 28);
+      pdf.text("Coin Reference:", infoBoxX, yPosition + 50);
+      pdf.text("Analysis Period:", infoBoxX, yPosition + 72);
       
       pdf.setFont("helvetica", "bold");
-      pdf.text(`${dateFormatted} at ${timeFormatted}`, margin + 100, dateBoxY + 20);
-      pdf.text("RIC III Marcus Aurelius 171", margin + 100, dateBoxY + 40);
+      pdf.setTextColor(...black);
+      pdf.text(`${dateFormatted} at ${timeFormatted}`, infoBoxX + 150, yPosition + 28);
+      pdf.text("RIC III Marcus Aurelius 171", infoBoxX + 150, yPosition + 50);
+      pdf.text("2020 - 2025 (5 Year Overview)", infoBoxX + 150, yPosition + 72);
       
-      // Add page
-      pdf.addPage();
-      yPosition = margin;
-
-      /************************************************
-       * TABLE OF CONTENTS
-       ************************************************/
-      styles.sectionTitle();
-      pdf.text("Table of Contents", margin, yPosition);
-      yPosition = styles.sectionDivider(yPosition + lineSpacing * 0.5);
+      yPosition += 130;
       
-      const tocEntries = [
-        { title: "Numismatic Details", page: 3 },
-        { title: "Price Trajectory Analysis", page: 4 },
-        { title: "Market Statistics", page: 5 },
-        { title: "Market Liquidity Analysis", page: 6 },
-        { title: "Historical Context", page: 7 }
-      ];
+      // Professional disclaimer box
+      pdf.setFillColor(255, 252, 240);
+      pdf.setDrawColor(...gold);
+      pdf.setLineWidth(1);
+      pdf.roundedRect(margin + 20, yPosition, contentWidth - 40, 60, 5, 5, 'FD');
       
-      // TOC entries with dot leaders
-      tocEntries.forEach((entry, index) => {
-        const entryY = yPosition + (index * lineSpacing * 1.5);
-        
-        pdf.setFont("helvetica", "normal");
-        pdf.setFontSize(12);
-        pdf.setTextColor(...textColor);
-        pdf.text(entry.title, margin, entryY);
-        
-        // Add dot leaders
-        pdf.setFont("helvetica", "bold");
-        pdf.setTextColor(...accentColor);
-        const pageNumX = pageWidth - margin - 20;
-        pdf.text(entry.page.toString(), pageNumX, entryY);
-        
-        // Draw dot leader line
-        const startX = margin + pdf.getStringUnitWidth(entry.title) * 12 / pdf.internal.scaleFactor + 10;
-        const endX = pageNumX - 10;
-        
-        pdf.setDrawColor(...lightTextColor);
-        pdf.setLineWidth(0.2);
-        
-        for (let x = startX; x < endX; x += 4) {
-          pdf.line(x, entryY - 2, x + 1, entryY - 2);
-        }
-      });
-      
-      yPosition += tocEntries.length * lineSpacing * 1.5 + lineSpacing * 2;
-      
-      // Add instruction note
-      pdf.setFont("helvetica", "italic");
+      pdf.setFont("helvetica", "bold");
       pdf.setFontSize(10);
-      pdf.setTextColor(...lightTextColor);
+      pdf.setTextColor(...gold);
+      pdf.text("PROFESSIONAL MARKET ANALYSIS", margin + 40, yPosition + 20);
       
-      const noteText = "This report provides detailed analysis of the Marcus Aurelius Denarius coin's market performance, " + 
-                       "historical context, and investment prospects based on current market data.";
-      const noteLines = pdf.splitTextToSize(noteText, contentWidth);
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(9);
+      pdf.setTextColor(...darkGray);
+      const disclaimerText = "This comprehensive report provides detailed market analysis, price trends, historical data, and investment insights based on authenticated numismatic sources.";
+      const disclaimerLines = pdf.splitTextToSize(disclaimerText, contentWidth - 80);
+      pdf.text(disclaimerLines, margin + 40, yPosition + 35);
       
-      pdf.text(noteLines, margin, yPosition);
+      // Footer branding on cover
+      const coverFooterY = pageHeight - 50;
+      pdf.setDrawColor(...gold);
+      pdf.setLineWidth(2);
+      pdf.line(margin, coverFooterY, pageWidth - margin, coverFooterY);
       
-      // Add page
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(14);
+      pdf.setTextColor(...black);
+      const brandText = "IMPERIUM ROMA";
+      const brandWidth = pdf.getStringUnitWidth(brandText) * 14 / pdf.internal.scaleFactor;
+      pdf.text(brandText, (pageWidth - brandWidth) / 2, coverFooterY + 20);
+      
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(9);
+      pdf.setTextColor(...lightGray);
+      const tagline = "Professional Numismatic Market Analysis";
+      const taglineWidth = pdf.getStringUnitWidth(tagline) * 9 / pdf.internal.scaleFactor;
+      pdf.text(tagline, (pageWidth - taglineWidth) / 2, coverFooterY + 33);
+      
+      updateLoadingStatus('Capturing Price Trajectory...', 25);
+      updateLoadingStatus('Capturing Price Trajectory...', 25);
+      
+      // New page for content
       pdf.addPage();
+      
+      // Reset background for content pages
+      pdf.setFillColor(...white);
+      pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+      
       yPosition = margin;
 
       /************************************************
-       * NUMISMATIC DETAILS SECTION
+       * PRICE TRAJECTORY CARD
        ************************************************/
-      styles.sectionTitle();
-      pdf.text("Numismatic Details", margin, yPosition);
-      yPosition = styles.sectionDivider(yPosition + lineSpacing * 0.5);
       
-      // Function to add heading and information with improved styling
-      const addDetailSection = (title, details, x, y, width) => {
-        let posY = y;
-        
-        // Add background for the section
-        pdf.setFillColor(250, 250, 250);
-        const sectionHeight = lineSpacing * (0.8 + details.length * 1.2) + 15;
-        pdf.roundedRect(x, posY, width, sectionHeight, 3, 3, 'F');
-        
-        // Add title bar
-        pdf.setFillColor(...accentColor);
-        pdf.setDrawColor(...accentColor);
-        pdf.roundedRect(x, posY, width, lineSpacing * 1.2, 3, 3, 'FD');
-        
-        // Title text
-        pdf.setFont("helvetica", "bold");
-        pdf.setFontSize(11);
-        pdf.setTextColor(255, 255, 255);
-        pdf.text(title, x + 8, posY + lineSpacing * 0.8);
-        posY += lineSpacing * 1.5;
-        
-        // Content with alternating background
-        pdf.setFont("helvetica", "normal");
-        pdf.setFontSize(9.5);
-        pdf.setTextColor(...textColor);
-        
-        details.forEach((detail, index) => {
-          const [label, value] = detail;
-          
-          // Subtle alternating background
-          if (index % 2 === 0) {
-            pdf.setFillColor(245, 245, 245);
-            pdf.rect(x + 3, posY - lineSpacing * 0.6, width - 6, lineSpacing * 1.1, 'F');
-          }
-          
-          pdf.setFont("helvetica", "bold");
-          pdf.text(label + ":", x + 8, posY);
-          
-          pdf.setFont("helvetica", "normal");
-          pdf.text(value, x + 70, posY);
-          posY += lineSpacing * 1.1;
-        });
-        
-        return posY + lineSpacing * 0.3;
-      };
-
-      // Calculate dimensions for two-column layout
-      const columnWidth = (contentWidth / 2) - 10;
-      const leftColumn = margin;
-      const rightColumn = margin + columnWidth + 20;
-      
-      // Left Column - Basic Information with styled card
-      const basicDetails = [
-        ["Date Range", "166 CE–167 CE"],
-        ["Denomination", "Denarius"],
-        ["Material", "Silver"],
-        ["Manufacture", "Struck"]
-      ];
-      
-      // Add basic info
-      let leftY = addDetailSection("Basic Information", basicDetails, leftColumn, yPosition, columnWidth);
-      
-      // Left Column - Authority Information
-      const authorityDetails = [
-        ["Authority", "Marcus Aurelius"],
-        ["Dynasty", "Nerva-Antonine Dynasty"],
-        ["State", "Roman Empire"],
-        ["Mint", "Rome"],
-        ["Region", "Europe--Italy--Latium"]
-      ];
-      
-      // Add some spacing between sections
-      leftY += lineSpacing * 0.5;
-      
-      // Add authority info
-      leftY = addDetailSection("Authority", authorityDetails, leftColumn, leftY, columnWidth);
-      
-      // Right Column - Obverse Details
-      const obverseDetails = [
-        ["Legend", "M ANTONINVS AVG ARM PARTH MAX"],
-        ["Type", "Head of Marcus Aurelius, laureate, right"],
-        ["Portrait", "Marcus Aurelius"]
-      ];
-      
-      let rightY = addDetailSection("Obverse", obverseDetails, rightColumn, yPosition, columnWidth);
-      
-      // Right Column - Reverse Details
-      const reverseDetails = [
-        ["Legend", "TR P XXI IMP IIII COS III"],
-        ["Type", "Aequitas, draped, standing left, holding scales"],
-        ["", "in right hand and cornucopiae in left hand"],
-        ["Deity", "Aequitas"]
-      ];
-      
-      // Add some spacing between sections
-      rightY += lineSpacing * 0.5;
-      
-      // Add reverse info
-      rightY = addDetailSection("Reverse", reverseDetails, rightColumn, rightY, columnWidth);
-      
-      // Update Y position for next section
-      yPosition = Math.max(leftY, rightY) + lineSpacing;
-      
-      // Add illustration caption
-      if (yPosition < pageHeight - 100) {
-        // Add image caption
-        try {
-          // Try to get a specific image if available
-          const obverseImg = document.querySelector(".coin-obverse-img");
-          const reverseImg = document.querySelector(".coin-reverse-img");
-          
-          if (obverseImg && reverseImg) {
-            const obverseCanvas = await html2canvas(obverseImg, { scale: 2 });
-            const reverseCanvas = await html2canvas(reverseImg, { scale: 2 });
-            
-            const imgWidth = 80;
-            const imgHeight = 80;
-            const obverseX = pageWidth / 2 - imgWidth - 20;
-            const reverseX = pageWidth / 2 + 20;
-            
-            pdf.addImage(obverseCanvas.toDataURL(), "PNG", obverseX, yPosition, imgWidth, imgHeight);
-            pdf.addImage(reverseCanvas.toDataURL(), "PNG", reverseX, yPosition, imgWidth, imgHeight);
-            
-            // Add captions
-            pdf.setFont("helvetica", "italic");
-            pdf.setFontSize(8);
-            pdf.setTextColor(...lightTextColor);
-            
-            const obverseCaptionWidth = pdf.getStringUnitWidth("Obverse") * 8 / pdf.internal.scaleFactor;
-            const reverseCaptionWidth = pdf.getStringUnitWidth("Reverse") * 8 / pdf.internal.scaleFactor;
-            
-            pdf.text("Obverse", obverseX + (imgWidth - obverseCaptionWidth)/2, yPosition + imgHeight + 10);
-            pdf.text("Reverse", reverseX + (imgWidth - reverseCaptionWidth)/2, yPosition + imgHeight + 10);
-            
-            yPosition += imgHeight + 30;
-          }
-        } catch (err) {
-          console.warn("Could not add coin illustrations", err);
-        }
-      }
-
-      // Add page break
-      pdf.addPage();
-      yPosition = margin;
-
-      /************************************************
-       * PRICE TRENDS SECTION
-       ************************************************/
-      styles.sectionTitle();
+      // Section Header with styling
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(22);
+      pdf.setTextColor(...black);
       pdf.text("Price Trajectory Analysis", margin, yPosition);
-      yPosition = styles.sectionDivider(yPosition + lineSpacing * 0.5);
       
-      // Add background for chart
-      styles.addGoldAccentBox(margin - 5, yPosition - 5, contentWidth + 10, 220);
-
-      // Capture Price Chart
-      try {
-        const priceChartImg = await html2canvas(priceChart, { 
-          scale: 2,
-          backgroundColor: null,
-          logging: false
-        });
-        const priceChartData = priceChartImg.toDataURL("image/png");
-        
-        // Maintain aspect ratio but fit within box
-        const maxChartHeight = 210;
-        const priceChartRatio = priceChartImg.width / priceChartImg.height;
-        const priceChartHeight = Math.min(maxChartHeight, contentWidth / priceChartRatio);
-        const priceChartWidth = priceChartHeight * priceChartRatio;
-        
-        // Center the chart
-        const chartX = margin + (contentWidth - priceChartWidth) / 2;
-        
-        // Add image
-        pdf.addImage(priceChartData, "PNG", chartX, yPosition, priceChartWidth, priceChartHeight);
-        yPosition += priceChartHeight + lineSpacing;
-      } catch (err) {
-        console.warn("Could not render price chart", err);
-        pdf.setFont("helvetica", "italic");
-        pdf.setFontSize(10);
-        pdf.setTextColor(...lightTextColor);
-        pdf.text("[Price chart could not be rendered]", margin, yPosition + 100);
-        yPosition += 200;
-      }
+      yPosition += 12;
       
-      // Insights section with styled box
-      yPosition += lineSpacing;
-      styles.subSectionTitle();
-      pdf.text("Key Market Insights", margin, yPosition);
-      yPosition = styles.sectionDivider(yPosition + lineSpacing * 0.5, false);
-
-      // Create insights box with shadow effect
-      const insightsBoxX = margin;
-      const insightsBoxY = yPosition;
-      const insightsBoxWidth = contentWidth;
-      const insightsBoxHeight = 100;
+      // Gold divider line with shadow
+      pdf.setDrawColor(...gold);
+      pdf.setLineWidth(3);
+      pdf.line(margin, yPosition, pageWidth - margin, yPosition);
       
-      // Shadow effect
-      pdf.setFillColor(230, 230, 230);
-      pdf.roundedRect(insightsBoxX + 3, insightsBoxY + 3, insightsBoxWidth, insightsBoxHeight, 3, 3, 'F');
+      yPosition += 30;
       
-      // Main box
-      pdf.setFillColor(252, 252, 252);
-      pdf.setDrawColor(220, 220, 220);
-      pdf.roundedRect(insightsBoxX, insightsBoxY, insightsBoxWidth, insightsBoxHeight, 3, 3, 'FD');
+      // Capture Price Chart with error handling
+      const priceCard = document.querySelector(".trend-card");
       
-      // Extract insights
-      const peakMarker = document.getElementById("peak-marker");
-      const growthBadge = document.getElementById("growth-badge");
-      const volatilityIndicator = document.getElementById("volatility-indicator");
-      
-      const peakText = peakMarker ? peakMarker.textContent : "Peak Value: $2,450 (December 2024)";
-      const growthText = growthBadge ? growthBadge.textContent : "Annual Growth Rate: +8.2%";
-      const volatilityText = volatilityIndicator ? volatilityIndicator.textContent : "Market Volatility: Moderate";
-      
-      // Add insights as bullet points with icons
-      yPosition = insightsBoxY + 20;
-      
-      // Function to add insight with icon
-      const addInsight = (text, y, icon) => {
-        // Add circular background for icon
-        pdf.setFillColor(...accentColor);
-        pdf.circle(margin + 15, y - 2.5, 6, 'F');
-        
-        // Add icon (using simple characters as placeholders)
-        pdf.setFont("helvetica", "bold");
-        pdf.setFontSize(10);
-        pdf.setTextColor(255, 255, 255);
-        pdf.text(icon, margin + 15 - 2.5, y);
-        
-        // Add insight text
-        pdf.setFont("helvetica", "normal");
-        pdf.setFontSize(10);
-        pdf.setTextColor(...textColor);
-        pdf.text(text, margin + 35, y);
-        
-        return y + lineSpacing * 1.5;
-      };
-      
-      yPosition = addInsight(peakText, yPosition, "↑");
-      yPosition = addInsight(growthText, yPosition, "%");
-      yPosition = addInsight(volatilityText, yPosition, "~");
-      
-      // Add market recommendation
-      yPosition = insightsBoxY + insightsBoxHeight + lineSpacing;
-      
-      pdf.setFillColor(240, 246, 250);
-      pdf.setDrawColor(180, 210, 230);
-      pdf.roundedRect(margin, yPosition, contentWidth, 40, 3, 3, 'FD');
-      
-      pdf.setFont("helvetica", "bold");
-      pdf.setFontSize(11);
-      pdf.setTextColor(40, 80, 150);
-      pdf.text("Market Recommendation:", margin + 15, yPosition + 17);
-      
-      pdf.setFont("helvetica", "normal");
-      pdf.setFontSize(10);
-      pdf.text("Strong buy recommendation for collectors. Price stability observed in Q1 2025.", 
-              margin + 160, yPosition + 17);
-      
-      // Add page
-      pdf.addPage();
-      yPosition = margin;
-
-      /************************************************
-       * COIN DETAILS & MARKET STATISTICS
-       ************************************************/
-      styles.sectionTitle();
-      pdf.text("Coin Details & Market Statistics", margin, yPosition);
-      yPosition = styles.sectionDivider(yPosition + lineSpacing * 0.5);
-
-      // Capture coin spotlight
-      try {
-        const coinImg = await html2canvas(coinSpotlight, { 
-          scale: 2,
-          backgroundColor: null,
-          logging: false
-        });
-        const coinData = coinImg.toDataURL("image/png");
-        
-        // Calculate dimensions
-        const maxImgHeight = 180;
-        const coinRatio = coinImg.width / coinImg.height;
-        const coinHeight = Math.min(maxImgHeight, contentWidth / coinRatio);
-        const coinWidth = coinHeight * coinRatio;
-        
-        // Center the image
-        const coinX = margin + (contentWidth - coinWidth) / 2;
-        
-        // Add decorative frame with shadow
-        pdf.setFillColor(230, 230, 230);
-        pdf.rect(coinX + 3, yPosition + 3, coinWidth, coinHeight, 'F');
-        
-        pdf.setFillColor(255, 255, 255);
-        pdf.setDrawColor(...accentColor);
-        pdf.setLineWidth(1);
-        pdf.rect(coinX, yPosition, coinWidth, coinHeight, 'FD');
-        
-        pdf.addImage(coinData, "PNG", coinX, yPosition, coinWidth, coinHeight);
-        yPosition += coinHeight + lineSpacing * 2;
-      } catch (err) {
-        console.warn("Could not render coin spotlight", err);
-        pdf.setFont("helvetica", "italic");
-        pdf.setFontSize(10);
-        pdf.setTextColor(...lightTextColor);
-        pdf.text("[Coin image could not be rendered]", margin, yPosition + 80);
-        yPosition += 160;
-      }
-
-      // Statistics cards in a row
-      styles.subSectionTitle();
-      pdf.text("Market Statistics", margin, yPosition);
-      yPosition = styles.sectionDivider(yPosition + lineSpacing * 0.5);
-      
-      // Extract coin data
-      const currentMedian = document.getElementById("current-median");
-      const certifiedExamples = document.getElementById("certified-examples");
-      const medianValue = currentMedian ? currentMedian.textContent : "$1,850";
-      const certifiedValue = certifiedExamples ? certifiedExamples.textContent : "154";
-      
-      // Create three statistic cards in a row
-      const cardWidth = contentWidth / 3 - 10;
-      const cardHeight = 80;
-      
-      // Function to create a stat card
-      const createStatCard = (x, y, title, value, subtext) => {
-        // Card background with gradient effect
-        pdf.setFillColor(252, 252, 252);
-        pdf.setDrawColor(220, 220, 220);
-        pdf.roundedRect(x, y, cardWidth, cardHeight, 5, 5, 'FD');
-        
-        // Add top accent
-        pdf.setFillColor(...accentColor);
-        pdf.rect(x, y, cardWidth, 5, 'F');
-        
-        // Card title
-        pdf.setFont("helvetica", "bold");
-        pdf.setFontSize(9);
-        pdf.setTextColor(...lightTextColor);
-        pdf.text(title, x + 10, y + 20);
-        
-        // Value (large)
-        pdf.setFont("helvetica", "bold");
-        pdf.setFontSize(18);
-        pdf.setTextColor(...primaryColor);
-        
-        // Center the value
-        const valueWidth = pdf.getStringUnitWidth(value) * 18 / pdf.internal.scaleFactor;
-        const valueX = x + (cardWidth - valueWidth) / 2;
-        
-        pdf.text(value, valueX, y + 45);
-        
-        // Subtext
-        pdf.setFont("helvetica", "normal");
-        pdf.setFontSize(8);
-        pdf.setTextColor(...lightTextColor);
-        
-        // Center the subtext
-        const subtextWidth = pdf.getStringUnitWidth(subtext) * 8 / pdf.internal.scaleFactor;
-        const subtextX = x + (cardWidth - subtextWidth) / 2;
-        
-        pdf.text(subtext, subtextX, y + 65);
-      };
-      
-      // Create three stat cards
-      createStatCard(margin, yPosition, "MEDIAN PRICE", medianValue, "Current Market Value");
-      createStatCard(margin + cardWidth + 10, yPosition, "CERTIFIED EXAMPLES", certifiedValue, "NGC/PCGS Population");
-      createStatCard(margin + (cardWidth + 10) * 2, yPosition, "MARKET RANK", "Top 15%", "Among Antonine Denarii");
-      yPosition += cardHeight + lineSpacing * 2;
-      
-      // Add market distribution chart if available
-      try {
-        if (marketDistribution) {
-          const distributionImg = await html2canvas(marketDistribution, {
-            scale: 2,
-            backgroundColor: null,
-            logging: false
+      if (priceCard) {
+        try {
+          updateLoadingStatus('Rendering Price Chart...', 35);
+          
+          // Ensure chart is fully rendered by checking for canvas
+          const chartCanvas = priceCard.querySelector('canvas');
+          if (!chartCanvas) {
+            throw new Error("Chart canvas not found");
+          }
+          
+          console.log("Price chart canvas found:", chartCanvas);
+          console.log("Canvas dimensions:", chartCanvas.width, "x", chartCanvas.height);
+          
+          // Check if canvas has valid dimensions
+          if (chartCanvas.width === 0 || chartCanvas.height === 0) {
+            throw new Error(`Canvas has invalid dimensions: ${chartCanvas.width}x${chartCanvas.height}. Chart may not be initialized yet.`);
+          }
+          
+          // Ensure canvas is visible
+          if (chartCanvas.offsetWidth === 0 || chartCanvas.offsetHeight === 0) {
+            throw new Error("Canvas is not visible in the DOM");
+          }
+          
+          let chartImage = null;
+          
+          // Try to get the chart directly from canvas using native API
+          try {
+            console.log("Using Canvas toDataURL method");
+            chartImage = chartCanvas.toDataURL('image/png', 1.0);
+            console.log("Successfully got chart image from Canvas API");
+          } catch (e) {
+            console.warn("Canvas toDataURL failed:", e);
+            
+            // Try html2canvas as fallback
+            console.log("Falling back to html2canvas");
+            await new Promise(resolve => setTimeout(resolve, 500));
+            chartImage = await captureElement(priceCard, {
+              windowWidth: priceCard.scrollWidth,
+              windowHeight: priceCard.scrollHeight,
+              ignoreElements: (element) => {
+                return element.classList && element.classList.contains('chart-tooltip');
+              }
+            });
+          }
+          
+          if (!chartImage || chartImage.length < 100) {
+            throw new Error("Failed to capture chart image or image is empty");
+          }
+          
+          // Calculate dimensions to fit width while maintaining aspect ratio
+          const imgWidth = contentWidth - 20;
+          const tempImg = new Image();
+          tempImg.src = chartImage;
+          
+          await new Promise((resolve, reject) => {
+            tempImg.onload = () => {
+              console.log("Chart image loaded successfully:", tempImg.width, "x", tempImg.height);
+              resolve();
+            };
+            tempImg.onerror = (e) => {
+              console.error("Image load error:", e);
+              reject(new Error("Failed to load captured image"));
+            };
+            setTimeout(() => reject(new Error('Image load timeout')), 5000);
           });
           
-          const distWidth = 200;
-          const distHeight = 150;
-          const distX = margin + contentWidth - distWidth;
+          const imgHeight = (tempImg.height / tempImg.width) * imgWidth;
           
-          pdf.addImage(distributionImg.toDataURL(), "PNG", distX, yPosition - cardHeight, distWidth, distHeight);
+          console.log("Adding chart to PDF at position:", yPosition, "with size:", imgWidth, "x", imgHeight);
+          
+          // Add white card background with shadow
+          pdf.setFillColor(...white);
+          pdf.setDrawColor(220, 220, 220);
+          pdf.setLineWidth(1);
+          pdf.roundedRect(margin, yPosition, contentWidth, imgHeight + 30, 10, 10, 'FD');
+          
+          // Add inner shadow effect
+          pdf.setDrawColor(240, 240, 240);
+          pdf.setLineWidth(0.5);
+          pdf.roundedRect(margin + 2, yPosition + 2, contentWidth - 4, imgHeight + 26, 10, 10, 'S');
+          
+          // Add chart image with padding
+          pdf.addImage(chartImage, "PNG", margin + 10, yPosition + 10, imgWidth, imgHeight);
+          
+          console.log("Chart added to PDF successfully");
+          
+          yPosition += imgHeight + 45;
+          
+          updateLoadingStatus('Extracting Market Data...', 50);
+          
+        } catch (err) {
+          console.error("Could not render price chart:", err);
+          console.error("Error details:", {
+            message: err.message,
+            stack: err.stack,
+            priceCard: !!priceCard,
+            canvas: !!priceCard?.querySelector('canvas'),
+            canvasWidth: priceCard?.querySelector('canvas')?.width,
+            canvasHeight: priceCard?.querySelector('canvas')?.height,
+            canvasOffsetWidth: priceCard?.querySelector('canvas')?.offsetWidth,
+            canvasOffsetHeight: priceCard?.querySelector('canvas')?.offsetHeight
+          });
+          
+          // Fallback UI if chart fails
+          pdf.setFillColor(250, 240, 240);
+          pdf.setDrawColor(255, 200, 200);
+          pdf.roundedRect(margin, yPosition, contentWidth, 120, 8, 8, 'FD');
+          
+          pdf.setFont("helvetica", "italic");
+          pdf.setFontSize(11);
+          pdf.setTextColor(...darkGray);
+          pdf.text("⚠ Price chart could not be rendered", margin + 20, yPosition + 45);
+          pdf.setFontSize(9);
+          pdf.setTextColor(...lightGray);
+          const errorLines = pdf.splitTextToSize("Error: " + err.message, contentWidth - 40);
+          pdf.text(errorLines, margin + 20, yPosition + 65);
+          pdf.text("Please wait for charts to fully load before exporting.", margin + 20, yPosition + 95);
+          
+          yPosition += 140;
         }
-      } catch (err) {
-        console.warn("Could not render market distribution chart", err);
+      } else {
+        console.warn("Price card element not found");
+        yPosition += 20;
       }
       
-      // Quality distribution chart (text-based)
-      styles.subSectionTitle();
-      pdf.text("Specimen Quality Distribution", margin, yPosition);
-      yPosition = styles.sectionDivider(yPosition + lineSpacing * 0.5);
+      // Extract and display key metrics
+      const peakMarker = document.getElementById("peak-marker");
+      const growthBadge = document.getElementById("growth-badge");
+      const tradingVolume = document.getElementById("trading-volume");
       
-      // Simple bar chart for quality distribution
-      const qualities = ["MS65+", "MS64", "MS63", "MS62", "MS61", "AU"];
-      const percentages = [5, 12, 38, 25, 15, 5];
-      const barMaxWidth = contentWidth - 100;
-      const barHeight = 12;
-      const barSpacing = 20;
-      
-      // Draw bars for each quality level
-      qualities.forEach((quality, index) => {
-        const y = yPosition + (barSpacing * index);
-        const barWidth = (percentages[index] / 100) * barMaxWidth;
+      if (peakMarker || growthBadge || tradingVolume) {
+        // Key Insights Box with enhanced styling
+        pdf.setFillColor(255, 252, 235);
+        pdf.setDrawColor(...gold);
+        pdf.setLineWidth(2);
+        pdf.roundedRect(margin, yPosition, contentWidth, 85, 8, 8, 'FD');
         
-        // Label
+        // Inner border for depth
+        pdf.setDrawColor(255, 245, 210);
+        pdf.setLineWidth(1);
+        pdf.roundedRect(margin + 3, yPosition + 3, contentWidth - 6, 79, 6, 6, 'S');
+        
+        // Header with icon
         pdf.setFont("helvetica", "bold");
-        pdf.setFontSize(9);
-        pdf.setTextColor(...textColor);
-        pdf.text(quality, margin, y + barHeight/2);
+        pdf.setFontSize(14);
+        pdf.setTextColor(...gold);
+        pdf.text("💡 Key Market Insights", margin + 20, yPosition + 25);
         
-        // Bar background
-        pdf.setFillColor(240, 240, 240);
-        pdf.rect(margin + 40, y, barMaxWidth, barHeight, 'F');
+        // Separator line
+        pdf.setDrawColor(...gold);
+        pdf.setLineWidth(1);
+        pdf.line(margin + 20, yPosition + 32, pageWidth - margin - 20, yPosition + 32);
         
-        // Bar value
-        pdf.setFillColor(...accentColor);
-        pdf.rect(margin + 40, y, barWidth, barHeight, 'F');
+        pdf.setFont("helvetica", "normal");
+        pdf.setFontSize(11);
+        pdf.setTextColor(...darkGray);
         
-        // Percentage
+        let insightY = yPosition + 48;
+        const leftColumn = margin + 20;
+        const rightColumn = margin + contentWidth / 2 + 10;
+        
+        if (peakMarker && peakMarker.textContent) {
+          pdf.setTextColor(...gold);
+          pdf.setFont("helvetica", "bold");
+          pdf.text("●", leftColumn, insightY);
+          pdf.setFont("helvetica", "normal");
+          pdf.setTextColor(...black);
+          const peakText = peakMarker.textContent.replace('📈', '').trim();
+          pdf.text(peakText, leftColumn + 15, insightY);
+          insightY += 18;
+        }
+        
+        if (growthBadge && growthBadge.textContent) {
+          pdf.setTextColor(...gold);
+          pdf.setFont("helvetica", "bold");
+          pdf.text("●", leftColumn, insightY);
+          pdf.setFont("helvetica", "normal");
+          pdf.setTextColor(...black);
+          pdf.text(growthBadge.textContent, leftColumn + 15, insightY);
+        }
+        
+        if (tradingVolume && tradingVolume.textContent) {
+          // Trading volume in right column
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(10);
+          pdf.setTextColor(...lightGray);
+          pdf.text("TRADING VOLUME", rightColumn, yPosition + 48);
+          
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(16);
+          pdf.setTextColor(...gold);
+          pdf.text(tradingVolume.textContent, rightColumn, yPosition + 68);
+        }
+        
+        yPosition += 100;
+      }
+
+      updateLoadingStatus('Capturing Coin Specimen...', 60);
+      updateLoadingStatus('Capturing Coin Specimen...', 60);
+
+      // New page for coin and liquidity
+      pdf.addPage();
+      
+      // Reset background
+      pdf.setFillColor(...white);
+      pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+      
+      yPosition = margin;
+
+      /************************************************
+       * COIN SPOTLIGHT & MARKET LIQUIDITY
+       ************************************************/
+      
+      // Section Header
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(22);
+      pdf.setTextColor(...black);
+      pdf.text("Specimen & Market Analysis", margin, yPosition);
+      
+      yPosition += 12;
+      
+      pdf.setDrawColor(...gold);
+      pdf.setLineWidth(3);
+      pdf.line(margin, yPosition, pageWidth - margin, yPosition);
+      
+      yPosition += 30;
+      
+      // Two column layout
+      const columnWidth = (contentWidth - 30) / 2;
+      let maxColumnHeight = 0;
+      
+      // LEFT COLUMN - Coin Spotlight
+      const coinCard = document.querySelector(".coin-spotlight");
+      
+      if (coinCard) {
+        try {
+          updateLoadingStatus('Rendering Coin Image...', 70);
+          
+          // Wait for any animations to complete
+          await new Promise(resolve => setTimeout(resolve, 300));
+          
+          const coinData = await captureElement(coinCard, {
+            windowWidth: coinCard.scrollWidth,
+            windowHeight: coinCard.scrollHeight
+          });
+          
+          // Calculate to fit in column
+          const coinWidth = columnWidth - 10;
+          const tempImg = new Image();
+          tempImg.src = coinData;
+          
+          await new Promise((resolve, reject) => {
+            tempImg.onload = resolve;
+            tempImg.onerror = reject;
+            setTimeout(() => reject(new Error('Image load timeout')), 5000);
+          });
+          
+          const coinHeight = (tempImg.height / tempImg.width) * coinWidth;
+          maxColumnHeight = Math.max(maxColumnHeight, coinHeight);
+          
+          // Card background with enhanced styling
+          pdf.setFillColor(...white);
+          pdf.setDrawColor(220, 220, 220);
+          pdf.setLineWidth(1);
+          pdf.roundedRect(margin, yPosition, columnWidth, coinHeight + 25, 10, 10, 'FD');
+          
+          // Shadow effect
+          pdf.setDrawColor(240, 240, 240);
+          pdf.setLineWidth(0.5);
+          pdf.roundedRect(margin + 2, yPosition + 2, columnWidth - 4, coinHeight + 21, 10, 10, 'S');
+          
+          pdf.addImage(coinData, "PNG", margin + 10, yPosition + 10, coinWidth - 10, coinHeight);
+          
+        } catch (err) {
+          console.error("Could not render coin:", err);
+          
+          // Fallback
+          pdf.setFillColor(250, 240, 240);
+          pdf.setDrawColor(255, 200, 200);
+          pdf.roundedRect(margin, yPosition, columnWidth, 200, 8, 8, 'FD');
+          
+          pdf.setFont("helvetica", "italic");
+          pdf.setFontSize(10);
+          pdf.setTextColor(...darkGray);
+          pdf.text("⚠ Coin image unavailable", margin + 20, yPosition + 95);
+          
+          maxColumnHeight = 200;
+        }
+      }
+      
+      updateLoadingStatus('Capturing Market Distribution...', 80);
+      
+      // RIGHT COLUMN - Market Liquidity
+      const liquidityCard = document.querySelector(".distribution-card");
+      
+      if (liquidityCard) {
+        try {
+          // Check for canvas element
+          const chartCanvas = liquidityCard.querySelector('canvas');
+          if (!chartCanvas) {
+            throw new Error("Distribution chart canvas not found");
+          }
+          
+          console.log("Liquidity chart canvas found:", chartCanvas);
+          console.log("Canvas dimensions:", chartCanvas.width, "x", chartCanvas.height);
+          
+          // Validate canvas dimensions
+          if (chartCanvas.width === 0 || chartCanvas.height === 0) {
+            throw new Error(`Canvas has invalid dimensions: ${chartCanvas.width}x${chartCanvas.height}`);
+          }
+          
+          let chartImage = null;
+          
+          // Try to get chart directly from canvas
+          try {
+            console.log("Using Canvas toDataURL for liquidity chart");
+            chartImage = chartCanvas.toDataURL('image/png', 1.0);
+            console.log("Successfully got liquidity chart from Canvas API");
+          } catch (e) {
+            console.warn("Canvas toDataURL failed for liquidity:", e);
+            
+            // Fallback to html2canvas
+            console.log("Using html2canvas for liquidity chart");
+            await new Promise(resolve => setTimeout(resolve, 300));
+            chartImage = await captureElement(liquidityCard, {
+              windowWidth: liquidityCard.scrollWidth,
+              windowHeight: liquidityCard.scrollHeight
+            });
+          }
+          
+          if (!chartImage || chartImage.length < 100) {
+            throw new Error("Failed to capture liquidity chart or image is empty");
+          }
+          
+          const liquidityWidth = columnWidth - 10;
+          const tempImg = new Image();
+          tempImg.src = chartImage;
+          
+          await new Promise((resolve, reject) => {
+            tempImg.onload = resolve;
+            tempImg.onerror = reject;
+            setTimeout(() => reject(new Error('Image load timeout')), 5000);
+          });
+          
+          const liquidityHeight = (tempImg.height / tempImg.width) * liquidityWidth;
+          maxColumnHeight = Math.max(maxColumnHeight, liquidityHeight);
+          
+          console.log("Adding liquidity chart to PDF");
+          
+          // Card background
+          pdf.setFillColor(...white);
+          pdf.setDrawColor(220, 220, 220);
+          pdf.setLineWidth(1);
+          pdf.roundedRect(margin + columnWidth + 30, yPosition, columnWidth, liquidityHeight + 25, 10, 10, 'FD');
+          
+          // Shadow effect
+          pdf.setDrawColor(240, 240, 240);
+          pdf.setLineWidth(0.5);
+          pdf.roundedRect(margin + columnWidth + 32, yPosition + 2, columnWidth - 4, liquidityHeight + 21, 10, 10, 'S');
+          
+          pdf.addImage(chartImage, "PNG", margin + columnWidth + 40, yPosition + 10, liquidityWidth - 10, liquidityHeight);
+          
+          console.log("Liquidity chart added successfully");
+          
+        } catch (err) {
+          console.error("Could not render liquidity chart:", err);
+          console.error("Error details:", {
+            message: err.message,
+            canvas: !!liquidityCard?.querySelector('canvas'),
+            canvasWidth: liquidityCard?.querySelector('canvas')?.width,
+            canvasHeight: liquidityCard?.querySelector('canvas')?.height
+          });
+          
+          // Fallback
+          pdf.setFillColor(250, 240, 240);
+          pdf.setDrawColor(255, 200, 200);
+          pdf.roundedRect(margin + columnWidth + 30, yPosition, columnWidth, 200, 8, 8, 'FD');
+          
+          pdf.setFont("helvetica", "italic");
+          pdf.setFontSize(10);
+          pdf.setTextColor(...darkGray);
+          pdf.text("⚠ Liquidity chart unavailable", margin + columnWidth + 50, yPosition + 95);
+          
+          maxColumnHeight = Math.max(maxColumnHeight, 200);
+        }
+      }
+      
+      yPosition += maxColumnHeight + 45;
+      
+      updateLoadingStatus('Adding Market Statistics...', 90);
+      updateLoadingStatus('Adding Market Statistics...', 90);
+      
+      // Market Statistics Summary
+      const currentMedian = document.getElementById("current-median");
+      const certifiedExamples = document.getElementById("certified-examples");
+      
+      if (currentMedian || certifiedExamples) {
+        pdf.setFont("helvetica", "bold");
+        pdf.setFontSize(18);
+        pdf.setTextColor(...black);
+        pdf.text("Market Statistics Summary", margin, yPosition);
+        
+        yPosition += 25;
+        
+        // Stats cards with enhanced design
+        const statCardWidth = (contentWidth - 30) / 2;
+        const statCardHeight = 85;
+        
+        // Current Median Card
+        if (currentMedian && currentMedian.textContent) {
+          // Gold gradient-style background
+          pdf.setFillColor(...white);
+          pdf.setDrawColor(...gold);
+          pdf.setLineWidth(2);
+          pdf.roundedRect(margin, yPosition, statCardWidth, statCardHeight, 10, 10, 'FD');
+          
+          // Inner highlight
+          pdf.setDrawColor(255, 240, 200);
+          pdf.setLineWidth(1);
+          pdf.roundedRect(margin + 3, yPosition + 3, statCardWidth - 6, statCardHeight - 6, 8, 8, 'S');
+          
+          // Label
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(10);
+          pdf.setTextColor(...lightGray);
+          pdf.text("CURRENT MEDIAN", margin + 20, yPosition + 25);
+          
+          // Value
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(28);
+          pdf.setTextColor(...gold);
+          pdf.text(currentMedian.textContent, margin + 20, yPosition + 53);
+          
+          // Description
+          pdf.setFont("helvetica", "normal");
+          pdf.setFontSize(9);
+          pdf.setTextColor(...darkGray);
+          pdf.text("Authenticated Market Price", margin + 20, yPosition + 70);
+        }
+        
+        // Certified Examples Card
+        if (certifiedExamples && certifiedExamples.textContent) {
+          // Highlighted background
+          pdf.setFillColor(255, 252, 235);
+          pdf.setDrawColor(...gold);
+          pdf.setLineWidth(2);
+          pdf.roundedRect(margin + statCardWidth + 30, yPosition, statCardWidth, statCardHeight, 10, 10, 'FD');
+          
+          // Inner highlight
+          pdf.setDrawColor(255, 245, 210);
+          pdf.setLineWidth(1);
+          pdf.roundedRect(margin + statCardWidth + 33, yPosition + 3, statCardWidth - 6, statCardHeight - 6, 8, 8, 'S');
+          
+          // Label
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(10);
+          pdf.setTextColor(...lightGray);
+          pdf.text("CERTIFIED EXAMPLES", margin + statCardWidth + 50, yPosition + 25);
+          
+          // Value
+          pdf.setFont("helvetica", "bold");
+          pdf.setFontSize(28);
+          pdf.setTextColor(...black);
+          pdf.text(certifiedExamples.textContent, margin + statCardWidth + 50, yPosition + 53);
+          
+          // Description
+          pdf.setFont("helvetica", "normal");
+          pdf.setFontSize(9);
+          pdf.setTextColor(...darkGray);
+          pdf.text("NGC/PCGS Certified Population", margin + statCardWidth + 50, yPosition + 70);
+        }
+        
+        yPosition += statCardHeight + 30;
+      }
+      
+      // Footer with branding on every page
+      const addFooter = (pageNum, totalPages) => {
+        const footerY = pageHeight - 45;
+        
+        // Gold divider line
+        pdf.setDrawColor(...gold);
+        pdf.setLineWidth(2);
+        pdf.line(margin, footerY, pageWidth - margin, footerY);
+        
+        // Branding
+        pdf.setFont("helvetica", "bold");
+        pdf.setFontSize(11);
+        pdf.setTextColor(...black);
+        pdf.text("IMPERIUM ROMA", margin, footerY + 18);
+        
         pdf.setFont("helvetica", "normal");
         pdf.setFontSize(8);
-        pdf.setTextColor(...textColor);
-        pdf.text(`${percentages[index]}%`, margin + 40 + barWidth + 5, y + barHeight/2);
-      });
+        pdf.setTextColor(...lightGray);
+        pdf.text("Professional Numismatic Market Analysis", margin, footerY + 30);
+        
+        // Page number
+        pdf.setFont("helvetica", "bold");
+        pdf.setFontSize(9);
+        pdf.setTextColor(...gold);
+        const pageNumText = `Page ${pageNum} of ${totalPages}`;
+        const pageNumWidth = pdf.getStringUnitWidth(pageNumText) * 9 / pdf.internal.scaleFactor;
+        pdf.text(pageNumText, pageWidth - margin - pageNumWidth, footerY + 18);
+        
+        // Generated date
+        pdf.setFont("helvetica", "normal");
+        pdf.setFontSize(7);
+        pdf.setTextColor(...lightGray);
+        const genDate = now.toLocaleDateString('en-US');
+        const genDateWidth = pdf.getStringUnitWidth(genDate) * 7 / pdf.internal.scaleFactor;
+        pdf.text(genDate, pageWidth - margin - genDateWidth, footerY + 30);
+      };
       
-            // Update yPosition after the chart
-            yPosition += qualities.length * barSpacing + lineSpacing;
-            
-            // Add remaining sections here...
+      updateLoadingStatus('Finalizing PDF...', 95);
       
-            // Save the PDF with a professional filename
-            pdf.save(`Imperium_Roma_Marcus_Aurelius_Report_${dateFormatted}.pdf`);
-            
-          } catch (err) {
-            console.error("Error generating PDF report:", err);
-            alert("There was an error generating your report. Please try again.");
-          } finally {
-            // Remove loading indicator
-            const loadingIndicator = document.querySelector(".export-loading");
-            if (loadingIndicator) {
-              loadingIndicator.remove();
-            }
-          }
-        });
-      });
+      // Add footers to all content pages (skip cover)
+      const totalPages = pdf.internal.getNumberOfPages();
+      for (let i = 2; i <= totalPages; i++) {
+        pdf.setPage(i);
+        addFooter(i - 1, totalPages - 1);
+      }
+      
+      updateLoadingStatus('Saving Document...', 98);
+      
+      // Save PDF with descriptive filename
+      const filename = `Imperium_Roma_Marcus_Aurelius_Market_Report_${now.toISOString().split('T')[0]}.pdf`;
+      pdf.save(filename);
+      
+      updateLoadingStatus('Complete!', 100);
+      
+      // Brief success message
+      setTimeout(() => {
+        const successMsg = document.createElement('div');
+        successMsg.style.cssText = `
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: rgba(255, 204, 0, 0.95);
+          color: black;
+          padding: 20px 40px;
+          border-radius: 10px;
+          font-family: 'Montserrat', Arial, sans-serif;
+          font-size: 16px;
+          font-weight: bold;
+          z-index: 10001;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        `;
+        successMsg.textContent = '✓ Report Downloaded Successfully!';
+        document.body.appendChild(successMsg);
+        
+        setTimeout(() => {
+          successMsg.remove();
+        }, 2000);
+      }, 500);
+      
+    } catch (err) {
+      console.error("Error generating PDF:", err);
+      
+      // Show detailed error message
+      const errorMsg = document.createElement('div');
+      errorMsg.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 50, 50, 0.95);
+        color: white;
+        padding: 30px 40px;
+        border-radius: 10px;
+        font-family: 'Montserrat', Arial, sans-serif;
+        z-index: 10001;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        max-width: 400px;
+        text-align: center;
+      `;
+      errorMsg.innerHTML = `
+        <h3 style="margin: 0 0 10px 0; font-size: 18px;">⚠ Export Failed</h3>
+        <p style="margin: 0; font-size: 14px; opacity: 0.9;">There was an error generating your report. Please try again.</p>
+        <p style="margin: 10px 0 0 0; font-size: 12px; opacity: 0.7;">${err.message || 'Unknown error'}</p>
+      `;
+      document.body.appendChild(errorMsg);
+      
+      setTimeout(() => {
+        errorMsg.remove();
+      }, 5000);
+      
+    } finally {
+      // Remove loading indicator with fade-out
+      setTimeout(() => {
+        const loadingIndicator = document.getElementById('pdf-loading-indicator');
+        if (loadingIndicator) {
+          loadingIndicator.style.transition = 'opacity 0.3s';
+          loadingIndicator.style.opacity = '0';
+          setTimeout(() => {
+            loadingIndicator.remove();
+          }, 300);
+        }
+        
+        // Clean up spinner style
+        const spinnerStyle = Array.from(document.querySelectorAll('style')).find(
+          style => style.textContent.includes('@keyframes spin')
+        );
+        if (spinnerStyle) {
+          spinnerStyle.remove();
+        }
+      }, 600);
+    }
+  });
+});

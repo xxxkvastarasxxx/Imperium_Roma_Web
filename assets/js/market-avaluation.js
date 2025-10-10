@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const doughnutCenterLabel = document.getElementById('doughnut-center-label');
     const peakMarkerEl = document.getElementById('peak-marker');
     const growthBadgeEl = document.getElementById('growth-badge');
+    const tradingVolumeEl = document.getElementById('trading-volume');
+    const activityBarEl = document.getElementById('activity-bar');
   
     // Helper to format values with a custom currency symbol
     const formatCurrency = (val) => `₴${val}`;
@@ -79,33 +81,88 @@ document.addEventListener("DOMContentLoaded", () => {
             data: [670, 820, 708, 934, 980, 1100],
             borderColor: '#ffcc00',
             borderWidth: 3,
-            tension: 0.4,
+            tension: 0.42, // smoother curve
             fill: {
               target: 'origin',
-              above: 'rgba(255, 204, 0, 0.10)'
+              above: (context) => {
+                const ctx = context.chart.ctx;
+                const gradient = ctx.createLinearGradient(0, 0, 0, context.chart.height);
+                gradient.addColorStop(0, 'rgba(255, 204, 0, 0.28)');
+                gradient.addColorStop(0.5, 'rgba(255, 204, 0, 0.12)');
+                gradient.addColorStop(1, 'rgba(255, 204, 0, 0.02)');
+                return gradient;
+              }
             },
-            pointRadius: 0
+            // Show points on hover with elegant markers
+            pointRadius: 0,
+            pointHoverRadius: 7,
+            pointHoverBackgroundColor: '#ffcc00',
+            pointHoverBorderColor: '#fff',
+            pointHoverBorderWidth: 3,
+            // Add subtle shadow to the line
+            shadowOffsetX: 0,
+            shadowOffsetY: 4,
+            shadowBlur: 12,
+            shadowColor: 'rgba(255, 204, 0, 0.25)'
           }]
         },
         options: {
           ...baseChartConfig.plugins,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
           plugins: {
             ...baseChartConfig.plugins,
             tooltip: {
+              enabled: true,
+              backgroundColor: 'rgba(0, 0, 0, 0.85)',
+              titleColor: '#ffcc00',
+              bodyColor: '#fff',
+              borderColor: '#ffcc00',
+              borderWidth: 1,
+              padding: 12,
+              displayColors: false,
+              titleFont: { size: 13, weight: '600' },
+              bodyFont: { size: 14, weight: 'bold' },
               callbacks: {
+                title: (items) => items[0].label,
                 label: (context) => formatCurrency(context.parsed.y)
               }
             }
           },
           scales: {
-            x: { grid: { display: false }, ticks: { color: '#000' } },
+            x: { 
+              grid: { 
+                display: true,
+                color: 'rgba(0, 0, 0, 0.03)',
+                lineWidth: 1
+              }, 
+              ticks: { 
+                color: '#666',
+                font: { size: 11, weight: '500' },
+                padding: 8
+              },
+              border: { display: false }
+            },
             y: {
-              grid: { color: 'rgba(0,0,0,0.08)' },
+              grid: { 
+                color: 'rgba(0, 0, 0, 0.06)',
+                lineWidth: 1,
+                drawBorder: false
+              },
               ticks: {
-                color: '#000',
+                color: '#666',
+                font: { size: 11, weight: '500' },
+                padding: 10,
                 callback: (value) => formatCurrency(value)
-              }
+              },
+              border: { display: false }
             }
+          },
+          animation: {
+            duration: 1200,
+            easing: 'easeInOutQuart'
           }
         }
       },
@@ -159,21 +216,27 @@ document.addEventListener("DOMContentLoaded", () => {
         certified: 154,
         // sample volumes for auctions vs private
         auctionVolume: 65,
-        privateVolume: 35
+        privateVolume: 35,
+        tradingActivity: 78,
+        activityLabel: 'High Activity'
       },
       '3Y': {
         labels: ['2023', '2024', '2025'],
         data: [934, 980, 1100],
         certified: 97,
         auctionVolume: 42,
-        privateVolume: 58
+        privateVolume: 58,
+        tradingActivity: 65,
+        activityLabel: 'Moderate Activity'
       },
       '1Y': {
         labels: ['2024', '2025'],
         data: [980, 1100],
         certified: 45,
         auctionVolume: 33,
-        privateVolume: 67
+        privateVolume: 67,
+        tradingActivity: 85,
+        activityLabel: 'Very High Activity'
       }
     };
   
@@ -213,16 +276,22 @@ document.addEventListener("DOMContentLoaded", () => {
   
     function updatePriceData(range) {
       // Get the data config for this range or default to '5Y'
-      const { labels, data, certified, auctionVolume, privateVolume } = dataRanges[range] || dataRanges['5Y'];
+      const { labels, data, certified, auctionVolume, privateVolume, tradingActivity, activityLabel } = dataRanges[range] || dataRanges['5Y'];
   
-      // Update price chart
+      // Update price chart with smooth animation
       priceChart.data.labels = labels;
       priceChart.data.datasets[0].data = data;
-      priceChart.update();
+      priceChart.update('active'); // 'active' mode for smooth transitions
   
       // Update Certified Examples
       certifiedExamplesEl.textContent = certified;
       certifiedExamplesEl.setAttribute('data-value', certified);
+  
+      // Update Trading Volume indicator
+      if (tradingVolumeEl && activityBarEl) {
+        tradingVolumeEl.textContent = activityLabel;
+        activityBarEl.style.width = tradingActivity + '%';
+      }
   
       // Calculate new median
       const medianValue = computeMedian(data);
