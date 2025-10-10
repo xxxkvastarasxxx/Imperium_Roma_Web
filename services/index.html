@@ -129,7 +129,19 @@
               </div>
               <div class="chart-container">
                 <canvas id="priceTrendChart"></canvas>
+                
+                <!-- Market Activity Indicator inside chart -->
+                <div class="market-activity">
+                  <div class="activity-label">
+                    <span class="label-text">Trading Volume</span>
+                    <span class="activity-value" id="trading-volume">High Activity</span>
+                  </div>
+                  <div class="activity-bar-wrapper">
+                    <div class="activity-bar" id="activity-bar" style="width: 78%;"></div>
+                  </div>
+                </div>
               </div>
+              
               <div class="chart-annotation">
                 <span class="peak-marker" id="peak-marker">📈 2024 Peak Value</span>
                 <div class="growth-badge" id="growth-badge">+22% YoY Growth</div>
@@ -319,6 +331,7 @@
                           <div class="upload-preview" id="obversePreview">
                               <span class="upload-icon">+</span>
                           </div>
+                          <button class="remove-image-btn hidden" id="removeObverse" title="Remove image">×</button>
                       </div>
                       <div class="upload-box">
                           <label for="reverseUpload">Reverse (Back)</label>
@@ -326,6 +339,7 @@
                           <div class="upload-preview" id="reversePreview">
                               <span class="upload-icon">+</span>
                           </div>
+                          <button class="remove-image-btn hidden" id="removeReverse" title="Remove image">×</button>
                       </div>
                   </div>
                   <button id="generateModel" class="generate-btn" disabled>Generate 3D Model</button>

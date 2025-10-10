@@ -32,6 +32,8 @@ function initCoin3DGenerator() {
         obversePreview: document.getElementById('obversePreview'),
         reversePreview: document.getElementById('reversePreview'),
         generateBtn: document.getElementById('generateModel'),
+        removeObverseBtn: document.getElementById('removeObverse'),
+        removeReverseBtn: document.getElementById('removeReverse'),
         placeholder: document.getElementById('placeholder'),
         canvas: document.getElementById('coin3DCanvas'),
         container: document.getElementById('coin3DPreview')
@@ -54,13 +56,38 @@ function initCoin3DGenerator() {
     // Initialize upload listeners
     setupUpload(elements.obverseUpload, elements.obversePreview, img => {
         state.obverseImage = img;
+        elements.removeObverseBtn.classList.remove('hidden');
         updateGenerateButton();
     });
     
     setupUpload(elements.reverseUpload, elements.reversePreview, img => {
         state.reverseImage = img;
+        elements.removeReverseBtn.classList.remove('hidden');
         updateGenerateButton();
     });
+    
+    // Remove button listeners
+    elements.removeObverseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        clearUpload(elements.obverseUpload, elements.obversePreview, elements.removeObverseBtn, 'obverse');
+        state.obverseImage = null;
+        updateGenerateButton();
+    });
+    
+    elements.removeReverseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        clearUpload(elements.reverseUpload, elements.reversePreview, elements.removeReverseBtn, 'reverse');
+        state.reverseImage = null;
+        updateGenerateButton();
+    });
+    
+    // Clear upload function
+    function clearUpload(input, preview, removeBtn, side) {
+        input.value = '';
+        preview.style.backgroundImage = '';
+        preview.innerHTML = '<span class="upload-icon">+</span>';
+        removeBtn.classList.add('hidden');
+    }
     
     // Toggle generate button based on uploads
     function updateGenerateButton() {
@@ -83,9 +110,21 @@ function initCoin3DGenerator() {
                 reader.onload = event => {
                     const img = new Image();
                     img.onload = () => {
-                        preview.style.backgroundImage = `url(${event.target.result})`;
-                        preview.innerHTML = '';
-                        callback(img);
+                        // Check if image is PNG, if not, remove background
+                        if (file.type !== 'image/png') {
+                            console.log('Non-PNG image detected, removing background...');
+                            removeBackground(img, (processedImageUrl) => {
+                                preview.style.backgroundImage = `url(${processedImageUrl})`;
+                                preview.innerHTML = '';
+                                const processedImg = new Image();
+                                processedImg.onload = () => callback(processedImg);
+                                processedImg.src = processedImageUrl;
+                            });
+                        } else {
+                            preview.style.backgroundImage = `url(${event.target.result})`;
+                            preview.innerHTML = '';
+                            callback(img);
+                        }
                     };
                     img.src = event.target.result;
                 };
@@ -93,6 +132,79 @@ function initCoin3DGenerator() {
             }
         });
         preview.addEventListener('click', () => input.click());
+    }
+    
+    // Remove background from image
+    function removeBackground(img, callback) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        
+        // Draw the image
+        ctx.drawImage(img, 0, 0);
+        
+        // Get image data
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+        
+        // Find the dominant background color (assume it's near the corners)
+        const cornerSamples = [
+            { x: 0, y: 0 },
+            { x: canvas.width - 1, y: 0 },
+            { x: 0, y: canvas.height - 1 },
+            { x: canvas.width - 1, y: canvas.height - 1 }
+        ];
+        
+        const bgColor = getAverageColor(imageData, cornerSamples);
+        
+        // Remove background by making similar colors transparent
+        const threshold = 40; // Color similarity threshold
+        
+        for (let i = 0; i < data.length; i += 4) {
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+            
+            // Calculate color difference from background
+            const diff = Math.sqrt(
+                Math.pow(r - bgColor.r, 2) +
+                Math.pow(g - bgColor.g, 2) +
+                Math.pow(b - bgColor.b, 2)
+            );
+            
+            // If color is similar to background, make it transparent
+            if (diff < threshold) {
+                data[i + 3] = 0; // Set alpha to 0 (transparent)
+            }
+        }
+        
+        // Put the modified image data back
+        ctx.putImageData(imageData, 0, 0);
+        
+        // Convert to data URL and callback
+        callback(canvas.toDataURL('image/png'));
+    }
+    
+    // Get average color from sample points
+    function getAverageColor(imageData, samples) {
+        let totalR = 0, totalG = 0, totalB = 0;
+        const data = imageData.data;
+        const width = imageData.width;
+        
+        samples.forEach(sample => {
+            const index = (sample.y * width + sample.x) * 4;
+            totalR += data[index];
+            totalG += data[index + 1];
+            totalB += data[index + 2];
+        });
+        
+        const count = samples.length;
+        return {
+            r: Math.round(totalR / count),
+            g: Math.round(totalG / count),
+            b: Math.round(totalB / count)
+        };
     }
     
     // Generate 3D model from images
@@ -174,7 +286,9 @@ function initCoin3DGenerator() {
         state.controls.enableZoom = true;
         state.controls.autoRotate = state.autoRotate;
         state.controls.autoRotateSpeed = 1.5;
-        state.controls.maxPolarAngle = Math.PI / 1.5;
+        // Remove polar angle restrictions to allow full 360-degree rotation
+        state.controls.minPolarAngle = 0; // Allow full vertical rotation
+        state.controls.maxPolarAngle = Math.PI; // Allow full vertical rotation
         state.controls.minDistance = 3;
         state.controls.maxDistance = 10;
         
@@ -343,6 +457,10 @@ function initCoin3DGenerator() {
         const texture = new THREE.CanvasTexture(canvas);
         texture.anisotropy = 16; // Improve texture quality
         texture.encoding = THREE.sRGBEncoding; // Proper color space
+        
+        // Rotate texture by 90 degrees counter-clockwise to correct orientation
+        texture.center.set(0.5, 0.5); // Set rotation center to middle of texture
+        texture.rotation = Math.PI / 2; // Rotate 90 degrees counter-clockwise
         
         return texture;
     }
