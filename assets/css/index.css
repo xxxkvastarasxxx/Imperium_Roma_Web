@@ -1249,13 +1249,13 @@
         width: 80px;
     }
 
-    .coin-one, .coin-two {
-        top: 10%;
-    }
-
-    .coin-three, .coin-four {
-        top: 50%;
-    }
+    /* Position coins between the helmet edges on mobile (row of two above and two below) */
+    .coin-one, .coin-two, .coin-three, .coin-four { right: auto; }
+    .coin-one { left: calc(50% - 110px); top: 16%; z-index: 2; }
+    .coin-two { left: calc(50% + 50px); top: 16%; z-index: 2; }
+    /* Pull bottom coins inward and slightly higher to sit inside helmet */
+    .coin-three { left: calc(50% - 85px); top: 52%; z-index: 1; }
+    .coin-four { left: calc(50% + 20px); top: 52%; z-index: 1; }
 
     .parallax-content h2 {
         font-size: 2rem;
@@ -1289,10 +1289,19 @@
     }
     
     .carousel-track > .auction-item {
-        flex: 0 0 calc(50% - 10px);
+        flex: 0 0 180px;
+        width: 180px;
+        min-width: 180px;
         scroll-snap-align: center;
         white-space: nowrap; /* Prevent text wrapping */
     }
+    .auction-item { width: 180px; padding: 14px; border-radius: 16px; }
+    .image-wrap { border-radius: 10px; height: 135px; }
+    .image-wrap img { object-fit: cover; height: 100%; }
+    .item-details .item-title { font-size: 16px; }
+    .item-details .item-desc { font-size: 13px; margin-bottom: 12px; }
+    .view-details-btn { padding: 8px 14px; font-size: 12px; }
+    .price-badge { transform: scale(0.92); transform-origin: bottom right; }
     
 }
 
@@ -1398,6 +1407,7 @@
 
     .parallax-content h2 {
         font-size: 1.8rem;
+        color:#ffcc00;
     }
 
     #auction-carousel {
@@ -1428,10 +1438,20 @@
     }
     
     .carousel-track > .auction-item {
-        flex: 0 0 calc(50% - 10px);
+        flex: 0 0 160px;
+        width: 160px;
+        min-width: 160px;
         scroll-snap-align: center;
         white-space: nowrap; /* Prevent text wrapping */
     }
+    .auction-item { width: 160px; padding: 12px; border-radius: 14px; }
+    .image-wrap { border-radius: 10px; height: 120px; }
+    .image-wrap img { object-fit: cover; height: 100%; }
+    .item-details .item-title { font-size: 15px; }
+    .item-details .item-desc { font-size: 12.5px; margin-bottom: 10px; }
+    .view-details-btn { padding: 7px 12px; font-size: 11.5px; }
+    .price-badge { transform: scale(0.88); transform-origin: bottom right; }
+    .promote-lot-btn { padding: 10px 18px; font-size: 15px; }
     
 
     .carousel-control {
@@ -2176,7 +2196,7 @@
     color: #111;
     font-weight: 700;
     font-size: clamp(16px, 2.2vw, 18px);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 .domus-steps .step-note {
     display: block;
@@ -2311,7 +2331,28 @@
 
 @media (max-width: 600px) {
     .domus-why-join .benefits { grid-template-columns: 1fr; }
-    .domus-steps .steps li { padding-left: clamp(44px, 7.2vw, 54px); }
+    /* How it works: center headings and add comfortable spacing */
+    .domus-steps .steps { gap: 16px; }
+    .domus-steps .steps li {
+        padding: clamp(52px, 12vw, 64px) 16px 16px 16px;
+        text-align: center;
+        min-height: unset;
+    }
+    .domus-steps .steps li::before {
+        left: 50%;
+        top: 12px;
+        transform: translateX(-50%);
+    }
+    .domus-steps .step-label,
+    .domus-steps .step-note { text-align: center; }
+
+    /* Fine-tune coin positions for very small screens */
+    .coin { width: 52px; }
+    .coin-one { left: calc(50% - 90px); top: 18%; }
+    .coin-two { left: calc(50% + 34px); top: 18%; }
+    /* Tighter spacing and slightly higher placement for very small screens */
+    .coin-three { left: calc(50% - 80px); top: 54%; }
+    .coin-four { left: calc(50% + 15px); top: 54%; }
 }
 
 /* Domus: Visual Enhancements */
