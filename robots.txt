@@ -1,0 +1,8 @@
+# robots.txt for https://imperiumroma.com
+User-agent: *
+Allow: /
+
+# Disallow non-canonical paths if any
+# Disallow: /login/reset-password/
+
+Sitemap: https://imperiumroma.com/sitemap.xml

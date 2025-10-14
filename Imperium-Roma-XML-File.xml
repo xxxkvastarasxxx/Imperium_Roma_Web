@@ -4,9 +4,24 @@
         <charset>UTF-8</charset>
         <viewport>width=device-width, initial-scale=1.0</viewport>
         <title>Imperium Roma - Ancient Roman Coins</title>
-        <icon>/Imperium_Roma/Imperium.ico</icon>
+        <icon>/assets/images/icons/favicon.ico</icon>
         <description>Explore the fascinating world of ancient Roman coins with Imperium Roma. Our platform offers comprehensive resources for identifying, cataloging, and researching Roman Imperial coinage. Join a global community of enthusiasts and scholars to discover the rich heritage and history of the Roman Empire through its coinage. Stay updated with the latest news and featured coins, and participate in auctions to add unique pieces to your collection.</description>
-        <stylesheet>styles/Imperium_Roma_Web.css</stylesheet>
+        <stylesheet>/assets/css/style.css</stylesheet>
+        <canonical>https://imperiumroma.com/</canonical>
+        <openGraph>
+            <ogTitle>Imperium Roma: Ancient Roman Coins - Collect, Learn, Discover</ogTitle>
+            <ogDescription>Tools and insights for identifying, cataloging, and researching Roman Imperial coinage.</ogDescription>
+            <ogUrl>https://imperiumroma.com/</ogUrl>
+            <ogImage>https://imperiumroma.com/assets/images/general/Roman-Coins_BG.jpg</ogImage>
+            <ogType>website</ogType>
+            <ogSiteName>Imperium Roma</ogSiteName>
+        </openGraph>
+        <twitter>
+            <card>summary_large_image</card>
+            <title>Imperium Roma: Ancient Roman Coins</title>
+            <description>Discover Roman coinage with modern tools and a global community.</description>
+            <image>https://imperiumroma.com/assets/images/general/Roman-Coins_BG.jpg</image>
+        </twitter>
     </meta>
     <header>
         <container>
@@ -15,27 +30,23 @@
                 <menu>
                     <item>
                         <name>Home</name>
-                        <link>index.html</link>
+                        <link>/</link>
                     </item>
                     <item>
                         <name>About</name>
-                        <link>about.html</link>
+                        <link>/about/</link>
                     </item>
                     <item>
-                        <name>Coin Catalog</name>
-                        <link>catalog.html</link>
-                    </item>
-                    <item>
-                        <name>History</name>
-                        <link>history.html</link>
-                    </item>
-                    <item>
-                        <name>Resources</name>
-                        <link>resources.html</link>
+                        <name>Services</name>
+                        <link>/services/</link>
                     </item>
                     <item>
                         <name>Contact</name>
-                        <link>contact.html</link>
+                        <link>/contact/</link>
+                    </item>
+                    <item>
+                        <name>Domus</name>
+                        <link>/login/</link>
                     </item>
                 </menu>
             </nav>
@@ -48,7 +59,7 @@
         <section>
             <type>banner</type>
             <video>
-                <source>videos/intro1.mp4</source>
+                <source>/assets/videos/intro1.mp4</source>
                 <fallback>Your browser does not support the video tag.</fallback>
             </video>
             <container>
@@ -72,7 +83,7 @@
                 <h2>Featured Coins of the Day</h2>
                 <coinList>
                     <coin>
-                        <image>images/FeaturedCoinsOTD/08.07.24.1.jpg</image>
+                        <image>/assets/images/FeaturedCoinsOTD/08.07.24.1.jpg</image>
                         <h3>Aureus</h3>
                         <details>
                             <name>Marcus Aurelius</name>
@@ -81,7 +92,7 @@
                         </details>
                     </coin>
                     <coin>
-                        <image>images/FeaturedCoinsOTD/08.07.24.2.jpg</image>
+                        <image>/assets/images/FeaturedCoinsOTD/08.07.24.2.jpg</image>
                         <h3>Aureus</h3>
                         <details>
                             <name>Caracalla</name>
@@ -90,7 +101,7 @@
                         </details>
                     </coin>
                     <coin>
-                        <image>images/FeaturedCoinsOTD/08.07.24.3.jpg</image>
+                        <image>/assets/images/FeaturedCoinsOTD/08.07.24.3.jpg</image>
                         <h3>Aureus</h3>
                         <details>
                             <name>Lucius Verus</name>
@@ -153,15 +164,15 @@
             <menu>
                 <item>
                     <name>Privacy Policy</name>
-                    <link>#</link>
+                    <link>/policies/privacy_policy/</link>
                 </item>
                 <item>
                     <name>Terms of Service</name>
-                    <link>#</link>
+                    <link>/policies/terms_of_use/</link>
                 </item>
                 <item>
                     <name>Contact Us</name>
-                    <link>contact.html</link>
+                    <link>/contact/</link>
                 </item>
             </menu>
         </container>
