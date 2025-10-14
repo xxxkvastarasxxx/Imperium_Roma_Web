@@ -37,13 +37,19 @@ document.addEventListener("DOMContentLoaded", async function() {
     let currentIndex = 0;
     let autoTimer = null;
 
+    // On small screens we want native horizontal scroll with visible movement
+    const isScrollMode = () => window.matchMedia('(max-width: 1024px)').matches;
+    let lastScrollMode = isScrollMode();
+
     function loadCarouselItems() {
         if (!Array.isArray(auctionItems) || auctionItems.length === 0) {
             carouselTrack.innerHTML = '<div style="color:#fff;opacity:.8;text-align:center;width:100%">No highlights available right now.</div>';
             return;
         }
         carouselTrack.innerHTML = '';
-        for (let i = 0; i < itemsPerView; i++) {
+        // In scroll mode (mobile/tablet) render all items so the user can slide/scroll through them.
+        const count = isScrollMode() ? auctionItems.length : itemsPerView;
+        for (let i = 0; i < count; i++) {
             const item = auctionItems[(currentIndex + i) % auctionItems.length];
             const auctionItemDiv = document.createElement('div');
             auctionItemDiv.className = 'auction-item';
@@ -81,6 +87,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     function startAutoAdvance() {
         if (prefersReducedMotion) return;
+        if (isScrollMode()) return; // don't auto-advance in native scroll mode
         stopAutoAdvance();
         autoTimer = setInterval(() => nextSlide(), 10000);
     }
@@ -127,18 +134,31 @@ document.addEventListener("DOMContentLoaded", async function() {
     if (prevBtn) prevBtn.addEventListener('click', () => prevSlide());
     if (nextBtn) nextBtn.addEventListener('click', () => nextSlide());
 
-    // Responsive items per view
+    // Responsive updates (items per view + mode switching)
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
             const newCount = getItemsPerView();
+            const nowScrollMode = isScrollMode();
+
             if (newCount !== itemsPerView) {
                 itemsPerView = newCount;
-                // Ensure currentIndex is valid
-                currentIndex = currentIndex % Math.max(auctionItems.length, 1);
-                loadCarouselItems();
             }
+
+            // If mode changed, reset index and (re)bind touch handlers appropriately
+            if (nowScrollMode !== lastScrollMode) {
+                lastScrollMode = nowScrollMode;
+                currentIndex = 0;
+                toggleTouchHandlers();
+            }
+
+            // Re-render for any layout change
+            loadCarouselItems();
+
+            // Manage auto-advance based on mode
+            stopAutoAdvance();
+            startAutoAdvance();
         }, 150);
     });
 
@@ -161,7 +181,10 @@ document.addEventListener("DOMContentLoaded", async function() {
         if (Math.abs(dx) > Math.abs(dy)) {
             // horizontal swipe intent
             touchMoved = true;
-            e.preventDefault();
+            // In scroll mode, allow native horizontal scrolling so the user sees movement
+            if (!isScrollMode()) {
+                e.preventDefault();
+            }
         }
     }
     function onTouchEnd(e) {
@@ -170,9 +193,25 @@ document.addEventListener("DOMContentLoaded", async function() {
         if (dx > swipeThreshold) prevSlide();
         else if (dx < -swipeThreshold) nextSlide();
     }
-    if (carouselTrack) {
+    // Bind/unbind touch handlers depending on mode
+    let touchBound = false;
+    function bindTouch() {
+        if (touchBound || !carouselTrack) return;
         carouselTrack.addEventListener('touchstart', onTouchStart, { passive: false });
         carouselTrack.addEventListener('touchmove', onTouchMove, { passive: false });
         carouselTrack.addEventListener('touchend', onTouchEnd);
+        touchBound = true;
     }
+    function unbindTouch() {
+        if (!touchBound || !carouselTrack) return;
+        carouselTrack.removeEventListener('touchstart', onTouchStart, { passive: false });
+        carouselTrack.removeEventListener('touchmove', onTouchMove, { passive: false });
+        carouselTrack.removeEventListener('touchend', onTouchEnd);
+        touchBound = false;
+    }
+    function toggleTouchHandlers() {
+        if (isScrollMode()) unbindTouch();
+        else bindTouch();
+    }
+    toggleTouchHandlers();
 });

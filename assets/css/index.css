@@ -567,6 +567,7 @@
     color: #ffcc00;
     text-align: center;
     animation: fadeInUp 1s ease-in-out;
+    padding-top: 40px; /* Pushes the text down */
 }
 
 /* Scroll-triggered animations */
@@ -949,6 +950,11 @@
     cursor: pointer;
 }
 
+/* First auction item - move further to the left */
+.auction-item:first-child {
+    margin-left: -5px;
+}
+
 .auction-item:hover {
     transform: translateY(-2px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
@@ -1265,9 +1271,10 @@
         overflow-x: auto;
         white-space: nowrap;
         display: flex;
-        scroll-snap-type: x mandatory;
+        scroll-snap-type: none; /* fluid scroll on tablets */
         -webkit-overflow-scrolling: touch;
         padding: 20px 0;
+        scroll-behavior: smooth; /* visible smooth motion */
     }
 
     .carousel-track {
@@ -1275,24 +1282,38 @@
         flex-wrap: nowrap;
         gap: 15px;
         padding: 0 10px;
-        overflow-x: auto;  /* Enable horizontal scrolling */
+        overflow-x: scroll;  /* visible horizontal scrolling */
         overflow-y: hidden; /* Prevent vertical scrolling */
-        scroll-snap-type: x mandatory;  /* Optional for snap behavior */
+        scroll-snap-type: none;  /* disable snap for continuous movement */
         -webkit-overflow-scrolling: touch;  /* Smooth scroll on iOS */
-        /* Hide scrollbar for cleaner look (optional) */
-        scrollbar-width: none;  /* Firefox */
+        scroll-behavior: smooth;  /* smooth movement */
+        touch-action: pan-x; /* allow finger panning */
+        overscroll-behavior-x: contain; /* avoid bounce chaining */
+        scrollbar-width: thin;  /* Firefox */
+        scrollbar-color: #ffcc00;
     }
     
-    /* Hide scrollbar for Chrome/Safari */
+    /* Styled scrollbar for WebKit */
     .carousel-track::-webkit-scrollbar {
-        display: none;
+        height: 6px;
+    }
+    .carousel-track::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+    }
+    .carousel-track::-webkit-scrollbar-thumb {
+        background: #ffcc00;
+        border-radius: 10px;
+    }
+    .carousel-track::-webkit-scrollbar-thumb:hover {
+        background: #ffcc00;
     }
     
     .carousel-track > .auction-item {
         flex: 0 0 180px;
         width: 180px;
         min-width: 180px;
-        scroll-snap-align: center;
+        scroll-snap-align: none; /* no snap */
         white-space: nowrap; /* Prevent text wrapping */
     }
     .auction-item { width: 180px; padding: 14px; border-radius: 16px; }
@@ -1414,9 +1435,10 @@
         overflow-x: auto;
         white-space: nowrap;
         display: flex;
-        scroll-snap-type: x mandatory;
+        scroll-snap-type: none; /* fluid scroll */
         -webkit-overflow-scrolling: touch;
         padding: 10px 0;
+        scroll-behavior: smooth;
     }
 
     .carousel-track {
@@ -1424,24 +1446,27 @@
         flex-wrap: nowrap;
         gap: 15px;
         padding: 0 10px;
-        overflow-x: auto;  /* Enable horizontal scrolling */
+        overflow-x: scroll;  /* visible scroll */
         overflow-y: hidden; /* Prevent vertical scrolling */
-        scroll-snap-type: x mandatory;  /* Optional for snap behavior */
+        scroll-snap-type: none;  /* continuous move */
         -webkit-overflow-scrolling: touch;  /* Smooth scroll on iOS */
-        /* Hide scrollbar for cleaner look (optional) */
-        scrollbar-width: none;  /* Firefox */
+        scroll-behavior: smooth;
+        touch-action: pan-x;
+        overscroll-behavior-x: contain;
+        scrollbar-width: thin;  /* Firefox */
+    scrollbar-color: #ffcc00 rgba(255, 255, 255, 0.1);
     }
-    
-    /* Hide scrollbar for Chrome/Safari */
-    .carousel-track::-webkit-scrollbar {
-        display: none;
-    }
+    /* WebKit scrollbar */
+    .carousel-track::-webkit-scrollbar { height: 6px; }
+    .carousel-track::-webkit-scrollbar-track { background: rgba(255,255,255,.1); border-radius: 10px; }
+    .carousel-track::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; }
+    .carousel-track::-webkit-scrollbar-thumb:hover { background: #ffcc00; }
     
     .carousel-track > .auction-item {
         flex: 0 0 160px;
         width: 160px;
         min-width: 160px;
-        scroll-snap-align: center;
+        scroll-snap-align: none; /* no snap */
         white-space: nowrap; /* Prevent text wrapping */
     }
     .auction-item { width: 160px; padding: 12px; border-radius: 14px; }
@@ -1497,7 +1522,7 @@
     }
 
     .parallax-content h2 {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
     }
 
     .parallax-content-font {
@@ -1525,7 +1550,7 @@
     }
     
     .auction-title {
-        font-size: 22px;
+        font-size: 26px;
         margin-bottom: 15px;
     }
 
@@ -1534,22 +1559,25 @@
         flex-wrap: nowrap;
         gap: 15px;
         padding: 0 10px;
-        overflow-x: auto;  /* Enable horizontal scrolling */
+        overflow-x: scroll;  /* visible horizontal scrolling */
         overflow-y: hidden; /* Prevent vertical scrolling */
-        scroll-snap-type: x mandatory;  /* Optional for snap behavior */
+        scroll-snap-type: none;  /* continuous movement */
         -webkit-overflow-scrolling: touch;  /* Smooth scroll on iOS */
-        /* Hide scrollbar for cleaner look (optional) */
-        scrollbar-width: none;  /* Firefox */
+        scroll-behavior: smooth;
+        touch-action: pan-x;
+        overscroll-behavior-x: contain;
+        scrollbar-width: thin;  /* Firefox */
+    scrollbar-color: #ffcc00 rgba(255, 255, 255, 0.1);
     }
-    
-    /* Hide scrollbar for Chrome/Safari */
-    .carousel-track::-webkit-scrollbar {
-        display: none;
-    }
+    /* WebKit scrollbar */
+    .carousel-track::-webkit-scrollbar { height: 6px; }
+    .carousel-track::-webkit-scrollbar-track { background: rgba(255,255,255,.1); border-radius: 10px; }
+    .carousel-track::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; }
+    .carousel-track::-webkit-scrollbar-thumb:hover { background: #ffcc00; }
     
     .carousel-track > .auction-item {
         flex: 0 0 calc(50% - 10px);
-        scroll-snap-align: center;
+        scroll-snap-align: none; /* no snap */
         white-space: nowrap; /* Prevent text wrapping */
     }
     
@@ -1566,7 +1594,7 @@
 
     .promote-lot-btn {
         padding: 10px 20px;
-        font-size: 16px;
+        font-size: 14px;
     }
 }
 
