@@ -550,3 +550,52 @@
   .social-link { width: 36px; height: 36px; }
   .social-link img { width: 18px; height: 18px; }
 }
+
+/* Mobile layout parity with main page: put Explore and Policies side-by-side */
+@media (max-width: 767px) {
+    /* Safety: prevent any transforms/positioning from causing overlays */
+    .site-footer { overflow: visible; }
+    .site-footer .container { width: min(94%, 640px); margin: 0 auto; }
+
+    /* Use a 2-col grid for the two link groups; keep Brand/Newsletter full width */
+    .footer-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 22px !important; padding: 0 16px !important; grid-auto-flow: row; align-items: start; }
+
+    /* Reset any positioning/transforms that could cause stacking */
+    .footer-col,
+    .footer-col * { position: static !important; transform: none !important; z-index: auto !important; }
+
+    .footer-col.brand,
+    .footer-col.newsletter { grid-column: 1 / -1 !important; }
+
+    /* Ensure visual order: Brand -> Explore & Policies -> Newsletter */
+    .footer-col.brand { order: 0 !important; }
+    .footer-col[aria-label="Explore"] { order: 1 !important; }
+    .footer-col[aria-label="Policies"] { order: 1 !important; }
+    .footer-col.newsletter { order: 2 !important; }
+
+    /* Center titles and links inside the two columns */
+    .footer-col[aria-label="Explore"],
+    .footer-col[aria-label="Policies"] { text-align: center; }
+
+    /* Restore vertical list inside each column (override earlier flex on .footer-links) */
+        .footer-col[aria-label="Explore"] .footer-links,
+        .footer-col[aria-label="Policies"] .footer-links { display: grid !important; gap: 10px !important; justify-items: center !important; margin: 0 auto !important; width: 100% !important; }
+
+    .footer-col[aria-label="Explore"] .footer-links a,
+        .footer-col[aria-label="Policies"] .footer-links a { display: inline-block !important; padding: 6px 0 !important; white-space: nowrap; }
+
+            /* Newsletter form full-width stack and centered (match main page) */
+            .newsletter-form { grid-template-columns: 1fr !important; max-width: 280px !important; margin: 0 auto !important; gap: 10px !important; }
+        .newsletter-input, .newsletter-btn { width: 100% !important; }
+
+            /* Fine-tune spacing to mirror main page */
+            .newsletter-text { font-size: 14px !important; max-width: 250px !important; margin: 0 auto 12px !important; }
+            .newsletter-input { padding: 12px 15px !important; }
+            .newsletter-btn { padding: 12px !important; font-size: 14px !important; margin-bottom: 15px !important; }
+}
+
+/* Very small devices: allow wrapping for long link labels */
+@media (max-width: 380px) {
+    .footer-col[aria-label="Explore"] .footer-links a,
+    .footer-col[aria-label="Policies"] .footer-links a { white-space: normal; }
+}
