@@ -1447,6 +1447,44 @@
   .social-link img { width: 18px; height: 18px; }
 }
 
+/* Match main page mobile footer layout exactly */
+@media (max-width: 767px) {
+  /* Safety: prevent overlays */
+  .site-footer { overflow: visible; }
+  .site-footer .container { width: min(94%, 640px); margin: 0 auto; }
+
+  /* Two-column Explore/Policies; Brand+Newsletter full width */
+  .footer-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 22px !important; padding: 0 16px !important; grid-auto-flow: row; align-items: start; }
+
+  /* Reset any transforms/positioning */
+  .footer-col, .footer-col * { position: static !important; transform: none !important; z-index: auto !important; }
+
+  .footer-col.brand,
+  .footer-col.newsletter { grid-column: 1 / -1 !important; }
+
+  .footer-col[aria-label="Explore"],
+  .footer-col[aria-label="Policies"] { text-align: center; }
+
+  .footer-col[aria-label="Explore"] .footer-links,
+  .footer-col[aria-label="Policies"] .footer-links { display: grid !important; gap: 10px !important; justify-items: center !important; margin: 0 auto !important; width: 100% !important; }
+
+  .footer-col[aria-label="Explore"] .footer-links a,
+  .footer-col[aria-label="Policies"] .footer-links a { display: inline-block !important; padding: 6px 0 !important; white-space: nowrap; }
+
+  /* Newsletter: match main page sizing */
+  .newsletter-text { font-size: 14px !important; max-width: 250px !important; margin: 0 auto 12px !important; }
+  .newsletter-form { grid-template-columns: 1fr !important; max-width: 280px !important; margin: 0 auto !important; gap: 10px !important; }
+  .newsletter-input, .newsletter-btn { width: 100% !important; }
+  .newsletter-input { padding: 12px 15px !important; }
+  .newsletter-btn { padding: 12px !important; font-size: 14px !important; margin-bottom: 15px !important; }
+}
+
+/* Very small devices: allow wrapping */
+@media (max-width: 380px) {
+  .footer-col[aria-label="Explore"] .footer-links a,
+  .footer-col[aria-label="Policies"] .footer-links a { white-space: normal; }
+}
+
 /* 3D Coin Visualization Section */
 #coin-3d-visualization {
   padding: 64px 0;
@@ -1678,7 +1716,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background-size: contain;
+  background-size: contain; /* ensure full image fits without cropping */
   background-repeat: no-repeat;
   background-position: center;
   background-position: center;
@@ -1955,10 +1993,17 @@
     height: 220px; /* Adjusted for medium screens */
   }
   
-  .upload-row {
-    flex-direction: column;
-    gap: 15px;
+  /* Keep upload boxes side-by-side on mobile */
+  .upload-controls .upload-row {
+    flex-direction: row !important;
+    gap: 16px !important;
+    flex-wrap: nowrap;
+    justify-content: center;
   }
+  .upload-controls .upload-box { width: 150px; }
+  .upload-controls .upload-preview { width: 150px; height: 150px; background-size: contain !important; }
+  .upload-controls label { font-size: 12px; margin-bottom: 8px; }
+  .upload-controls .remove-image-btn { right: -8px; top: 20px; transform: scale(0.9); }
   
   .upload-preview {
     height: 100px;
@@ -1980,9 +2025,11 @@
     padding: 15px;
   }
   
-  .upload-controls {
-    padding: 15px;
-  }
+  .upload-controls { padding: 15px; }
+  /* Very small screens: still keep two boxes in one row by shrinking them more */
+  .upload-controls .upload-row { gap: 12px !important; }
+  .upload-controls .upload-box { width: 140px; }
+  .upload-controls .upload-preview { width: 140px; height: 140px; }
   
   .coin-model-container {
     height: 280px; /* Adjusted for small screens, increased from 220px */

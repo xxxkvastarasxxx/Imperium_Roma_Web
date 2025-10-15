@@ -211,3 +211,45 @@
 @media (max-width: 767px) { .site-footer { padding: 40px 0 25px; text-align: center; } .footer-grid { grid-template-columns: 1fr; gap: 30px; padding: 0 15px; } .brand .brand-row { justify-content: center; margin-bottom: 15px; } .brand .brand-text { text-align: center; font-size: 14px; line-height: 1.5; margin: 0 auto 10px; max-width: 290px; color: #b9bdc3; } .footer-col { margin-bottom: 0; padding-bottom: 5px; } .footer-col .footer-title { font-size: 17px; margin-bottom: 12px; color: white !important; } .footer-links { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 0 auto 10px; } .footer-links li { display: inline-block; } .footer-links a { font-size: 14px; padding: 5px 10px; color: #aaa !important; display: inline-block; } .footer-links a:hover, .footer-links a:focus-visible { color: white !important; } .newsletter-text { font-size: 14px; max-width: 250px; margin: 0 auto 12px; } .newsletter-form { max-width: 280px; margin: 0 auto; grid-template-columns: 1fr; gap: 10px; } .newsletter-input { width: 100%; padding: 12px 15px; text-align: center; font-size: 14px; } .newsletter-btn { width: 100%; padding: 12px; font-size: 14px; margin-bottom: 15px; } .footer-social { margin: 5px auto 0; display: flex; justify-content: center; gap: 16px; } .social-link { width: 40px; height: 40px; background: rgba(255, 255, 255, 0.1); } .social-link img { width: 20px; height: 20px; } .footer-bottom { margin-top: 25px; padding-top: 15px; } .copyright { font-size: 13px; color: #777; } }
 @media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; } .newsletter-form { grid-template-columns: 1fr; } }
 @media (max-width: 380px) { .site-footer .container { width: 100%; padding: 0 10px; } .brand .brand-text { font-size: 13px; max-width: 260px; } .footer-links { gap: 8px; } .footer-links a { font-size: 13px; padding: 4px 8px; } .newsletter-form { max-width: 250px; } .newsletter-input { padding: 10px 15px; } .newsletter-btn { padding: 10px; } .social-link { width: 36px; height: 36px; } .social-link img { width: 18px; height: 18px; } }
+
+/* Match main page mobile footer layout exactly */
+@media (max-width: 767px) {
+    /* Safety: prevent overlays */
+    .site-footer { overflow: visible; }
+    .site-footer .container { width: min(94%, 640px); margin: 0 auto; }
+
+    /* Two-column Explore/Policies; Brand+Newsletter full width */
+    .footer-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 22px !important; padding: 0 16px !important; grid-auto-flow: row; align-items: start; }
+
+    /* Reset any transforms/positioning */
+    .footer-col, .footer-col * { position: static !important; transform: none !important; z-index: auto !important; }
+
+    .footer-col.brand,
+    .footer-col.newsletter { grid-column: 1 / -1 !important; }
+
+    /* Order and alignment */
+    .footer-col.brand { order: 0 !important; }
+    .footer-col[aria-label="Explore"] { order: 1 !important; text-align: center; }
+    .footer-col[aria-label="Policies"] { order: 1 !important; text-align: center; }
+    .footer-col.newsletter { order: 2 !important; }
+
+    /* Restore vertical lists inside each column */
+    .footer-col[aria-label="Explore"] .footer-links,
+    .footer-col[aria-label="Policies"] .footer-links { display: grid !important; gap: 10px !important; justify-items: center !important; margin: 0 auto !important; width: 100% !important; }
+
+    .footer-col[aria-label="Explore"] .footer-links a,
+    .footer-col[aria-label="Policies"] .footer-links a { display: inline-block !important; padding: 6px 0 !important; white-space: nowrap; }
+
+    /* Newsletter: match main page sizing */
+    .newsletter-text { font-size: 14px !important; max-width: 250px !important; margin: 0 auto 12px !important; }
+    .newsletter-form { grid-template-columns: 1fr !important; max-width: 280px !important; margin: 0 auto !important; gap: 10px !important; }
+    .newsletter-input, .newsletter-btn { width: 100% !important; }
+    .newsletter-input { padding: 12px 15px !important; }
+    .newsletter-btn { padding: 12px !important; font-size: 14px !important; margin-bottom: 15px !important; }
+}
+
+/* Very small devices: allow wrapping */
+@media (max-width: 380px) {
+    .footer-col[aria-label="Explore"] .footer-links a,
+    .footer-col[aria-label="Policies"] .footer-links a { white-space: normal; }
+}
