@@ -1,0 +1,9 @@
+{
+  "name": "imperium-roma-telegram-function",
+  "version": "1.0.0",
+  "description": "Serverless function to forward contact form submissions to Telegram.",
+  "main": "send-telegram.js",
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  }
+}

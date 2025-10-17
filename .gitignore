@@ -1,0 +1,10 @@
+# Local secrets (do not commit)
+config/telegram.php
+
+# Node/npm (future-proof)
+node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/

@@ -280,6 +280,31 @@ input[type="file"] { display: none; }
   transition: border-color 0.3s ease;
 }
 
+/* Polished inputs: subtle glow, placeholder color, hover */
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: #9aa0a6; opacity: 1; }
+.form-group input:hover,
+.form-group textarea:hover,
+.form-group select:hover { border-color: #666; }
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: #ffcc00;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.12);
+}
+
+/* Status message above submit */
+.form-status { 
+  margin: 6px 0 6px; 
+  font-family: 'Montserrat', Arial, sans-serif; 
+  text-align: left; 
+  font-size: 14px; 
+}
+.form-status.ok { color: #4CAF50; }
+.form-status.warn { color: #ffcc00; }
+.form-status.err { color: #ff6b6b; }
+
 /* Dropdown (select) styling to match input fields */
 .form-group select {
   appearance: none; /* Remove default dropdown styles */

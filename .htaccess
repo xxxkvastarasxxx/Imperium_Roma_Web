@@ -1,0 +1,11 @@
+# Optional: set env vars for secrets (works on Apache/IONOS)
+# Replace the sample values below; or use config/telegram.php instead
+SetEnv TELEGRAM_BOT_TOKEN 8212645864:AAHcEmzQxW3tV_19kkU4DHcVv4kZMaARbMA
+SetEnv TELEGRAM_CHAT_ID -1003195321051
+
+# PHP security hardening for upload handling
+<IfModule mod_php.c>
+  php_value upload_max_filesize 10M
+  php_value post_max_size 12M
+  php_value max_file_uploads 5
+</IfModule>

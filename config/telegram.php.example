@@ -1,0 +1,7 @@
+<?php
+// Copy this file to config/telegram.php and fill in real values.
+// Never commit your real secrets to version control.
+return [
+  'botToken' => '8212645864:AAHcEmzQxW3tV_19kkU4DHcVv4kZMaARbMA',
+  'chatId'   => '-1003195321051' // Use a negative ID for groups
+];
