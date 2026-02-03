@@ -1,0 +1,42 @@
+# =============================================================================
+# Git Ignore - Imperium Roma Web
+# =============================================================================
+
+# Secrets and sensitive configuration
+config/telegram.php
+config/*.pem
+*.env
+.env*
+
+# Keep example/template files
+!config/telegram.example.php
+!*.example
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# PHP
+vendor/
+composer.lock
+
+# Node (if applicable)
+node_modules/
+package-lock.json
