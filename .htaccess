@@ -1,7 +1,9 @@
-# Optional: set env vars for secrets (works on Apache/IONOS)
-# Replace the sample values below; or use config/telegram.php instead
-SetEnv TELEGRAM_BOT_TOKEN 8212645864:AAHcEmzQxW3tV_19kkU4DHcVv4kZMaARbMA
-SetEnv TELEGRAM_CHAT_ID -1003195321051
+# =============================================================================
+# SECURITY NOTICE: Do NOT put secrets in this file if it's tracked by Git!
+# Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID via:
+#   1. Hosting control panel environment variables, OR
+#   2. config/telegram.php file (must be gitignored)
+# =============================================================================
 
 # PHP security hardening for upload handling
 <IfModule mod_php.c>
@@ -9,3 +11,14 @@ SetEnv TELEGRAM_CHAT_ID -1003195321051
   php_value post_max_size 12M
   php_value max_file_uploads 5
 </IfModule>
+
+# Protect config directory from web access
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^config/ - [F,L]
+</IfModule>
+
+# Block direct access to sensitive files
+<FilesMatch "(^\.htaccess|\.php\.bak|telegram\.php)$">
+  Require all denied
+</FilesMatch>
