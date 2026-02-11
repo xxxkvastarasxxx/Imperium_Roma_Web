@@ -26,7 +26,7 @@
 .section-title-text {
     text-align: center;
     padding-top: 140px;
-    padding-bottom: 140px;
+    padding-bottom: 60px;
 }
 
 .introduction .container {
@@ -35,13 +35,77 @@
     align-items: center;
     position: relative;
     z-index: 2;
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
 }
 
 .introduction {
     position: relative;
     overflow: hidden;
+}
+
+/* Introduction Content Styling */
+.intro-content {
+    width: 100%;
+}
+
+.intro-title {
+    text-align: center;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: clamp(32px, 5vw, 48px);
+    color: var(--white);
+    margin-bottom: 12px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.intro-subtitle {
+    text-align: center;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: clamp(20px, 3vw, 28px);
+    color: #ffcc00;
+    margin-bottom: 40px;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.intro-lead {
+    color: var(--white);
+    font-size: clamp(19px, 2.5vw, 22px);
+    line-height: 1.7;
+    text-align: center;
+    margin-bottom: 35px;
+    font-weight: 400;
+}
+
+.intro-lead strong {
+    color: #ffcc00;
+    font-weight: 600;
+}
+
+.intro-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: clamp(16px, 2vw, 18px);
+    line-height: 1.8;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.intro-text strong {
+    color: #ffcc00;
+    font-weight: 600;
+}
+
+.intro-tagline {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: clamp(15px, 2vw, 17px);
+    line-height: 1.6;
+    text-align: center;
+    margin-top: 35px;
+    margin-bottom: 10px;
+    font-style: italic;
+    border-top: 1px solid rgba(255, 204, 0, 0.2);
+    padding-top: 30px;
 }
 
 .drifting-objects {
@@ -52,6 +116,19 @@
     height: 100%;
     pointer-events: none;
     z-index: 1;
+}
+
+/* Gradient overlay to protect text readability */
+.drifting-objects::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(15, 15, 16, 0.7) 0%, rgba(15, 15, 16, 0.3) 40%, rgba(15, 15, 16, 0) 70%);
+    pointer-events: none;
+    z-index: 2;
 }
 
 .object-container {
@@ -66,6 +143,7 @@
     animation: driftDown linear infinite;
     width: 40px;
     height: 40px;
+    opacity: 0.5; /* Make coins more transparent to reduce text interference */
 }
 
 @keyframes driftDown {

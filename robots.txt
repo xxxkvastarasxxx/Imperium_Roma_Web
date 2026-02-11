@@ -1,8 +1,26 @@
 # robots.txt for https://imperiumroma.com
 User-agent: *
 Allow: /
+Allow: /about/
+Allow: /services/
+Allow: /contact/
+Allow: /authenticity/
 
-# Disallow non-canonical paths if any
-# Disallow: /login/reset-password/
+# Block auth-required / private pages
+Disallow: /login/
+Disallow: /domus/
+Disallow: /login/reset-password/
+Disallow: /domus/settings/
+Disallow: /domus/create-profile/
+Disallow: /domus/check-profile/
+Disallow: /domus/collection/
+Disallow: /domus/wishlist/
+
+# Block policy pages (low value for search)
+Disallow: /policies/
+
+# Block config and data files
+Disallow: /config/
+Disallow: /assets/data/
 
 Sitemap: https://imperiumroma.com/sitemap.xml

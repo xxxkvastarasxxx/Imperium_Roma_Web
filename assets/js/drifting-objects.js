@@ -16,11 +16,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const getConfig = () => {
         if (mqSmall.matches) {
-            return { maxObjects: 12, interval: 2300 }; // very small phones: fewest coins
+            return { maxObjects: 8, interval: 2800 }; // very small phones: fewer coins
         } else if (mqMobile.matches) {
-            return { maxObjects: 18, interval: 2000 }; // general mobile
+            return { maxObjects: 12, interval: 2400 }; // general mobile
         }
-        return { maxObjects: 50, interval: 1500 }; // tablets/desktop
+        return { maxObjects: 28, interval: 1800 }; // tablets/desktop - reduced from 50
     };
 
     let intervalId = null;
@@ -30,7 +30,18 @@ document.addEventListener("DOMContentLoaded", function () {
         const object = document.createElement('img');
         object.src = objectImages[Math.floor(Math.random() * objectImages.length)];
         object.classList.add('object');
-        object.style.left = Math.random() * 100 + 'vw';
+        
+        // Spawn coins only on the edges - avoid center 35-65% where text is
+        let leftPosition;
+        if (Math.random() < 0.5) {
+            // Left edge: 0-35%
+            leftPosition = Math.random() * 35;
+        } else {
+            // Right edge: 65-100%
+            leftPosition = 65 + Math.random() * 35;
+        }
+        
+        object.style.left = leftPosition + 'vw';
         object.style.animationDuration = (Math.random() * 5 + 3) + 's';
 
         container.appendChild(object);

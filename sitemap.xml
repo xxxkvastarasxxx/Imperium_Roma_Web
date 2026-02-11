@@ -3,107 +3,35 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-  <!-- Main Pages -->
+  <!-- Main Public Pages Only - auth/dashboard pages excluded -->
   <url>
     <loc>https://imperiumroma.com/</loc>
-    <lastmod>2026-02-03</lastmod>
+    <lastmod>2026-02-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://imperiumroma.com/about/</loc>
-    <lastmod>2026-02-03</lastmod>
+    <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://imperiumroma.com/services/</loc>
-    <lastmod>2026-02-03</lastmod>
+    <lastmod>2026-02-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://imperiumroma.com/contact/</loc>
-    <lastmod>2026-02-03</lastmod>
+    <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://imperiumroma.com/authenticity/</loc>
-    <lastmod>2026-02-03</lastmod>
+    <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  </url>
-
-  <!-- User Authentication -->
-  <url>
-    <loc>https://imperiumroma.com/login/</loc>
-    <lastmod>2026-02-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://imperiumroma.com/login/reset-password/</loc>
-    <lastmod>2026-02-03</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-
-  <!-- Domus (User Dashboard) -->
-  <url>
-    <loc>https://imperiumroma.com/domus/</loc>
-    <lastmod>2026-02-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://imperiumroma.com/domus/collection/</loc>
-    <lastmod>2026-02-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://imperiumroma.com/domus/wishlist/</loc>
-    <lastmod>2026-02-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://imperiumroma.com/domus/check-profile/</loc>
-    <lastmod>2026-02-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://imperiumroma.com/domus/create-profile/</loc>
-    <lastmod>2026-02-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://imperiumroma.com/domus/settings/</loc>
-    <lastmod>2026-02-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-
-  <!-- Legal/Policy Pages -->
-  <url>
-    <loc>https://imperiumroma.com/policies/privacy_policy/</loc>
-    <lastmod>2026-02-03</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://imperiumroma.com/policies/terms_of_use/</loc>
-    <lastmod>2026-02-03</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://imperiumroma.com/policies/delete_user_data/</loc>
-    <lastmod>2026-02-03</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
   </url>
 </urlset>
