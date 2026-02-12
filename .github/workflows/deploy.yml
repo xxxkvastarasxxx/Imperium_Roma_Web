@@ -1,0 +1,36 @@
+name: Deploy to IONOS
+
+on:
+  push:
+    branches:
+      - main  # Deploy when pushing to main branch
+  workflow_dispatch:  # Allow manual deployment from GitHub Actions tab
+
+jobs:
+  deploy:
+    name: Deploy to IONOS Web Hosting
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps  # Use 'ftp' or 'ftps' depending on IONOS setup
+          port: 21  # Default FTP port (use 22 for SFTP)
+          local-dir: ./  # Deploy everything from root
+          server-dir: /  # IONOS web root (might be /htdocs/ or /public_html/)
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.vscode/**
+            **/.idea/**
+            **/config/telegram.php
+            **/*.log
+            README.md
