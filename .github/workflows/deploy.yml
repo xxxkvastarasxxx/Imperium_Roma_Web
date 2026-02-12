@@ -15,22 +15,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Deploy via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftp  # Plain FTP (IONOS may not support FTPS)
-          port: 21  # Default FTP port (use 22 for SFTP)
-          local-dir: ./  # Deploy everything from root
-          server-dir: /  # IONOS web root (might be /htdocs/ or /public_html/)
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/.vscode/**
-            **/.idea/**
-            **/config/telegram.php
-            **/*.log
-            README.md
+          port: 22  # SFTP port
+          local_path: './*'  # Deploy everything from root
+          remote_path: '/'  # IONOS web root (might be /htdocs/ or / or /html/)
+          sftp_only: true
+          args: '-o ConnectTimeout=5'
