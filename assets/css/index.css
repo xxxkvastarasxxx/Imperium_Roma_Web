@@ -508,6 +508,8 @@
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.6s ease, transform 0.6s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .news-item.visible {
@@ -528,6 +530,9 @@
 
 .news-content {
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .news-content h3 {
@@ -540,6 +545,7 @@
     font-size: 16px;
     margin-bottom: 10px;
     color: #c2c2c2;
+    flex-grow: 1;
 }
 
 .news-content .read-link {
@@ -547,6 +553,8 @@
     text-decoration: none;
     font-weight: bold;
     transition: color 0.2s ease;
+    margin-top: auto;
+    display: inline-block;
 }
 
 .news-content .read-link:hover,
@@ -999,7 +1007,6 @@
 .carousel-control:hover {
     background: #ffcc00; /* uses same hue as --cta */
     transform: translateY(-50%) scale(1.06);
-    box-shadow: 0 6px 16px #ffcc00;
 }
 
 .carousel-control:focus-visible {
@@ -1026,6 +1033,8 @@
     flex-shrink: 0;
     transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
 }
 
 /* First auction item - move further to the left */
@@ -1035,9 +1044,14 @@
 
 .auction-item:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
     background: var(--surface-2);
     border-color: var(--surface-3);
+}
+
+.item-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .image-wrap {
@@ -1071,6 +1085,9 @@
 
 .item-details {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .item-details .item-title {
@@ -1094,12 +1111,13 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    flex-grow: 1;
 }
 
 /* View Details Button */
 .view-details-btn {
     display: inline-block;
-    padding: 10px 18px;
+    padding: 8px 14px;
     background: transparent;
     color: var(--cta);
     border: 1.5px solid var(--cta);
@@ -1108,8 +1126,10 @@
     font-family: 'Montserrat', Arial, sans-serif;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.3px;
+    font-size: 12px;
     transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    margin-top: auto;
 }
 
 .view-details-btn:hover,
@@ -1124,8 +1144,20 @@
 /* Promote Lot Button */
 .promote-lot-container {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     margin-top: 40px;
+    gap: 12px;
+}
+
+.promote-lot-subtitle {
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.85);
+    text-align: center;
+    margin: 0;
+    font-weight: 400;
 }
 
 .promote-lot-btn {
@@ -2148,6 +2180,9 @@
     background: #ffcc00;
     padding: 6px 12px;
     border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     font-size: clamp(12px, 1.6vw, 14px);
 }
 
@@ -2538,9 +2573,9 @@
 .domus-faq details { border: 1px solid var(--domus-border); }
 .domus-tour .domus-note { color: var(--domus-muted); }
 
-/* Large-screen zigzag placement for the 4 feature cards */
+/* Large-screen zigzag placement for the 4 feature cards — disabled for split layout */
+/*
 @media (min-width: 1024px) {
-    /* Two-row zigzag: 1 & 3 top row, 2 & 4 bottom row */
     .domus-features {
         grid-template-columns: repeat(4, minmax(220px, 1fr));
         grid-template-rows: auto auto;
@@ -2552,6 +2587,7 @@
     .domus-features .feature-card:nth-child(3) { grid-column: 3; grid-row: 1; }
     .domus-features .feature-card:nth-child(4) { grid-column: 4; grid-row: 2; }
 }
+*/
 
 /* Domus CTA button polish (scoped) */
 .domus-tour .domus-button {
@@ -2574,7 +2610,6 @@
     .feature-card,
     .domus-steps .steps li,
     .domus-tour .domus-button {
-        transition: none !important;
         transform: none !important;
     }
 }
@@ -2664,5 +2699,593 @@
     .footer-col[aria-label="Explore"] .footer-links a,
     .footer-col[aria-label="Policies"] .footer-links a {
         white-space: normal;
+    }
+}
+
+/* ============================================================
+   DOMUS SPLIT-SCREEN TABBED LAYOUT (override)
+   ============================================================ */
+
+/* Reset old staggering and connector styles inside the new layout */
+.domus-split .domus-features .feature-card:nth-child(1),
+.domus-split .domus-features .feature-card:nth-child(2),
+.domus-split .domus-features .feature-card:nth-child(3),
+.domus-split .domus-features .feature-card:nth-child(4) {
+    transform: none;
+    grid-column: auto;
+    grid-row: auto;
+}
+.domus-split .features-connector { display: none !important; }
+.domus-split .domus-features {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    margin-bottom: 0;
+}
+
+/* Main split container */
+.domus-split {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: clamp(40px, 5vw, 80px);
+    max-width: 1300px;
+    margin: 0 auto;
+    align-items: start;
+}
+
+/* Left panel — sticky while scrolling on desktop */
+.domus-left {
+    position: sticky;
+    top: 120px;
+    text-align: left;
+    padding: clamp(16px, 2vw, 24px) 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(24px, 3vw, 36px);
+}
+
+.domus-left .domus-header {
+    margin-bottom: 0;
+}
+
+.domus-left .domus-header h2 {
+    text-align: left;
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 1.1;
+    margin-bottom: 10px;
+}
+
+.domus-left .domus-header h2::after {
+    margin: 12px 0 0;
+    width: 56px;
+    height: 3px;
+}
+
+.domus-left .domus-subheading {
+    text-align: left;
+    margin: 0;
+    font-size: clamp(15px, 1.8vw, 18px);
+    line-height: 1.5;
+}
+
+.domus-left .domus-trust {
+    justify-content: flex-start;
+    margin-top: 14px;
+    gap: 8px;
+}
+.domus-left .domus-trust .trust-icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+/* Stats as compact horizontal badges in the left panel */
+.domus-left .domus-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+}
+
+.domus-left .domus-stats .stat {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-radius: 14px;
+    padding: 16px 20px;
+    transition: all .3s ease;
+    position: relative;
+    overflow: hidden;
+}
+.domus-left .domus-stats .stat::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: linear-gradient(to bottom, #ffcc00, #f0b800);
+    opacity: 0;
+    transition: opacity .3s ease;
+}
+.domus-left .domus-stats .stat:hover {
+    transform: translateX(6px) translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 204, 0, .25);
+    background: linear-gradient(135deg, #fffef8 0%, #ffffff 100%);
+    border-color: #f0b800;
+}
+.domus-left .domus-stats .stat:hover::before {
+    opacity: 1;
+}
+.domus-left .domus-stats .stat strong {
+    font-size: clamp(22px, 2.6vw, 28px);
+    color: #111;
+    font-weight: 800;
+    white-space: nowrap;
+    min-width: 85px;
+    background: linear-gradient(135deg, #ffcc00 0%, #f0b800 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.domus-left .domus-stats .stat span {
+    font-size: clamp(13px, 1.5vw, 14px);
+    color: #555;
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+/* CTA in left panel */
+.domus-left .cta-button {
+    margin-top: 0;
+    text-align: left;
+}
+.domus-left .cta-button .domus-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    font-size: 15px;
+    border-radius: 50px;
+    background: #ffcc00;
+    color: #111;
+    border: 2px solid #ffcc00;
+    font-weight: 700;
+    letter-spacing: .3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.domus-left .cta-button .domus-button:hover,
+.domus-left .cta-button .domus-button:focus-visible {
+    background: transparent;
+    color: #ffcc00;
+    border-color: #ffcc00;
+    transform: translateY(-2px);
+}
+.domus-left .cta-button .domus-note {
+    text-align: left;
+    margin-top: 8px;
+    font-size: 13px;
+    color: #999;
+}
+
+/* Right panel */
+.domus-right {
+    padding: clamp(16px, 2vw, 24px) 0;
+}
+
+/* ---- Tab navigation ---- */
+.domus-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: clamp(24px, 3vw, 32px);
+    border-bottom: 2px solid #e8e8e8;
+    position: relative;
+}
+
+.domus-tab {
+    flex: 1;
+    padding: 14px 8px 12px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px; /* overlap with container border */
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 600;
+    font-size: clamp(12px, 1.4vw, 14px);
+    color: black;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    transition: color .25s ease, border-color .25s ease;
+    white-space: nowrap;
+    position: relative;
+    text-align: center;
+}
+.domus-tab:hover {
+    color: #ffcc00;
+}
+.domus-tab.active {
+    border-color: #ffcc00;
+    font-weight: 700;
+}
+
+
+/* ---- Panel wrapper: all panels stacked in same grid cell ---- */
+.domus-panel-wrapper {
+    display: grid;
+}
+
+/* ---- Tab panels ---- */
+.domus-tab-panel {
+    grid-area: 1 / 1;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .3s ease, visibility .3s ease;
+}
+.domus-tab-panel.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ---- Tour hero image + description ---- */
+.tour-hero {
+    margin: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, .35);
+}
+.tour-hero img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+.tour-description {
+    margin-top: 24px;
+}
+.tour-description p {
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #686B6B;
+    margin: 0;
+    letter-spacing: 0.01em;
+}
+.tour-description .tour-intro {
+    text-align: center;
+    margin-bottom: 16px;
+}
+.tour-description .tour-details {
+    text-align: center;
+}
+
+/* ---- Feature cards inside tab — 2×2 grid ---- */
+.domus-tab-panel .domus-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(14px, 2vw, 18px);
+    margin: 0;
+}
+
+.domus-tab-panel .feature-card {
+    transform: none !important;
+    text-align: center;
+    padding: clamp(18px, 2.4vw, 24px) clamp(14px, 2vw, 18px);
+    border-radius: 12px;
+    background: #fafafa;
+    border: 1px solid #ececec;
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+.domus-tab-panel .feature-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 8px 22px rgba(0,0,0,.08);
+}
+
+.domus-tab-panel .feature-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 12px;
+}
+.domus-tab-panel .feature-icon img {
+    width: 28px;
+    height: 28px;
+}
+
+.domus-tab-panel .feature-card h3 {
+    font-size: clamp(14px, 1.8vw, 16px);
+    margin-bottom: 6px;
+}
+.domus-tab-panel .feature-card p {
+    font-size: clamp(12px, 1.5vw, 13px);
+    line-height: 1.5;
+}
+
+/* ---- Steps inside tab — vertical timeline ---- */
+.domus-tab-panel .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    counter-reset: none;
+    position: relative;
+}
+
+/* Vertical connecting line */
+.domus-tab-panel .steps::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 50px;
+    bottom: 50px;
+    width: 2px;
+    background: linear-gradient(to bottom, #ffcc00 0%, #e8e8e8 50%, #ffcc00 100%);
+    border-radius: 2px;
+    z-index: 0;
+}
+
+.domus-tab-panel .steps li {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 20px 0;
+    box-shadow: none;
+    transition: none;
+    position: relative;
+    z-index: 1;
+}
+.domus-tab-panel .steps li:hover {
+    transform: none;
+    box-shadow: none;
+}
+.domus-tab-panel .steps li::before {
+    display: none;
+}
+
+.step-number {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #ffcc00;
+    font-weight: 800;
+    font-size: 16px;
+    color: #111;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 2px #ffcc00, 0 2px 8px rgba(0,0,0,.12);
+    z-index: 2;
+}
+
+.domus-tab-panel .steps li > div {
+    padding-top: 6px;
+    flex: 1;
+}
+
+.domus-tab-panel .step-label {
+    display: block;
+    color: #111;
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+.domus-tab-panel .step-note {
+    display: block;
+    color: #888;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+/* ---- FAQ inside tab ---- */
+.domus-tab-panel .domus-faq {
+    margin: 0;
+    max-width: none;
+    text-align: left;
+}
+
+.domus-tab-panel .domus-faq details {
+    border: 1px solid #ececec;
+    border-radius: 10px;
+    padding: 0;
+    margin-bottom: 8px;
+    overflow: hidden;
+    transition: box-shadow .25s ease, border-color .25s ease;
+}
+.domus-tab-panel .domus-faq details[open] {
+    border-color: #ddd;
+    box-shadow: 0 4px 14px rgba(0,0,0,.06);
+}
+
+.domus-tab-panel .domus-faq summary {
+    padding: 14px 40px 14px 16px;
+    font-size: clamp(13px, 1.6vw, 15px);
+    font-weight: 600;
+    color: #333;
+    transition: background .15s ease;
+}
+.domus-tab-panel .domus-faq summary:hover {
+    background: #fafafa;
+}
+.domus-tab-panel .domus-faq summary::after {
+    right: 14px;
+    top: 14px;
+    font-size: 14px;
+    color: #aaa;
+}
+
+.domus-tab-panel .domus-faq details p {
+    padding: 0 16px 14px;
+    margin: 0;
+    font-size: clamp(13px, 1.5vw, 14px);
+    color: #666;
+    line-height: 1.6;
+}
+.domus-tab-panel .domus-faq details p a {
+    color: #111;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+.domus-tab-panel .domus-faq details p a:hover {
+    color: #ffcc00;
+}
+
+/* ---- Responsive: stack on mobile ---- */
+@media (max-width: 900px) {
+    .domus-tour {
+        padding: clamp(36px, 5vw, 52px) 16px;
+    }
+    
+    .domus-split {
+        grid-template-columns: 1fr;
+        gap: clamp(28px, 4vw, 40px);
+    }
+    
+    .domus-left {
+        position: static;
+        text-align: center;
+        padding: 0;
+        gap: 18px;
+    }
+    
+    .domus-left .domus-header {
+        margin-bottom: 0;
+    }
+    
+    .domus-right {
+        padding: 0;
+    }
+    
+    .domus-left .domus-header h2 {
+        text-align: center;
+        font-size: clamp(24px, 5vw, 34px);
+    }
+    .domus-left .domus-header h2::after {
+        margin: 10px auto 0;
+    }
+    .domus-left .domus-subheading {
+        text-align: center;
+        margin: 0 auto;
+        font-size: clamp(14px, 2.2vw, 16px);
+    }
+    .domus-left .domus-trust {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 4px;
+    }
+    .domus-left .domus-trust li {
+        font-size: 13px;
+        padding: 5px 10px;
+    }
+    
+    /* Stats: 3-column grid so all cards are equal */
+    .domus-left .domus-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+        margin: 0;
+    }
+    .domus-left .domus-stats .stat {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 4px;
+        padding: 14px 8px;
+        min-width: unset;
+        max-width: unset;
+    }
+    .domus-left .domus-stats .stat::before {
+        display: none;
+    }
+    .domus-left .domus-stats .stat strong {
+        min-width: unset;
+        font-size: clamp(20px, 4.5vw, 26px);
+    }
+    .domus-left .domus-stats .stat span {
+        font-size: clamp(11px, 2.5vw, 13px);
+    }
+    .domus-left .domus-stats .stat:hover {
+        transform: translateY(-2px);
+    }
+    
+    .domus-left .cta-button {
+        text-align: center;
+        margin-bottom: 0;
+    }
+    .domus-left .cta-button .domus-button {
+        justify-content: center;
+        width: 100%;
+        padding: 14px 24px;
+    }
+    .domus-left .cta-button .domus-note {
+        text-align: center;
+    }
+
+    /* Tab navigation */
+    .domus-tabs {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        margin-bottom: clamp(16px, 2.5vw, 24px);
+    }
+    .domus-tabs::-webkit-scrollbar { display: none; }
+    .domus-tab {
+        font-size: 12px;
+        padding: 12px 6px 10px;
+        letter-spacing: .3px;
+    }
+
+    /* Panels: on mobile, don't stack with grid overlay — let active panel set height */
+    .domus-panel-wrapper {
+        display: block;
+    }
+    .domus-tab-panel {
+        display: none;
+    }
+    .domus-tab-panel.active {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Tour description tighten */
+    .tour-description {
+        margin-top: 16px;
+    }
+    .tour-description p {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .domus-tab-panel .domus-features {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* Steps timeline adjusts */
+    .domus-tab-panel .steps::before {
+        left: 17px;
+    }
+}
+
+@media (max-width: 520px) {
+    .domus-left .domus-stats {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+    }
+    .domus-left .domus-stats .stat {
+        padding: 12px 6px;
+    }
+    .domus-tab-panel .domus-features {
+        grid-template-columns: 1fr;
+        gap: 12px;
     }
 }
