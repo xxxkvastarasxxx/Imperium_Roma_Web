@@ -39,15 +39,16 @@ This guide will help you set up automatic deployment from GitHub to your IONOS h
 
 ### **Step 3: Server Directory Configuration**
 
-The workflow file is at `.github/workflows/deploy.yml`. The `server-dir` is set to `/Imperium_Roma/` which is where your domain points to on IONOS.
+The workflow file is at `.github/workflows/deploy.yml`. The `remote_path` is set to `/Imperium_Roma` which is where your domain points to on IONOS.
 
-> **Important**: The deployment uses FTPS (FTP over TLS) on port 21. IONOS supports this by default.
+> **Important**: The deployment uses **SFTP** (SSH File Transfer Protocol) on port 22. IONOS requires SFTP for secure file transfers.
 
-The following files/folders are **excluded** from deployment (they only exist in the repo, not on the server):
-- `.github/`, `.git*`, `.gitignore`
-- `DEPLOYMENT.md`, `README.md`, `Imperium.png`
-- `node_modules/`, `.vscode/`, `logs/`
-- `config/telegram.php` (sensitive credentials)
+The following files/folders are **excluded** from deployment (removed before upload):
+- `.github/`, `.vscode/`, `.gitignore`, `.htaccess`
+- `DEPLOYMENT.md`, `README.md`, `Imperium.png`, `deploy.ps1`
+- `node_modules/`, `logs/`
+
+**Note**: `config/telegram.php` is excluded via `.gitignore` and won't be in the repo at all.
 
 ### **Step 4: Deploy!**
 
@@ -66,16 +67,6 @@ You can also manually trigger deployment:
 2. Click **Actions** tab
 3. Select **Deploy to IONOS** workflow
 4. Click **Run workflow**
-
-### **Step 5: Troubleshooting Protocol Issues**
-
-If FTPS doesn't work on your IONOS hosting, you can try plain FTP by changing in `deploy.yml`:
-
-```yaml
-protocol: ftp    # Change from ftps to ftp
-```
-
-If you specifically need SFTP (port 22), you'll need to use a different action — see Troubleshooting section below.
 
 ---
 
@@ -243,11 +234,10 @@ If a previous deployment incorrectly placed files at the server root `/` instead
 - Go to **Settings** → **Actions** → **General**
 - Enable **Allow all actions and reusable workflows**
 
-### **SFTP vs FTP vs FTPS**
-- The workflow uses **FTPS** (FTP over TLS) on port 21 by default
-- If FTPS doesn't work, try changing `protocol: ftps` to `protocol: ftp` in `deploy.yml`
-- If you need SFTP (port 22), you'll need to switch to a different GitHub Action like `wlixcc/SFTP-Deploy-Action`
-- IONOS Web Hosting Plus typically supports FTP and FTPS on port 21
+### **Connection timeout or slow upload**
+- The workflow uses a 10-second connection timeout
+- IONOS SFTP usually works but may be slow for large files
+- Check GitHub Actions logs for detailed error messages
 
 ---
 
