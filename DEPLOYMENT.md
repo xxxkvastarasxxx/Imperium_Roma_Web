@@ -37,15 +37,17 @@ This guide will help you set up automatic deployment from GitHub to your IONOS h
    | `FTP_USERNAME` | Your FTP username |
    | `FTP_PASSWORD` | Your FTP password |
 
-### **Step 3: Adjust Server Directory (if needed)**
+### **Step 3: Server Directory Configuration**
 
-The workflow file is already created at `.github/workflows/deploy.yml`. You might need to adjust the `server-dir` value:
+The workflow file is at `.github/workflows/deploy.yml`. The `server-dir` is set to `/Imperium_Roma/` which is where your domain points to on IONOS.
 
-- If IONOS uses `/` (root) - leave as is
-- If IONOS uses `/htdocs/` - change `server-dir: /` to `server-dir: /htdocs/`
-- If IONOS uses `/public_html/` - change `server-dir: /` to `server-dir: /public_html/`
+> **Important**: The deployment uses FTPS (FTP over TLS) on port 21. IONOS supports this by default.
 
-To find out, check your IONOS documentation or FTP into your server to see the directory structure.
+The following files/folders are **excluded** from deployment (they only exist in the repo, not on the server):
+- `.github/`, `.git*`, `.gitignore`
+- `DEPLOYMENT.md`, `README.md`, `Imperium.png`
+- `node_modules/`, `.vscode/`, `logs/`
+- `config/telegram.php` (sensitive credentials)
 
 ### **Step 4: Deploy!**
 
@@ -57,13 +59,23 @@ git commit -m "Update website"
 git push origin main
 ```
 
-GitHub Actions will automatically deploy to IONOS! 🎉
+GitHub Actions will automatically deploy to IONOS!
 
 You can also manually trigger deployment:
 1. Go to your GitHub repository
 2. Click **Actions** tab
 3. Select **Deploy to IONOS** workflow
 4. Click **Run workflow**
+
+### **Step 5: Troubleshooting Protocol Issues**
+
+If FTPS doesn't work on your IONOS hosting, you can try plain FTP by changing in `deploy.yml`:
+
+```yaml
+protocol: ftp    # Change from ftps to ftp
+```
+
+If you specifically need SFTP (port 22), you'll need to use a different action — see Troubleshooting section below.
 
 ---
 
@@ -190,6 +202,33 @@ After setting up automated deployment:
 
 ## 🆘 Troubleshooting
 
+### **Clean Up Broken Deployment (files at root `/` instead of `/Imperium_Roma/`)**
+
+If a previous deployment incorrectly placed files at the server root `/` instead of inside `/Imperium_Roma/`, you need to manually delete these files/folders from root `/` via your IONOS file manager or FTP client:
+
+**Folders to delete from root `/`** (NOT from inside `/Imperium_Roma/`):
+- `/about/`
+- `/assets/`
+- `/authenticity/`
+- `/config/`
+- `/contact/`
+- `/domus/`
+- `/login/`
+- `/logs/`
+- `/policies/`
+- `/services/`
+
+**Files to delete from root `/`**:
+- `/DEPLOYMENT.md`
+- `/Imperium.png`
+- `/README.md`
+- `/index.html`
+- `/robots.txt`
+- `/send-telegram.php`
+- `/sitemap.xml`
+
+> **Warning**: Do NOT delete the `/Imperium_Roma/` folder itself — that contains your working website!
+
 ### **Deployment fails with "Permission denied"**
 - Check FTP credentials are correct
 - Verify server directory path
@@ -205,9 +244,10 @@ After setting up automated deployment:
 - Enable **Allow all actions and reusable workflows**
 
 ### **SFTP vs FTP vs FTPS**
-- Try changing `protocol: ftps` to `protocol: ftp` in workflow
-- IONOS usually supports both
-- SFTP uses port 22, FTP/FTPS uses port 21
+- The workflow uses **FTPS** (FTP over TLS) on port 21 by default
+- If FTPS doesn't work, try changing `protocol: ftps` to `protocol: ftp` in `deploy.yml`
+- If you need SFTP (port 22), you'll need to switch to a different GitHub Action like `wlixcc/SFTP-Deploy-Action`
+- IONOS Web Hosting Plus typically supports FTP and FTPS on port 21
 
 ---
 

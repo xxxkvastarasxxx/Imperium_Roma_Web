@@ -15,14 +15,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
-      - name: Deploy via SFTP
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          port: 22  # SFTP port
-          local_path: './*'  # Deploy everything from root
-          remote_path: '/'  # IONOS web root (might be /htdocs/ or / or /html/)
-          sftp_only: true
-          args: '-o ConnectTimeout=5'
+          protocol: ftps
+          port: 21
+          server-dir: /Imperium_Roma/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            .github/**
+            .gitignore
+            DEPLOYMENT.md
+            README.md
+            Imperium.png
+            node_modules/**
+            .vscode/**
+            logs/**
+            *.log
+            config/telegram.php
+            *.md
+            deploy.ps1
