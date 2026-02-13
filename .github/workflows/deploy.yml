@@ -14,28 +14,21 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      
+      - name: Remove repository-only files
+        run: |
+          rm -f DEPLOYMENT.md README.md Imperium.png deploy.ps1 .gitignore .htaccess
+          rm -rf .github .vscode logs node_modules
+          echo "Cleaned up repo-only files"
         
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Deploy via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftp
-          port: 21
-          server-dir: /Imperium_Roma/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            .github/**
-            .gitignore
-            DEPLOYMENT.md
-            README.md
-            Imperium.png
-            node_modules/**
-            .vscode/**
-            logs/**
-            *.log
-            config/telegram.php
-            *.md
-            deploy.ps1
+          port: 22
+          local_path: './*'
+          remote_path: '/Imperium_Roma'
+          sftp_only: true
+          args: '-o ConnectTimeout=10'
