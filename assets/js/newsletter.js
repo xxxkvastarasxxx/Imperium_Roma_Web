@@ -78,6 +78,22 @@
                 body: JSON.stringify({ email })
             });
 
+            // Check if subscribe.php exists (not a 404 HTML page)
+            if (!response.ok && response.status === 404) {
+                showMessage(messageContainer, 'Newsletter service not configured. Please contact the administrator.', 'error');
+                console.error('subscribe.php not found. Please upload it to your server root directory.');
+                return;
+            }
+
+            // Check if response is JSON (not HTML error page)
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                showMessage(messageContainer, 'Server configuration error. Please contact the administrator.', 'error');
+                console.error('Expected JSON response, got:', contentType);
+                console.error('Response indicates subscribe.php is missing or PHP is not enabled.');
+                return;
+            }
+
             const data = await response.json();
 
             if (response.ok && data.success) {
@@ -100,7 +116,23 @@
         } catch (error) {
             // Network or other errors
             console.error('Newsletter subscription error:', error);
-            showMessage(messageContainer, 'Network error. Please check your connection and try again.', 'error');
+            console.error('Error details:', {
+                message: error.message,
+                type: error.name,
+                url: window.location.origin + '/subscribe.php'
+            });
+            
+            // More specific error message
+            let errorMessage = 'Network error. ';
+            if (window.location.protocol === 'file:') {
+                errorMessage += 'Please test on a web server, not from a local file.';
+            } else if (error.message.includes('Failed to fetch')) {
+                errorMessage += 'Cannot reach subscribe.php. Please ensure the file is uploaded to your server.';
+            } else {
+                errorMessage += 'Please check your connection and try again.';
+            }
+            
+            showMessage(messageContainer, errorMessage, 'error');
         } finally {
             // Re-enable button
             subscribeBtn.disabled = false;
@@ -110,9 +142,86 @@
     }
 
     function isValidEmail(email) {
-        // RFC 5322 compliant email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+        // Basic format check
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(email)) {
+            return false;
+        }
+
+        // Split email into parts
+        const parts = email.split('@');
+        if (parts.length !== 2) return false;
+
+        const [localPart, domain] = parts;
+
+        // Validate local part (before @)
+        if (localPart.length < 1 || localPart.length > 64) return false;
+        if (localPart.startsWith('.') || localPart.endsWith('.')) return false;
+        if (localPart.includes('..')) return false;
+
+        // Validate domain
+        if (domain.length < 4 || domain.length > 255) return false;
+        if (domain.startsWith('-') || domain.endsWith('-')) return false;
+        if (domain.startsWith('.') || domain.endsWith('.')) return false;
+        if (domain.includes('..')) return false;
+
+        // Extract TLD (top-level domain)
+        const domainParts = domain.split('.');
+        if (domainParts.length < 2) return false;
+        
+        const tld = domainParts[domainParts.length - 1].toLowerCase();
+        const secondLevel = domainParts[domainParts.length - 2].toLowerCase();
+
+        // Validate TLD (must be at least 2 characters and only letters)
+        if (tld.length < 2 || !/^[a-z]+$/.test(tld)) return false;
+        
+        // Check second-level domain is valid
+        if (secondLevel.length < 2) return false;
+
+        // Common valid TLDs (extend this list as needed)
+        const commonTlds = [
+            'com', 'org', 'net', 'edu', 'gov', 'mil', 'int',
+            'co', 'io', 'ai', 'app', 'dev', 'me', 'us', 'uk',
+            'ca', 'au', 'de', 'fr', 'it', 'es', 'nl', 'be',
+            'ch', 'at', 'se', 'no', 'dk', 'fi', 'pl', 'cz',
+            'jp', 'cn', 'in', 'br', 'mx', 'ar', 'cl', 'ru',
+            'info', 'biz', 'name', 'pro', 'xyz', 'online',
+            'store', 'shop', 'tech', 'site', 'website', 'space'
+        ];
+
+        // Warning for suspicious TLDs (but still allow them)
+        if (!commonTlds.includes(tld)) {
+            console.warn('Uncommon TLD detected:', tld);
+        }
+
+        // Block obvious fake/test domains
+        const blockedDomains = [
+            'test.com', 'example.com', 'example.org', 'example.net',
+            'fake.com', 'invalid.com', 'dummy.com', 'temp.com',
+            'localhost', '127.0.0.1'
+        ];
+        
+        if (blockedDomains.includes(domain.toLowerCase())) {
+            return false;
+        }
+
+        // Block disposable/temporary email services
+        const disposableDomains = [
+            'tempmail.com', '10minutemail.com', 'guerrillamail.com',
+            'mailinator.com', 'maildrop.cc', 'throwaway.email',
+            'temp-mail.org', 'fakeinbox.com', 'trashmail.com'
+        ];
+        
+        if (disposableDomains.includes(domain.toLowerCase())) {
+            return false;
+        }
+
+        // Check for suspicious patterns (all same character domains)
+        if (/^([a-z])\1+\.([a-z])\1+$/.test(domain.toLowerCase())) {
+            return false; // e.g., aaa.bbb
+        }
+
+        return true;
     }
 
     function showMessage(container, message, type) {
