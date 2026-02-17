@@ -42,7 +42,7 @@ define('ALLOWED_DOMAIN', 'https://imperiumroma.com'); // Your domain (already se
 
 ### 3. Test the Integration
 
-1. Upload all files to your IONOS hosting
+1. Upload all files to IONOS
 2. Visit any page with the newsletter form
 3. Enter a test email address
 4. Click "Subscribe"
@@ -56,10 +56,6 @@ define('ALLOWED_DOMAIN', 'https://imperiumroma.com'); // Your domain (already se
 #### Error: "Network error"
 - Verify PHP cURL is enabled on your hosting
 - Check that subscribe.php is accessible at `/subscribe.php`
-
-#### Error: "Method not allowed"
-- Ensure the form is sending POST requests
-- Check browser console for CORS errors
 
 #### Email not appearing in Brevo
 - Verify the list ID is correct
@@ -97,6 +93,7 @@ The newsletter.js already includes Google Analytics event tracking. If using GA4
 ✅ Loading state with disabled button  
 ✅ Auto-hide success messages after 5 seconds  
 ✅ Accessibility features (ARIA labels, screen reader support)  
+✅ Analytics tracking (optional)  
 ✅ Works across all pages with newsletter forms  
 
 ## Support
