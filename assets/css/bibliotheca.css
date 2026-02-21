@@ -1,0 +1,544 @@
+/* =========================================
+   Bibliotheca Page Styles
+   ========================================= */
+
+/* Override body overflow-x so position:sticky works */
+body {
+    overflow-x: clip;
+}
+
+/* --- Hero Banner --- */
+.biblio-hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: black; /* fallback */
+    overflow: hidden;
+}
+
+.biblio-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* Background image — only this element scales (matches Contact pattern) */
+.biblio-hero-overlay::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('/assets/images/general/library.jpg') center center / cover no-repeat;
+    transform: scale(1.05);
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Hover scales ONLY the image, not the gradient overlay */
+.biblio-hero-overlay:hover::before {
+    transform: scale(1.1);
+}
+
+/* Gradient overlay — stays fixed, never scales */
+.biblio-hero-overlay::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.42));
+    z-index: 2;
+}
+
+.biblio-hero-content {
+    position: relative;
+    z-index: 3;
+    color: white;
+    padding: 0 20px;
+    max-width: 1100px;
+    width: 90%;
+    text-align: center;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+.biblio-hero h1 {
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+.biblio-hero p {
+    font-size: 24px;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+    line-height: 1.6;
+}
+
+/* CTA Button — matches Contact page .btn-banner */
+.biblio-hero .btn-banner {
+    display: inline-block;
+    padding: 12px 24px;
+    background: linear-gradient(to right, #ffcc00, #ff9900);
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(255, 153, 0, 0.4);
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 16px;
+}
+
+.biblio-hero .btn-banner:hover {
+    background: linear-gradient(to right, #ff9900, #ff6600);
+    transform: scale(1.05);
+}
+
+/* --- Filter / Search Bar --- */
+.biblio-filter-section {
+    background: #0a0a0a;
+    border-bottom: 1px solid #1a1a1a;
+    padding: 18px 24px;
+    top: 80px;
+    z-index: 100;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+}
+
+.biblio-filter-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.biblio-search-input {
+    width: 100%;
+    max-width: 440px;
+    background: #111;
+    border: 1px solid #2a2a2a;
+    border-radius: 24px;
+    color: #f0f0f0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    padding: 10px 20px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.biblio-search-input:focus {
+    border-color: #ffcc00;
+    box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.15);
+}
+
+.biblio-search-input::placeholder {
+    color: #555;
+}
+
+.biblio-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.biblio-tag {
+    background: transparent;
+    border: 1px solid #333;
+    color: #999;
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 0.02em;
+}
+
+.biblio-tag:hover {
+    border-color: #ffcc00;
+    color: #ffcc00;
+}
+
+.biblio-tag.active {
+    background: #ffcc00;
+    border-color: #ffcc00;
+    color: #000;
+}
+
+/* --- Articles Grid --- */
+.biblio-articles-section {
+    background: #0d0d0d;
+    padding: 36px 24px 64px;
+    min-height: 500px;
+}
+
+.biblio-articles-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.biblio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* Article Card */
+.biblio-article-card {
+    background: #111;
+    border: 1px solid #1c1c1c;
+    border-radius: 12px;
+    padding: 26px 24px 22px;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    position: relative;
+    min-height: 240px;
+}
+
+.biblio-article-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.5);
+    border-color: #ffcc00;
+}
+
+.biblio-article-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.biblio-article-date {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #ffcc00;
+}
+
+.biblio-article-category {
+    font-size: 10px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.06);
+    color: #999;
+    border-radius: 4px;
+    padding: 3px 9px;
+    letter-spacing: 0.03em;
+}
+
+.biblio-article-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #f0f0f0;
+    line-height: 1.35;
+    margin: 0;
+}
+
+.biblio-article-card p {
+    font-size: 13.5px;
+    color: #777;
+    line-height: 1.65;
+    margin: 0;
+    flex: 1;
+}
+
+.biblio-read-more {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffcc00;
+    text-decoration: none;
+    margin-top: auto;
+    padding-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: gap 0.2s ease, color 0.2s ease;
+}
+
+.biblio-article-card:hover .biblio-read-more {
+    gap: 8px;
+}
+
+.biblio-no-results {
+    color: #555;
+    font-size: 15px;
+    text-align: center;
+    margin-top: 40px;
+}
+
+/* --- Article Reading Pane --- */
+.biblio-reading-pane {
+    background: #0d0d0d;
+    padding: 48px 24px 80px;
+}
+
+.biblio-reading-container {
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.biblio-back-btn {
+    background: none;
+    border: 1px solid #2c2c2c;
+    color: #aaa;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    margin-bottom: 36px;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.biblio-back-btn:hover {
+    border-color: #ffcc00;
+    color: #ffcc00;
+}
+
+.biblio-article-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 3vw, 38px);
+    color: #f0f0f0;
+    margin-bottom: 8px;
+    line-height: 1.25;
+}
+
+.biblio-article-content .article-meta {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 28px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.biblio-article-content .article-meta span {
+    color: #ffcc00;
+    font-weight: 700;
+}
+
+.biblio-article-content p {
+    font-size: 16px;
+    color: #aaa;
+    line-height: 1.8;
+    margin-bottom: 18px;
+}
+
+.biblio-article-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: #e0e0e0;
+    margin: 32px 0 12px;
+}
+
+.biblio-article-content h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ccc;
+    margin: 24px 0 8px;
+}
+
+.biblio-article-content ul,
+.biblio-article-content ol {
+    padding-left: 22px;
+    color: #aaa;
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 18px;
+}
+
+.biblio-article-content blockquote {
+    border-left: 3px solid #ffcc00;
+    margin: 24px 0;
+    padding: 10px 20px;
+    color: #888;
+    font-style: italic;
+    font-size: 15px;
+    background: #111;
+    border-radius: 0 8px 8px 0;
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+    .biblio-hero { height: 50vh; }
+    .biblio-hero h1 { font-size: 36px; }
+    .biblio-hero p { font-size: 20px; }
+    .biblio-hero .btn-banner { padding: 8px 16px; font-size: 0.9rem; }
+    .biblio-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .biblio-hero { height: 50vh; }
+    .biblio-hero h1 { font-size: 28px; }
+    .biblio-hero p { font-size: 16px; }
+    .biblio-hero .btn-banner { padding: 6px 12px; font-size: 0.8rem; }
+
+    .biblio-filter-section {
+        padding: 14px 16px;
+        top: 70px;
+    }
+
+    .biblio-search-input {
+        max-width: 100%;
+    }
+
+    .biblio-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .biblio-article-card {
+        padding: 22px 20px 20px;
+        min-height: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .biblio-hero h1 { font-size: 22px; }
+    .biblio-hero p { font-size: 14px; }
+
+    .biblio-tag {
+        font-size: 11px;
+        padding: 5px 12px;
+    }
+}
+
+/* =========================================
+   Site Footer (shared pattern)
+   ========================================= */
+
+/* Legacy footer styles (scoped away from the new shared footer) */
+footer:not(.site-footer) {
+  background: black;
+  color: #fff;
+  text-align: center;
+  padding: 40px 20px;
+  margin-top: 40px;
+  border-top: 2px solid #444;
+  font-family:'Montserrat', Arial, sans-serif;
+}
+
+footer:not(.site-footer) .footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+footer:not(.site-footer) .footer-logo img { width: 150px; margin-bottom: 20px; }
+footer:not(.site-footer) p { margin: 10px 0; font-size: 14px; }
+
+footer:not(.site-footer) .footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+footer:not(.site-footer) .footer-links li { display: inline; }
+footer:not(.site-footer) .footer-links li a { color: #ffcc00; text-decoration: none; font-size: 14px; transition: color 0.3s ease; }
+footer:not(.site-footer) .footer-links li a:hover { color: #ffffff; }
+
+@media (max-width: 768px) {
+  footer:not(.site-footer) p { font-size: 12px; }
+}
+
+/* Footer parity with main page */
+:root { --cta: white; --cta-strong: white; --cta-ink: #0f0f10; }
+
+/* Prefer .site-footer block; keep generic footer rules above from affecting it */
+.site-footer { background: linear-gradient(180deg, #0b0b0b 0%, #090909 40%, #070707 100%); border-top: none; color: #cfd2d6; padding: 60px 0 34px; }
+.site-footer .container { width: min(92%, 1200px); margin: 0 auto; }
+.footer-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1.3fr; column-gap: 48px; row-gap: 28px; align-items: start; }
+.footer-col .footer-title { font-family: 'Montserrat', Arial, sans-serif; color: var(--cta); font-size: 20px; margin-bottom: 12px; }
+.brand .brand-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.brand .brand-logo { width: 36px; height: 36px; }
+.brand .brand-name { font-size: 20px; font-weight: 700; color: #fff; }
+.brand .brand-text { color: #b9bdc3; margin-bottom: 14px; text-align: left; line-height: 1.6; }
+.footer-links { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.footer-links a { color: grey; text-decoration: none; }
+.footer-links a:hover, .footer-links a:focus-visible { color: #ffcc00; outline: none; }
+.newsletter-text { color: #b9bdc3; margin-bottom: 10px; }
+.newsletter-form { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+.newsletter-input { width: 100%; padding: 12px 14px; border-radius: 999px; border: 1px solid #ffcc00; background: rgba(255,255,255,0.04); color: #e9ecef; }
+.newsletter-input::placeholder { color: #9aa0a6; }
+.newsletter-btn { padding: 12px 22px; border-radius: 999px; border: 1.5px solid #ffcc00; background: transparent; color: #ffcc00; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+.newsletter-btn:hover, .newsletter-btn:focus-visible { background:#ffcc00; color: black; outline: none; transform: translateY(-1px) scale(1.02); box-shadow: 0 6px 16px rgba(0,0,0,0.35); }
+.newsletter-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.newsletter-message { grid-column: 1 / -1; padding: 10px 15px; border-radius: 8px; font-size: 14px; text-align: center; margin-top: 8px; display: none; animation: fadeIn 0.3s ease; }
+.newsletter-message.success { background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.4); color: #4ade80; }
+.newsletter-message.error { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.footer-social { margin-top: 20px; display: flex; gap: 15px; justify-content: center; }
+.social-link { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: grey; transition: all 0.3s ease; }
+.social-link img { width: 22px; height: 22px; object-fit: contain; filter: brightness(0.95); }
+.social-link:hover { background: #ffcc00; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }
+.social-link:hover img { filter: brightness(0.2); }
+.footer-bottom { margin-top: 28px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.06); text-align: center; color: #9aa0a6; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+
+/* Footer Responsive */
+@media (max-width: 991px) { .footer-grid { grid-template-columns: 1fr 1fr; column-gap: 30px; row-gap: 40px; } .brand .brand-text { font-size: 14px; line-height: 1.5; } .footer-col .footer-title { font-size: 18px; } .newsletter-input { padding: 10px 14px; } }
+@media (max-width: 767px) { .site-footer { padding: 40px 0 25px; text-align: center; } .footer-grid { grid-template-columns: 1fr; gap: 30px; padding: 0 15px; } .brand .brand-row { justify-content: center; margin-bottom: 15px; } .brand .brand-text { text-align: center; font-size: 14px; line-height: 1.5; margin: 0 auto 10px; max-width: 290px; color: #b9bdc3; } .footer-col { margin-bottom: 0; padding-bottom: 5px; } .footer-col .footer-title { font-size: 17px; margin-bottom: 12px; color: white !important; } .footer-links { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 0 auto 10px; } .footer-links li { display: inline-block; } .footer-links a { font-size: 14px; padding: 5px 10px; color: #aaa !important; display: inline-block; } .footer-links a:hover, .footer-links a:focus-visible { color: white !important; } .newsletter-text { font-size: 14px; max-width: 250px; margin: 0 auto 12px; } .newsletter-form { max-width: 280px; margin: 0 auto; grid-template-columns: 1fr; gap: 10px; } .newsletter-input { width: 100%; padding: 12px 15px; text-align: center; font-size: 14px; } .newsletter-btn { width: 100%; padding: 12px; font-size: 14px; margin-bottom: 15px; } .footer-social { margin: 5px auto 0; display: flex; justify-content: center; gap: 16px; } .social-link { width: 40px; height: 40px; background: rgba(255, 255, 255, 0.1); } .social-link img { width: 20px; height: 20px; } .footer-bottom { margin-top: 25px; padding-top: 15px; } .copyright { font-size: 13px; color: #777; } }
+@media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; } .newsletter-form { grid-template-columns: 1fr; } }
+@media (max-width: 380px) { .site-footer .container { width: 100%; padding: 0 10px; } .brand .brand-text { font-size: 13px; max-width: 260px; } .footer-links { gap: 8px; } .footer-links a { font-size: 13px; padding: 4px 8px; } .newsletter-form { max-width: 250px; } .newsletter-input { padding: 10px 15px; } .newsletter-btn { padding: 10px; } .social-link { width: 36px; height: 36px; } .social-link img { width: 18px; height: 18px; } }
+
+/* Match main page mobile footer layout exactly */
+@media (max-width: 767px) {
+  /* Safety: prevent overlays */
+  .site-footer { overflow: visible; }
+  .site-footer .container { width: min(94%, 640px); margin: 0 auto; }
+
+  /* Two-column Explore/Policies; Brand+Newsletter full width */
+  .footer-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 22px !important; padding: 0 16px !important; grid-auto-flow: row; align-items: start; }
+
+  /* Reset any transforms/positioning */
+  .footer-col, .footer-col * { position: static !important; transform: none !important; z-index: auto !important; }
+
+  .footer-col.brand,
+  .footer-col.newsletter { grid-column: 1 / -1 !important; }
+
+  .footer-col[aria-label="Explore"],
+  .footer-col[aria-label="Policies"] { text-align: center; }
+
+  .footer-col[aria-label="Explore"] .footer-links,
+  .footer-col[aria-label="Policies"] .footer-links { display: grid !important; gap: 10px !important; justify-items: center !important; margin: 0 auto !important; width: 100% !important; }
+
+  .footer-col[aria-label="Explore"] .footer-links a,
+  .footer-col[aria-label="Policies"] .footer-links a { display: inline-block !important; padding: 6px 0 !important; white-space: nowrap; }
+
+  /* Newsletter: match main page sizing */
+  .newsletter-text { font-size: 14px !important; max-width: 250px !important; margin: 0 auto 12px !important; }
+  .newsletter-form { grid-template-columns: 1fr !important; max-width: 280px !important; margin: 0 auto !important; gap: 10px !important; }
+  .newsletter-input, .newsletter-btn { width: 100% !important; }
+  .newsletter-input { padding: 12px 15px !important; }
+  .newsletter-btn { padding: 12px !important; font-size: 14px !important; margin-bottom: 15px !important; }
+}
+
+/* Very small devices: allow wrapping */
+@media (max-width: 380px) {
+  .footer-col[aria-label="Explore"] .footer-links a,
+  .footer-col[aria-label="Policies"] .footer-links a { white-space: normal; }
+}

@@ -5,6 +5,7 @@ Allow: /about/
 Allow: /services/
 Allow: /contact/
 Allow: /authenticity/
+Allow: /bibliotheca/
 
 # Block auth-required / private pages
 Disallow: /login/

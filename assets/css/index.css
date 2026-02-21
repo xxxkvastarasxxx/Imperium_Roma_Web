@@ -6,7 +6,7 @@
 }
 
 /* Introduction */
-.introduction, .featured-coins {
+.introduction {
     padding: 20px 20px;
     background: var(--background);
 }
@@ -213,46 +213,32 @@
     box-shadow: 0 6px 16px rgba(0,0,0,0.35);
 }
 
-/* Featured Coins Section */
-.featured-coins {
-    display: flex;
-    justify-content: center;
-    background: linear-gradient(180deg, #f4f4f4 0%, #efefef 35%, #eaeaea 100%);
-    padding: 64px 0;
-    border-top: 1px solid #e6e6e6;
-    border-bottom: 1px solid #e0e0e0;
-    /* local accents */
-    --accent-gold: #c9a640;
-    --accent-gold-2: #d6b451;
-    --ink: #1a1a1a;
+/* ===========================================================
+   BIBLIOTHECA SECTION — mirrors Domus split-layout proportions
+   =========================================================== */
+.bibliotheca-section {
+    background-color: white;
+    padding: clamp(56px, 7vw, 96px) 20px;
+    position: relative;
 }
 
-/* Container with Image and Text Frame Side by Side */
-.featured-coins-container {
-    display: flex;
-    align-items: stretch;
-    width: min(92%, 1280px);
-    position: relative;
-    gap: 28px;
+/* Grid: image 7fr, text 5fr — mirrors domus-split (5fr 7fr) flipped */
+.bibliotheca-split {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: clamp(40px, 5vw, 80px);
+    max-width: 1300px;
+    margin: 0 auto;
+    align-items: center;
 }
 
-/* Image Side */
-.image-side {
-    width: 58%;
-    position: relative;
+/* Image panel */
+.bibliotheca-image {
     border-radius: 14px;
     overflow: hidden;
-    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+    box-shadow: 0 10px 28px rgba(0,0,0,.12);
 }
-.image-side::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(120% 80% at 50% 50%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.15) 100%);
-}
-
-.side-image {
+.bibliotheca-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -260,103 +246,128 @@
     transform: scale(1.003) translateZ(0);
     transition: transform 0.6s cubic-bezier(.2,.6,.2,1), filter .4s ease;
 }
-.image-side:hover .side-image {
-    transform: scale(1.035) translateZ(0);
+.bibliotheca-image:hover img {
+    transform: scale(1.03) translateZ(0);
     filter: saturate(1.03);
 }
 
-/* Text Overlay */
-.text-overlay {
-    width: 42%;
+/* Content panel */
+.bibliotheca-content {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-}
-
-.overlay-frame {
-    background: #ffffff;
-    border-radius: 14px;
-    border: 1px solid #ececec;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-    padding: 28px;
+    gap: clamp(20px, 3vw, 32px);
     text-align: left;
-    color: #3b3b3b;
-}
-.overlay-frame:hover {
-    box-shadow: 0 10px 24px rgba(0,0,0,.12);
-    transform: translateY(-2px);
-    transition: transform .25s ease, box-shadow .25s ease;
 }
 
-.overlay-frame h2 {
-    font-size: clamp(22px, 1.4vw + 18px, 28px);
+.bibliotheca-header h2 {
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 1.1;
+    color: #151515;
     margin-bottom: 10px;
-    color: #222;
-    position: relative;
 }
-.overlay-frame h2::after {
+.bibliotheca-header h2::after {
     content: "";
-    position: absolute;
-    left: 0;
-    bottom: -8px;
-    width: 64px;
+    display: block;
+    width: 56px;
     height: 3px;
-    border-radius: 3px;
+    margin: 12px 0 0;
+    border-radius: 4px;
     background: linear-gradient(90deg, #ffcc00 100%);
 }
-
-.overlay-frame p {
-    font-size: 15px;
-    line-height: 1.6;
+.bibliotheca-header p {
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: clamp(15px, 1.8vw, 18px);
+    line-height: 1.55;
+    color: #6b6b6b;
     margin: 0;
-    color: #666;
+    max-width: 520px;
 }
 
-/* Improve focus visibility on auction links */
-.auction-logos a {
-    border-radius: 14px;
+/* Article list */
+.bibliotheca-articles {
+    display: flex;
+    flex-direction: column;
+}
+
+.bibliotheca-card {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 13px 0;
+    border-bottom: 1px solid #ececec;
+    text-decoration: none;
+    color: inherit;
+}
+.bibliotheca-card:first-child {
+    border-top: 1px solid #ececec;
+}
+
+.biblio-date { display: none; }
+.bibliotheca-card p { display: none; }
+
+.bibliotheca-card h3 {
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #151515;
+    margin: 0;
+    line-height: 1.45;
+    flex: 1;
+    transition: color 0.15s ease;
+}
+
+.biblio-arrow {
+    font-size: 15px;
+    color: #ffcc00;
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+    line-height: 1;
+}
+
+.bibliotheca-card:hover h3 {
+    color: #ffcc00;
+}
+.bibliotheca-card:hover .biblio-arrow {
+    transform: translateX(3px);
+}
+
+/* CTA button — identical to domus-button */
+.bibliotheca-cta {
+    margin-top: 4px;
+    text-align: left;
+}
+.bibliotheca-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: .3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 50px;
+    background: #ffcc00;
+    color: #111;
+    border: 2px solid #ffcc00;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.bibliotheca-button:hover,
+.bibliotheca-button:focus-visible {
+    background: transparent;
+    color: #ffcc00;
+    border-color: #ffcc00;
+    transform: translateY(-2px);
     outline: none;
 }
-.auction-logos a:focus-visible {
-    box-shadow: 0 0 0 3px rgba(201, 166, 64, 0.35);
-}
 
-/* Logos Section (General Styles) */
-.auction-logos {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    justify-content: center;
-    align-items: center;
-    margin-top: 8px;
-    justify-items: center;
-}
-
-/* Styling the logos */
-.auction-logos img {
-    width: 112px;
-    height: 112px;
-    object-fit: contain;
-    border-radius: 12px;
-    border: 1px solid #ededed;
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
-    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
-    background-color: #fff;
-    padding: 10px;
-}
-
-.auction-logos img:hover,
-.auction-logos a:focus-visible img {
-    transform: translateY(-2px) scale(1.04);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.14);
-    filter: saturate(1.05);
-}
-
-/* Reduced motion preferences */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-    .image-side .side-image,
-    .auction-logos img,
-    .overlay-frame,
+    .bibliotheca-image img,
+    .biblio-arrow,
+    .bibliotheca-button,
     .carousel-track,
     .running-roman,
     .running-roman-reverse {
@@ -366,37 +377,33 @@
     }
 }
 
-/* Responsive upgrades for logos grid */
-@media (max-width: 1024px) {
-    .auction-logos {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 16px;
+/* Responsive: stack on mobile — mirrors domus-split @900px */
+@media (max-width: 900px) {
+    .bibliotheca-split {
+        grid-template-columns: 1fr;
+        gap: clamp(24px, 4vw, 36px);
     }
-    .auction-logos img { width: 104px; height: 104px; }
-}
-
-@media (max-width: 768px) {
-    .auction-logos {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 14px;
+    .bibliotheca-content {
+        text-align: center;
     }
-    .auction-logos img { width: 96px; height: 96px; }
-}
-
-@media (max-width: 600px) {
-    .auction-logos {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px;
+    .bibliotheca-header h2 {
+        text-align: center;
+        font-size: clamp(24px, 5vw, 34px);
     }
-    .auction-logos img { width: 92px; height: 92px; }
-}
-
-@media (max-width: 420px) {
-    .auction-logos {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
+    .bibliotheca-header h2::after {
+        margin: 10px auto 0;
     }
-    .auction-logos img { width: 86px; height: 86px; }
+    .bibliotheca-header p {
+        text-align: center;
+        margin: 0 auto;
+        font-size: clamp(14px, 2.2vw, 16px);
+    }
+    .bibliotheca-card {
+        justify-content: center;
+    }
+    .bibliotheca-cta {
+        text-align: center;
+    }
 }
 
 /* Spacer between sections */
@@ -1320,55 +1327,18 @@
         height: 40px;
     }
 
-    .introduction, .featured-coins, .daily-news {
+    .introduction, .daily-news {
         padding: 50px 20px;
     }
 
-    .introduction h2, .featured-coins h2, .daily-news h2,
+    .introduction h2, .daily-news h2,
     .news-container h2 {
         font-size: 32px;
     }
 
-    .introduction p, .featured-coins p, .daily-news p,
+    .introduction p, .daily-news p,
     .section-description {
         font-size: 18px;
-    }
-
-    .featured-coins-container {
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
-    }
-
-    .image-side, .text-overlay {
-        width: 48%;
-    }
-
-    .text-overlay {
-        margin: 30px 0 0 0;
-    }
-
-    .overlay-frame {
-        padding: 25px;
-        text-align: center;
-    }
-
-    .overlay-frame h2 {
-        font-size: 28px;
-    }
-
-    .overlay-frame p {
-        font-size: 16px;
-    }
-
-    .auction-logos {
-        grid-template-columns: repeat(3, 1fr);
-        grid-gap: 25px;
-    }
-
-    .auction-logos img {
-        width: 150px;
-        height: 150px;
     }
 
     .news-section {
@@ -1483,57 +1453,22 @@
         height: 30px;
     }
 
-    .introduction, .featured-coins, .daily-news {
+    .introduction, .daily-news {
         padding: 40px 10px;
     }
 
-    .introduction h2, .featured-coins h2, .daily-news h2,
+    .introduction h2, .daily-news h2,
     .news-container h2 {
         font-size: 28px;
     }
 
-    .introduction p, .featured-coins p, .daily-news p,
+    .introduction p, .daily-news p,
     .section-description {
         font-size: 16px;
     }
     
-    .featured-coins-container {
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-    }
 
-    .image-side, .text-overlay {
-        width: 100%;
-    }
 
-    .text-overlay {
-        margin: 20px 0 0 0;
-    }
-
-    .overlay-frame {
-        padding: 20px;
-        text-align: center;
-    }
-
-    .overlay-frame h2 {
-        font-size: 24px;
-    }
-
-    .overlay-frame p {
-        font-size: 14px;
-    }
-
-    .auction-logos {
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 30px;
-    }
-
-    .auction-logos img {
-        width: 120px;
-        height: 120px;
-    }
-    
     .news-section {
         padding: 30px 15px;
         min-height: auto;
@@ -1680,18 +1615,6 @@
         color: white;
         text-align: center;
         animation: fadeInUp 1s ease-in-out;
-    }
-
-    .overlay-frame {
-        padding: 15px;
-    }
-
-    .overlay-frame h2 {
-        font-size: 20px;
-    }
-
-    .overlay-frame p {
-        font-size: 14px;
     }
 
     .explore-button {
