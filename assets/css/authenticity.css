@@ -89,14 +89,14 @@
     background: linear-gradient(to right, #ff9900, #ff6600);
     transform: scale(1.05);
 }
-/* Main Banner */
+/* Main Banner — Responsive */
 @media (max-width: 1024px) {
     .banner {
-        height: 50vh; /* Reduce height on tablets */
+        height: 60vh;
     }
 
     .banner h1 {
-        font-size: 36px; /* Adjust text size */
+        font-size: 36px;
     }
 
     .banner p {
@@ -111,7 +111,7 @@
 
 @media (max-width: 768px) {
     .banner {
-        height: 50vh; /* Reduce height on mobile */
+        height: 50vh;
     }
 
     .banner h1 {
@@ -125,6 +125,20 @@
     .btn-banner {
         padding: 6px 12px;
         font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .banner {
+        height: 45vh;
+    }
+
+    .banner h1 {
+        font-size: 22px;
+    }
+
+    .banner p {
+        font-size: 14px;
     }
 }
 
@@ -144,6 +158,20 @@
 .authenticity-check-section p {
     font-size: 18px;
     margin-bottom: 40px;
+}
+
+/* Authenticity Section — Responsive Typography */
+@media (max-width: 1024px) {
+    .authenticity-check-section h2 { font-size: 32px; }
+    .authenticity-check-section p { font-size: 16px; }
+}
+@media (max-width: 768px) {
+    .authenticity-check-section h2 { font-size: 28px; }
+    .authenticity-check-section p { font-size: 15px; }
+}
+@media (max-width: 480px) {
+    .authenticity-check-section h2 { font-size: 22px; }
+    .authenticity-check-section p { font-size: 14px; }
 }
 
 /* Form Styling inside Authenticity Check Section */

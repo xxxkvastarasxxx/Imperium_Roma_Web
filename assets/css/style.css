@@ -232,12 +232,12 @@ nav ul li a.active {
         justify-content: center;
         align-items: center;
         gap: 0;
-        height: 30px;
-        width: 30px;
+        height: 28px;
+        width: 28px;
         padding: 0;
         cursor: pointer;
         position: fixed;
-        top: 22px;
+        top: 26px;
         right: 4%;
         z-index: 1100;
         background: none;
@@ -248,7 +248,7 @@ nav ul li a.active {
         display: block;
         background-color: var(--white);
         height: 2px;
-        width: 24px;
+        width: 22px;
         border-radius: 2px;
         transition: transform 0.35s cubic-bezier(.4,0,.2,1),
                     opacity 0.25s ease,
@@ -257,13 +257,13 @@ nav ul li a.active {
         position: absolute;
     }
 
-    .hamburger span:nth-child(1) { top: 6px; }
-    .hamburger span:nth-child(2) { top: 14px; }
-    .hamburger span:nth-child(3) { top: 22px; }
+    .hamburger span:nth-child(1) { top: 5px; }
+    .hamburger span:nth-child(2) { top: 13px; }
+    .hamburger span:nth-child(3) { top: 21px; }
 
     /* Animate ☰ → ✕ */
     .hamburger.active span:nth-child(1) {
-        top: 14px;
+        top: 13px;
         transform: rotate(45deg);
     }
 
@@ -273,7 +273,7 @@ nav ul li a.active {
     }
 
     .hamburger.active span:nth-child(3) {
-        top: 14px;
+        top: 13px;
         transform: rotate(-45deg);
     }
 }
@@ -295,8 +295,8 @@ nav ul li a.active {
 }
 
 .banner video {
-    width: 100vw;  /* Ensure video fully fills the viewport width */
-    height: 100vh; /* Ensure video fully fills the viewport height */
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     opacity: 0.8;
     z-index: 1;
@@ -304,7 +304,6 @@ nav ul li a.active {
     position: absolute;
     top: 0;
     left: 0;
-    overflow: hidden; /* Prevent any overflow */
 }
 
 /* SEO H1 - visually hidden but accessible to screen readers and search engines */
@@ -333,52 +332,35 @@ nav ul li a.active {
     color: var(--white);
 }
 
-@media (max-width: 768px) {
-    nav ul {
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        background-color: transparent;
-        position: absolute;
-        top: 60px;
-        right: 20px;
-        width: 200px;
-        border-radius: 5px;
-    }
-
-    nav ul.show {
-        display: flex;
-    }
-
-    nav ul li {
-        margin: 10px 0;
-        width: 100%;
-        text-align: center;
-    }
-
+/* Banner — Responsive */
+@media (max-width: 1024px) {
     .banner {
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
+        height: 60vh;
     }
-
-    .banner video {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transform: translate(-50%, -50%);}
-
     .banner h2 {
-        font-size: 28px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        font-size: 36px;
     }
 }
+
+@media (max-width: 768px) {
+    .banner {
+        height: 50vh;
+    }
+    .banner h2 {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .banner {
+        height: 45vh;
+    }
+    .banner h2 {
+        font-size: 22px;
+    }
+}
+
+
 
 /* Responsive Design for Footer */
 @media (max-width: 768px) {
@@ -514,6 +496,10 @@ footer p {
         font-size: 32px;
     }
 
+    .introduction p, .featured-coins p, .daily-news p {
+        font-size: 16px;
+    }
+
     .footer-logo img {
         width: 150px;
     }
@@ -521,11 +507,6 @@ footer p {
 
 /* Mobile Devices (576px to 767px) */
 @media (min-width: 576px) and (max-width: 767px) {
-    .banner {
-        height: 50vh;
-        padding: 30px 10px;
-    }
-
     .banner h2 {
         font-size: 28px;
     }
@@ -538,6 +519,10 @@ footer p {
         font-size: 28px;
     }
 
+    .introduction p, .featured-coins p, .daily-news p {
+        font-size: 16px;
+    }
+
     .footer-logo img {
         width: 120px;
     }
@@ -545,11 +530,6 @@ footer p {
 
 /* Small Mobile Devices (Up to 575px) */
 @media (max-width: 575px) {
-    .banner {
-        height: 40vh;
-        padding: 20px 10px;
-    }
-
     .banner h2 {
         font-size: 22px;
     }
@@ -560,6 +540,10 @@ footer p {
 
     .introduction h2, .featured-coins h2, .daily-news h2 {
         font-size: 22px;
+    }
+
+    .introduction p, .featured-coins p, .daily-news p {
+        font-size: 14px;
     }
 
     .footer-logo img {

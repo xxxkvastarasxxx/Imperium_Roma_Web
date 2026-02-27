@@ -62,14 +62,14 @@
     background-color: #ff9900;
 }
 
-/* Main Banner */
+/* Main Banner — Responsive */
 @media (max-width: 1024px) {
     .banner {
-        height: 50vh; /* Reduce height on tablets */
+        height: 60vh;
     }
 
     .banner h1 {
-        font-size: 36px; /* Adjust text size */
+        font-size: 36px;
     }
 
     .banner p {
@@ -84,7 +84,7 @@
 
 @media (max-width: 768px) {
     .banner {
-        height: 50vh; /* Reduce height on mobile */
+        height: 50vh;
     }
 
     .banner h1 {
@@ -98,6 +98,20 @@
     .btn-banner {
         padding: 6px 12px;
         font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .banner {
+        height: 45vh;
+    }
+
+    .banner h1 {
+        font-size: 22px;
+    }
+
+    .banner p {
+        font-size: 14px;
     }
 }
   
@@ -2196,4 +2210,53 @@
 
 .btn-contact:hover {
     background-color: #ff9900;
+}
+
+/* Services + Service Detail — Responsive Typography */
+@media (max-width: 1024px) {
+    .services h2 {
+        font-size: 2rem;
+    }
+    .services p {
+        font-size: 1rem;
+    }
+    .service-detail h2 {
+        font-size: 28px;
+    }
+    .service-detail p {
+        font-size: 16px;
+    }
+    .section-title {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .services h2 {
+        font-size: 1.8rem;
+    }
+    .services p {
+        font-size: 0.9rem;
+    }
+    .service-detail h2 {
+        font-size: 24px;
+    }
+    .service-detail p {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .services h2 {
+        font-size: 1.5rem;
+    }
+    .services p {
+        font-size: 0.85rem;
+    }
+    .service-detail h2 {
+        font-size: 22px;
+    }
+    .service-detail p {
+        font-size: 14px;
+    }
 }

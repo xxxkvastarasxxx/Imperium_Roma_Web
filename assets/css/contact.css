@@ -1,41 +1,6 @@
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;700&family=Montserrat:wght@400;700&display=swap');
 
-/* Banner sizing overrides */
-.banner {
-  height: 50vh;
-  padding: 50px 20px;
-}
-
-.banner video {
-  height: 70vh;
-  object-fit: cover;
-}
-
-.banner h2 {
-  font-size: 28px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.introduction, .featured-coins, .daily-news {
-  padding: 10px 10px;
-}
-
-.introduction h2, .featured-coins h2, .daily-news h2 { font-size: 28px; }
-.introduction p, .featured-coins p, .daily-news p { font-size: 16px; }
-
-.section-title-text { padding-top: 70px; padding-bottom: 70px; }
-
-.object { width: 30px; }
-
-/* Additional styling for various screen sizes */
-@media (max-width: 768px) {
-  .object { width: 30px; }
-}
-
 .font-medium { font-weight: 500; }
 .font-28 { font-size: 28px; }
 .font-20-sp { font-size: 20px; }
@@ -144,9 +109,9 @@
   transform: scale(1.05);
 }
 
-/* Main Banner */
+/* Main Banner — Responsive */
 @media (max-width: 1024px) {
-  .banner { height: 50vh; }
+  .banner { height: 60vh; }
   .banner h1 { font-size: 36px; }
   .banner p { font-size: 20px; }
   .btn-banner { padding: 8px 16px; font-size: 0.9rem; }
@@ -157,6 +122,12 @@
   .banner h1 { font-size: 28px; }
   .banner p { font-size: 16px; }
   .btn-banner { padding: 6px 12px; font-size: 0.8rem; }
+}
+
+@media (max-width: 480px) {
+  .banner { height: 45vh; }
+  .banner h1 { font-size: 22px; }
+  .banner p { font-size: 14px; }
 }
 
 /* Contact Section */
@@ -182,6 +153,20 @@
   margin-left: auto;
   margin-right: auto;
   font-family: 'Montserrat', Arial, sans-serif;
+}
+
+/* Contact Section — Responsive Typography */
+@media (max-width: 1024px) {
+    .contact-section h2 { font-size: 32px; }
+    .contact-section p { font-size: 16px; }
+}
+@media (max-width: 768px) {
+    .contact-section h2 { font-size: 28px; }
+    .contact-section p { font-size: 15px; }
+}
+@media (max-width: 480px) {
+    .contact-section h2 { font-size: 22px; }
+    .contact-section p { font-size: 14px; }
 }
 
 .contact-form { max-width: 800px; margin: 0 auto; padding: 0 20px; }
