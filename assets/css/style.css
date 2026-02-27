@@ -142,6 +142,7 @@ nav ul li a.active {
     height: 20px;
     width: 25px;
     cursor: pointer;
+    position: relative;
     z-index: 1100;
 }
 
@@ -154,81 +155,126 @@ nav ul li a.active {
 
 /* Media Query for Mobile and Tablet Devices */
 @media (max-width: 768px) {
-    /* Hide the regular menu */
+    /* Full-screen overlay menu */
     .menu {
         position: fixed;
         top: 0;
         left: 0;
+        right: 0;
+        bottom: 0;
         width: 100%;
-        min-height: 100vh;
-        background: rgba(0, 0, 0, 0.95); /* Slightly darker for better visibility */
+        height: 100%;
+        background: rgba(0, 0, 0, 0.97);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        gap: 0.5rem;
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
-        z-index: 999; /* Ensures it overlays other content */
-        transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        z-index: 1050;
+        transition: opacity 0.4s cubic-bezier(.4,0,.2,1), visibility 0.4s cubic-bezier(.4,0,.2,1);
+        overflow: hidden;
     }
-    
+
     .menu.active {
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
-    }    
+    }
 
-    /* Style the menu items */
+    /* Staggered fade-in for each menu item */
     .menu li {
         text-align: center;
-        margin: 1rem 0; /* More spacing */
+        margin: 0;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.35s ease, transform 0.35s ease;
     }
+
+    .menu.active li {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .menu.active li:nth-child(1) { transition-delay: 0.08s; }
+    .menu.active li:nth-child(2) { transition-delay: 0.14s; }
+    .menu.active li:nth-child(3) { transition-delay: 0.20s; }
+    .menu.active li:nth-child(4) { transition-delay: 0.26s; }
+    .menu.active li:nth-child(5) { transition-delay: 0.32s; }
+    .menu.active li:nth-child(6) { transition-delay: 0.38s; }
 
     .menu li a {
-        color: var(--white); /* Ensure visibility */
-        font-size: 1.5rem; /* Larger for better readability */
-        padding: 1rem 2rem; /* Better tap area */
+        color: var(--white);
+        font-size: 1.6rem;
+        letter-spacing: 0.08em;
+        padding: 1rem 2.5rem;
         display: block;
         text-transform: uppercase;
-        font-weight: bold;
-        transition: background-color 0.3s ease, transform 0.2s ease;
+        font-weight: 700;
+        border-radius: 6px;
+        transition: color 0.25s ease, transform 0.2s ease;
     }
 
-    .menu li a:hover {
-        background-color: var(--primary-color);
-        transform: scale(1.05);
+    .menu li a:hover,
+    .menu li a:focus {
+        color: var(--yellow);
+        transform: scale(1.06);
     }
 
-    /* Show the hamburger menu */
+    /* Hamburger — fixed, always above overlay */
     .hamburger {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        height: 25px;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+        height: 30px;
         width: 30px;
+        padding: 0;
         cursor: pointer;
-        z-index: 1000; /* Ensure it stays above menu */
+        position: fixed;
+        top: 22px;
+        right: 4%;
+        z-index: 1100;
+        background: none;
+        border: none;
     }
 
     .hamburger span {
+        display: block;
         background-color: var(--white);
-        height: 3px;
-        width: 100%;
-        transition: all 0.3s ease;
+        height: 2px;
+        width: 24px;
+        border-radius: 2px;
+        transition: transform 0.35s cubic-bezier(.4,0,.2,1),
+                    opacity 0.25s ease,
+                    width 0.25s ease;
+        transform-origin: center center;
+        position: absolute;
     }
 
-    /* Optional: Add animation to the hamburger icon when active */
+    .hamburger span:nth-child(1) { top: 6px; }
+    .hamburger span:nth-child(2) { top: 14px; }
+    .hamburger span:nth-child(3) { top: 22px; }
+
+    /* Animate ☰ → ✕ */
     .hamburger.active span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 6px);
+        top: 14px;
+        transform: rotate(45deg);
     }
 
     .hamburger.active span:nth-child(2) {
         opacity: 0;
+        width: 0;
     }
 
     .hamburger.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(5px, -6px);
+        top: 14px;
+        transform: rotate(-45deg);
     }
 }
 
@@ -475,19 +521,6 @@ footer p {
 
 /* Mobile Devices (576px to 767px) */
 @media (min-width: 576px) and (max-width: 767px) {
-    nav ul {
-        flex-direction: column;
-        display: none;
-    }
-
-    nav ul.show {
-        display: flex;
-    }
-
-    .hamburger {
-        display: flex;
-    }
-
     .banner {
         height: 50vh;
         padding: 30px 10px;
@@ -512,19 +545,6 @@ footer p {
 
 /* Small Mobile Devices (Up to 575px) */
 @media (max-width: 575px) {
-    nav ul {
-        flex-direction: column;
-        display: none;
-    }
-
-    nav ul.show {
-        display: flex;
-    }
-
-    .hamburger {
-        display: flex;
-    }
-
     .banner {
         height: 40vh;
         padding: 20px 10px;
