@@ -232,7 +232,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const article = BIBLIO_ARTICLES.find(a => a.slug === docSlug);
         if (article) {
             showArticle(article);
-            return;
         }
     }
 
