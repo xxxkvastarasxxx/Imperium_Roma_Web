@@ -115,25 +115,337 @@
 }
 
 
-/* Our Story Section */
+/* ===== Our Story — Journey Map ===== */
 .story {
-    padding: 50px 20px;
+    padding: 80px 20px 48px;
     background-color: var(--background);
-    color: white;
+    color: #fff;
     text-align: center;
 }
 
 .story h2 {
     font-size: 2.5rem;
-    margin-bottom: 20px;
+    margin: 0 0 8px;
     color: #ffcc00;
 }
 
-.story p {
-    font-size: 1.2rem;
+.story .story-lead {
+    font-size: 1.1rem;
     line-height: 1.6;
-    max-width: 800px;
+    color: rgba(255, 255, 255, .55);
+    max-width: 560px;
+    margin: 0 auto 52px;
+}
+
+/* ── Journey container w/ golden spine ── */
+.journey {
+    position: relative;
+    max-width: 920px;
     margin: 0 auto;
+    padding: 8px 0 32px;
+}
+
+/* ── Collapsible journey ── */
+.journey--collapsed {
+    max-height: 420px;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+    transition: max-height .7s cubic-bezier(.22, 1, .36, 1);
+}
+
+.journey--expanded {
+    max-height: 2000px;
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+    transition: max-height .7s cubic-bezier(.22, 1, .36, 1);
+}
+
+/* Toggle button */
+.story-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 32px;
+    padding: 12px 32px;
+    background: transparent;
+    border: 1px solid rgba(255, 204, 0, .35);
+    border-radius: 30px;
+    color: #ffcc00;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: .88rem;
+    font-weight: 600;
+    letter-spacing: .4px;
+    cursor: pointer;
+    transition: background .35s ease, border-color .35s ease, transform .3s ease;
+}
+
+.story-toggle:hover {
+    background: rgba(255, 204, 0, .08);
+    border-color: rgba(255, 204, 0, .6);
+    transform: translateY(-2px);
+}
+
+.story-toggle svg {
+    width: 16px;
+    height: 16px;
+    transition: transform .4s ease;
+}
+
+.story-toggle.is-expanded svg {
+    transform: rotate(180deg);
+}
+
+/* Central golden spine */
+.journey::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, transparent 0%, #ffcc00 5%, #ffcc00 93%, transparent 100%);
+    transform: translateX(-50%);
+    box-shadow: 0 0 10px rgba(255, 204, 0, .15);
+}
+
+/* Glowing terminal node at bottom of spine */
+.journey::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -4px;
+    width: 10px;
+    height: 10px;
+    background: #ffcc00;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 12px rgba(255, 204, 0, .5);
+}
+
+/* ── Milestone row ── */
+.milestone {
+    position: relative;
+    width: 50%;
+    margin-bottom: 48px;
+    box-sizing: border-box;
+    /* scroll-reveal entrance */
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .65s cubic-bezier(.22, 1, .36, 1),
+                transform .65s cubic-bezier(.22, 1, .36, 1);
+}
+
+.milestone.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.milestone:last-child {
+    margin-bottom: 0;
+}
+
+/* Left-side cards */
+.milestone[data-side="left"] {
+    padding-right: 52px;
+    text-align: right;
+}
+
+/* Right-side cards */
+.milestone[data-side="right"] {
+    margin-left: 50%;
+    padding-left: 52px;
+    text-align: left;
+}
+
+/* ── Node circle on the spine ── */
+.milestone::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    width: 14px;
+    height: 14px;
+    background: #ffcc00;
+    border: 3px solid var(--background, #111);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(255, 204, 0, .25),
+               0 0 14px rgba(255, 204, 0, .2);
+    z-index: 2;
+    transition: box-shadow .4s ease, transform .4s ease;
+}
+
+.milestone[data-side="left"]::before  { right: -10px; }
+.milestone[data-side="right"]::before { left: -10px;  }
+
+/* Connector line from node to card */
+.milestone::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    height: 2px;
+    width: 36px;
+    z-index: 1;
+}
+
+.milestone[data-side="left"]::after {
+    right: 6px;
+    background: linear-gradient(90deg, rgba(255, 204, 0, .35), rgba(255, 204, 0, .06));
+}
+
+.milestone[data-side="right"]::after {
+    left: 6px;
+    background: linear-gradient(90deg, rgba(255, 204, 0, .06), rgba(255, 204, 0, .35));
+}
+
+/* Node hover pulse */
+.milestone:hover::before {
+    box-shadow: 0 0 0 5px rgba(255, 204, 0, .3),
+               0 0 20px rgba(255, 204, 0, .35);
+    transform: scale(1.2);
+}
+
+/* ── Content card ── */
+.milestone-content {
+    background: linear-gradient(
+        165deg,
+        rgba(255, 255, 255, .045) 0%,
+        rgba(255, 204, 0, .025) 50%,
+        rgba(255, 255, 255, .03) 100%
+    );
+    border: 1px solid rgba(255, 204, 0, .14);
+    border-radius: 14px;
+    padding: 42px 26px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04),
+                0 2px 12px rgba(0, 0, 0, .25);
+    transition: transform .4s cubic-bezier(.22, 1, .36, 1),
+                box-shadow .4s ease,
+                border-color .4s ease;
+}
+
+.milestone:hover .milestone-content {
+    transform: translateY(-4px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06),
+                0 16px 40px rgba(255, 204, 0, .10),
+                0 0 0 1px rgba(255, 204, 0, .08);
+    border-color: rgba(255, 204, 0, .32);
+}
+
+.milestone-year {
+    display: inline-block;
+    background: #ffcc00;
+    color: #111;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: 700;
+    font-size: .78rem;
+    padding: 4px 16px;
+    border-radius: 20px;
+    letter-spacing: .5px;
+    margin-bottom: 10px;
+}
+
+.milestone-title {
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 8px;
+}
+
+.milestone-text {
+    font-size: .95rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, .65);
+    margin: 0;
+}
+
+/* ── Journey-map responsive ── */
+@media (max-width: 768px) {
+    .story h2 { font-size: 2rem; }
+
+    .story .story-lead {
+        font-size: .95rem;
+        margin-bottom: 36px;
+    }
+
+    /* Single-column: spine moves to the left edge */
+    .journey::before { left: 20px; }
+    .journey::after  { left: 20px; }
+
+    .milestone,
+    .milestone[data-side="left"],
+    .milestone[data-side="right"] {
+        width: 100%;
+        margin-left: 0;
+        padding-left: 56px;
+        padding-right: 0;
+        text-align: left;
+    }
+
+    .milestone::before,
+    .milestone[data-side="left"]::before,
+    .milestone[data-side="right"]::before {
+        left: 13px;
+        right: auto;
+    }
+
+    .milestone::after,
+    .milestone[data-side="left"]::after,
+    .milestone[data-side="right"]::after {
+        left: 30px;
+        right: auto;
+        width: 20px;
+        background: linear-gradient(90deg, rgba(255, 204, 0, .35), rgba(255, 204, 0, .06));
+    }
+
+    .milestone-content { padding: 18px 20px; }
+    .milestone-title   { font-size: 1.05rem; }
+    .milestone-text    { font-size: .9rem; }
+
+    .journey--collapsed { max-height: 380px; }
+}
+
+@media (max-width: 480px) {
+    .story {
+        padding: 60px 16px 36px;
+    }
+
+    .story h2 { font-size: 1.6rem; }
+
+    .journey::before { left: 14px; }
+    .journey::after  { left: 14px; }
+
+    .milestone,
+    .milestone[data-side="left"],
+    .milestone[data-side="right"] {
+        padding-left: 44px;
+    }
+
+    .milestone::before,
+    .milestone[data-side="left"]::before,
+    .milestone[data-side="right"]::before {
+        left: 7px;
+    }
+
+    .milestone::after,
+    .milestone[data-side="left"]::after,
+    .milestone[data-side="right"]::after {
+        left: 24px;
+        width: 14px;
+    }
+
+    .milestone-content { padding: 16px; }
+
+    .milestone-year {
+        font-size: .72rem;
+        padding: 3px 12px;
+    }
+
+    .milestone-title { font-size: .95rem; }
+    .milestone-text  { font-size: .85rem; }
+
+    .journey--collapsed { max-height: 340px; }
+    .story-toggle { font-size: .82rem; padding: 10px 24px; }
 }
 
 /* Our Team Section */
@@ -173,34 +485,34 @@
     line-height: 1.6;
 }
 
-/* Grid Layout for Team Members - 4-3 Staggered Layout */
+/* Grid Layout for Team Members - Single Row */
 .team-grid {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 32px;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 18px;
     margin: 0 auto;
     max-width: 1400px;
-    padding: 0 20px;
+    padding: 0 24px;
 }
 
-/* First 4 members - top row, each takes 2 columns */
-.team-member:nth-child(1) { grid-column: 1 / 3; }
-.team-member:nth-child(2) { grid-column: 3 / 5; }
-.team-member:nth-child(3) { grid-column: 5 / 7; }
-.team-member:nth-child(4) { grid-column: 7 / 9; }
-
-/* Last 3 members - bottom row centered, offset by 1 column, each takes 2 columns */
-.team-member:nth-child(5) { grid-column: 2 / 4; }
-.team-member:nth-child(6) { grid-column: 4 / 6; }
-.team-member:nth-child(7) { grid-column: 6 / 8; }
+/* Reset all nth-child grid-column rules (single row, auto placement) */
+.team-member:nth-child(1),
+.team-member:nth-child(2),
+.team-member:nth-child(3),
+.team-member:nth-child(4),
+.team-member:nth-child(5),
+.team-member:nth-child(6),
+.team-member:nth-child(7) { grid-column: auto; }
 
 .team-member {
     background: #fff;
-    border: 1px solid rgba(17,24,39,.06);
-    border-radius: 16px;
+    border: 1px solid rgba(17,24,39,.05);
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 8px 24px rgba(17,24,39,.08);
-    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(17,24,39,.06);
+    transition: transform .35s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow .35s ease,
+                border-color .35s ease;
     display: flex;
     flex-direction: column;
     text-align: left;
@@ -213,10 +525,11 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #ffcc00, #ff9900);
+    height: 2px;
+    background: linear-gradient(90deg, #ffcc00, #e6b800);
     transform: scaleX(0);
-    transition: transform .3s ease;
+    transform-origin: left;
+    transition: transform .4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .team-member:hover::before {
@@ -224,117 +537,121 @@
 }
 
 .team-member:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 16px 40px rgba(17,24,39,.15);
-    border-color: rgba(255, 204, 0, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(17,24,39,.10),
+                0 0 0 1px rgba(255, 204, 0, 0.08);
+    border-color: rgba(255, 204, 0, 0.15);
 }
 
-/* Card media */
+/* Card media — uniform height, images contained without cropping */
 .team-media {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    background: #f7f7f8;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .team-member .team-photo {
     width: 100%;
-    height: auto;
-    aspect-ratio: 4/3;
-    object-fit: cover;
+    height: 100%;
+    object-fit: contain;
     display: block;
-    transition: transform .4s ease;
+    transition: transform .5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .team-member:hover .team-photo {
-    transform: scale(1.08);
+    transform: scale(1.04);
 }
 
 /* Card body */
 .team-body {
-    padding: 24px;
+    padding: 14px 14px 16px;
     display: grid;
     grid-template-rows: auto auto auto 1fr;
-    gap: 10px;
+    gap: 6px;
     flex-grow: 1;
     align-content: start;
 }
 
 .team-member h3 {
     margin: 0;
-    font-size: 1.35rem;
+    font-size: .88rem;
     display: flex;
     align-items: center;
-    gap: 10px;
-    color: #000;
+    flex-wrap: wrap;
+    gap: 6px;
+    color: #111;
     font-weight: 700;
     line-height: 1.3;
-    min-height: 2.7rem;
+    min-height: auto;
+    letter-spacing: -0.01em;
 }
 
 .role-chip {
-    font-size: .7rem;
+    font-size: .58rem;
     line-height: 1;
-    background: linear-gradient(135deg, #ffcc00 0%, #ffd700 100%);
-    color: #000;
-    border-radius: 8px;
-    padding: .35rem .6rem;
+    background: #ffcc00;
+    color: #111;
+    border-radius: 4px;
+    padding: .22rem .5rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.3px;
-    box-shadow: 0 2px 6px rgba(255, 204, 0, 0.3);
+    letter-spacing: 0.5px;
     white-space: nowrap;
 }
 
 .position {
-    color: #6c757d;
+    color: #6b7280;
     margin: 0;
-    font-size: 1rem;
-    font-weight: 600;
-    min-height: 1.5rem;
+    font-size: .75rem;
+    font-weight: 500;
+    min-height: auto;
 }
 
 .position span {
     font-weight: 500;
-    color: #495057;
+    color: #4b5563;
 }
 
 /* Skill badges */
 .badges {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 5px;
     margin: 0;
     padding: 0;
     list-style: none;
-    min-height: 2rem;
+    min-height: auto;
     align-items: flex-start;
 }
 
 .badge {
-    font-size: .75rem;
+    font-size: .6rem;
     line-height: 1;
-    padding: .4rem .7rem;
-    border-radius: 20px;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    color: #495057;
-    border: 1px solid #dee2e6;
+    padding: .25rem .45rem;
+    border-radius: 4px;
+    background: #f4f5f7;
+    color: #4b5563;
+    border: 1px solid #e5e7eb;
     font-weight: 600;
     transition: all .2s ease;
 }
 
 .badge:hover {
-    background: linear-gradient(135deg, #ffcc00 0%, #ffd700 100%);
-    color: #000;
+    background: #ffcc00;
+    color: #111;
     border-color: #ffcc00;
-    transform: translateY(-1px);
 }
 
 /* Bio text */
 .bio {
-    color: #495057;
+    color: #6b7280;
     margin: 0;
-    font-size: .95rem;
-    line-height: 1.6;
+    font-size: .73rem;
+    line-height: 1.55;
     align-self: start;
 }
 
@@ -362,92 +679,96 @@
 /* Our Team Section */
 @media (max-width: 1024px) {
     .team {
-        padding: 60px 20px;
+        padding: 50px 16px;
     }
 
     .team h2 {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
     }
 
     .team .section-intro {
-        font-size: 1.05rem;
-        margin-bottom: 40px;
+        font-size: 1rem;
+        margin-bottom: 32px;
     }
 
     .team-grid {
-        grid-template-columns: repeat(6, 1fr);
-        gap: 28px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
     }
 
-    /* 3 columns for tablet - top row */
-    .team-member:nth-child(1) { grid-column: 1 / 3; }
-    .team-member:nth-child(2) { grid-column: 3 / 5; }
-    .team-member:nth-child(3) { grid-column: 5 / 7; }
-    
-    /* Bottom row */
-    .team-member:nth-child(4) { grid-column: 1 / 3; }
-    .team-member:nth-child(5) { grid-column: 3 / 5; }
-    .team-member:nth-child(6) { grid-column: 5 / 7; }
-    .team-member:nth-child(7) { grid-column: 2 / 5; }
+    .team-media {
+        height: 200px;
+    }
 
     .team-member h3 {
-        font-size: 1.25rem;
+        font-size: .85rem;
     }
 }
 
 @media (max-width: 768px) {
     .team {
-        padding: 50px 15px;
+        padding: 40px 12px;
     }
 
     .team h2 {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
 
     .team .section-intro {
-        font-size: 1rem;
-        margin-bottom: 35px;
+        font-size: .9rem;
+        margin-bottom: 28px;
     }
 
     .team-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 24px;
-        padding: 0 10px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        padding: 0 12px;
     }
 
-    /* 2 columns for mobile - reset grid positioning */
-    .team-member:nth-child(1) { grid-column: 1 / 2; }
-    .team-member:nth-child(2) { grid-column: 2 / 3; }
-    .team-member:nth-child(3) { grid-column: 1 / 2; }
-    .team-member:nth-child(4) { grid-column: 2 / 3; }
-    .team-member:nth-child(5) { grid-column: 1 / 2; }
-    .team-member:nth-child(6) { grid-column: 2 / 3; }
-    .team-member:nth-child(7) { grid-column: 1 / 3; }
+    .team-media {
+        height: 180px;
+    }
 
     .team-member h3 {
-        font-size: 1.2rem;
+        font-size: .82rem;
     }
 
     .position {
-        font-size: .95rem;
+        font-size: .72rem;
     }
 
     .team-body {
-        padding: 20px;
+        padding: 12px 12px 14px;
     }
 
     .badge {
-        font-size: .72rem;
-        padding: .35rem .6rem;
+        font-size: .55rem;
+        padding: .22rem .4rem;
+    }
+
+    .bio {
+        font-size: .68rem;
     }
 }
 
 @media (max-width: 560px) {
     .team-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 0 8px;
     }
 
-    /* Single column for small mobile */
+    .team-media {
+        height: 160px;
+    }
+}
+
+@media (max-width: 380px) {
+    .team-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
     .team-member:nth-child(1),
     .team-member:nth-child(2),
     .team-member:nth-child(3),
@@ -455,9 +776,12 @@
     .team-member:nth-child(5),
     .team-member:nth-child(6),
     .team-member:nth-child(7) {
-        grid-column: 1 / 2;
-        max-width: 500px;
+        max-width: 320px;
         margin: 0 auto;
+    }
+
+    .team-media {
+        height: 200px;
     }
 }
 
@@ -617,4 +941,52 @@
 @media (max-width: 380px) {
     .footer-col[aria-label="Explore"] .footer-links a,
     .footer-col[aria-label="Policies"] .footer-links a { white-space: normal; }
+}
+
+
+/* ===== Warrior Marching Background ===== */
+
+/* Card must be a positioning context */
+.milestone-content {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Full-bleed background layer */
+.warrior-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+    border-radius: inherit;
+    contain: strict;           /* isolate layout + paint from rest of page */
+    transform: translateZ(0);  /* single compositing layer for all children */
+}
+
+/* Keep all card content above the warriors */
+.milestone-content > *:not(.warrior-bg) {
+    position: relative;
+    z-index: 1;
+}
+
+/* A single marching row — pre-rendered bitmap background, zero child elements */
+.warrior-row {
+    position: absolute;
+    left: 0;
+    animation: marchRight var(--march-duration, 35s) linear infinite;
+    /* Convert dark SVG artwork → golden silhouette */
+    filter: invert(1) sepia(1) saturate(3) hue-rotate(10deg) brightness(1.05);
+    will-change: transform;
+}
+
+/* Keyframe: slide from left edge to right, then seamlessly loop */
+@keyframes marchRight {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .warrior-row { animation: none !important; }
 }
