@@ -1,0 +1,26 @@
+{
+  "name": "imperium-roma-web",
+  "version": "1.0.0",
+  "description": "Imperium Roma — static multi-page site build pipeline (HTML includes, CSS/JS minification, content-hash cache-busting).",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node dev.mjs",
+    "build": "node build.mjs",
+    "preview": "node dev.mjs --preview",
+    "clean": "node -e \"import('node:fs').then(fs=>fs.rmSync('dist',{recursive:true,force:true}))\""
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.4",
+    "chokidar": "^4.0.3",
+    "esbuild": "^0.25.10",
+    "html-minifier-terser": "^7.2.0",
+    "lightningcss": "^1.30.2"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true
+  }
+}
