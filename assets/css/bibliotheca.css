@@ -306,6 +306,8 @@ body {
     font-size: 13px;
     cursor: pointer;
     margin-bottom: 36px;
+    text-decoration: none;
+    display: inline-block;
     transition: border-color 0.2s ease, color 0.2s ease;
 }
 
@@ -375,6 +377,41 @@ body {
     font-size: 15px;
     background: #111;
     border-radius: 0 8px 8px 0;
+}
+
+/* --- Service CTA (end of standalone article pages) --- */
+.biblio-cta {
+    margin-top: 44px;
+    padding: 26px 28px;
+    background: #111;
+    border: 1px solid #1c1c1c;
+    border-left: 3px solid var(--yellow);
+    border-radius: var(--radius-md);
+}
+
+.biblio-cta p {
+    color: #ccc;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0 0 16px;
+}
+
+.biblio-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--yellow);
+    color: #000;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 10px 22px;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.biblio-cta-btn:hover {
+    background: #ffd633;
 }
 
 /* --- Responsive --- */
