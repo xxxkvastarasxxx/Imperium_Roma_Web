@@ -128,9 +128,9 @@ Run through these steps in order:
 - [ ] Check "Network" tab for failed requests
 
 ### Step 3: Verify Configuration ✅
-- [ ] BREVO_API_KEY is set correctly in subscribe.php
-- [ ] BREVO_LIST_ID matches your Brevo list
-- [ ] ALLOWED_DOMAIN matches your actual domain
+- [ ] `BREVO_API_KEY` is set (env var or `config/newsletter.php`)
+- [ ] `BREVO_LIST_ID` matches your Brevo list
+- [ ] `ALLOWED_DOMAIN` matches your actual domain
 
 ### Step 4: Test Email Validation ✅
 - [ ] Try with valid email: test@example.com
@@ -159,10 +159,12 @@ Run through these steps in order:
 
 ## 🔧 Quick Fix Commands
 
-### If using Git and subscribe.php isn't deployed:
+### If subscribe.php returns "Server configuration incomplete":
 ```bash
-# Upload subscribe.php via FTP separately (it's in .gitignore)
-# Or temporarily remove from .gitignore, deploy, then re-add
+# subscribe.php itself is tracked in git and deploys via CI automatically.
+# Only the credentials are missing — set BREVO_API_KEY/BREVO_LIST_ID as
+# hosting env vars, or create config/newsletter.php on the server
+# (copy config/newsletter.example.php — it's .gitignored, never deployed by CI).
 ```
 
 ### Test subscribe.php with browser DevTools:

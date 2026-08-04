@@ -4,8 +4,8 @@
 
 # Secrets and sensitive configuration
 config/telegram.php
+config/newsletter.php
 config/*.pem
-subscribe.php
 *.env
 .env*
 

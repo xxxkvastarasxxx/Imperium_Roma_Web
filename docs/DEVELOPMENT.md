@@ -87,11 +87,15 @@ repo-only files (README, docs, workflow, tooling), so there is no manual cleanup
 
 ## Notes & known items
 
-- **Root `.htaccess` is intentionally NOT deployed.** The previous workflow deleted it
-  before upload, so we keep that behaviour (`EXCLUDE_ROOT_HTACCESS = true` in
-  `build.mjs`). If the production server should use the repo's root `.htaccess`, flip that
-  flag to `false` and rebuild. **Verify which `.htaccess` is authoritative on IONOS before
-  changing this.**
+- **Root `.htaccess` ships with every build** (HTTPS redirect, security headers, caching,
+  compression, sensitive-file protection). If IONOS ever needs a different `.htaccess` to
+  be authoritative instead, set `EXCLUDE_ROOT_HTACCESS = true` in `build.mjs`.
+- **`subscribe.php` is tracked in git** and deploys automatically like any other file —
+  it contains no secrets. Its Brevo credentials come from hosting env vars
+  (`BREVO_API_KEY`, `BREVO_LIST_ID`, `ALLOWED_DOMAIN`) or a gitignored
+  `config/newsletter.php` (copy `config/newsletter.example.php`), same pattern as
+  `config/telegram.php` for the contact form. See
+  [docs/NEWSLETTER_SETUP.md](NEWSLETTER_SETUP.md).
 - **ES-module cache-busting is by name only.** Because module files keep their names, a
   changed module relies on normal HTTP caching rather than a new hash. These files (the
   logged-in app area) change rarely; hard-refresh if needed. Bundling the Domus app into

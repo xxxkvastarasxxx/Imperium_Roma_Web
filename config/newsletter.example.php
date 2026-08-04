@@ -1,38 +1,25 @@
 <?php
 /**
- * Newsletter Configuration Example
- * 
- * This file serves as a reference for the configuration values
- * used in subscribe.php. Do NOT use this file directly - instead,
- * edit subscribe.php in the root directory.
+ * Newsletter Configuration Template
+ *
+ * INSTRUCTIONS:
+ * 1. Copy this file to newsletter.php (in the same directory)
+ * 2. Replace the placeholder values with your real Brevo credentials
+ * 3. NEVER commit newsletter.php to version control (it's already .gitignored)
+ *
+ * Preferred alternative: set BREVO_API_KEY / BREVO_LIST_ID / ALLOWED_DOMAIN as
+ * environment variables in your hosting panel instead of using this file —
+ * subscribe.php checks those first.
+ *
+ * To get an API key:
+ * - https://app.brevo.com/settings/keys/api
+ *
+ * To get your list ID:
+ * - https://app.brevo.com/contact/list (numeric value, e.g. 2, 5, 12)
  */
 
-// Your Brevo API Key
-// Get this from: https://app.brevo.com/settings/keys/api
-define('BREVO_API_KEY', 'xkeysib-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-
-// Your Brevo Contact List ID
-// Get this from: https://app.brevo.com/contact/list
-// This should be a numeric value, e.g., 2, 5, 12, etc.
-define('BREVO_LIST_ID', '2');
-
-// Your domain (for CORS protection)
-// This ensures only requests from your domain can use the API
-define('ALLOWED_DOMAIN', 'https://imperiumroma.com');
-
-/**
- * Example API Request to Brevo:
- * 
- * POST https://api.brevo.com/v3/contacts
- * Headers:
- *   - accept: application/json
- *   - content-type: application/json
- *   - api-key: YOUR_API_KEY
- * 
- * Body:
- * {
- *   "email": "user@example.com",
- *   "listIds": [2],
- *   "updateEnabled": true
- * }
- */
+return [
+    'apiKey'        => 'YOUR_BREVO_API_KEY_HERE',   // e.g., xkeysib-...
+    'listId'        => 'YOUR_LIST_ID_HERE',         // e.g., 2
+    'allowedDomain' => 'https://imperiumroma.com',  // comma-separate for multiple, e.g. "https://imperiumroma.com,https://www.imperiumroma.com"
+];

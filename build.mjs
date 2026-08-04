@@ -43,10 +43,10 @@ const EXCLUDE_FILES = new Set([
   'DEPLOYMENT.md', 'Imperium.png', 'deploy.ps1', '.DS_Store',
 ]);
 
-// The root .htaccess is currently NOT deployed (see .github/workflows/deploy.yml,
-// which `rm -f .htaccess` before upload). We preserve that behaviour so production
-// routing/security is untouched. Flip to `false` to start shipping it.
-const EXCLUDE_ROOT_HTACCESS = true;
+// The root .htaccess (HTTPS redirect, security headers, caching, compression,
+// sensitive-file protection) now ships with every build. Flip to `true` if IONOS
+// ever needs a different .htaccess to be authoritative instead.
+const EXCLUDE_ROOT_HTACCESS = false;
 
 // Conservative HTML minification: only strips whitespace and comments. Never rewrites
 // attributes or inline JS/CSS, so behaviour and JSON-LD are byte-safe.

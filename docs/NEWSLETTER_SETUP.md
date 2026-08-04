@@ -24,25 +24,35 @@ A secure newsletter subscription system using PHP proxy to protect your Brevo AP
 3. Create a new API key or copy your existing one
 4. Go to **Contacts** → **Lists** to find your list ID
 
-### 2. Configure subscribe.php
+### 2. Configure credentials
 
-Open `subscribe.php` in the root directory and replace these values:
+`subscribe.php` is tracked in git and contains **no secrets** — it reads its
+Brevo credentials from, in order of preference:
+
+1. **Environment variables** set in your hosting panel (preferred):
+   `BREVO_API_KEY`, `BREVO_LIST_ID`, `ALLOWED_DOMAIN`
+2. **`config/newsletter.php`** — copy `config/newsletter.example.php` to
+   `config/newsletter.php` and fill in real values. This file is
+   `.gitignore`d and must never be committed.
 
 ```php
-define('BREVO_API_KEY', 'YOUR_BREVO_API_KEY');  // Replace with your actual API key
-define('BREVO_LIST_ID', 'YOUR_LIST_ID');        // Replace with your list ID (numeric)
-define('ALLOWED_DOMAIN', 'https://imperiumroma.com'); // Your domain (already set)
+return [
+    'apiKey'        => 'YOUR_BREVO_API_KEY',
+    'listId'        => 'YOUR_LIST_ID',
+    'allowedDomain' => 'https://imperiumroma.com',
+];
 ```
 
 **Important Security Notes:**
-- Never commit the API key to public repositories
-- Keep subscribe.php in your root directory
+- Never commit `config/newsletter.php` (or the API key in any form)
 - The API key is never exposed to the browser
-- CORS is restricted to your domain only
+- Origin/Referer are checked against `allowedDomain` as a defense-in-depth layer
 
 ### 3. Test the Integration
 
-1. Upload all files to IONOS
+1. `subscribe.php` deploys automatically via the normal CI pipeline (it's tracked
+   in git). Only `config/newsletter.php` (or the hosting env vars) needs to be
+   set up manually on IONOS — it's gitignored and never deployed by CI.
 2. Visit any page with the newsletter form
 3. Enter a test email address
 4. Click "Subscribe"
@@ -51,7 +61,8 @@ define('ALLOWED_DOMAIN', 'https://imperiumroma.com'); // Your domain (already se
 ### 4. Troubleshooting
 
 #### Error: "Server configuration incomplete"
-- Check that you've replaced `YOUR_BREVO_API_KEY` and `YOUR_LIST_ID` with real values
+- Check that `BREVO_API_KEY`/`BREVO_LIST_ID` env vars or `config/newsletter.php`
+  are set on the server with real values
 
 #### Error: "Network error"
 - Verify PHP cURL is enabled on your hosting
