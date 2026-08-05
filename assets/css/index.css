@@ -1,7 +1,15 @@
 /* Introduction */
 .introduction {
     padding: 20px 20px;
-    background: var(--background);
+    background-color: #000;
+    background-image:
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/><feComponentTransfer><feFuncA type="linear" slope="0.05"/></feComponentTransfer></filter><rect width="180" height="180" filter="url(%23grain)"/></svg>'),
+        radial-gradient(ellipse 60% 55% at 18% 22%, var(--yellow-transparent), transparent 65%),
+        radial-gradient(ellipse 60% 55% at 82% 78%, rgba(255, 153, 0, 0.08), transparent 65%),
+        radial-gradient(ellipse 130% 90% at 50% 35%, #171310 0%, #080705 55%, #000000 100%);
+    background-repeat: repeat, no-repeat, no-repeat, no-repeat;
+    background-size: 180px 180px, auto, auto, auto;
+    background-blend-mode: overlay, normal, normal, normal;
 }
 
 .introduction h2, .daily-news h2 {
@@ -136,7 +144,7 @@
     animation: driftDown linear infinite;
     width: 40px;
     height: 40px;
-    opacity: 0.5; /* Make coins more transparent to reduce text interference */
+    opacity: 0.65; /* Kept low enough to avoid interfering with the text */
 }
 
 @keyframes driftDown {
