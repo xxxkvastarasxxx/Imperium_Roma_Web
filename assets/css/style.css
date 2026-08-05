@@ -13,7 +13,7 @@
     --grey: #333;
     --lightgrey: #555;
     --darkgrey: #222;
-    --yellow: var(--yellow);
+    --yellow: #ffcc00;
     --yellow-hover: #ffd633;
     --yellow-transparent: rgba(255, 204, 0, 0.1);
 
