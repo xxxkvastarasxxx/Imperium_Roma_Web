@@ -38,3 +38,34 @@ jobs:
           remote_path: '/Imperium_Roma'
           sftp_only: true
           args: '-o ConnectTimeout=10'
+
+      # The glob above is expanded by the shell, and `*` never matches dotfiles, so
+      # every .htaccess in dist/ was silently skipped on every deploy — routing,
+      # security headers and error documents could not be changed from this repo at
+      # all. Each dotfile therefore needs its own step; add one here if a new one
+      # ever appears in the build output.
+      - name: Deploy root .htaccess (dotfiles are not covered by the glob)
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 22
+          local_path: './dist/.htaccess'
+          remote_path: '/Imperium_Roma'
+          sftp_only: true
+          args: '-o ConnectTimeout=10'
+
+      # Denies web access to config/, which holds the real telegram.php and
+      # newsletter.php credentials on the server.
+      - name: Deploy config/.htaccess
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 22
+          local_path: './dist/config/.htaccess'
+          remote_path: '/Imperium_Roma/config'
+          sftp_only: true
+          args: '-o ConnectTimeout=10'
