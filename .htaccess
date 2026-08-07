@@ -19,6 +19,13 @@
   # probes this root path first; internal rewrite, so no duplicate file needed.
   RewriteRule ^favicon\.ico$ /assets/images/icons/favicon.ico [L]
 
+  # Legacy Bibliotheca article URLs. Articles used to be rendered client-side at
+  # /bibliotheca/?doc=<slug> (see dc815b3); they now have their own pages. Without
+  # this, those old URLs silently serve the library index, stranding any links and
+  # ranking signals they had. The trailing "?" drops the original query string.
+  RewriteCond %{QUERY_STRING} (?:^|&)doc=(aureus-vs-denarius|coin-grading-guide|denarius-silver-standard|mint-marks-and-workshops|reading-coin-legends|roman-portraiture-on-coins)(?:&|$)
+  RewriteRule ^bibliotheca/?$ /bibliotheca/%1/? [R=301,L]
+
   # Remove trailing slash from files (but keep for directories)
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_URI} (.+)/$
