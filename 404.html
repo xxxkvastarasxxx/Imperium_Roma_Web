@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="This page could not be found on Imperium Roma." />
+    <title>Page Not Found - Imperium Roma</title>
+    <link rel="icon" type="image/x-icon" href="/assets/images/icons/favicon.ico">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+        .error-page {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 140px 20px 80px;
+            background: var(--background);
+            color: var(--white);
+        }
+
+        .error-code {
+            font-family: var(--font-display);
+            font-size: clamp(72px, 14vw, 140px);
+            line-height: 1;
+            color: var(--yellow);
+            margin: 0;
+        }
+
+        .error-title {
+            font-family: var(--font-body);
+            font-size: clamp(24px, 4vw, 34px);
+            margin: 12px 0 16px;
+        }
+
+        .error-text {
+            max-width: 520px;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.7;
+            margin: 0 auto 32px;
+        }
+
+        .error-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .error-links a {
+            padding: 12px 22px;
+            border-radius: var(--radius-pill);
+            border: 1.5px solid var(--yellow);
+            color: var(--yellow);
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .error-links a:hover,
+        .error-links a:focus-visible {
+            background-color: var(--yellow);
+            color: #000;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <!-- @include partials/header.html -->
+
+    <main>
+        <section class="error-page">
+            <p class="error-code">404</p>
+            <h1 class="error-title">This page could not be found</h1>
+            <p class="error-text">The page you are looking for may have been moved, renamed, or never existed. Explore our coin research library or head back to the homepage.</p>
+            <div class="error-links">
+                <a href="/">Back to Home</a>
+                <a href="/bibliotheca/">Bibliotheca</a>
+                <a href="/contact/">Contact</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <!-- @include partials/footer.html -->
+
+    <script src="/assets/js/header.js"></script>
+    <script src="/assets/js/hamburger.js"></script>
+    <script src="/assets/js/newsletter.js"></script>
+</body>
+</html>

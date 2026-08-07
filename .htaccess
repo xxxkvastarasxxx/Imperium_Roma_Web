@@ -15,6 +15,10 @@
   RewriteCond %{HTTP_HOST} ^www\.imperiumroma\.com [NC]
   RewriteRule ^(.*)$ https://imperiumroma.com/$1 [L,R=301]
 
+  # Serve the real icon at /favicon.ico (200, not 404). Google's favicon crawler
+  # probes this root path first; internal rewrite, so no duplicate file needed.
+  RewriteRule ^favicon\.ico$ /assets/images/icons/favicon.ico [L]
+
   # Remove trailing slash from files (but keep for directories)
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_URI} (.+)/$
@@ -130,8 +134,9 @@
 # =============================================================================
 # Error Documents
 # =============================================================================
-ErrorDocument 404 /index.html
-ErrorDocument 500 /index.html
+ErrorDocument 404 /404.html
+# No ErrorDocument for 5xx on purpose: serving the homepage for a server error
+# hides real failures from us and from crawlers. Let Apache report the error.
 
 # =============================================================================
 # MIME Types
