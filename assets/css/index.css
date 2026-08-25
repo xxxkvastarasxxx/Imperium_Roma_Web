@@ -2347,7 +2347,10 @@
 
 /* ---- Tour hero image + description ---- */
 .tour-hero {
-    margin: 0;
+    /* Constrained and centred so the dashboard screenshot reads as a framed
+       exhibit rather than a full-bleed banner. */
+    max-width: 700px;
+    margin: 0 auto;
     border-radius: var(--radius-md);
     overflow: hidden;
     border: none;
@@ -2356,8 +2359,13 @@
 .tour-hero img {
     display: block;
     width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
+    /* height:auto is load-bearing. The <img> carries width/height attributes
+       for CLS, and those become presentational hints — an explicit height
+       beats `aspect-ratio`, which only fills in a *missing* dimension. Without
+       this the box became 718x720 (near-square) and object-fit:cover sliced
+       the sides off the dashboard. Letting the intrinsic ratio govern also
+       means the whole screenshot is shown, uncropped. */
+    height: auto;
 }
 .tour-description {
     margin-top: 24px;

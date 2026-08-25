@@ -5,7 +5,11 @@
                 <!-- Brand / About -->
                 <div class="footer-col brand">
                     <div class="brand-row">
-                        <img src="/assets/images/icons/favicon.ico" alt="Imperium Roma Logo" class="brand-logo">
+                        <!-- The 96x96 PNG (5KB), not favicon.ico (174KB): the .ico is a
+                             multi-resolution bundle meant for browser chrome, and using it
+                             here cost ~174KB of image on every page of the site. -->
+                        <img src="/assets/images/icons/favicon-96x96.png" alt="Imperium Roma Logo"
+                             class="brand-logo" width="36" height="36" loading="lazy" decoding="async">
                         <span class="brand-name">Imperium Roma</span>
                     </div>
                     <p class="brand-text">Tools and insights for identifying, cataloging, and researching Roman Imperial coinage - built for collectors, scholars, and enthusiasts</p>

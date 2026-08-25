@@ -3,11 +3,11 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!container) return;
 
     const objectImages = [
-        '/assets/images/anicoins/anicoin1.png',
-        '/assets/images/anicoins/anicoin2.png',
-        '/assets/images/anicoins/anicoin3.png',
-        '/assets/images/anicoins/anicoin4.png',
-        '/assets/images/anicoins/anicoin5.png'
+        '/assets/images/anicoins/anicoin1.webp',
+        '/assets/images/anicoins/anicoin2.webp',
+        '/assets/images/anicoins/anicoin3.webp',
+        '/assets/images/anicoins/anicoin4.webp',
+        '/assets/images/anicoins/anicoin5.webp'
     ];
 
     // Responsive config via media queries (mobile shows fewer coins)

@@ -34,7 +34,9 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="/assets/images/icons/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png"> -->
-    <link rel="icon" type="image/x-icon" href="/assets/images/icons/favicon.ico">
+    <!-- The .ico is deliberately not linked: it is a 174KB multi-resolution bundle,
+         and every browser here already takes the 5KB PNG above. Legacy crawlers that
+         probe /favicon.ico still get served via the .htaccess rewrite. -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <!-- Web Manifest -->

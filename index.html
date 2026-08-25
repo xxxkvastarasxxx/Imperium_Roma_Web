@@ -192,9 +192,18 @@
 
     <link rel="icon" type="image/png" sizes="96x96" href="/assets/images/icons/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/images/icons/favicon-48x48.png">
-    <link rel="icon" type="image/x-icon" href="/assets/images/icons/favicon.ico">
+    <!-- The .ico is deliberately not linked: it is a 174KB multi-resolution bundle,
+         and every browser here already takes the 5KB PNG above. Legacy crawlers that
+         probe /favicon.ico still get served via the .htaccess rewrite. -->
 
     <!-- Stylesheet -->
+    <!-- Fonts: preconnect opens the TLS connection while the CSS request is
+         still in flight; the stylesheet link is discovered during the initial
+         HTML parse rather than after style.css is parsed (it used to be an
+         @import inside style.css, which serialised both requests). -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;700&display=swap">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/index.css">
 </head>
@@ -207,7 +216,12 @@
     <!-- Main Banner -->
     <section class="banner" id="home">
         <div class="video-container">
-            <video autoplay muted loop playsinline>
+            <!-- poster paints instantly while the MP4 streams, so the hero is
+                 never an empty box; preload=metadata avoids pulling the whole
+                 6.7MB file before first paint -->
+            <video autoplay muted loop playsinline preload="metadata"
+                   poster="/assets/images/general/poster-intro1.webp"
+                   width="1280" height="720" aria-hidden="true">
                 <source src="/assets/videos/intro1.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -246,7 +260,7 @@
         <div class="bibliotheca-split">
             <!-- LEFT: Image -->
             <div class="bibliotheca-image">
-                <img src="/assets/images/general/libraryCelsus.jpg" alt="Ancient Roman Coins — Bibliotheca" loading="lazy">
+                <img src="/assets/images/general/libraryCelsus.webp" alt="Ancient Roman Coins — Bibliotheca" loading="lazy" width="1440" height="960" decoding="async">
             </div>
 
             <!-- RIGHT: Text + Articles -->
@@ -281,7 +295,7 @@
             <p class="section-description">Explore the most recent archaeological discoveries from around the world, revealing the secrets of ancient civilizations</p>
             <div class="news-grid">
                 <article class="news-item">
-                    <img src="https://th-thumbnailer.cdn-si-edu.com/26cMs3r5a77_shHgouVcNmL9U9k=/1000x750/filters:no_upscale():focal(640x482:641x483)/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer_public/65/17/6517425b-0b6e-410e-8cd4-c71e79035489/dapzb5ujcdqgqpawhbqpqm_1.jpeg" alt="Roman Cemetery" class="news-thumbnail">
+                    <img src="https://th-thumbnailer.cdn-si-edu.com/26cMs3r5a77_shHgouVcNmL9U9k=/1000x750/filters:no_upscale():focal(640x482:641x483)/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer_public/65/17/6517425b-0b6e-410e-8cd4-c71e79035489/dapzb5ujcdqgqpawhbqpqm_1.jpeg" alt="Roman Cemetery" class="news-thumbnail" width="1000" height="750" loading="lazy" decoding="async">
                     <div class="news-content">
                         <h3>Roman Cemetery Unearthed</h3>
                         <p>A Roman cemetery filled with treasures, including jewelry and coins, was discovered in central Italy</p>
@@ -290,7 +304,7 @@
                 </article>
     
                 <article class="news-item">
-                    <img src="https://static.euronews.com/articles/stories/08/10/79/64/828x552_cmsv2_acc3fc48-40ce-5806-927c-735249df01be-8107964.jpg" alt="Luxurious Roman Home" class="news-thumbnail">
+                    <img src="https://static.euronews.com/articles/stories/08/10/79/64/828x552_cmsv2_acc3fc48-40ce-5806-927c-735249df01be-8107964.jpg" alt="Luxurious Roman Home" class="news-thumbnail" width="828" height="552" loading="lazy" decoding="async">
                     <div class="news-content">
                         <h3>Luxurious Roman Home</h3>
                         <p>Archaeologists discovered a luxurious Roman home near the Colosseum featuring a unique mosaic</p>
@@ -299,7 +313,7 @@
                 </article>
     
                 <article class="news-item">
-                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.4K4rh7WLm_JkFgCgg9fM5AHaEK%26pid%3DApi&f=1&ipt=41d225bb115e3e61c9ee377e47709eb90a0b1eb09a013ad62477ad94d1b072ea&ipo=images" alt="Roman Fridge" class="news-thumbnail">
+                    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.4K4rh7WLm_JkFgCgg9fM5AHaEK%26pid%3DApi&f=1&ipt=41d225bb115e3e61c9ee377e47709eb90a0b1eb09a013ad62477ad94d1b072ea&ipo=images" alt="Roman Fridge" class="news-thumbnail" width="474" height="266" loading="lazy" decoding="async">
                     <div class="news-content">
                         <h3>Ancient Roman 'Fridge'</h3>
                         <p>In Bulgaria, archaeologists uncovered an ancient Roman 'fridge' containing vessels and bones</p>
@@ -308,7 +322,7 @@
                 </article>
     
                 <article class="news-item">
-                    <img src="https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/5F5C/production/_133121442_helen.jpg.webp" alt="Pompeii Paintings" class="news-thumbnail">
+                    <img src="https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/5F5C/production/_133121442_helen.jpg.webp" alt="Pompeii Paintings" class="news-thumbnail" width="976" height="650" loading="lazy" decoding="async">
                     <div class="news-content">
                         <h3>Pompeii: Breathtaking New Paintings Found</h3>
                         <p>A third of the lost city has still to be cleared of volcanic debris. The current dig, the biggest in a generation, is revealing new treasures</p>
@@ -317,7 +331,7 @@
                 </article>
     
                 <article class="news-item">
-                    <img src="https://media.cnn.com/api/v1/images/stellar/prod/stanza-celeste-8273.jpg?c=original&q=w_1316,c_fill/f_webp" alt="Pompeii Treasure Chest" class="news-thumbnail">
+                    <img src="https://media.cnn.com/api/v1/images/stellar/prod/stanza-celeste-8273.jpg?c=original&q=w_1316,c_fill/f_webp" alt="Pompeii Treasure Chest" class="news-thumbnail" width="1316" height="878" loading="lazy" decoding="async">
                     <div class="news-content">
                         <h3>Pompeii 'Treasure Chest'</h3>
                         <p>An intricately decorated blue room, interpreted as an ancient Roman shrine known as a sacrarium, was recently discovered</p>
@@ -326,7 +340,7 @@
                 </article>
     
                 <article class="news-item">
-                    <img src="https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/12DD7/production/_130417277_xshrine-snakes-credit-tonyjolliffebbc.jpg.webp" alt="Kitchen Shrine" class="news-thumbnail">
+                    <img src="https://ichef.bbci.co.uk/ace/standard/976/cpsprodpb/12DD7/production/_130417277_xshrine-snakes-credit-tonyjolliffebbc.jpg.webp" alt="Kitchen Shrine" class="news-thumbnail" width="976" height="650" loading="lazy" decoding="async">
                     <div class="news-content">
                         <h3>Pompeii Kitchen Shrine & More Discoveries</h3>
                         <p>A kitchen shrine adorned with serpents, a bakery, human skeletons, exquisite frescos, and more were found during recent excavations</p>
@@ -409,7 +423,7 @@
                 <!-- Tab: Tour -->
                 <div class="domus-tab-panel active" id="domus-panel-tour" role="tabpanel" aria-labelledby="tab-tour">
                     <figure class="tour-hero">
-                        <img src="/assets/images/general/collection dashboard.jpg" alt="Domus collection dashboard overview" loading="lazy" decoding="async">
+                        <img src="/assets/images/general/collection dashboard.jpg" alt="Domus collection dashboard overview" loading="lazy" decoding="async" width="1280" height="720">
                     </figure>
                     <div class="tour-description">
                         <p class="tour-intro"><strong class="domus-word">Domus</strong> is the first digital platform built exclusively for Roman coin collectors</p>
@@ -422,28 +436,28 @@
                     <div class="domus-features">
                         <div class="feature-card">
                             <div class="feature-icon">
-                                <img src="/assets/images/icons/collection.png" alt="Coin collection management icon" onerror="this.src='/assets/images/icons/favicon.ico'">
+                                <img src="/assets/images/icons/collection.png" alt="Coin collection management icon" onerror="this.src='/assets/images/icons/favicon.ico'" width="512" height="512" loading="lazy" decoding="async">
                             </div>
                             <h3>Manage Your Collection</h3>
                             <p>Catalog, organise and showcase your Roman coins with intuitive digital tools</p>
                         </div>
                         <div class="feature-card">
                             <div class="feature-icon">
-                                <img src="/assets/images/icons/identify.png" alt="Coin identification icon" onerror="this.src='/assets/images/icons/favicon.ico'">
+                                <img src="/assets/images/icons/identify.png" alt="Coin identification icon" onerror="this.src='/assets/images/icons/favicon.ico'" width="512" height="512" loading="lazy" decoding="async">
                             </div>
                             <h3>Identify Your Finds</h3>
                             <p>Advanced identification tools backed by expert community support</p>
                         </div>
                         <div class="feature-card">
                             <div class="feature-icon">
-                                <img src="/assets/images/icons/commuty.png" alt="Collector community icon" onerror="this.src='/assets/images/icons/favicon.ico'">
+                                <img src="/assets/images/icons/commuty.png" alt="Collector community icon" onerror="this.src='/assets/images/icons/favicon.ico'" width="512" height="512" loading="lazy" decoding="async">
                             </div>
                             <h3>Join the Community</h3>
                             <p>Connect with fellow collectors and participate in expert discussions</p>
                         </div>
                         <div class="feature-card">
                             <div class="feature-icon">
-                                <img src="/assets/images/icons/knowledge.png" alt="Expert numismatic knowledge icon" onerror="this.src='/assets/images/icons/favicon.ico'">
+                                <img src="/assets/images/icons/knowledge.png" alt="Expert numismatic knowledge icon" onerror="this.src='/assets/images/icons/favicon.ico'" width="512" height="512" loading="lazy" decoding="async">
                             </div>
                             <h3>Expert Knowledge</h3>
                             <p>Extensive database of Roman coinage with detailed historical context</p>
@@ -538,11 +552,11 @@
     <!-- Parallax Section -->
     <section class="parallax-section">
         <div class="parallax-container">
-            <img src="/assets/images/general/roman-helmet.png" alt="Roman Gladiator Helmet" class="parallax-img helmet">
-            <img src="/assets/images/anicoins/anicoin6.png" alt="Ancient Roman Coin Design 1" class="coin coin-one">
-            <img src="/assets/images/anicoins/anicoin7.png" alt="Ancient Roman Coin Design 2" class="coin coin-two">
-            <img src="/assets/images/anicoins/anicoin8.png" alt="Ancient Roman Coin Design 3" class="coin coin-three">
-            <img src="/assets/images/anicoins/anicoin9.png" alt="Ancient Roman Coin Design 4" class="coin coin-four">
+            <img src="/assets/images/general/roman-helmet.webp" alt="Roman Gladiator Helmet" class="parallax-img helmet" width="461" height="520" loading="lazy" decoding="async">
+            <img src="/assets/images/anicoins/anicoin6.webp" alt="Ancient Roman Coin Design 1" class="coin coin-one" width="300" height="300" loading="lazy" decoding="async">
+            <img src="/assets/images/anicoins/anicoin7.webp" alt="Ancient Roman Coin Design 2" class="coin coin-two" width="291" height="273" loading="lazy" decoding="async">
+            <img src="/assets/images/anicoins/anicoin8.webp" alt="Ancient Roman Coin Design 3" class="coin coin-three" width="300" height="300" loading="lazy" decoding="async">
+            <img src="/assets/images/anicoins/anicoin9.webp" alt="Ancient Roman Coin Design 4" class="coin coin-four" width="300" height="293" loading="lazy" decoding="async">
             
             <div class="parallax-content">
             </div>

@@ -1,7 +1,11 @@
     <header>
         <div class="header__container">
             <a class="logo" href="/">
-                <img src="/assets/images/icons/favicon.ico" alt="Logo">
+                <!-- 96x96 PNG (5KB) rather than favicon.ico (174KB) — see footer partial.
+                     This one is above the fold on every page, so it is eagerly loaded
+                     with explicit dimensions to avoid a layout shift in the header. -->
+                <img src="/assets/images/icons/favicon-96x96.png" alt="Imperium Roma"
+                     width="40" height="40" decoding="async">
                 <span>Imperium Roma</span>
             </a>
             <nav>

@@ -1,6 +1,9 @@
-/* Google Fonts — single source for every public page (about/authenticity/bibliotheca/
-   contact/index/policies/services all load style.css first, so they inherit this). */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;700&display=swap');
+/* Google Fonts are now requested from each page's <head> via <link>, not from
+   here. An @import made the font request serial: the browser had to download
+   and parse this stylesheet before it even learned the font URL existed, so
+   every page paid two round-trips before any text could render. The <link>
+   version is discovered in the initial HTML parse and fetched in parallel,
+   alongside a preconnect to fonts.gstatic.com. */
 
 /* ===== Design tokens =====
    Single source of truth for the public site's colors, radii, shadows and fonts.
@@ -682,4 +685,40 @@ nav ul li a.active {
 .cert-form button.btn-verify:focus-visible {
     outline: none;
     box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0f1115;
+}
+
+/* ===== Smooth scrolling & anchor offsets =====
+   Declared here rather than assigned from JS. smooth-scroll.js used to set
+   `document.documentElement.style.scrollBehavior = "smooth"`, which (a) only
+   took effect once the script ran and (b) was an inline style, so no media
+   query could switch it off — including the reduced-motion one below.
+
+   Every in-page anchor on the site targets a <section>, so scoping the offset
+   to `section[id]` covers all of them without putting scroll-margin on every
+   element that happens to carry an id (which would also reach elements inside
+   the horizontal carousels, themselves scroll containers). */
+html {
+    scroll-behavior: smooth;
+}
+
+/* The header is fixed, so a target scrolled to y=0 sits underneath it.
+   Offsets match the header's two measured heights: 82px normally, and 123px
+   between 769-990px where the nav wraps to a second line. */
+section[id] {
+    scroll-margin-top: 100px;
+}
+
+@media (min-width: 769px) and (max-width: 990px) {
+    section[id] {
+        scroll-margin-top: 141px;
+    }
+}
+
+/* Honour a reduced-motion preference: long smooth scrolls are a common
+   vestibular trigger, and this is exactly the switch the old inline style
+   made impossible. */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
 }

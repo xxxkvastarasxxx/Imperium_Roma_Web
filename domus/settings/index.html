@@ -19,7 +19,9 @@
     <meta name="twitter:image" content="https://imperiumroma.com/assets/images/general/collection%20dashboard.jpg" />
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/assets/images/icons/favicon.ico">
+    <!-- The .ico is deliberately not linked: it is a 174KB multi-resolution bundle,
+         and every browser here already takes the 5KB PNG above. Legacy crawlers that
+         probe /favicon.ico still get served via the .htaccess rewrite. -->
     <!-- Stylesheet -->
     <link rel="stylesheet" href="/domus/assets/css/domus.css">
     <link rel="stylesheet" href="/domus/assets/css/settings.css">

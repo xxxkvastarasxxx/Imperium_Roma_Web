@@ -195,7 +195,9 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png"> -->
     <link rel="icon" type="image/png" sizes="96x96" href="/assets/images/icons/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/images/icons/favicon-48x48.png">
-    <link rel="icon" type="image/x-icon" href="/assets/images/icons/favicon.ico">
+    <!-- The .ico is deliberately not linked: it is a 174KB multi-resolution bundle,
+         and every browser here already takes the 5KB PNG above. Legacy crawlers that
+         probe /favicon.ico still get served via the .htaccess rewrite. -->
 
     <!-- Web Manifest -->
     <!-- <link rel="manifest" href="/assets/images/icons/manifest.json"> -->
@@ -206,6 +208,13 @@
     <meta name="theme-color" content="#ffffff"> -->
 
     <!-- Stylesheet -->
+    <!-- Fonts: preconnect opens the TLS connection while the CSS request is
+         still in flight; the stylesheet link is discovered during the initial
+         HTML parse rather than after style.css is parsed (it used to be an
+         @import inside style.css, which serialised both requests). -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;700&display=swap">
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/services.css">
     <!-- Font Awesome removed: every icon on this page is now inline SVG, so the
@@ -221,7 +230,9 @@
     <!-- Main Banner -->
     <section class="banner">
         <div class="video-container">
-            <video autoplay muted loop playsinline>
+            <video autoplay muted loop playsinline preload="metadata"
+                   poster="/assets/images/general/poster-services.intro.webp"
+                   width="848" height="464" aria-hidden="true">
                 <source src="/assets/videos/services.intro.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -390,10 +401,10 @@
               <div class="coin-display">
                 <div class="auto-spin-coin">
                   <div class="coin-face obverse">
-                    <img src="/assets/images/FeaturedCoinsOTD/den1.png" alt="Marcus Aurelius denarius, obverse" />
+                    <img src="/assets/images/FeaturedCoinsOTD/den1.webp" alt="Marcus Aurelius denarius, obverse" />
                   </div>
                   <div class="coin-face reverse">
-                    <img src="/assets/images/FeaturedCoinsOTD/den2.png" alt="Marcus Aurelius denarius, reverse" />
+                    <img src="/assets/images/FeaturedCoinsOTD/den2.webp" alt="Marcus Aurelius denarius, reverse" />
                   </div>
                 </div>
               </div>
