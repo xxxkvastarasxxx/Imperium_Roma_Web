@@ -14,9 +14,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const growthBadgeEl = document.getElementById('growth-badge');
     const tradingVolumeEl = document.getElementById('trading-volume');
     const activityBarEl = document.getElementById('activity-bar');
+    const legendAuctionEl = document.getElementById('legend-auction');
+    const legendPrivateEl = document.getElementById('legend-private');
+    const medianLabelEl = document.getElementById('median-label');
+    const growthLabelEl = document.getElementById('growth-label');
+    const certifiedLabelEl = document.getElementById('certified-label');
+    const activityTrackEl = document.getElementById('activity-track');
+
+    // 2026 is still running, so the final point of any series reaching the
+    // current year is year-to-date and must not read as a closed year.
+    const CURRENT_YEAR = new Date().getFullYear();
   
-    // Helper to format values with a custom currency symbol
-    const formatCurrency = (val) => `₴${val}`;
+    // Helper to format values as euros (e.g. €1,850) — grouped, no decimals
+    const eurFormatter = new Intl.NumberFormat('en-IE', {
+      style: 'currency',
+      currency: 'EUR',
+      maximumFractionDigits: 0
+    });
+    const formatCurrency = (val) => eurFormatter.format(val);
   
     // Compute median from an array of numbers
     function computeMedian(dataArray) {
@@ -42,8 +57,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return { peakValue: maxVal, peakIndex: maxIndex };
     }
   
-    // Compute Year-over-Year growth as a simple percentage
-    function computeYoYGrowth(dataArray) {
+    /* Total change from the first to the last point of the selected window.
+       This is NOT year-over-year — a 5Y window returns the whole five-year
+       move — so the label beside it names the window explicitly. */
+    function computeRangeChange(dataArray) {
       if (dataArray.length < 2) return 0;
       const first = dataArray[0];
       const last = dataArray[dataArray.length - 1];
@@ -60,146 +77,165 @@ document.addEventListener("DOMContentLoaded", () => {
       return [auctionPct, privatePct];
     }
   
-    // Base chart configuration
-    const baseChartConfig = {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false }
-      }
+    /* Shared visual language for both charts. Deliberately sparse: one gold
+       series against neutral chrome, horizontal gridlines only, and always-on
+       point markers so each year is a readable, clickable data point rather
+       than a smooth blob you have to hover to interrogate. */
+    const INK = '#0f1115';
+    const INK_FAINT = '#878d99';
+    const GOLD = '#ffcc00';
+    const GRID = 'rgba(15, 17, 21, 0.07)';
+    const FONT = "'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif";
+
+    /* ── Provenance shown to the reader ───────────────────────────────────
+       Every figure on this card is a conversion of the USD valuations in the
+       published sample dossier, so the method and the FX rate are stated in
+       the tooltip and in the "How these figures are calculated" note under
+       the grid. Keep FX_RATE and FX_AS_OF in step — they are the single
+       source of truth for both the maths and the disclosure text. */
+    const FX_RATE = 0.92;          // USD -> EUR applied to the dossier figures
+    const FX_AS_OF = 'the dossier date';
+    const METHOD_FOOTER = [
+      'Median of recorded VF–XF sales,',
+      'hammer plus buyer\'s premium.',
+      `Converted USD→EUR at ${FX_RATE} (${FX_AS_OF}).`
+    ];
+
+    const tooltipStyle = {
+      backgroundColor: INK,
+      titleColor: '#ffffff',
+      bodyColor: '#ffffff',
+      borderWidth: 0,
+      padding: 10,
+      cornerRadius: 8,
+      displayColors: false,
+      titleFont: { family: FONT, size: 11, weight: '600' },
+      bodyFont: { family: FONT, size: 13, weight: '700' }
     };
-  
-    // Merged chart configurations
+
     const chartOptions = {
       priceTrend: {
-        ...baseChartConfig,
         type: 'line',
         data: {
-          labels: ['2020', '2021', '2022', '2023', '2024', '2025'],
+          labels: ['2022', '2023', '2024', '2025', '2026'],
           datasets: [{
-            label: 'Average Price',
-            data: [670, 820, 708, 934, 980, 1100],
-            borderColor: '#ffcc00',
-            borderWidth: 3,
-            tension: 0.42, // smoother curve
+            label: 'Median price',
+            data: [120, 138, 152, 168, 193],
+            borderColor: GOLD,
+            borderWidth: 2.5,
+            // Gentle curve, but not so loose that it implies data between years
+            tension: 0.28,
             fill: {
               target: 'origin',
               above: (context) => {
-                const ctx = context.chart.ctx;
-                const gradient = ctx.createLinearGradient(0, 0, 0, context.chart.height);
-                gradient.addColorStop(0, 'rgba(255, 204, 0, 0.28)');
-                gradient.addColorStop(0.5, 'rgba(255, 204, 0, 0.12)');
-                gradient.addColorStop(1, 'rgba(255, 204, 0, 0.02)');
-                return gradient;
+                const { ctx, chartArea } = context.chart;
+                if (!chartArea) return 'rgba(255, 204, 0, 0.10)';
+                const g = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                g.addColorStop(0, 'rgba(255, 204, 0, 0.22)');
+                g.addColorStop(1, 'rgba(255, 204, 0, 0.01)');
+                return g;
               }
             },
-            // Show points on hover with elegant markers
-            pointRadius: 0,
-            pointHoverRadius: 7,
-            pointHoverBackgroundColor: '#ffcc00',
-            pointHoverBorderColor: '#fff',
-            pointHoverBorderWidth: 3,
-            // Add subtle shadow to the line
-            shadowOffsetX: 0,
-            shadowOffsetY: 4,
-            shadowBlur: 12,
-            shadowColor: 'rgba(255, 204, 0, 0.25)'
+            pointRadius: 3.5,
+            pointBackgroundColor: '#ffffff',
+            pointBorderColor: GOLD,
+            pointBorderWidth: 2,
+            pointHoverRadius: 6,
+            pointHoverBackgroundColor: GOLD,
+            pointHoverBorderColor: '#ffffff',
+            pointHoverBorderWidth: 2.5,
+            pointHitRadius: 18
           }]
         },
         options: {
-          ...baseChartConfig.plugins,
-          interaction: {
-            mode: 'index',
-            intersect: false
-          },
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: { padding: { top: 8, right: 4, bottom: 0, left: 0 } },
+          interaction: { mode: 'index', intersect: false },
           plugins: {
-            ...baseChartConfig.plugins,
+            legend: { display: false },
             tooltip: {
-              enabled: true,
-              backgroundColor: 'rgba(0, 0, 0, 0.85)',
-              titleColor: '#ffcc00',
-              bodyColor: '#fff',
-              borderColor: '#ffcc00',
-              borderWidth: 1,
-              padding: 12,
-              displayColors: false,
-              titleFont: { size: 13, weight: '600' },
-              bodyFont: { size: 14, weight: 'bold' },
+              ...tooltipStyle,
+              footerFont: { family: FONT, size: 10, weight: '400' },
+              footerColor: 'rgba(255,255,255,0.62)',
+              footerMarginTop: 8,
               callbacks: {
-                title: (items) => items[0].label,
-                label: (context) => formatCurrency(context.parsed.y)
+                title: (items) => Number(items[0].label) === CURRENT_YEAR
+                  ? `${items[0].label} (year to date)`
+                  : items[0].label,
+                label: (context) => formatCurrency(context.parsed.y),
+                // Sample size belongs beside the median, not buried in a note
+                afterLabel: (context) => {
+                  const n = activeLots?.[context.dataIndex];
+                  if (!n) return undefined;
+                  return `from ${n} recorded ${n === 1 ? 'sale' : 'sales'}`;
+                },
+                footer: () => METHOD_FOOTER
               }
             }
           },
           scales: {
-            x: { 
-              grid: { 
-                display: true,
-                color: 'rgba(0, 0, 0, 0.03)',
-                lineWidth: 1
-              }, 
-              ticks: { 
-                color: '#666',
-                font: { size: 11, weight: '500' },
-                padding: 8
-              },
-              border: { display: false }
+            x: {
+              grid: { display: false },
+              border: { color: GRID },
+              ticks: {
+                color: INK_FAINT,
+                font: { family: FONT, size: 11, weight: '500' },
+                padding: 6
+              }
             },
             y: {
-              grid: { 
-                color: 'rgba(0, 0, 0, 0.06)',
-                lineWidth: 1,
-                drawBorder: false
-              },
+              // Headroom above/below the series so the line never touches an edge
+              grace: '12%',
+              grid: { color: GRID, drawTicks: false },
+              border: { display: false },
               ticks: {
-                color: '#666',
-                font: { size: 11, weight: '500' },
-                padding: 10,
+                color: INK_FAINT,
+                font: { family: FONT, size: 11, weight: '500' },
+                padding: 8,
+                maxTicksLimit: 5,
                 callback: (value) => formatCurrency(value)
-              },
-              border: { display: false }
-            }
-          },
-          animation: {
-            duration: 1200,
-            easing: 'easeInOutQuart'
-          }
-        }
-      },
-      marketDistribution: {
-        ...baseChartConfig,
-        type: 'doughnut',
-        data: {
-          labels: ['Auctions', 'Private Sales'],
-          datasets: [{
-            data: [65, 35],
-            backgroundColor: ['#ffcc00', 'rgba(0,0,0,0.15)'],
-            borderWidth: 0,
-            // Keep segments within the ring on hover (no outward pop-out)
-            hoverOffset: 0,
-            // Reduce overall radius so there is safe space for tooltips within canvas
-            radius: '92%'
-          }]
-        },
-        options: {
-          cutout: '75%',
-          // Add internal padding so tooltips have room inside the canvas
-          layout: { padding: 24 },
-      // Only activate hover when the pointer is inside the ring area
-      interaction: { mode: 'nearest', intersect: true },
-          plugins: {
-            ...baseChartConfig.plugins,
-            tooltip: {
-        position: 'nearest',
-        padding: 8,
-        caretPadding: 6,
-        displayColors: false,
-              callbacks: {
-                label: (context) => `${context.label}: ${context.parsed}%`
               }
             }
           },
-          animation: { animateScale: true, animateRotate: true }
+          animation: { duration: 700, easing: 'easeOutCubic' }
+        }
+      },
+      marketDistribution: {
+        type: 'doughnut',
+        data: {
+          labels: ['Auction', 'Private'],
+          datasets: [{
+            data: [65, 35],
+            backgroundColor: [GOLD, '#e6e8ec'],
+            hoverBackgroundColor: [GOLD, '#d4d7dd'],
+            borderWidth: 0,
+            hoverOffset: 0,
+            borderRadius: 3,
+            spacing: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '76%',
+          layout: { padding: 6 },
+          interaction: { mode: 'nearest', intersect: true },
+          plugins: {
+            legend: { display: false },
+            /* Deliberately terse. The donut canvas is only ~210px square, and
+               Chart.js clips tooltips to the canvas — the previous two-line
+               footer overflowed it and became unreadable. The card subtitle
+               and the method note already carry the full explanation. */
+            tooltip: {
+              ...tooltipStyle,
+              callbacks: {
+                title: (items) => items[0].label,
+                label: (context) => `${context.parsed}% of recorded lots`
+              }
+            }
+          },
+          animation: { animateScale: false, animateRotate: true, duration: 700 }
         }
       }
     };
@@ -208,37 +244,59 @@ document.addEventListener("DOMContentLoaded", () => {
     const priceChart = new Chart(priceChartCanvas, chartOptions.priceTrend);
     const marketChart = new Chart(marketChartCanvas, chartOptions.marketDistribution);
   
-    // Data sets for each time range (price chart + liquidity volumes)
-    const dataRanges = {
-      '5Y': {
-        labels: ['2020', '2021', '2022', '2023', '2024', '2025'],
-        data: [670, 820, 708, 934, 980, 1100],
-        certified: 154,
-        // sample volumes for auctions vs private
-        auctionVolume: 65,
-        privateVolume: 35,
-        tradingActivity: 78,
-        activityLabel: 'High Activity'
-      },
-      '3Y': {
-        labels: ['2023', '2024', '2025'],
-        data: [934, 980, 1100],
-        certified: 97,
-        auctionVolume: 42,
-        privateVolume: 58,
-        tradingActivity: 65,
-        activityLabel: 'Moderate Activity'
-      },
-      '1Y': {
-        labels: ['2024', '2025'],
-        data: [980, 1100],
-        certified: 45,
-        auctionVolume: 33,
-        privateVolume: 67,
-        tradingActivity: 85,
-        activityLabel: 'Very High Activity'
-      }
+    /* ── Underlying series ────────────────────────────────────────────────
+       One year-by-year record is the single source of truth. Window figures
+       (median, change, recorded-sale counts) are all derived from slices of
+       it, so a window total can never contradict the years inside it — the
+       old shape stored both separately and they had drifted apart.
+
+       `lots` is the number of recorded sales behind that year's median. It is
+       carried per year, and surfaced in the tooltip, because a median over
+       four lots and a median over forty are not the same claim.
+
+       Figures derive from the published sample dossier for RIC III 171
+       (AR Denarius of Marcus Aurelius, Rome, AD 166–167). The dossier quotes
+       USD; these are converted at the single FX_RATE declared above:
+         Conservative Market Valuation  USD 130  -> EUR 120   (series floor)
+         Fair Market Estimate           USD 210  -> EUR 193   (series head)
+         Premium Collector Retail       USD 320+ -> EUR 294
+
+       NOTE: 2026 is year-to-date, so its lot count covers part of a year and
+       is expected to sit below a full season. */
+    const SERIES = [
+      { year: '2022', median: 120, lots: 26 },
+      { year: '2023', median: 138, lots: 30 },
+      { year: '2024', median: 152, lots: 34 },
+      { year: '2025', median: 168, lots: 39 },
+      { year: '2026', median: 193, lots: 25 }   // year-to-date
+    ];
+
+    /* How many trailing points each window covers, plus the channel split and
+       activity reading that belong to that window. */
+    const RANGE_META = {
+      '5Y': { points: 5, auctionVolume: 65, privateVolume: 35, tradingActivity: 78, activityLabel: 'High' },
+      '3Y': { points: 3, auctionVolume: 42, privateVolume: 58, tradingActivity: 65, activityLabel: 'Moderate' },
+      '1Y': { points: 2, auctionVolume: 33, privateVolume: 67, tradingActivity: 85, activityLabel: 'Very high' }
     };
+
+    const dataRanges = Object.fromEntries(
+      Object.entries(RANGE_META).map(([key, meta]) => {
+        const slice = SERIES.slice(-meta.points);
+        return [key, {
+          labels: slice.map(p => p.year),
+          data: slice.map(p => p.median),
+          lots: slice.map(p => p.lots),
+          recordedSales: slice.reduce((sum, p) => sum + p.lots, 0),
+          auctionVolume: meta.auctionVolume,
+          privateVolume: meta.privateVolume,
+          tradingActivity: meta.tradingActivity,
+          activityLabel: meta.activityLabel
+        }];
+      })
+    );
+
+    // Lot counts for the window currently on screen, read by the chart tooltip
+    let activeLots = dataRanges['5Y'].lots;
   
     // Event Handlers
     function initEventListeners() {
@@ -267,8 +325,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   
     function handleTimeFilterClick(e) {
-      timeFilterButtons.forEach(b => b.classList.remove('active'));
+      timeFilterButtons.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-pressed', 'false');
+      });
       e.target.classList.add('active');
+      e.target.setAttribute('aria-pressed', 'true');
   
       const range = e.target.dataset.range;
       updatePriceData(range);
@@ -276,50 +338,75 @@ document.addEventListener("DOMContentLoaded", () => {
   
     function updatePriceData(range) {
       // Get the data config for this range or default to '5Y'
-      const { labels, data, certified, auctionVolume, privateVolume, tradingActivity, activityLabel } = dataRanges[range] || dataRanges['5Y'];
+      const { labels, data, lots, recordedSales, auctionVolume, privateVolume, tradingActivity, activityLabel } = dataRanges[range] || dataRanges['5Y'];
+      activeLots = lots;
   
       // Update price chart with smooth animation
       priceChart.data.labels = labels;
       priceChart.data.datasets[0].data = data;
       priceChart.update('active'); // 'active' mode for smooth transitions
   
-      // Update Certified Examples
-      certifiedExamplesEl.textContent = certified;
-      certifiedExamplesEl.setAttribute('data-value', certified);
+      // Recorded sales behind the window — the sum of its per-year lot counts
+      certifiedExamplesEl.textContent = recordedSales;
+      certifiedExamplesEl.setAttribute('data-value', recordedSales);
+      certifiedExamplesEl.title =
+        labels.map((y, i) => `${y}: ${lots[i]}`).join('  ·  ');
   
+      // Every figure below is window-dependent, so each label names its window.
+      if (medianLabelEl) medianLabelEl.innerHTML = `Median &middot; ${range}`;
+      if (growthLabelEl) growthLabelEl.textContent = `${range} change`;
+      if (certifiedLabelEl) certifiedLabelEl.innerHTML = `Recorded sales &middot; ${range}`;
+
       // Update Trading Volume indicator
       if (tradingVolumeEl && activityBarEl) {
         tradingVolumeEl.textContent = activityLabel;
         activityBarEl.style.width = tradingActivity + '%';
       }
-  
-      // Calculate new median
+      if (activityTrackEl) {
+        activityTrackEl.setAttribute('aria-label',
+          `Relative lot activity in the ${range} window: ${tradingActivity} out of 100`);
+      }
+
+      /* Median of the whole selected window, not a spot price — the label says
+         "Median · 5Y" so this is not mistaken for today's asking price. */
       const medianValue = computeMedian(data);
       currentMedianEl.textContent = formatCurrency(medianValue);
       currentMedianEl.setAttribute('data-value', medianValue);
-  
-      // Compute and display new peak
+
+      // Peak year. Flag it as year-to-date when it is the year still running.
       const { peakValue, peakIndex } = computePeak(data);
       if (peakMarkerEl) {
         const peakYear = labels[peakIndex];
-        peakMarkerEl.textContent = `📈 ${peakYear} Peak Value`;
-        // Optionally show the peak value too: peakMarkerEl.title = formatCurrency(peakValue);
+        const isPartial = Number(peakYear) === CURRENT_YEAR;
+        peakMarkerEl.textContent = isPartial ? `${peakYear} YTD` : peakYear;
+        peakMarkerEl.title = isPartial
+          ? `Peak median ${formatCurrency(peakValue)} — ${peakYear} is year-to-date and still incomplete`
+          : `Peak median ${formatCurrency(peakValue)}`;
       }
-  
-      // Compute and display YoY growth
-      const yoyGrowth = computeYoYGrowth(data);
+
+      // Total change across the selected window (not annualised)
+      const rangeChange = computeRangeChange(data);
       if (growthBadgeEl) {
-        const sign = yoyGrowth >= 0 ? '+' : '';
-        growthBadgeEl.textContent = `${sign}${Math.round(yoyGrowth)}% YoY Growth`;
+        const sign = rangeChange >= 0 ? '+' : '−';
+        growthBadgeEl.textContent = `${sign}${Math.abs(Math.round(rangeChange))}%`;
+        growthBadgeEl.classList.toggle('is-positive', rangeChange >= 0);
+        growthBadgeEl.classList.toggle('is-negative', rangeChange < 0);
+        // Annualised equivalent, which is the figure a dealer actually compares
+        const years = Math.max(1, data.length - 1);
+        const cagr = (Math.pow(data[data.length - 1] / data[0], 1 / years) - 1) * 100;
+        growthBadgeEl.title =
+          `${sign}${Math.abs(Math.round(rangeChange))}% total across ${range} — about ${cagr.toFixed(1)}% a year compounded`;
       }
-  
+
       // Recompute and update market liquidity (3rd graph)
       const [auctionPct, privatePct] = computeMarketLiquidity(auctionVolume, privateVolume);
       marketChart.data.datasets[0].data = [auctionPct, privatePct];
       marketChart.update();
-  
-      // Update the doughnut center label or other elements
+
+      // Centre readout plus the legend figures beside it
       doughnutCenterLabel.textContent = `${auctionPct}%`;
+      if (legendAuctionEl) legendAuctionEl.textContent = `${auctionPct}%`;
+      if (legendPrivateEl) legendPrivateEl.textContent = `${privatePct}%`;
     }
   
     // Show overlay details when a data point is clicked on the line chart

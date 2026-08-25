@@ -2,14 +2,17 @@
 .introduction {
     padding: 20px 20px;
     background-color: #000;
+    /* Kept: the grain, and a neutral radial that gives the section a little
+       depth instead of a flat fill. Removed: two coloured washes (a yellow one
+       at 18%/22% and an orange one at 82%/78%) plus the warm #171310 base,
+       which together cast a yellow-brown haze across what should read as
+       black. Depth now comes from luminance alone, with no hue in it. */
     background-image:
         url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/><feComponentTransfer><feFuncA type="linear" slope="0.05"/></feComponentTransfer></filter><rect width="180" height="180" filter="url(%23grain)"/></svg>'),
-        radial-gradient(ellipse 60% 55% at 18% 22%, var(--yellow-transparent), transparent 65%),
-        radial-gradient(ellipse 60% 55% at 82% 78%, rgba(255, 153, 0, 0.08), transparent 65%),
-        radial-gradient(ellipse 130% 90% at 50% 35%, #171310 0%, #080705 55%, #000000 100%);
-    background-repeat: repeat, no-repeat, no-repeat, no-repeat;
-    background-size: 180px 180px, auto, auto, auto;
-    background-blend-mode: overlay, normal, normal, normal;
+        radial-gradient(ellipse 130% 90% at 50% 35%, #121212 0%, #070707 55%, #000000 100%);
+    background-repeat: repeat, no-repeat;
+    background-size: 180px 180px, auto;
+    background-blend-mode: overlay, normal;
 }
 
 .introduction h2, .daily-news h2 {
@@ -349,19 +352,23 @@
     letter-spacing: .3px;
     text-transform: uppercase;
     text-decoration: none;
-    border-radius: 50px;
+    border-radius: var(--radius-pill);
     background: var(--yellow);
-    color: #111;
-    border: 2px solid var(--yellow);
+    color: #0f1115;
+    border: 1.5px solid var(--yellow);
     transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 .bibliotheca-button:hover,
 .bibliotheca-button:focus-visible {
-    background: transparent;
-    color: var(--yellow);
+    background: #fff;
+    color: #0f1115;
     border-color: var(--yellow);
-    transform: translateY(-2px);
+    box-shadow: 0 2px 10px rgba(255, 204, 0, .35);
+}
+
+.bibliotheca-button:focus-visible {
     outline: none;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0f1115;
 }
 
 /* Reduced motion */
@@ -938,98 +945,14 @@
 .promote-lot-btn:hover,
 .promote-lot-btn:focus-visible {
     background: var(--yellow);
-    color: var(--cta-ink);
-    transform: translateY(-1px) scale(1.02);
-    box-shadow: var(--shadow-gold);
+    color: #0f1115;
+    border-color: var(--yellow);
+    box-shadow: 0 2px 10px rgba(255, 204, 0, .35);
+}
+
+.promote-lot-btn:focus-visible {
     outline: none;
-}
-
-/* Hardening: prevent footer overlays on small screens */
-@media (max-width: 767px) {
-    .site-footer { 
-        overflow: visible; 
-    }
-
-    .site-footer .container {
-        width: min(94%, 640px); /* constrain line length */
-        margin: 0 auto;
-    }
-
-    /* Force true single-column flow */
-    .footer-grid {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 24px !important;
-    }
-
-    /* Reset any positioning/transforms that could cause stacking */
-    .footer-col,
-    .footer-col * {
-        position: static !important;
-        transform: none !important;
-    }
-
-    .footer-col {
-        width: 100%;
-        max-width: 640px;
-        margin: 0 auto;
-    }
-
-    .footer-col .footer-title {
-        margin: 0 0 10px 0;
-        line-height: 1.2;
-    }
-
-    /* Stack links vertically, center them */
-    .footer-links {
-        display: grid !important;
-        grid-auto-flow: row;
-        grid-auto-rows: min-content;
-        justify-content: center;
-        justify-items: center;
-        text-align: center;
-        gap: 10px !important;
-        margin: 0 auto;
-        width: 100%;
-    }
-
-    .footer-links li {
-        width: auto;
-    }
-
-    .footer-links a {
-        display: inline-block;
-        padding: 4px 8px;
-        white-space: nowrap; /* prevent odd wrapping that can overlap */
-    }
-
-    /* Newsletter: full-width stack */
-    .newsletter-form {
-        grid-template-columns: 1fr !important;
-        gap: 10px;
-        max-width: 360px;
-        margin: 0 auto;
-    }
-
-    .newsletter-input,
-    .newsletter-btn {
-        width: 100%;
-    }
-
-    /* Socials */
-    .footer-social {
-        justify-content: center;
-        gap: 14px;
-        margin-top: 8px;
-    }
-}
-
-/* Extra safety for very small devices */
-@media (max-width: 380px) {
-    .footer-links a {
-        white-space: normal; /* allow wrap on ultra-narrow screens */
-        text-align: center;
-    }
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0f1115;
 }
 
 /* Responsive Adjustments for Devices with 1024px by 1366px (e.g., larger tablets or small laptops) */
@@ -1445,10 +1368,11 @@
 .domus-button {
     padding: 14px 26px;
     background: transparent;
-    color: black;
-    border: 1.5px solid white;
+    color: #0f1115;
+    /* Was a white border on the white .domus-tour panel, i.e. invisible.
+       Gold border matches the ghost buttons used elsewhere. */
+    border: 1.5px solid var(--yellow);
     border-radius: var(--radius-pill);
-    border-color: white;
     text-decoration: none;
     font-family: var(--font-body);
     font-weight: 800;
@@ -1461,195 +1385,15 @@
 
 .domus-button:hover,
 .domus-button:focus-visible {
-    background: black;
-    color: white;
+    background: var(--yellow);
+    color: #0f1115;
+    border-color: var(--yellow);
+    box-shadow: 0 2px 10px rgba(255, 204, 0, .35);
+}
+
+.domus-button:focus-visible {
     outline: none;
-    transform: translateY(-1px) scale(1.02);
-    box-shadow: var(--shadow-gold);
-    border-color: black;
-}
-
-/* Enhanced Footer Mobile Styles */
-@media (max-width: 991px) {
-    .footer-grid {
-        grid-template-columns: 1fr 1fr;
-        column-gap: 30px;
-        row-gap: 40px;
-    }
-    
-    .brand .brand-text {
-        font-size: 14px;
-        line-height: 1.5;
-    }
-    
-    .footer-col .footer-title {
-        font-size: 18px;
-    }
-    
-    .newsletter-input {
-        padding: 10px 14px;
-    }
-}
-
-@media (max-width: 767px) {
-    .site-footer {
-        padding: 40px 0 25px;
-        text-align: center;
-    }
-    
-    .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-        padding: 0 15px;
-    }
-    
-    .brand .brand-row {
-        justify-content: center;
-        margin-bottom: 15px;
-    }
-    
-    .brand .brand-text {
-        text-align: center;
-        font-size: 14px;
-        line-height: 1.5;
-        margin: 0 auto 10px;
-        max-width: 290px;
-        color: #b9bdc3;
-    }
-    
-    .footer-col {
-        margin-bottom: 0;
-        padding-bottom: 5px;
-    }
-    
-    .footer-col .footer-title {
-        font-size: 17px;
-        margin-bottom: 12px;
-        color: white !important;
-    }
-    
-    .footer-links {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 15px;
-        margin: 0 auto 10px;
-    }
-    
-    .footer-links li {
-        display: inline-block;
-    }
-    
-    .footer-links a {
-        font-size: 14px;
-        padding: 5px 10px;
-        color: #aaa !important;
-        display: inline-block;
-    }
-    
-    .footer-links a:hover,
-    .footer-links a:focus-visible {
-        color: white !important;
-    }
-    
-    .newsletter-text {
-        font-size: 14px;
-        max-width: 250px;
-        margin: 0 auto 12px;
-    }
-    
-    .newsletter-form {
-        max-width: 280px;
-        margin: 0 auto;
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-    
-    .newsletter-input {
-        width: 100%;
-        padding: 12px 15px;
-        text-align: center;
-        font-size: 14px;
-    }
-    
-    .newsletter-btn {
-        width: 100%;
-        padding: 12px;
-        font-size: 14px;
-        margin-bottom: 15px;
-    }
-    
-    .footer-social {
-        margin: 5px auto 0;
-        display: flex;
-        justify-content: center;
-        gap: 16px;
-    }
-    
-    .social-link {
-        width: 40px;
-        height: 40px;
-        background: rgba(255, 255, 255, 0.1);
-    }
-    
-    .social-link img {
-        width: 20px;
-        height: 20px;
-    }
-    
-    .footer-bottom {
-        margin-top: 25px;
-        padding-top: 15px;
-    }
-    
-    .copyright {
-        font-size: 13px;
-        color: #777;
-    }
-}
-
-@media (max-width: 380px) {
-    .site-footer .container {
-        width: 100%;
-        padding: 0 10px;
-    }
-    
-    .brand .brand-text {
-        font-size: 13px;
-        max-width: 260px;
-    }
-    
-    .footer-links {
-        gap: 8px;
-    }
-    
-    .footer-links a {
-        font-size: 13px;
-        padding: 4px 8px;
-    }
-    
-    .newsletter-form {
-        max-width: 250px;
-    }
-    
-    .newsletter-input {
-        padding: 10px 15px;
-    }
-    
-    .newsletter-btn {
-        padding: 10px;
-    }
-    
-    .social-link {
-        width: 36px;
-        height: 36px;
-    }
-    
-    .social-link img {
-        width: 18px;
-        height: 18px;
-    }
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0f1115;
 }
 
 /* Domus Tour Section */
@@ -1851,14 +1595,17 @@
 }
 .domus-trust li {
     border: 1px solid #e7e7e7;
-    color: #444;
-    background: var(--yellow);
-    padding: 6px 12px;
+    color: #333;
+    background: transparent;
+    padding: 7px 14px;
     border-radius: var(--radius-pill);
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-size: clamp(12px, 1.6vw, 14px);
+    gap: 7px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .09em;
+    text-transform: uppercase;
 }
 
 /* At-a-glance stats */
@@ -2201,7 +1948,13 @@
 
 .domus-trust li {
     border: 1px solid var(--domus-border);
-    box-shadow: var(--domus-shadow-1);
+    box-shadow: none;
+    transition: border-color .2s ease, color .2s ease;
+}
+/* Hover picks up the "Opening soon" badge colour on the border only */
+.domus-trust li:hover {
+    border-color: var(--yellow);
+    color: var(--domus-ink);
 }
 
 .domus-stats .stat {
@@ -2295,11 +2048,8 @@
 
 /* Footer links and titles: white */
 .site-footer .footer-title,
-.site-footer,
 .site-footer {
     color: #e6e6e6 !important;
-    display: flex;
-    justify-content: center;
 }
 
 /* Auction carousel price badges/pills: white background, dark text */
@@ -2327,54 +2077,6 @@
     background: transparent!important;
     border-color: #c9c9c9 !important;
     color: var(--yellow) !important;
-}
-
-/* Mobile: put Explore and Policies in two columns on the same row */
-@media (max-width: 767px) {
-    /* Use grid (override earlier flex) */
-    .footer-grid {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr;
-        gap: 22px;
-        padding: 0 16px;
-    }
-
-    /* Brand and Newsletter take full width */
-    .footer-col.brand,
-    .footer-col.newsletter {
-        grid-column: 1 / -1;
-    }
-
-    /* Center headings and links in the two columns */
-    .footer-col[aria-label="Explore"],
-    .footer-col[aria-label="Policies"] {
-        text-align: center;
-    }
-
-    /* Restore vertical lists inside each column (override earlier flex) */
-    .footer-col[aria-label="Explore"] .footer-links,
-    .footer-col[aria-label="Policies"] .footer-links {
-        display: grid !important;
-        gap: 10px;
-        justify-items: center;
-        margin: 0 auto;
-        width: 100%;
-    }
-
-    .footer-col[aria-label="Explore"] .footer-links a,
-    .footer-col[aria-label="Policies"] .footer-links a {
-        display: inline-block;
-        padding: 6px 0;
-        white-space: nowrap;
-    }
-}
-
-/* Very small devices: allow wrapping if needed */
-@media (max-width: 380px) {
-    .footer-col[aria-label="Explore"] .footer-links a,
-    .footer-col[aria-label="Policies"] .footer-links a {
-        white-space: normal;
-    }
 }
 
 /* ============================================================
@@ -2415,7 +2117,7 @@
     padding: clamp(16px, 2vw, 24px) 0;
     display: flex;
     flex-direction: column;
-    gap: clamp(24px, 3vw, 36px);
+    gap: clamp(20px, 2.4vw, 26px);
 }
 
 .domus-left .domus-header {
@@ -2447,67 +2149,71 @@
     margin-top: 14px;
     gap: 8px;
 }
+/* Inline SVG set — one 24px grid, one stroke weight, shared caps/joins, so the
+   three read as a family. Colour comes from the stroke, not the asset. */
 .domus-left .domus-trust .trust-icon {
-    width: 16px;
-    height: 16px;
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
     vertical-align: middle;
-    margin-right: 4px;
+    fill: none;
+    stroke: var(--yellow);
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
-/* Stats as compact horizontal badges in the left panel */
+/* Proof strip: quiet supporting evidence that funnels into the CTA below.
+   Deliberately ink-only — yellow is reserved for the signup button. */
 .domus-left .domus-stats {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 0;
     margin: 0;
+    border-top: 1px solid var(--domus-border);
+    border-bottom: 1px solid var(--domus-border);
 }
 
 .domus-left .domus-stats .stat {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    border-radius: 14px;
-    padding: 16px 20px;
-    transition: all .3s ease;
-    position: relative;
-    overflow: hidden;
+    display: block;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 13px 2px;
+    line-height: 1.5;
+    transition: none;
 }
-.domus-left .domus-stats .stat::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 5px;
-    background: linear-gradient(to bottom, var(--yellow), #f0b800);
-    opacity: 0;
-    transition: opacity .3s ease;
+.domus-left .domus-stats .stat + .stat {
+    border-top: 1px solid #f2f2f2;
 }
 .domus-left .domus-stats .stat:hover {
-    transform: translateX(6px) translateY(-2px);
-    box-shadow: 0 8px 24px rgba(255, 204, 0, .25);
-    background: linear-gradient(135deg, #fffef8 0%, #ffffff 100%);
-    border-color: #f0b800;
-}
-.domus-left .domus-stats .stat:hover::before {
-    opacity: 1;
+    transform: none;
+    box-shadow: none;
 }
 .domus-left .domus-stats .stat strong {
-    font-size: clamp(22px, 2.6vw, 28px);
-    color: #111;
-    font-weight: 800;
+    display: inline;
+    font-family: var(--font-body);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--domus-ink);
+    -webkit-text-fill-color: currentColor;
+    background: none;
+    letter-spacing: -.02em;
     white-space: nowrap;
-    min-width: 85px;
-    background: linear-gradient(135deg, var(--yellow) 0%, #f0b800 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-variant-numeric: lining-nums tabular-nums;
+    margin-right: 9px;
 }
 .domus-left .domus-stats .stat span {
-    font-size: clamp(13px, 1.5vw, 14px);
-    color: #555;
-    line-height: 1.4;
-    font-weight: 500;
+    display: inline;
+    font-size: 14px;
+    color: var(--domus-muted);
+    font-weight: 400;
+}
+
+/* Last stat is the effort-objection killer — it hands off to the button */
+.domus-left .domus-stats .stat:last-child span {
+    color: var(--domus-ink);
 }
 
 /* CTA in left panel */
@@ -2538,11 +2244,46 @@
     border-color: var(--yellow);
     transform: translateY(-2px);
 }
+/* Locked CTA — Domus is pre-launch. Reads as deliberate, not broken:
+   no blanket .is-disabled greying, and the yellow marks the status badge. */
+.domus-left .cta-button .domus-cta-locked {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px 12px 22px;
+    border: 1.5px solid var(--domus-ink);
+    border-radius: var(--radius-pill);
+    background: transparent;
+}
+.domus-left .cta-button .domus-cta-locked__label {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--domus-ink);
+    line-height: 1;
+}
+.domus-left .cta-button .domus-cta-locked__badge {
+    font-family: var(--font-body);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    background: var(--yellow);
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    line-height: 1;
+    white-space: nowrap;
+}
+
 .domus-left .cta-button .domus-note {
     text-align: left;
-    margin-top: 8px;
+    margin-top: 10px;
     font-size: 13px;
     color: #999;
+    text-transform: capitalize;
 }
 
 /* Right panel */
@@ -2858,38 +2599,47 @@
         margin-top: 4px;
     }
     .domus-left .domus-trust li {
-        font-size: 13px;
-        padding: 5px 10px;
+        font-size: 10px;
+        padding: 6px 11px;
     }
-    
-    /* Stats: 3-column grid so all cards are equal */
+
+    /* Stats: 3 equal columns divided by hairlines */
     .domus-left .domus-stats {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        gap: 10px;
+        gap: 0;
         margin: 0;
+        border-top: 1px solid var(--domus-border);
+        border-bottom: 1px solid var(--domus-border);
     }
     .domus-left .domus-stats .stat {
         flex-direction: column;
         align-items: center;
         text-align: center;
-        gap: 4px;
-        padding: 14px 8px;
+        gap: 6px;
+        padding: 16px 8px;
+        border-left: 1px solid var(--domus-border);
         min-width: unset;
         max-width: unset;
     }
-    .domus-left .domus-stats .stat::before {
-        display: none;
+    .domus-left .domus-stats .stat + .stat {
+        border-top: 0;
+    }
+    .domus-left .domus-stats .stat:first-child {
+        border-left: 0;
     }
     .domus-left .domus-stats .stat strong {
+        display: block;
+        margin-right: 0;
         min-width: unset;
-        font-size: clamp(20px, 4.5vw, 26px);
+        font-size: clamp(19px, 4.2vw, 23px);
     }
     .domus-left .domus-stats .stat span {
         font-size: clamp(11px, 2.5vw, 13px);
     }
     .domus-left .domus-stats .stat:hover {
-        transform: translateY(-2px);
+        transform: none;
+        border-bottom-color: transparent;
     }
     
     .domus-left .cta-button {
@@ -2900,6 +2650,11 @@
         justify-content: center;
         width: 100%;
         padding: 14px 24px;
+    }
+    .domus-left .cta-button .domus-cta-locked {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 16px;
     }
     .domus-left .cta-button .domus-note {
         text-align: center;
@@ -2963,4 +2718,27 @@
         grid-template-columns: 1fr;
         gap: 12px;
     }
+}
+/* ===== Domus: gold accents =====
+   Brand yellow on the word itself, plus a gold rail down the left column so
+   the panel is not carried by the small underline and the badge alone. */
+.domus-word {
+    color: var(--yellow);
+}
+
+/* A gold rule marks each stat row, running the height of the left column */
+.domus-left .domus-stats .stat {
+    position: relative;
+    padding-left: 14px;
+}
+
+.domus-left .domus-stats .stat::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 13px;
+    bottom: 13px;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--yellow);
 }

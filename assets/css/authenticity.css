@@ -73,22 +73,8 @@
 }
 
 /* Call-to-Action Button */
-.btn-banner {
-    display: inline-block;
-    padding: 12px 24px;
-    background: linear-gradient(to right, var(--yellow), #ff9900);
-    color: #000;
-    font-weight: bold;
-    text-decoration: none;
-    border-radius: 30px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(255, 153, 0, 0.4);
-}
+/* .btn-banner now comes from the shared button block in style.css. */
 
-.btn-banner:hover {
-    background: linear-gradient(to right, #ff9900, #ff6600);
-    transform: scale(1.05);
-}
 /* Main Banner — Responsive */
 @media (max-width: 1024px) {
     .banner {
@@ -191,18 +177,6 @@
     text-align: center;
 }
 
-.cert-form button.btn-verify {
-    padding: 10px 20px;
-    background-color: var(--yellow);
-    color: #000;
-    font-weight: bold;
-    border: none;
-    border-radius: var(--radius-2xl);
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+/* .btn-verify appearance comes from the shared button block in style.css. */
 
-.cert-form button.btn-verify:hover {
-    background-color: #ff9900;
-}
 

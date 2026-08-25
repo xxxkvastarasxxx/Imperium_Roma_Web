@@ -343,23 +343,41 @@
             <!-- LEFT: Sticky intro panel -->
             <div class="domus-left">
                 <div class="domus-header">
-                    <h2>Discover Domus</h2>
+                    <h2>Discover <span class="domus-word">Domus</span></h2>
                     <p class="domus-subheading">Your exclusive community for Roman coin collectors — catalog, identify, and showcase your collection</p>
                     <ul class="domus-trust" aria-label="Trust and safety">
-                        <li><img src="/assets/images/icons/signup.png" alt="" class="trust-icon"> Free sign-up</li>
-                        <li><img src="/assets/images/icons/noadd.png" alt="" class="trust-icon"> No ads</li>
-                        <li><img src="/assets/images/icons/privacy.png" alt="" class="trust-icon"> Privacy-first</li>
+                        <li>
+                            <svg class="trust-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <circle cx="9.5" cy="8" r="3.75"/>
+                                <path d="M3 20.5c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5"/>
+                                <path d="M18.75 5v5M16.25 7.5h5"/>
+                            </svg> Free sign-up
+                        </li>
+                        <li>
+                            <svg class="trust-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <rect x="4" y="6" width="16" height="12" rx="2.5"/>
+                                <path d="M7.25 10.25h6M7.25 13.75h4"/>
+                                <path d="M3.5 20.5 20.5 3.5"/>
+                            </svg> No ads
+                        </li>
+                        <li>
+                            <svg class="trust-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <path d="M12 2.5 4.75 5.6v5.6c0 4.35 3.05 8.1 7.25 9.3 4.2-1.2 7.25-4.95 7.25-9.3V5.6Z"/>
+                                <path d="M9.1 11.9 11.3 14.1 15 10.3"/>
+                            </svg> Privacy-first
+                        </li>
                     </ul>
                 </div>
 
                 <div class="domus-stats" aria-label="Domus at a glance">
                     <div class="stat">
                         <strong>10,000+</strong>
-                        <span>coins catalogued worldwide</span>
+                        <span>coins identified for customers</span>
                     </div>
+                    <!-- TODO: confirm the real figure before launch -->
                     <div class="stat">
-                        <strong>50+</strong>
-                        <span>countries represented</span>
+                        <strong>24h</strong>
+                        <span>average expert identification turnaround</span>
                     </div>
                     <div class="stat">
                         <strong>3 min</strong>
@@ -368,9 +386,13 @@
                 </div>
 
                 <div class="cta-button">
-                    <!-- TODO: point Domus signup to its subdomain (e.g. https://domus.imperiumroma.com) when live; was href="/login" -->
-                    <a class="domus-button is-disabled" role="link" aria-disabled="true" tabindex="-1">Create Free Account</a>
-                    <p class="domus-note">No credit card required · takes under 2 minutes</p>
+                    <!-- TODO: when Domus goes live, swap this locked block for
+                         <a class="domus-button" href="https://domus.imperiumroma.com">Create Free Account</a> -->
+                    <div class="domus-cta-locked" role="status">
+                        <span class="domus-cta-locked__label">Create Free Account</span>
+                        <span class="domus-cta-locked__badge">Opening soon</span>
+                    </div>
+                    <p class="domus-note">Free to join · no credit card · digitalise your collection</p>
                 </div>
             </div>
 
@@ -390,7 +412,7 @@
                         <img src="/assets/images/general/collection dashboard.jpg" alt="Domus collection dashboard overview" loading="lazy" decoding="async">
                     </figure>
                     <div class="tour-description">
-                        <p class="tour-intro"><strong>Domus</strong> is the first digital platform built exclusively for Roman coin collectors</p>
+                        <p class="tour-intro"><strong class="domus-word">Domus</strong> is the first digital platform built exclusively for Roman coin collectors</p>
                         <p class="tour-details">Document every piece with photos, legends, mint marks and condition — then explore your holdings through a visual dashboard with real-time statistics, 3D coin models generated from your own images, and community-driven identification</p>
                     </div>
                 </div>
@@ -567,5 +589,6 @@
     <script src="/assets/js/carousel.js"></script>
     <script src="/assets/js/newsletter.js"></script>
     <script src="/assets/js/smooth-scroll.js"></script>
+    <script src="/assets/js/faq.js"></script>
 </body>
 </html>

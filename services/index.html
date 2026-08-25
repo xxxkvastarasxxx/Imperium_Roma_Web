@@ -208,9 +208,8 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/services.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Font Awesome removed: every icon on this page is now inline SVG, so the
+         render-blocking CDN stylesheet is no longer needed here. -->
 </head>
 
 <body>
@@ -237,26 +236,91 @@
     <!-- Services Section -->
     <section id="services" class="services">
         <div class="container">
-            <h2>Our Services</h2>
-            <p class="services-description">We specialise in evaluating and checking prices on the markets for ancient Roman coins, utilising the newest technologies. Our advanced parsers crawl data from different markets to ensure authenticity and provide up-to-date pricing information</p>
-            
-            <div class="services-wrapper">
-                <div class="service-item">
-                    <h3>Market Evaluation</h3>
-                    <p>We analyse current market trends and prices, ensuring you get the most accurate and up-to-date information on the value of your ancient Roman coins</p>
-                    <a href="#market-evaluation" class="btn-service">Get a Valuation</a>
-                </div>
-                <div class="service-item">
-                    <h3>Authenticity Check</h3>
-                    <p>Our technology verifies the authenticity of ancient Roman coins by cross-referencing multiple sources, ensuring that your investments are secure and reliable</p>
-                    <a href="#authenticity-check" class="btn-service">Verify Your Coin</a>
-                </div>
-                <div class="service-item">
-                    <h3>Data Parsing</h3>
-                    <p>We use advanced parsers to crawl and extract data from various market platforms, providing a comprehensive view of the current market situation</p>
-                    <a href="#market-evaluation" class="btn-service">See the Data</a>
-                </div>
+            <div class="services-head">
+                <h2>Our Services</h2>
+                <p class="services-description">
+                    Everything we do sits on top of one archive of recorded sales, catalogued types and
+                    known forgeries &mdash; whether you want a single coin identified or a whole collection online.
+                </p>
             </div>
+
+            <!-- The platform, given its own weight above the individual services -->
+            <article class="platform-card">
+                <div class="platform-main">
+                    <span class="platform-eyebrow">The platform</span>
+                    <h3>Domus &mdash; your collection, online</h3>
+                    <p>
+                        Catalogue every piece with photographs, legends and condition, then explore your
+                        holdings through a dashboard that keeps count for you. Free to join, no ads.
+                    </p>
+                    <a class="insight-btn primary" href="/#domus">
+                        <span>Explore Domus</span>
+                    </a>
+                </div>
+                <ul class="platform-features">
+                    <li>Store and catalogue your coins</li>
+                    <li>Identify with the community</li>
+                    <li>3D models from your own photographs</li>
+                    <li>Discuss finds in the forum</li>
+                </ul>
+            </article>
+
+            <h3 class="services-subhead">What we do for you</h3>
+            <ul class="service-grid">
+                    <li class="service-card">
+                        <span class="service-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><circle cx="10.5" cy="10.5" r="2.6"/><path d="m20.5 20.5-5.4-5.4"/></svg>
+                        </span>
+                        <div class="service-body">
+                            <h3>Identification</h3>
+                            <p>Send photographs and we will attribute the issue &mdash; emperor, denomination, mint and date &mdash; with its catalogue reference.</p>
+                            <a class="service-cta" href="/contact/?subject=identification"><span>Send your coin</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h13"/><path d="m12.5 6.5 6 5.5-6 5.5"/></svg></a>
+                        </div>
+                    </li>
+                    <li class="service-card">
+                        <span class="service-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 19.5h17"/><path d="m5 15.5 4.5-5 3.5 3.5L20 6"/><path d="M16.2 6H20v3.8"/></svg>
+                        </span>
+                        <div class="service-body">
+                            <h3>Market Evaluation</h3>
+                            <p>Median realised prices from recorded sales, with the method and sources stated so the figure can be checked.</p>
+                            <a class="service-cta" href="#market-evaluation"><span>See the data</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h13"/><path d="m12.5 6.5 6 5.5-6 5.5"/></svg></a>
+                        </div>
+                    </li>
+                    <li class="service-card">
+                        <span class="service-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.6l7.2 2.6v5.6c0 4.35-3.05 8.35-7.2 9.6-4.15-1.25-7.2-5.25-7.2-9.6V5.2Z"/><path d="m9 11.9 2.2 2.2L15.2 10"/></svg>
+                        </span>
+                        <div class="service-body">
+                            <h3>Authenticity Check</h3>
+                            <p>Photographs from several angles, weight and edge inspection, then comparison against documented specimens and known forgeries.</p>
+                            <a class="service-cta" href="#authenticity-check"><span>How we verify</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h13"/><path d="m12.5 6.5 6 5.5-6 5.5"/></svg></a>
+                        </div>
+                    </li>
+                    <li class="service-card">
+                        <span class="service-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5.5" rx="7.5" ry="2.9"/><path d="M4.5 5.5v13c0 1.6 3.36 2.9 7.5 2.9s7.5-1.3 7.5-2.9v-13"/><path d="M4.5 12c0 1.6 3.36 2.9 7.5 2.9s7.5-1.3 7.5-2.9"/></svg>
+                        </span>
+                        <div class="service-body">
+                            <h3>Data Parsing</h3>
+                            <p>Structured auction and dealer data pulled from multiple market platforms, delivered in a form you can work with.</p>
+                            <a class="service-cta" href="/contact/?subject=data+parsing"><span>Request a feed</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h13"/><path d="m12.5 6.5 6 5.5-6 5.5"/></svg></a>
+                        </div>
+                    </li>
+                <li class="service-card service-card--wide">
+                    <span class="service-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3.5h11a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H9l-4.2 3.4a.5.5 0 0 1-.8-.5l.7-3A3 3 0 0 1 1.5 12.5v-6a3 3 0 0 1 3-3Z"/><path d="M9.4 7.6a1.7 1.7 0 1 1 2.6 1.5c-.5.3-.9.7-.9 1.3"/><path d="M11.1 12.9h.01"/></svg>
+                    </span>
+                    <div class="service-body">
+                        <h3>Something else?</h3>
+                        <p>
+                            Promoting a lot, a bulk valuation, a research question &mdash; tell us what you
+                            need and we will say plainly whether we can help.
+                        </p>
+                        <a class="service-cta" href="/contact/?subject=custom+request"><span>Make a custom request</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h13"/><path d="m12.5 6.5 6 5.5-6 5.5"/></svg></a>
+                    </div>
+                </li>
+            </ul>
         </div>
     </section>
 
@@ -266,7 +330,7 @@
           <div class="section-header">
             <h2 class="section-title">Marcus Aurelius Denarius <span class="accent">Market Insights</span></h2>
             <p class="section-subtext">
-              Interactive analysis for <span class="highlight" id="issue-name" data-issue="RIC 123, 27 BC Issue">RIC III Marcus Aurelius 171</span>
+              Interactive analysis for <span class="highlight" id="issue-name" data-issue="RIC III 171, AD 166–167 Issue">RIC III Marcus Aurelius 171</span>
             </p>
           </div>
     
@@ -275,92 +339,183 @@
             <!-- Price Trend Card -->
             <div class="analysis-card trend-card">
               <div class="card-header">
-                <h3>Price Trajectory</h3>
-                <div class="time-filter">
-                  <button class="active" data-range="5Y">5Y</button>
-                  <button data-range="3Y">3Y</button>
-                  <button data-range="1Y">1Y</button>
+                <div class="card-heading">
+                  <h3>Price Trajectory</h3>
+                  <p class="card-sub">Median realised, EUR</p>
+                </div>
+                <div class="time-filter" role="group" aria-label="Select time range">
+                  <button type="button" class="active" data-range="5Y" aria-pressed="true">5Y</button>
+                  <button type="button" data-range="3Y" aria-pressed="false">3Y</button>
+                  <button type="button" data-range="1Y" aria-pressed="false">1Y</button>
                 </div>
               </div>
+
               <div class="chart-container">
                 <canvas id="priceTrendChart"></canvas>
-                
-                <!-- Market Activity Indicator inside chart -->
-                <div class="market-activity">
-                  <div class="activity-label">
-                    <span class="label-text">Trading Volume</span>
-                    <span class="activity-value" id="trading-volume">High Activity</span>
-                  </div>
-                  <div class="activity-bar-wrapper">
-                    <div class="activity-bar" id="activity-bar" style="width: 78%;"></div>
-                  </div>
+              </div>
+
+              <div class="activity-meter">
+                <div class="activity-track" role="img" id="activity-track"
+                     aria-label="Relative lot activity in the selected window: 78 out of 100">
+                  <div class="activity-bar" id="activity-bar" style="width:78%"></div>
                 </div>
+                <span class="activity-caption">Relative lot activity, selected window</span>
               </div>
-              
-              <div class="chart-annotation">
-                <span class="peak-marker" id="peak-marker">📈 2024 Peak Value</span>
-                <div class="growth-badge" id="growth-badge">+22% YoY Growth</div>
-              </div>
+
+              <dl class="stat-strip">
+                <div class="stat">
+                  <dt>Peak year</dt>
+                  <dd id="peak-marker">2026</dd>
+                </div>
+                <div class="stat">
+                  <dt id="growth-label">5Y change</dt>
+                  <dd id="growth-badge" class="is-positive">+61%</dd>
+                </div>
+                <div class="stat">
+                  <dt>Volume</dt>
+                  <dd id="trading-volume">High</dd>
+                </div>
+              </dl>
             </div>
-    
+
             <!-- Coin Spotlight Card -->
             <div class="analysis-card coin-spotlight">
+              <div class="card-header">
+                <div class="card-heading">
+                  <h3>Reference Specimen</h3>
+                  <p class="card-sub">AR Denarius &middot; Rome mint</p>
+                </div>
+              </div>
+
               <div class="coin-display">
                 <div class="auto-spin-coin">
                   <div class="coin-face obverse">
-                    <img src="/assets/images/FeaturedCoinsOTD/den1.png" alt="Marcus Aurelius Obverse" />
+                    <img src="/assets/images/FeaturedCoinsOTD/den1.png" alt="Marcus Aurelius denarius, obverse" />
                   </div>
                   <div class="coin-face reverse">
-                    <img src="/assets/images/FeaturedCoinsOTD/den2.png" alt="Marcus Aurelius Reverse" />
+                    <img src="/assets/images/FeaturedCoinsOTD/den2.png" alt="Marcus Aurelius denarius, reverse" />
                   </div>
                 </div>
               </div>
-    
-              <div class="market-stats">
-                <div class="stat-pill">
-                  <div class="stat-value" id="current-median" data-value="1850">$1,850</div>
-                  <div class="stat-caption">Current Median</div>
+
+              <dl class="stat-strip">
+                <div class="stat">
+                  <dt id="median-label">Median &middot; 5Y</dt>
+                  <dd id="current-median" data-value="152">&euro;152</dd>
                 </div>
-                <div class="stat-pill highlight">
-                  <div class="stat-value" id="certified-examples" data-value="154">154</div>
-                  <div class="stat-caption">Certified Examples</div>
+                <div class="stat">
+                  <dt id="certified-label">Recorded sales &middot; 5Y</dt>
+                  <dd id="certified-examples" data-value="154">154</dd>
                 </div>
-              </div>
+              </dl>
             </div>
-    
+
             <!-- Market Distribution Card -->
             <div class="analysis-card distribution-card">
               <div class="card-header">
-                <h3>Market Liquidity</h3>
-              </div>
-              <div class="chart-wrapper">
-                <div class="chart-container">
-                  <canvas id="marketComparisonChart"></canvas>
-                  <div class="chart-center-label" id="doughnut-center-label">65%</div>
-                </div>
-                <div class="chart-legend">
-                  <div class="legend-item auction">
-                    <div class="color-swatch"></div>
-                    Auction
-                  </div>
-                  <div class="legend-item private">
-                    <div class="color-swatch"></div>
-                    Private
-                  </div>
+                <div class="card-heading">
+                  <h3>Sales Channel</h3>
+                  <p class="card-sub">Where recorded sales occur</p>
                 </div>
               </div>
-              <div class="volume-indicator">
-                <div class="volume-bar">
+
+              <div class="chart-container donut">
+                <canvas id="marketComparisonChart"></canvas>
+                <div class="donut-center">
+                  <span class="chart-center-label" id="doughnut-center-label">65%</span>
+                  <span class="donut-center-caption">via auction</span>
                 </div>
               </div>
+
+              <dl class="stat-strip legend-strip">
+                <div class="stat legend-item auction">
+                  <dt><span class="color-swatch" aria-hidden="true"></span>Auction</dt>
+                  <dd id="legend-auction">65%</dd>
+                </div>
+                <div class="stat legend-item private">
+                  <dt><span class="color-swatch" aria-hidden="true"></span>Private</dt>
+                  <dd id="legend-private">35%</dd>
+                </div>
+              </dl>
             </div>
           </div>
-    
+
+          <!-- Method &amp; sources: stated openly so the figures can be checked -->
+          <details class="method-note">
+            <summary>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.6h.01"/></svg>
+              <span>How these figures are calculated</span>
+            </summary>
+            <div class="method-body">
+              <p>
+                The trajectory plots the <strong>median</strong> of recorded sales for this type
+                in <strong>VF&ndash;XF</strong> condition, at <strong>hammer plus buyer&rsquo;s
+                premium</strong>. Median is used rather than mean so one exceptional specimen
+                cannot drag the series. Each figure is the median of its own window, not a spot
+                price, which is why every stat is labelled with the window it covers.
+              </p>
+              <p>
+                <strong>Read these caveats before relying on the numbers.</strong>
+              </p>
+              <ul class="method-caveats">
+                <li>
+                  <strong>Mixed grade band.</strong> VF and XF are pooled. A choice XF denarius
+                  can fetch several times a bare VF of the same type, so the median describes
+                  the band as a whole and not any one grade.
+                </li>
+                <li>
+                  <strong>One fixed exchange rate.</strong> Figures originate as USD in our
+                  sample dossier and every year is converted at the same rate (shown in the
+                  chart tooltip). EUR/USD moved materially across this period, so the shape of
+                  the curve is the dollar trend re-expressed in euro, not a euro-market trend.
+                </li>
+                <li>
+                  <strong>The current year is incomplete.</strong> Its point is year-to-date and
+                  will move as the season&rsquo;s sales are recorded.
+                </li>
+                <li>
+                  <strong>Private sales are only partly observable.</strong> Auction results are
+                  published; private treaty is not. The channel split reflects what we can
+                  record, so the private share is a floor rather than a measured total.
+                </li>
+              </ul>
+              <p class="method-caveat">
+                These are illustrative reference figures from a single dossier, not a live index.
+                Condition, centring, strike and an unbroken legend move individual prices more
+                than the reverse type does &mdash; always check current results before buying
+                or selling.
+              </p>
+              <ul class="method-sources">
+                <li>
+                  <span class="src-label">Type reference</span>
+                  <a href="https://numismatics.org/ocre/id/ric.3.m_aur.171" target="_blank" rel="noopener noreferrer">OCRE &mdash; RIC III Marcus Aurelius 171</a>
+                  <span class="src-note">AR Denarius, Rome, AD 166&ndash;167. Obv. M ANTONINVS AVG ARM PARTH MAX; Rev. TR P XXI IMP IIII COS III, Aequitas with scales and cornucopiae. American Numismatic Society.</span>
+                </li>
+                <li>
+                  <span class="src-label">Grade definitions</span>
+                  <a href="/bibliotheca/coin-grading-guide/">Grading Roman Coins: From Fine to Mint State</a>
+                  <span class="src-note">The grading standard behind the VF&ndash;XF band above &mdash; Very Fine is moderate wear with most detail clear, Extremely Fine (written EF or XF) is light wear on the highest points only. Ancients are graded descriptively, not on the modern 1&ndash;70 scale.</span>
+                </li>
+                <li>
+                  <span class="src-label">Verify current results</span>
+                  <a href="https://www.acsearch.info/search.html?term=Marcus+Aurelius+RIC+171&amp;category=1&amp;en=1&amp;de=1&amp;fr=1&amp;it=1&amp;es=1&amp;ot=1&amp;images=1&amp;currency=eur&amp;order=0" target="_blank" rel="noopener noreferrer">acsearch &mdash; live auction archive</a>
+                  <span class="src-note">Aggregates realised prices across international auction houses. Search results run wider than this single issue, so read the attributions before comparing &mdash; but it is the fastest way to check today&rsquo;s market against the figures above.</span>
+                </li>
+              </ul>
+            </div>
+          </details>
+
           <!-- Insight Actions -->
           <div class="insight-actions">
-            <a href="#" id="export-report" class="insight-btn export-btn">Export Report</a>
+            <a href="/assets/reports/Imperium_Roma_Sample_Report.pdf"
+               download="Imperium_Roma_Sample_Report.pdf"
+               class="insight-btn export-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v11"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M4.5 18.5v1A1.5 1.5 0 0 0 6 21h12a1.5 1.5 0 0 0 1.5-1.5v-1"/></svg>
+              <span>Export Sample Report</span>
+            </a>
             <a href="/contact/#contact" class="insight-btn primary">
-              Full Market Analysis
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><mask id="marketBubbleGap" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><path d="M14.5 11h5A3.5 3.5 0 0 1 23 14.5V16a3.5 3.5 0 0 1-3.5 3.5h-.6l.7 2.3a.5.5 0 0 1-.8.5L15.5 19.5h-1A3.5 3.5 0 0 1 11 16v-1.5a3.5 3.5 0 0 1 3.5-3.5Z" fill="#000" stroke="#000" stroke-width="2.2" stroke-linejoin="round"/></mask><path d="M4.5 2.5h7A3.5 3.5 0 0 1 15 6v3.5a3.5 3.5 0 0 1-3.5 3.5H8l-3.7 3.2a.5.5 0 0 1-.82-.5l.68-2.75A3.5 3.5 0 0 1 1 9.5V6a3.5 3.5 0 0 1 3.5-3.5Z" mask="url(#marketBubbleGap)"/><path d="M14.5 11h5A3.5 3.5 0 0 1 23 14.5V16a3.5 3.5 0 0 1-3.5 3.5h-.6l.7 2.3a.5.5 0 0 1-.8.5L15.5 19.5h-1A3.5 3.5 0 0 1 11 16v-1.5a3.5 3.5 0 0 1 3.5-3.5Z"/></svg>
+              <span>Request Analysis for Your Coin</span>
             </a>
           </div>
     
@@ -389,55 +544,54 @@
         
         <div class="intro-content">
           <p class="service-description">
-            In today's market flooded with replicas, our professional authentication service
-            safeguards your ancient Roman investments. Utilising cutting-edge technology and
-            cross-referencing with global databases, we provide:
+            A documented coin sells itself. Without one, every buyer starts from doubt
+            &mdash; and prices it that way.
           </p>
         </div>
-    
-        <ul class="authentication-features">
-          <li class="feature-card">
-            <div class="icon-wrapper">
-              <i class="fas fa-microscope"></i>
+
+        <ol class="cert-facts">
+          <li class="cert-fact">
+            <div class="fact-head">
+              <span class="fact-badge">01</span>
+              <span class="fact-rail" aria-hidden="true"></span>
             </div>
-            <div class="feature-content">
-              <h3 class="feature-title">Advanced Analysis</h3>
-              <span class="feature-description">Metallurgical examination with precision tools</span>
-            </div>
+            <h3 class="fact-title">Issued in 24&ndash;48 hours</h3>
+            <p class="fact-text">Send clear images of the obverse and reverse. Most certificates are ready within two working days.</p>
           </li>
-          <li class="feature-card">
-            <div class="icon-wrapper">
-              <i class="fas fa-database"></i>
+          <li class="cert-fact">
+            <div class="fact-head">
+              <span class="fact-badge">02</span>
+              <span class="fact-rail" aria-hidden="true"></span>
             </div>
-            <div class="feature-content">
-              <h3 class="feature-title">Historical Matching</h3>
-              <span class="feature-description">Cross-referencing with global artifact databases</span>
-            </div>
+            <h3 class="fact-title">Three checks, every time</h3>
+            <p class="fact-text">Photographs from several angles, weight and edge inspection, then comparison against documented specimens and known forgeries.</p>
           </li>
-          <li class="feature-card">
-            <div class="icon-wrapper">
-              <i class="fas fa-certificate"></i>
+          <li class="cert-fact">
+            <div class="fact-head">
+              <span class="fact-badge">03</span>
+              <span class="fact-rail" aria-hidden="true"></span>
             </div>
-            <div class="feature-content">
-              <h3 class="feature-title">Digital Certification</h3>
-              <span class="feature-description">Tamper-proof authentication documents</span>
-            </div>
+            <h3 class="fact-title">A code that never expires</h3>
+            <p class="fact-text">Any future buyer can <a href="/authenticity/">check it here</a>, free and without an account &mdash; so the certificate still works after you sell.</p>
           </li>
-        </ul>
+        </ol>
     
         <div class="certificate-showcase">
           <div class="certificate-container">
             <div class="certificate-card">
               <div class="certificate-border"></div>
-              <img 
-                src="/assets/images/services/Certificate example-1.png"
+              <img
+                src="/assets/images/services/Certificate example-1.webp"
                 alt="Digital Authenticity Certificate"
                 class="certificate-img"
+                width="1400"
+                height="1812"
                 loading="lazy"
+                decoding="async"
               />
               <div class="certificate-hover">
                 <button class="magnify-btn" aria-label="Zoom certificate">
-                  <i class="fas fa-search-plus"></i>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M10.5 7.8v5.4M7.8 10.5h5.4"/><path d="m20.5 20.5-5.4-5.4"/></svg>
                   <span class="hover-text">View Details</span>
                 </button>
               </div>
@@ -448,10 +602,12 @@
     
           <div class="insight-actions">
           <a href="/authenticity/" class="insight-btn primary">
-            <i class="fas fa-shield-check"></i> Verify Your Certificate
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2.6l7 2.6v5.5c0 4.3-2.9 8.3-7 9.7-4.1-1.4-7-5.4-7-9.7V5.2l7-2.6Z"/><path d="m8.8 11.9 2.2 2.2 4.2-4.4"/></svg>
+            <span>Verify Your Certificate</span>
           </a>
-          <a href="/contact/" class="insight-btn secondary">
-            <i class="fas fa-comments"></i> Request Consultation
+          <a href="/contact/" class="insight-btn export-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><mask id="certBubbleGap" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><path d="M14.5 11h5A3.5 3.5 0 0 1 23 14.5V16a3.5 3.5 0 0 1-3.5 3.5h-.6l.7 2.3a.5.5 0 0 1-.8.5L15.5 19.5h-1A3.5 3.5 0 0 1 11 16v-1.5a3.5 3.5 0 0 1 3.5-3.5Z" fill="#000" stroke="#000" stroke-width="2.2" stroke-linejoin="round"/></mask><path d="M4.5 2.5h7A3.5 3.5 0 0 1 15 6v3.5a3.5 3.5 0 0 1-3.5 3.5H8l-3.7 3.2a.5.5 0 0 1-.82-.5l.68-2.75A3.5 3.5 0 0 1 1 9.5V6a3.5 3.5 0 0 1 3.5-3.5Z" mask="url(#certBubbleGap)"/><path d="M14.5 11h5A3.5 3.5 0 0 1 23 14.5V16a3.5 3.5 0 0 1-3.5 3.5h-.6l.7 2.3a.5.5 0 0 1-.8.5L15.5 19.5h-1A3.5 3.5 0 0 1 11 16v-1.5a3.5 3.5 0 0 1 3.5-3.5Z"/></svg>
+            <span>Request Consultation</span>
           </a>
           </div>
       </div>
@@ -551,13 +707,14 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.0/examples/js/controls/OrbitControls.min.js"></script>
     <script src="/assets/js/coin3d_generator.js"></script>
     <script src="/assets/js/zoom.js"></script>
-    <script src="/assets/js/export-logic.js"></script>
     <script src="/assets/js/header.js"></script>
     <script src="/assets/js/hamburger.js"></script>
     <script src="/assets/js/market-avaluation.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/assets/js/newsletter.js"></script>
     <script src="/assets/js/smooth-scroll.js"></script>
+    <script src="/assets/js/faq.js"></script>
+    <script src="/assets/js/cert-facts.js"></script>
 
 
 </body>

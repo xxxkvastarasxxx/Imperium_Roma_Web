@@ -85,25 +85,9 @@ body {
     line-height: 1.6;
 }
 
-/* CTA Button — matches Contact page .btn-banner */
-.biblio-hero .btn-banner {
-    display: inline-block;
-    padding: 12px 24px;
-    background: linear-gradient(to right, var(--yellow), #ff9900);
-    color: #000;
-    font-weight: bold;
-    text-decoration: none;
-    border-radius: 30px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(255, 153, 0, 0.4);
-    font-family: var(--font-body);
-    font-size: 16px;
-}
-
-.biblio-hero .btn-banner:hover {
-    background: linear-gradient(to right, #ff9900, #ff6600);
-    transform: scale(1.05);
-}
+/* CTA button appearance comes from the shared block in style.css.
+   This selector used to be `.biblio-hero .btn-banner`, whose extra
+   specificity kept overriding it with an orange gradient. */
 
 /* --- Filter / Search Bar --- */
 .biblio-filter-section {
@@ -113,6 +97,17 @@ body {
     top: 80px;
     z-index: 100;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+    /* "Back to Bibliotheca" on an article page links to #biblio-articles so it
+       returns to the article list rather than the page top. The fixed site
+       header would otherwise land right on top of the search bar when the
+       browser jumps here — same problem the back button itself had. Matches
+       the header's two measured heights: 82px normally, 123px in the ~769-990px
+       band where the nav wraps to a second line. */
+    scroll-margin-top: 100px;
+}
+
+@media (min-width: 769px) and (max-width: 990px) {
+    .biblio-filter-section { scroll-margin-top: 141px; }
 }
 
 .biblio-filter-container {
@@ -288,7 +283,20 @@ body {
 /* --- Article Reading Pane --- */
 .biblio-reading-pane {
     background: #0d0d0d;
-    padding: 48px 24px 80px;
+    /* The site header is fixed and ~82px tall. At the old 48px the back button
+       sat underneath it and could not be clicked. */
+    padding: 118px 24px 80px;
+}
+
+@media (max-width: 768px) {
+    .biblio-reading-pane { padding-top: 96px; }
+}
+
+/* Between roughly 769px and 983px the header nav wraps to a second line and
+   grows from 82px to 123px, which put the back button back underneath it.
+   Measured boundaries: 123px tall at 769-974px client width, 82px from 984px. */
+@media (min-width: 769px) and (max-width: 990px) {
+    .biblio-reading-pane { padding-top: 158px; }
 }
 
 .biblio-reading-container {
@@ -296,24 +304,49 @@ body {
     margin: 0 auto;
 }
 
+/* Ghost button, same treatment as .service-cta on the Services page */
 .biblio-back-btn {
-    background: none;
-    border: 1px solid #2c2c2c;
-    color: #aaa;
-    border-radius: var(--radius-sm);
-    padding: 8px 16px;
-    font-family: var(--font-body);
-    font-size: 13px;
-    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     margin-bottom: 36px;
+    padding: 0.44rem 0.95rem;
+    background: transparent;
+    border: 1.5px solid rgba(255, 204, 0, 0.55);
+    border-radius: var(--radius-pill);
+    color: var(--yellow);
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 650;
     text-decoration: none;
-    display: inline-block;
-    transition: border-color 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+    transition: background-color .2s ease, color .2s ease,
+                border-color .2s ease, box-shadow .2s ease;
 }
 
-.biblio-back-btn:hover {
+.biblio-back-btn svg {
+    width: 15px;
+    height: 15px;
+    flex: none;
+    transition: transform .2s ease;
+}
+
+.biblio-back-btn:hover,
+.biblio-back-btn:focus-visible {
+    background: var(--yellow);
     border-color: var(--yellow);
-    color: var(--yellow);
+    color: #0f1115;
+}
+
+/* Leftward, because this one goes back */
+.biblio-back-btn:hover svg,
+.biblio-back-btn:focus-visible svg {
+    transform: translateX(-3px);
+}
+
+.biblio-back-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0f1115;
 }
 
 .biblio-article-content h1 {

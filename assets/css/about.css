@@ -7,6 +7,8 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    /* Paints immediately so the hero is never an empty box while the MP4 buffers */
+    background-color: #0b0b0b;
 }
 
 .banner .video-container {
@@ -46,20 +48,8 @@
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
 }
 
-.btn-banner {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: var(--yellow);
-    color: #000;
-    font-weight: bold;
-    text-decoration: none;
-    border-radius: var(--radius-2xl);
-    transition: background-color 0.3s ease;
-}
+/* .btn-banner now comes from the shared button block in style.css. */
 
-.btn-banner:hover {
-    background-color: #ff9900;
-}
 
 /* Main Banner — Responsive */
 @media (max-width: 1024px) {
@@ -137,29 +127,19 @@
     margin: 0 auto 52px;
 }
 
-/* ── Journey container w/ golden spine ── */
+/* ── Journey: year-anchored rail ── */
 .journey {
     position: relative;
-    max-width: 920px;
+    max-width: 760px;
     margin: 0 auto;
-    padding: 8px 0 32px;
+    padding: 8px 0 0;
+    text-align: left;
 }
 
-/* ── Collapsible journey ── */
-.journey--collapsed {
-    max-height: 420px;
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
-    transition: max-height .7s cubic-bezier(.22, 1, .36, 1);
-}
-
-.journey--expanded {
-    max-height: 2000px;
-    overflow: visible;
-    -webkit-mask-image: none;
-    mask-image: none;
-    transition: max-height .7s cubic-bezier(.22, 1, .36, 1);
+/* ── Collapsible journey ──
+   Cuts at a whole milestone rather than slicing one mid-body with a mask. */
+.journey--collapsed .milestone:nth-child(n+3) {
+    display: none;
 }
 
 /* Toggle button */
@@ -197,44 +177,17 @@
     transform: rotate(180deg);
 }
 
-/* Central golden spine */
-.journey::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: linear-gradient(180deg, transparent 0%, var(--yellow) 5%, var(--yellow) 93%, transparent 100%);
-    transform: translateX(-50%);
-    box-shadow: 0 0 10px rgba(255, 204, 0, .15);
-}
-
-/* Glowing terminal node at bottom of spine */
-.journey::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: -4px;
-    width: 10px;
-    height: 10px;
-    background: var(--yellow);
-    border-radius: var(--radius-circle);
-    transform: translateX(-50%);
-    box-shadow: 0 0 12px rgba(255, 204, 0, .5);
-}
-
-/* ── Milestone row ── */
+/* ── Milestone row: year in a fixed column, content on a hairline rail ── */
 .milestone {
     position: relative;
-    width: 50%;
-    margin-bottom: 48px;
-    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 86px 1fr;
+    align-items: start;
     /* scroll-reveal entrance */
     opacity: 0;
-    transform: translateY(28px);
-    transition: opacity .65s cubic-bezier(.22, 1, .36, 1),
-                transform .65s cubic-bezier(.22, 1, .36, 1);
+    transform: translateY(20px);
+    transition: opacity .6s cubic-bezier(.22, 1, .36, 1),
+                transform .6s cubic-bezier(.22, 1, .36, 1);
 }
 
 .milestone.is-visible {
@@ -242,121 +195,58 @@
     transform: translateY(0);
 }
 
-.milestone:last-child {
-    margin-bottom: 0;
-}
-
-/* Left-side cards */
-.milestone[data-side="left"] {
-    padding-right: 52px;
-    text-align: right;
-}
-
-/* Right-side cards */
-.milestone[data-side="right"] {
-    margin-left: 50%;
-    padding-left: 52px;
-    text-align: left;
-}
-
-/* ── Node circle on the spine ── */
-.milestone::before {
-    content: '';
-    position: absolute;
-    top: 14px;
-    width: 14px;
-    height: 14px;
-    background: var(--yellow);
-    border: 3px solid var(--background, #111);
-    border-radius: var(--radius-circle);
-    box-shadow: 0 0 0 3px rgba(255, 204, 0, .25),
-               0 0 14px rgba(255, 204, 0, .2);
-    z-index: 2;
-    transition: box-shadow .4s ease, transform .4s ease;
-}
-
-.milestone[data-side="left"]::before  { right: -10px; }
-.milestone[data-side="right"]::before { left: -10px;  }
-
-/* Connector line from node to card */
-.milestone::after {
-    content: '';
-    position: absolute;
-    top: 20px;
-    height: 2px;
-    width: 36px;
-    z-index: 1;
-}
-
-.milestone[data-side="left"]::after {
-    right: 6px;
-    background: linear-gradient(90deg, rgba(255, 204, 0, .35), rgba(255, 204, 0, .06));
-}
-
-.milestone[data-side="right"]::after {
-    left: 6px;
-    background: linear-gradient(90deg, rgba(255, 204, 0, .06), rgba(255, 204, 0, .35));
-}
-
-/* Node hover pulse */
-.milestone:hover::before {
-    box-shadow: 0 0 0 5px rgba(255, 204, 0, .3),
-               0 0 20px rgba(255, 204, 0, .35);
-    transform: scale(1.2);
-}
-
-/* ── Content card ── */
-.milestone-content {
-    background: linear-gradient(
-        165deg,
-        rgba(255, 255, 255, .045) 0%,
-        rgba(255, 204, 0, .025) 50%,
-        rgba(255, 255, 255, .03) 100%
-    );
-    border: 1px solid rgba(255, 204, 0, .14);
-    border-radius: 14px;
-    padding: 42px 26px;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04),
-                0 2px 12px rgba(0, 0, 0, .25);
-    transition: transform .4s cubic-bezier(.22, 1, .36, 1),
-                box-shadow .4s ease,
-                border-color .4s ease;
-}
-
-.milestone:hover .milestone-content {
-    transform: translateY(-4px);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06),
-                0 16px 40px rgba(255, 204, 0, .10),
-                0 0 0 1px rgba(255, 204, 0, .08);
-    border-color: rgba(255, 204, 0, .32);
-}
-
+/* The year anchors the row; no pill, no fill */
 .milestone-year {
-    display: inline-block;
-    background: var(--yellow);
-    color: #111;
     font-family: var(--font-body);
+    font-size: 1rem;
     font-weight: 700;
-    font-size: .78rem;
-    padding: 4px 16px;
-    border-radius: var(--radius-xl);
-    letter-spacing: .5px;
-    margin-bottom: 10px;
+    color: var(--yellow);
+    letter-spacing: .02em;
+    line-height: 1.5;
+    padding-top: 1px;
+    font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* ── Content sits against the rail ── */
+.milestone-content {
+    position: relative;
+    border-left: 1px solid rgba(255, 204, 0, .22);
+    padding: 0 0 40px 28px;
+}
+
+/* Node on the rail, aligned to the title's cap height */
+.milestone-content::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 8px;
+    width: 7px;
+    height: 7px;
+    border-radius: var(--radius-circle);
+    background: var(--yellow);
+}
+
+/* Rail stops with the final entry instead of running into empty space */
+.milestone:last-child .milestone-content {
+    border-left-color: transparent;
+    padding-bottom: 0;
 }
 
 .milestone-title {
     font-family: var(--font-body);
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: #fff;
     margin: 0 0 8px;
+    line-height: 1.35;
 }
 
 .milestone-text {
     font-size: .95rem;
-    line-height: 1.65;
-    color: rgba(255, 255, 255, .65);
+    line-height: 1.7;
+    color: rgba(255, 255, 255, .6);
     margin: 0;
+    max-width: 58ch;
 }
 
 /* ── Journey-map responsive ── */
@@ -368,41 +258,43 @@
         margin-bottom: 36px;
     }
 
-    /* Single-column: spine moves to the left edge */
-    .journey::before { left: 20px; }
-    .journey::after  { left: 20px; }
-
-    .milestone,
-    .milestone[data-side="left"],
-    .milestone[data-side="right"] {
-        width: 100%;
-        margin-left: 0;
-        padding-left: 56px;
-        padding-right: 0;
-        text-align: left;
+    /* Year stacks above the entry; the rail moves to the row so it stays
+       unbroken behind both the year and the text. */
+    .milestone {
+        grid-template-columns: 1fr;
+        border-left: 1px solid rgba(255, 204, 0, .22);
+        padding-left: 26px;
     }
 
-    .milestone::before,
-    .milestone[data-side="left"]::before,
-    .milestone[data-side="right"]::before {
-        left: 13px;
-        right: auto;
+    .milestone:last-child {
+        border-left-color: transparent;
     }
 
-    .milestone::after,
-    .milestone[data-side="left"]::after,
-    .milestone[data-side="right"]::after {
-        left: 30px;
-        right: auto;
-        width: 20px;
-        background: linear-gradient(90deg, rgba(255, 204, 0, .35), rgba(255, 204, 0, .06));
+    .milestone::before {
+        content: '';
+        position: absolute;
+        left: -4px;
+        top: 7px;
+        width: 7px;
+        height: 7px;
+        border-radius: var(--radius-circle);
+        background: var(--yellow);
     }
 
-    .milestone-content { padding: 18px 20px; }
-    .milestone-title   { font-size: 1.05rem; }
-    .milestone-text    { font-size: .9rem; }
+    .milestone-year {
+        margin-bottom: 3px;
+        font-size: .9rem;
+    }
 
-    .journey--collapsed { max-height: 380px; }
+    .milestone-content {
+        border-left: 0;
+        padding: 0 0 32px;
+    }
+
+    .milestone-content::before { display: none; }
+
+    .milestone-title { font-size: 1.02rem; }
+    .milestone-text  { font-size: .9rem; }
 }
 
 @media (max-width: 480px) {
@@ -412,39 +304,14 @@
 
     .story h2 { font-size: 1.6rem; }
 
-    .journey::before { left: 14px; }
-    .journey::after  { left: 14px; }
+    .milestone { padding-left: 22px; }
 
-    .milestone,
-    .milestone[data-side="left"],
-    .milestone[data-side="right"] {
-        padding-left: 44px;
-    }
+    .milestone-content { padding: 0 0 26px; }
 
-    .milestone::before,
-    .milestone[data-side="left"]::before,
-    .milestone[data-side="right"]::before {
-        left: 7px;
-    }
-
-    .milestone::after,
-    .milestone[data-side="left"]::after,
-    .milestone[data-side="right"]::after {
-        left: 24px;
-        width: 14px;
-    }
-
-    .milestone-content { padding: 16px; }
-
-    .milestone-year {
-        font-size: .72rem;
-        padding: 3px 12px;
-    }
-
+    .milestone-year  { font-size: .85rem; }
     .milestone-title { font-size: .95rem; }
     .milestone-text  { font-size: .85rem; }
 
-    .journey--collapsed { max-height: 340px; }
     .story-toggle { font-size: .82rem; padding: 10px 24px; }
 }
 
@@ -785,49 +652,94 @@
     }
 }
 
-/* ===== Warrior Marching Background ===== */
-
-/* Card must be a positioning context */
-.milestone-content {
-    position: relative;
-    overflow: hidden;
+/* ===== Talk to a Specialist — closing CTA ===== */
+.about-cta {
+    padding: 84px 20px 92px;
+    background-color: var(--background);
+    color: #fff;
+    text-align: center;
+    font-family: var(--font-body);
 }
 
-/* Full-bleed background layer */
-.warrior-bg {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 0;
-    border-radius: inherit;
-    contain: strict;           /* isolate layout + paint from rest of page */
-    transform: translateZ(0);  /* single compositing layer for all children */
+.about-cta h2 {
+    font-size: 2.2rem;
+    margin: 0 0 14px;
+    color: var(--yellow);
 }
 
-/* Keep all card content above the warriors */
-.milestone-content > *:not(.warrior-bg) {
-    position: relative;
-    z-index: 1;
+.about-cta-lead {
+    font-size: 1.02rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, .6);
+    max-width: 56ch;
+    margin: 0 auto 34px;
 }
 
-/* A single marching row — pre-rendered bitmap background, zero child elements */
-.warrior-row {
-    position: absolute;
-    left: 0;
-    animation: marchRight var(--march-duration, 35s) linear infinite;
-    /* Convert dark SVG artwork → golden silhouette */
-    filter: invert(1) sepia(1) saturate(3) hue-rotate(10deg) brightness(1.05);
-    will-change: transform;
+/* Sized in em so font-size is the single knob that scales the whole button
+   (padding, icon and gap all follow it) — see the phone override below. */
+.about-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .6em;
+    padding: .85em 2.3em;
+    background-color: var(--yellow);
+    color: #111;
+    font-weight: 700;
+    font-size: .88rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1.5px solid var(--yellow);
+    border-radius: var(--radius-pill);
+    transition: background-color .2s ease, color .2s ease,
+                border-color .2s ease, box-shadow .2s ease;
 }
 
-/* Keyframe: slide from left edge to right, then seamlessly loop */
-@keyframes marchRight {
-    from { transform: translateX(-50%); }
-    to   { transform: translateX(0); }
+.about-cta-btn svg {
+    width: 1.55em;
+    height: 1.55em;
+    flex: none;
+}
+
+.about-cta-btn:hover,
+.about-cta-btn:focus-visible {
+    background-color: #fff;
+    color: #0f1115;
+    border-color: var(--yellow);
+    box-shadow: 0 2px 10px rgba(255, 204, 0, .35);
+}
+
+.about-cta-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0f1115;
+}
+
+@media (max-width: 768px) {
+    .about-cta { padding: 60px 18px 66px; }
+    .about-cta h2 { font-size: 1.7rem; }
+    .about-cta-lead { font-size: .93rem; margin-bottom: 28px; }
+    /* Shrink on phones: it was a full-width block bar before, so dropping to
+       inline-flex plus this smaller font roughly halves the footprint. Everything
+       else is em-based, so this one value scales padding, gap and icon with it. */
+    .about-cta-btn { font-size: .62rem; }
+}
+
+@media (max-width: 480px) {
+    .about-cta h2 { font-size: 1.45rem; }
+    .about-cta-lead { font-size: .88rem; }
 }
 
 /* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
-    .warrior-row { animation: none !important; }
+    .milestone {
+        transition: none;
+        opacity: 1;
+        transform: none;
+    }
+
+    .about-cta-btn:hover,
+    .about-cta-btn:focus-visible {
+        transform: none;
+    }
 }
