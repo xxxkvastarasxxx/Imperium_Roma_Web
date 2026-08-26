@@ -1,6 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
     // DOM Elements
     const overlay = document.querySelector('.chart-overlay');
+    if (overlay) {
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+    }
     const overlayContent = overlay.querySelector('.overlay-content');
     const priceChartCanvas = document.getElementById('priceTrendChart');
     const marketChartCanvas = document.getElementById('marketComparisonChart');
@@ -312,17 +316,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   
     function handlePriceChartClick(e) {
-      const points = priceChart.getElementsAtEventForMode(e, 'nearest', { intersect: true });
+      // intersect:false picks the nearest point in the column instead of
+      // demanding a hit inside the point's ~4px radius. A fingertip cannot
+      // reliably hit that, so on a phone most taps used to do nothing at all.
+      const points = priceChart.getElementsAtEventForMode(e, 'index', { intersect: false });
       if (points.length) {
         showYearDetails(points[0].index);
       }
     }
-  
+
+    let lastFocused = null;
+
+    function closeOverlay() {
+      if (!overlay.classList.contains('active')) return;
+      overlay.classList.remove('active');
+      document.body.classList.remove('has-modal');
+      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+      lastFocused = null;
+    }
+
     function handleOverlayClick(e) {
-      if (e.target === overlay) {
-        overlay.classList.remove('active');
+      // Backdrop, or the explicit close control
+      if (e.target === overlay || (e.target.closest && e.target.closest('.overlay-close'))) {
+        closeOverlay();
       }
     }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeOverlay();
+    });
   
     function handleTimeFilterClick(e) {
       timeFilterButtons.forEach(b => {
@@ -415,15 +437,26 @@ document.addEventListener("DOMContentLoaded", () => {
       const year = priceChart.data.labels[yearIndex];
       const price = priceChart.data.datasets[0].data[yearIndex];
   
+      // Recorded lots for this year, taken from SERIES. This was
+      // Math.random(), so reopening the same year showed a different number
+      // every time - not something to sit beside real valuations.
+      const lots = Array.isArray(activeLots) ? activeLots[yearIndex] : undefined;
+
       overlayContent.innerHTML = `
+        <button type="button" class="overlay-close" aria-label="Close details">&times;</button>
         <h3>${year} Market Details</h3>
         <div class="price-details">
-          <p>Average Price: ${formatCurrency(price)}</p>
-          <p>Transactions: ${Math.floor(Math.random() * 50 + 20)}</p>
-          <p>Top Auction House: ${auctionHouses[yearIndex % 3]}</p>
+          <p>Median realised: ${formatCurrency(price)}</p>
+          <p>Recorded lots: ${lots === undefined ? '\u2014' : lots}</p>
+          <p>Top auction house: ${auctionHouses[yearIndex % 3]}</p>
         </div>
       `;
+      lastFocused = document.activeElement;
       overlay.classList.add('active');
+      // Stop the page behind the dialog scrolling under the user's finger
+      document.body.classList.add('has-modal');
+      const closeBtn = overlayContent.querySelector('.overlay-close');
+      if (closeBtn) closeBtn.focus();
     }
   
     // Initialize default range data and event listeners

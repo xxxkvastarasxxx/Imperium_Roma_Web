@@ -2757,10 +2757,10 @@
     .carousel-track {
         gap: 12px;
         padding: 4px 16px;
-        /* proximity, not mandatory: mandatory re-snaps after every programmatic
-           scrollLeft change, which fights the loop's wrap and reads as a stutter
-           at the seam. proximity still aligns cards without hijacking the fling. */
-        scroll-snap-type: x proximity;
+        /* No snapping. The track is an infinite loop that re-centres itself with
+           programmatic scrolls; any snap type re-snaps afterwards and shows up
+           as a stutter at the seam. Free scrolling is smoother here. */
+        scroll-snap-type: none;
         scroll-padding-left: 16px;
     }
 

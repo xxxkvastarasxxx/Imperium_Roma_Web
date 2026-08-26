@@ -46,7 +46,11 @@ document.addEventListener("DOMContentLoaded", async function() {
     // wrap, the list is rendered LOOP_COPIES times and scrollLeft is silently
     // re-centred whenever the user crosses into an outer copy, so the first
     // coin follows the last one and vice versa.
-    const LOOP_COPIES = 3;
+    // Five copies rather than three: the dead zone below can then be a full set
+    // wide instead of half, so the user swipes ~10 cards between wraps. Fewer
+    // wraps means fewer chances to interrupt a fling, which is what shows up as
+    // stutter on a phone. Cost is 40 extra nodes reusing 10 cached images.
+    const LOOP_COPIES = 5;
     let loopSetWidth = 0;
     let loopQueued = false;
 
@@ -78,14 +82,15 @@ document.addEventListener("DOMContentLoaded", async function() {
         return el;
     }
 
-    // Shift scrollLeft with the smooth animation suppressed, so the wrap is
-    // invisible rather than animating all the way back.
-    function jumpBy(delta) {
-        if (!delta) return;
-        const prev = carouselTrack.style.scrollBehavior;
-        carouselTrack.style.scrollBehavior = 'auto';
-        carouselTrack.scrollLeft += delta;
-        carouselTrack.style.scrollBehavior = prev || '';
+    // Jump without animating. `behavior: 'instant'` overrides the stylesheet's
+    // `scroll-behavior: smooth`; toggling an inline style around the assignment
+    // is not reliable, and if smooth wins the wrap glides visibly backwards.
+    function scrollInstant(left) {
+        if (typeof carouselTrack.scrollTo === 'function') {
+            carouselTrack.scrollTo({ left: left, behavior: 'instant' });
+        } else {
+            carouselTrack.scrollLeft = left;
+        }
     }
 
     function onLoopScroll() {
@@ -94,14 +99,18 @@ document.addEventListener("DOMContentLoaded", async function() {
         requestAnimationFrame(() => {
             loopQueued = false;
             if (!loopSetWidth) return;
+            const S = loopSetWidth;
+            const mid = S * (LOOP_COPIES / 2);   // resting point, centre of the strip
             const x = carouselTrack.scrollLeft;
-            if (x >= loopSetWidth * 2 || x < loopSetWidth) {
-                // Normalise instead of shifting by exactly one set: a fast fling
-                // can cross more than a whole copy within a single frame, and a
-                // one-set shift would leave it out of range until the next event.
-                const wrapped = loopSetWidth
-                    + (((x - loopSetWidth) % loopSetWidth) + loopSetWidth) % loopSetWidth;
-                jumpBy(wrapped - x);
+            const drift = x - mid;
+
+            // Do nothing until the user is a whole set from centre. The content
+            // repeats every S, so shifting by any multiple of S is invisible.
+            // The previous threshold sat exactly on the resting position, so a
+            // 1px leftward drift teleported a full set - the visible glitch.
+            if (Math.abs(drift) > S) {
+                const sets = Math.trunc(drift / S);
+                scrollInstant(x - sets * S);
             }
         });
     }
@@ -118,7 +127,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             if (!isScrollMode()) return;
             const cards = carouselTrack.children;
             const perCopy = auctionItems.length;
-            if (cards.length < perCopy * 3) return;
+            if (cards.length < perCopy * LOOP_COPIES) return;
             // One set = the gap between the starts of copies 2 and 3. Two traps
             // this avoids: scrollWidth / LOOP_COPIES folds in the track's
             // horizontal padding and one missing gap, and anchoring on cards[0]
@@ -129,7 +138,9 @@ document.addEventListener("DOMContentLoaded", async function() {
             // fight the scroller's own clamping at 0 and at max.
             if (!(setWidth > carouselTrack.clientWidth)) return;
             loopSetWidth = setWidth;
-            jumpBy(setWidth - carouselTrack.scrollLeft); // start in the middle copy
+            // Rest at the centre of the three copies, so there is half a set of
+            // slack in both directions before anything needs to wrap.
+            scrollInstant(setWidth * (LOOP_COPIES / 2));
             carouselTrack.addEventListener('scroll', onLoopScroll, { passive: true });
         });
     }
