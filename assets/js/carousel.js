@@ -56,7 +56,9 @@ document.addEventListener("DOMContentLoaded", async function() {
         el.innerHTML = `
                 <div class="item-content">
                     <div class="image-wrap">
-                        <img src="${item.image}" alt="${item.title}" loading="lazy" decoding="async">
+                        <a class="image-link" href="${item.link}" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+                            <img src="${item.image}" alt="${item.title}" loading="lazy" decoding="async">
+                        </a>
                         <span class="price-badge">${item.price || ''}</span>
                     </div>
                     <div class="item-details">

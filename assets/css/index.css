@@ -829,6 +829,15 @@
     background: #111;
 }
 
+/* The coin photo links to the lot, same destination as the View details
+   button. The anchor must fill .image-wrap so the whole tile is the hit area.
+   New selector only - no existing rule is altered. */
+.image-wrap .image-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
 .image-wrap img {
     width: 100%;
     height: 100%;
@@ -2055,7 +2064,6 @@
 .auction-highlights .carousel button:not(.carousel-control) {
     background: var(--yellow) !important;
     color: #333 !important;
-    border: 1px solid var(--yellow) !important;
     box-shadow: none !important;
 }
 .auction-highlights .carousel a:not(.carousel-control):hover,

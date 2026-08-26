@@ -934,7 +934,10 @@
   /* Stacked, the horizontal connector no longer joins anything */
   .fact-rail { display: none; }
 
-  .fact-head { margin-bottom: 0.65rem; }
+  /* Centred once stacked: the badge no longer starts a horizontal run, so a
+     left-aligned column of 01/02/03 badges reads as ragged. */
+  .cert-facts { text-align: center; }
+  .fact-head { margin-bottom: 0.65rem; justify-content: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2377,3 +2380,58 @@
 /* (An older duplicate of `.fact-text a` lived here and, being later in the
    file, overrode the canonical rule with off-brand ochre on hover. The single
    definition now sits with the rest of the cert-facts block above.) */
+
+/* ===== Section headings on phones =====
+   A flat 2.2rem forced the 40-character Market Insights heading onto three
+   cramped lines at 400px. Fluid sizing brings it to two, text-wrap: balance
+   evens those lines instead of leaving a one-word orphan, and the catalogue
+   reference is kept intact rather than split mid-name. Media query only. */
+@media (max-width: 768px) {
+  .section-header {
+    margin-bottom: 1.75rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.45rem, 6.4vw, 2.2rem);
+    line-height: 1.15;
+    letter-spacing: -0.4px;
+    text-wrap: balance;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-subtext {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    text-wrap: balance;
+  }
+
+  /* "RIC III Marcus / Aurelius 171" split over two lines reads as two separate
+     references. It measures ~230px at this size, so it fits on one line even
+     at 320px. */
+  #issue-name {
+    white-space: nowrap;
+  }
+}
+
+/* ===== Insight buttons on phones =====
+   At 15px with 1.4rem side padding the primary label needs ~310px, but the
+   pill was capped at 300px - so "Request Analysis for Your Coin" broke onto a
+   second line with "Coin" stranded alone. Trimming the type and the padding
+   brings it to ~284px, which fits on one line, and balance keeps any wrap on
+   a genuinely narrow phone symmetrical rather than orphaned. Media query only. */
+@media (max-width: 768px) {
+  .insight-btn {
+    max-width: 330px;
+    padding: 0.8rem 1.1rem;
+    font-size: 0.875rem;
+    line-height: 1.3;
+    text-wrap: balance;
+    /* both buttons keep one height whether or not either label wraps */
+    min-height: 2.9rem;
+  }
+
+  .insight-btn svg {
+    width: 1.05em;
+    height: 1.05em;
+  }
+}
