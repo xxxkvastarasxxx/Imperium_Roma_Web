@@ -376,9 +376,7 @@
     .bibliotheca-image img,
     .biblio-arrow,
     .bibliotheca-button,
-    .carousel-track,
-    .running-roman,
-    .running-roman-reverse {
+    .carousel-track {
         transition: none !important;
         animation: none !important;
         transform: none !important;
@@ -411,64 +409,6 @@
     }
     .bibliotheca-cta {
         text-align: center;
-    }
-}
-
-/* Spacer between sections */
-.roman-spacer {
-    height: 100px;
-    width: 100%;
-    background: linear-gradient(to bottom, #efefef, var(--background));
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    z-index: 10;
-}
-
-.animation-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.running-roman, .running-roman-reverse {
-    position: absolute;
-    bottom: 0;
-    width: 100px;
-    height: auto;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    z-index: 2;
-}
-
-.running-roman {
-    animation: moveLeftToRight 15s linear infinite;
-}
-
-.running-roman-reverse {
-    animation: moveRightToLeft 15s linear infinite;
-}
-
-@keyframes moveLeftToRight {
-    0% {
-        left: -10%;
-    }
-    100% {
-        left: 110%;
-    }
-}
-
-@keyframes moveRightToLeft {
-    0% {
-        left: 110%;
-    }
-    100% {
-        left: -10%;
     }
 }
 
