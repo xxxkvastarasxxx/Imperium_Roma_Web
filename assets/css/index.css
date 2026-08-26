@@ -1044,25 +1044,13 @@
         scroll-behavior: smooth;  /* smooth movement */
         touch-action: pan-x; /* allow finger panning */
         overscroll-behavior-x: contain; /* avoid bounce chaining */
-        scrollbar-width: thin;  /* Firefox */
-        scrollbar-color: var(--yellow);
+        /* Scrollbar hidden on purpose: this track is swipe/scroll driven and
+           the yellow bar read as stray UI. The peeking next card is the
+           affordance instead. */
+        scrollbar-width: none;      /* Firefox */
+        -ms-overflow-style: none;   /* legacy Edge */
     }
-    
-    /* Styled scrollbar for WebKit */
-    .carousel-track::-webkit-scrollbar {
-        height: 6px;
-    }
-    .carousel-track::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-    }
-    .carousel-track::-webkit-scrollbar-thumb {
-        background: var(--yellow);
-        border-radius: 10px;
-    }
-    .carousel-track::-webkit-scrollbar-thumb:hover {
-        background: var(--yellow);
-    }
+    .carousel-track::-webkit-scrollbar { display: none; }
     
     .carousel-track > .auction-item {
         flex: 0 0 180px;
@@ -1173,14 +1161,13 @@
         scroll-behavior: smooth;
         touch-action: pan-x;
         overscroll-behavior-x: contain;
-        scrollbar-width: thin;  /* Firefox */
-    scrollbar-color: var(--yellow) rgba(255, 255, 255, 0.1);
+        /* Scrollbar hidden on purpose: this track is swipe/scroll driven and
+           the yellow bar read as stray UI. The peeking next card is the
+           affordance instead. */
+        scrollbar-width: none;      /* Firefox */
+        -ms-overflow-style: none;   /* legacy Edge */
     }
-    /* WebKit scrollbar */
-    .carousel-track::-webkit-scrollbar { height: 6px; }
-    .carousel-track::-webkit-scrollbar-track { background: rgba(255,255,255,.1); border-radius: 10px; }
-    .carousel-track::-webkit-scrollbar-thumb { background: var(--yellow); border-radius: 10px; }
-    .carousel-track::-webkit-scrollbar-thumb:hover { background: var(--yellow); }
+    .carousel-track::-webkit-scrollbar { display: none; }
     
     .carousel-track > .auction-item {
         flex: 0 0 160px;
@@ -1274,14 +1261,13 @@
         scroll-behavior: smooth;
         touch-action: pan-x;
         overscroll-behavior-x: contain;
-        scrollbar-width: thin;  /* Firefox */
-    scrollbar-color: var(--yellow) rgba(255, 255, 255, 0.1);
+        /* Scrollbar hidden on purpose: this track is swipe/scroll driven and
+           the yellow bar read as stray UI. The peeking next card is the
+           affordance instead. */
+        scrollbar-width: none;      /* Firefox */
+        -ms-overflow-style: none;   /* legacy Edge */
     }
-    /* WebKit scrollbar */
-    .carousel-track::-webkit-scrollbar { height: 6px; }
-    .carousel-track::-webkit-scrollbar-track { background: rgba(255,255,255,.1); border-radius: 10px; }
-    .carousel-track::-webkit-scrollbar-thumb { background: var(--yellow); border-radius: 10px; }
-    .carousel-track::-webkit-scrollbar-thumb:hover { background: var(--yellow); }
+    .carousel-track::-webkit-scrollbar { display: none; }
     
     .carousel-track > .auction-item {
         flex: 0 0 calc(50% - 10px);
@@ -2749,4 +2735,234 @@
     width: 3px;
     border-radius: 2px;
     background: var(--yellow);
+}
+
+/* =============================================================================
+   Mobile refinements - auction carousel + Discover Domus.
+   Media-query only: no rule here applies above 768px, so the desktop layout
+   is untouched.
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    /* Breathing room at the edges plus snap points, so a card is never clipped
+       mid-card against the viewport boundary. */
+    .carousel-track {
+        gap: 12px;
+        padding: 4px 16px;
+        /* proximity, not mandatory: mandatory re-snaps after every programmatic
+           scrollLeft change, which fights the loop's wrap and reads as a stutter
+           at the seam. proximity still aligns cards without hijacking the fling. */
+        scroll-snap-type: x proximity;
+        scroll-padding-left: 16px;
+    }
+
+    /* `white-space: nowrap` on the card was inherited by .item-desc and
+       defeated its 2-line clamp, so every description rendered as a single
+       truncated line. */
+    .carousel-track > .auction-item,
+    .auction-item {
+        flex: 0 0 38%;
+        width: auto;
+        min-width: 0;
+        max-width: 190px;
+        margin: 0;
+        white-space: normal;
+        scroll-snap-align: start;
+    }
+
+    /* Coins are round, but the source photos range from 0.46 to 1.21 aspect.
+       A square tile with `cover` crops every one of them acceptably and keeps
+       all cards the same height; the old fixed 120px height made a squat
+       letterbox that wasted the card width. */
+    .image-wrap {
+        height: auto;
+        aspect-ratio: 1 / 1;
+    }
+    .image-wrap img {
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* The base rule pulls the first card 5px off-canvas, which clipped it. */
+    .auction-item:first-child {
+        margin-left: 0;
+    }
+
+    /* Below 1024px carousel.js re-renders the item list rather than scrolling
+       it, so these arrows reshuffle the order instead of advancing - and at
+       this width they sit on top of the card. Native scroll is the control. */
+    .carousel-control {
+        display: none;
+    }
+
+    .item-details .item-desc {
+        white-space: normal;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-track > .auction-item,
+    .auction-item {
+        flex: 0 0 42%;
+        max-width: 185px;
+    }
+}
+
+@media (max-width: 560px) {
+    /* Tighter rhythm: every row removed here lifts the dashboard screenshot -
+       the most persuasive thing in this section - closer to the fold. */
+    .domus-tour {
+        padding: 30px 16px 34px;
+    }
+    .domus-left {
+        gap: 14px;
+    }
+
+    /* Compact 3-up. The stacked one-per-row version was legible but cost ~138px
+       for three short facts; with the labels shortened in the markup, three
+       columns fit without the ragged wraps that forced the stack. */
+    .domus-left .domus-stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+    }
+    .domus-left .domus-stats .stat {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 3px;
+        /* symmetric padding, so the centred text is centred on the column and
+           not pushed off-axis by a wider left inset */
+        padding: 10px 8px;
+        border-left: 0;
+    }
+    .domus-left .domus-stats .stat + .stat {
+        border-top: 0;
+    }
+    .domus-left .domus-stats .stat strong {
+        flex: 0 0 auto;
+        min-width: 0;
+        font-size: 17px;
+        line-height: 1.15;
+    }
+    .domus-left .domus-stats .stat span {
+        text-align: center;
+        font-size: 10.5px;
+        line-height: 1.3;
+        /* reserve two lines: only the middle label wraps, and without this the
+           three columns sit at different heights and the row reads ragged */
+        min-height: 2.6em;
+    }
+    /* the gold rail is the column divider now, so no border-left as well */
+    .domus-left .domus-stats .stat::before {
+        top: 7px;
+        bottom: 7px;
+        width: 2px;
+    }
+
+    /* It is a <div role="status">, not a link. At full width with a heavy
+       border it read as the page's primary action and did nothing when
+       tapped. A compact status strip is honest and frees ~25px. */
+    .domus-left .cta-button .domus-cta-locked {
+        width: auto;
+        max-width: 100%;
+        gap: 8px;
+        padding: 7px 13px 7px 9px;
+        border-width: 1px;
+        border-color: #dcdcdc;
+    }
+    .domus-left .cta-button .domus-cta-locked__label {
+        font-size: 12px;
+        letter-spacing: .02em;
+    }
+    .domus-left .cta-button .domus-cta-locked__badge {
+        font-size: 9.5px;
+        padding: 4px 9px;
+    }
+    /* "No credit card required" duplicates the FREE SIGN-UP pill above */
+    .domus-left .cta-button .domus-note {
+        display: none;
+    }
+
+    /* `flex: 1` split the row four ways and crushed "How It Works". Size each
+       tab to its label and let the row scroll instead. */
+    .domus-tab {
+        flex: 0 0 auto;
+        font-size: 13px;
+        padding: 12px 14px 10px;
+    }
+
+    /* 10px was below a comfortable reading size for these pills */
+    .domus-left .domus-trust li {
+        font-size: 11px;
+        padding: 7px 12px;
+    }
+}
+
+@media (max-width: 900px) {
+    /* Stacked layout only: the locked status reads better after the product
+       tour than before it. `.cta-button` sits inside `.domus-left` while the
+       tour copy is nested in `.domus-right`, so moving it in the markup would
+       reorder the desktop grid too. `display: contents` dissolves the
+       `.domus-left` box, promoting its children to grid items of
+       `.domus-split`, which lets `order` place the CTA last - no markup
+       change, and nothing above 900px is touched. Selectors still match the
+       DOM, so every existing `.domus-left ...` rule keeps working. */
+    .domus-split {
+        gap: 14px;
+    }
+    .domus-left {
+        display: contents;
+    }
+    .domus-left > .domus-header { order: 1; }
+    .domus-left > .domus-stats  { order: 2; }
+    .domus-right                { order: 3; margin-top: 8px; }
+    .domus-left > .cta-button   { order: 4; margin-top: 10px; }
+}
+
+@media (max-width: 768px) {
+    /* Coin placement derived from the desktop layout instead of hand-tuned per
+       breakpoint. On desktop the four coins sit at fixed ratios of the helmet -
+       diameter 0.25W; top pair +/-0.835W and -0.249H from its centre; bottom
+       pair +/-0.595W and +0.399H - and those ratios are what give the wide
+       version its spacing. Mobile reproduces them exactly and just scales the
+       helmet to whatever the viewport can hold, so the arrangement reads the
+       same at any phone size.
+
+       Helmet is 461x520, so H = 1.128W. A coin's left/top is its centre minus
+       its radius (0.125W), which gives the constants below. */
+    .parallax-section {
+        --helmet-w: clamp(150px, 44vw, 250px);
+    }
+    .parallax-img.helmet {
+        width: var(--helmet-w);
+        top: 40%;
+    }
+    .coin {
+        width: calc(var(--helmet-w) * 0.25);
+        height: auto;
+    }
+    /* the base rules pin coin-two and coin-three by their right edge; clear
+       that so the left offsets below govern */
+    .coin-one,
+    .coin-two,
+    .coin-three,
+    .coin-four {
+        right: auto;
+    }
+    .coin-one {
+        left: calc(50% - var(--helmet-w) * 0.960);
+        top: calc(40% - var(--helmet-w) * 0.406);
+    }
+    .coin-two {
+        left: calc(50% + var(--helmet-w) * 0.710);
+        top: calc(40% - var(--helmet-w) * 0.406);
+    }
+    .coin-four {
+        left: calc(50% - var(--helmet-w) * 0.720);
+        top: calc(40% + var(--helmet-w) * 0.325);
+    }
+    .coin-three {
+        left: calc(50% + var(--helmet-w) * 0.470);
+        top: calc(40% + var(--helmet-w) * 0.325);
+    }
 }
