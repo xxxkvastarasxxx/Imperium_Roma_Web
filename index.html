@@ -196,14 +196,17 @@
          and every browser here already takes the 5KB PNG above. Legacy crawlers that
          probe /favicon.ico still get served via the .htaccess rewrite. -->
 
+    <!-- LCP: the hero <video> poster is the largest contentful paint. A video
+         poster cannot carry fetchpriority itself, so preload it here to start
+         the fetch without waiting on the render-blocking stylesheets below. -->
+    <link rel="preload" as="image" href="/assets/images/general/poster-intro1.webp" fetchpriority="high">
+
     <!-- Stylesheet -->
-    <!-- Fonts: preconnect opens the TLS connection while the CSS request is
-         still in flight; the stylesheet link is discovered during the initial
-         HTML parse rather than after style.css is parsed (it used to be an
-         @import inside style.css, which serialised both requests). -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;700&display=swap">
+    <!-- Fonts are self-hosted (see @font-face in style.css), removing a
+         render-blocking third-party stylesheet. crossorigin is required on
+         font preloads even same-origin: fonts always fetch in CORS mode, and
+         without it the file is downloaded twice. -->
+    <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/montserrat-latin.woff2" crossorigin>
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/index.css">
 </head>
@@ -233,7 +236,7 @@
 
     <!-- Introduction -->
     <section class="section-title-text introduction">
-        <div class="drifting-objects">
+        <div class="drifting-objects" aria-hidden="true">
             <div class="object-container">
                 <!-- Objects are generating by drifting-objects.js -->
             </div>
@@ -299,7 +302,7 @@
                     <div class="news-content">
                         <h3>Roman Cemetery Unearthed</h3>
                         <p>A Roman cemetery filled with treasures, including jewelry and coins, was discovered in central Italy</p>
-                        <a href="https://www.smithsonianmag.com/smart-news/ancient-roman-cemetery-full-of-jewelry-coins-and-clothing-180983615/" class="read-link" target="_blank" rel="noopener noreferrer">Read more</a>
+                        <a href="https://www.smithsonianmag.com/smart-news/ancient-roman-cemetery-full-of-jewelry-coins-and-clothing-180983615/" class="read-link" target="_blank" rel="noopener noreferrer">Read more<span class="sr-only"> about Roman Cemetery Unearthed on Smithsonian Magazine (opens in a new tab)</span></a>
                     </div>
                 </article>
     
@@ -308,7 +311,7 @@
                     <div class="news-content">
                         <h3>Luxurious Roman Home</h3>
                         <p>Archaeologists discovered a luxurious Roman home near the Colosseum featuring a unique mosaic</p>
-                        <a href="https://www.euronews.com/culture/2023/12/14/archaeologists-unearth-luxurious-roman-home-with-unparalleled-mosaic-near-colosseum" class="read-link" target="_blank" rel="noopener noreferrer">Read more</a>
+                        <a href="https://www.euronews.com/culture/2023/12/14/archaeologists-unearth-luxurious-roman-home-with-unparalleled-mosaic-near-colosseum" class="read-link" target="_blank" rel="noopener noreferrer">Read more<span class="sr-only"> about Luxurious Roman Home on Euronews (opens in a new tab)</span></a>
                     </div>
                 </article>
     
@@ -317,7 +320,7 @@
                     <div class="news-content">
                         <h3>Ancient Roman 'Fridge'</h3>
                         <p>In Bulgaria, archaeologists uncovered an ancient Roman 'fridge' containing vessels and bones</p>
-                        <a href="https://vinepair.com/booze-news/ancient-roman-empire-wine-refrigerator/?utm_source=Newswav&utm_medium=Website" class="read-link" target="_blank" rel="noopener noreferrer">Read more</a>
+                        <a href="https://vinepair.com/booze-news/ancient-roman-empire-wine-refrigerator/?utm_source=Newswav&utm_medium=Website" class="read-link" target="_blank" rel="noopener noreferrer">Read more<span class="sr-only"> about Ancient Roman Fridge on VinePair (opens in a new tab)</span></a>
                     </div>
                 </article>
     
@@ -326,7 +329,7 @@
                     <div class="news-content">
                         <h3>Pompeii: Breathtaking New Paintings Found</h3>
                         <p>A third of the lost city has still to be cleared of volcanic debris. The current dig, the biggest in a generation, is revealing new treasures</p>
-                        <a href="https://www.bbc.co.uk/news/science-environment-68777741" class="read-link" target="_blank" rel="noopener noreferrer">Read more</a>
+                        <a href="https://www.bbc.co.uk/news/science-environment-68777741" class="read-link" target="_blank" rel="noopener noreferrer">Read more<span class="sr-only"> about Breathtaking New Paintings Found at Pompeii on BBC News (opens in a new tab)</span></a>
                     </div>
                 </article>
     
@@ -335,7 +338,7 @@
                     <div class="news-content">
                         <h3>Pompeii 'Treasure Chest'</h3>
                         <p>An intricately decorated blue room, interpreted as an ancient Roman shrine known as a sacrarium, was recently discovered</p>
-                        <a href="https://edition.cnn.com/2024/06/04/science/blue-sacrarium-pompeii-excavation-scli-intl-scn/index.html" class="read-link" target="_blank" rel="noopener noreferrer">Read more</a>
+                        <a href="https://edition.cnn.com/2024/06/04/science/blue-sacrarium-pompeii-excavation-scli-intl-scn/index.html" class="read-link" target="_blank" rel="noopener noreferrer">Read more<span class="sr-only"> about Pompeii Treasure Chest on CNN (opens in a new tab)</span></a>
                     </div>
                 </article>
     
@@ -344,7 +347,7 @@
                     <div class="news-content">
                         <h3>Pompeii Kitchen Shrine & More Discoveries</h3>
                         <p>A kitchen shrine adorned with serpents, a bakery, human skeletons, exquisite frescos, and more were found during recent excavations</p>
-                        <a href="https://www.bbc.co.uk/news/science-environment-66226417" class="read-link" target="_blank" rel="noopener noreferrer">Read more</a>
+                        <a href="https://www.bbc.co.uk/news/science-environment-66226417" class="read-link" target="_blank" rel="noopener noreferrer">Read more<span class="sr-only"> about Pompeii Kitchen Shrine and More Discoveries on BBC News (opens in a new tab)</span></a>
                     </div>
                 </article>
             </div>
@@ -553,10 +556,10 @@
     <section class="parallax-section">
         <div class="parallax-container">
             <img src="/assets/images/general/roman-helmet.webp" alt="Roman Gladiator Helmet" class="parallax-img helmet" width="461" height="520" loading="lazy" decoding="async">
-            <img src="/assets/images/anicoins/anicoin6.webp" alt="Ancient Roman Coin Design 1" class="coin coin-one" width="300" height="300" loading="lazy" decoding="async">
-            <img src="/assets/images/anicoins/anicoin7.webp" alt="Ancient Roman Coin Design 2" class="coin coin-two" width="291" height="273" loading="lazy" decoding="async">
-            <img src="/assets/images/anicoins/anicoin8.webp" alt="Ancient Roman Coin Design 3" class="coin coin-three" width="300" height="300" loading="lazy" decoding="async">
-            <img src="/assets/images/anicoins/anicoin9.webp" alt="Ancient Roman Coin Design 4" class="coin coin-four" width="300" height="293" loading="lazy" decoding="async">
+            <img src="/assets/images/anicoins/anicoin6.webp" alt="Ancient Roman Coin Design 1" class="coin coin-one" width="200" height="200" loading="lazy" decoding="async">
+            <img src="/assets/images/anicoins/anicoin7.webp" alt="Ancient Roman Coin Design 2" class="coin coin-two" width="200" height="188" loading="lazy" decoding="async">
+            <img src="/assets/images/anicoins/anicoin8.webp" alt="Ancient Roman Coin Design 3" class="coin coin-three" width="200" height="200" loading="lazy" decoding="async">
+            <img src="/assets/images/anicoins/anicoin9.webp" alt="Ancient Roman Coin Design 4" class="coin coin-four" width="200" height="195" loading="lazy" decoding="async">
             
             <div class="parallax-content">
             </div>

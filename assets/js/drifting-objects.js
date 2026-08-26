@@ -29,6 +29,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const spawn = () => {
         const object = document.createElement('img');
         object.src = objectImages[Math.floor(Math.random() * objectImages.length)];
+        // Purely decorative coin rain: an empty alt keeps these out of the
+        // accessibility tree (and off Lighthouse's image-alt audit) instead of
+        // making a screen reader announce 28 unnamed images.
+        object.alt = '';
         object.classList.add('object');
         
         // Spawn coins only on the edges - avoid center 35-65% where text is

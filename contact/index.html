@@ -97,13 +97,11 @@
     <meta name="theme-color" content="#ffffff"> -->
 
     <!-- Stylesheet -->
-    <!-- Fonts: preconnect opens the TLS connection while the CSS request is
-         still in flight; the stylesheet link is discovered during the initial
-         HTML parse rather than after style.css is parsed (it used to be an
-         @import inside style.css, which serialised both requests). -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;700&display=swap">
+    <!-- Fonts are self-hosted (see @font-face in style.css), removing a
+         render-blocking third-party stylesheet. crossorigin is required on
+         font preloads even same-origin: fonts always fetch in CORS mode, and
+         without it the file is downloaded twice. -->
+    <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/montserrat-latin.woff2" crossorigin>
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/contact.css">
 </head>
