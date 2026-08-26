@@ -192,6 +192,14 @@
 
     <link rel="icon" type="image/png" sizes="96x96" href="/assets/images/icons/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/images/icons/favicon-48x48.png">
+    <!-- Touch icons. iOS renders alpha as black, so these are opaque, and the
+         mark sits inside ~76% because iOS applies its own rounded mask. The
+         file also lives at /apple-touch-icon.png, which Safari probes by
+         default, so pages without this tag are still covered. -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="apple-mobile-web-app-title" content="Imperium Roma">
+    <meta name="theme-color" content="#0f0f10">
     <!-- The .ico is deliberately not linked: it is a 174KB multi-resolution bundle,
          and every browser here already takes the 5KB PNG above. Legacy crawlers that
          probe /favicon.ico still get served via the .htaccess rewrite. -->
@@ -263,7 +271,11 @@
         <div class="bibliotheca-split">
             <!-- LEFT: Image -->
             <div class="bibliotheca-image">
-                <img src="/assets/images/general/libraryCelsus.webp" alt="Ancient Roman Coins — Bibliotheca" loading="lazy" width="1440" height="960" decoding="async">
+                <img src="/assets/images/general/libraryCelsus.webp"
+                     srcset="/assets/images/general/libraryCelsus-744.webp 744w,
+                             /assets/images/general/libraryCelsus.webp 1440w"
+                     sizes="(max-width: 900px) 92vw, min(758px, 58vw)"
+                     alt="Ancient Roman Coins — Bibliotheca" loading="lazy" width="1440" height="960" decoding="async">
             </div>
 
             <!-- RIGHT: Text + Articles -->
@@ -568,14 +580,14 @@
 
     <!-- Auction Highlights -->
     <section class="auction-highlights">
-        <video class="background-video" autoplay loop muted playsinline poster="/assets/images/general/Roman-Coins_BG.jpg">
+        <video class="background-video" autoplay loop muted playsinline poster="/assets/images/general/poster-auction-1280.webp">
             <source src="/assets/videos/auction.intro.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         <div class="container auction-content">
             <h2 class="auction-title">Auction Highlights</h2>
             <div id="auction-carousel" class="carousel">
-                <button class="carousel-control prev" onclick="prevSlide()" aria-label="Previous slide"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+                <button class="carousel-control prev" type="button" aria-label="Previous slide"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
                 <div class="carousel-track">
                     <!-- Elements generating by carousel.js -->
                 </div>
@@ -594,18 +606,18 @@
     <!-- @include partials/footer.html -->
 
     <!-- Scripts -->
-    <script src="/assets/js/header.js"></script>
-    <script src="/assets/js/hamburger.js"></script>
-    <script src="/assets/js/drifting-objects.js"></script>
-    <script src="/assets/js/domus-features.js"></script>
-    <script src="/assets/js/domus-tabs.js"></script>
-    <script src="/assets/js/collision.js"></script>
-    <script src="/assets/js/parallax.js"></script>
-    <script src="/assets/js/news.js"></script>
-    <script src="/assets/js/bibliotheca-preview.js"></script>
-    <script src="/assets/js/carousel.js"></script>
-    <script src="/assets/js/newsletter.js"></script>
-    <script src="/assets/js/smooth-scroll.js"></script>
-    <script src="/assets/js/faq.js"></script>
+    <script src="/assets/js/header.js" defer></script>
+    <script src="/assets/js/hamburger.js" defer></script>
+    <script src="/assets/js/drifting-objects.js" defer></script>
+    <script src="/assets/js/domus-features.js" defer></script>
+    <script src="/assets/js/domus-tabs.js" defer></script>
+    <script src="/assets/js/collision.js" defer></script>
+    <script src="/assets/js/parallax.js" defer></script>
+    <script src="/assets/js/news.js" defer></script>
+    <script src="/assets/js/bibliotheca-preview.js" defer></script>
+    <script src="/assets/js/carousel.js" defer></script>
+    <script src="/assets/js/newsletter.js" defer></script>
+    <script src="/assets/js/smooth-scroll.js" defer></script>
+    <script src="/assets/js/faq.js" defer></script>
 </body>
 </html>

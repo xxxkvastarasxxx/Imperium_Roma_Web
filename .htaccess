@@ -157,4 +157,6 @@ ErrorDocument 404 /404.html
   AddType font/woff2 .woff2
   AddType video/mp4 .mp4
   AddType video/webm .webm
+  # Chrome ignores a manifest served as octet-stream
+  AddType application/manifest+json .webmanifest
 </IfModule>

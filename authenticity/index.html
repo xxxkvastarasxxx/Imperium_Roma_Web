@@ -81,6 +81,14 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon-16x16.png"> -->
     <link rel="icon" type="image/png" sizes="96x96" href="/assets/images/icons/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/images/icons/favicon-48x48.png">
+    <!-- Touch icons. iOS renders alpha as black, so these are opaque, and the
+         mark sits inside ~76% because iOS applies its own rounded mask. The
+         file also lives at /apple-touch-icon.png, which Safari probes by
+         default, so pages without this tag are still covered. -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="apple-mobile-web-app-title" content="Imperium Roma">
+    <meta name="theme-color" content="#0f0f10">
     <!-- The .ico is deliberately not linked: it is a 174KB multi-resolution bundle,
          and every browser here already takes the 5KB PNG above. Legacy crawlers that
          probe /favicon.ico still get served via the .htaccess rewrite. -->
@@ -137,9 +145,9 @@
     <!-- @include partials/footer.html -->
 
     <!-- Scripts -->
-    <script src="/assets/js/header.js"></script>
-    <script src="/assets/js/hamburger.js"></script>
-    <script src="/assets/js/newsletter.js"></script>
-    <script src="/assets/js/smooth-scroll.js"></script>
+    <script src="/assets/js/header.js" defer></script>
+    <script src="/assets/js/hamburger.js" defer></script>
+    <script src="/assets/js/newsletter.js" defer></script>
+    <script src="/assets/js/smooth-scroll.js" defer></script>
 </body>
 </html>
