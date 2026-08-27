@@ -333,10 +333,10 @@ input[type="file"] { display: none; }
 
 .scrollToTopBtn:hover,
 .scrollToTopBtn:focus-visible {
-  background-color: #fff;
+  background-color: var(--yellow-hover);
   color: #0f1115;
-  border-color: var(--yellow);
-  box-shadow: 0 2px 10px rgba(255, 204, 0, .35);
+  border-color: var(--yellow-hover);
+  box-shadow: 0 2px 6px rgba(15, 17, 21, .18);
 }
 
 .scrollToTopBtn:focus-visible {

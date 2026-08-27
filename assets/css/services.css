@@ -645,22 +645,31 @@
   flex-wrap: wrap;
 }
 
+/* Outline that fills on hover — the same manner as .service-cta, so the two
+   kinds of in-page CTA behave alike. Colour comes through two custom
+   properties, which lets the light-ground sections below re-tint the resting
+   state without fighting the hover rule on specificity. */
 .insight-btn {
+  --btn-fill: transparent;
+  --btn-line: rgba(255, 204, 0, 0.55);
+  --btn-ink: var(--yellow);
+  --btn-shadow: none;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   padding: 0.8rem 1.4rem;
-  background: var(--yellow);
-  color: #0f1115;
+  background: var(--btn-fill);
+  color: var(--btn-ink);
   font-weight: 650;
   font-size: 0.9375rem;
   letter-spacing: .005em;
   text-decoration: none;
   border-radius: 99px;
-  border: 1.5px solid var(--yellow);
+  border: 1.5px solid var(--btn-line);
+  box-shadow: var(--btn-shadow);
   text-align: center;
-  box-shadow: 0 1px 2px rgba(15, 17, 21, .10);
   transition: background-color .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease;
 }
 
@@ -670,30 +679,55 @@
   flex: none;
 }
 
-/* Secondary (export) reads as the quieter of the pair */
-.insight-btn.export-btn {
-  background: #fff;
-  color: var(--ink);
-  border-color: rgba(15, 17, 21, .18);
+/* The analysis panel is #fff and the detail sections are #f4f4f4. An outline
+   has almost no presence against either, and gold type on them is about 1.6:1,
+   so on light ground the main action takes a solid gold fill with dark type. */
+.market-analysis .insight-btn,
+.service-detail .insight-btn {
+  --btn-fill: var(--yellow);
+  --btn-line: var(--yellow);
+  --btn-ink: #0f1115;
+  --btn-shadow: 0 1px 2px rgba(15, 17, 21, .10);
 }
 
-.insight-btn.export-btn:hover,
-.insight-btn.export-btn:focus-visible {
-  border-color: rgba(15, 17, 21, .38);
-  background: #fafafa;
+/* Secondary of the pair keeps the gold but as an outline, so the two buttons
+   read as a hierarchy rather than as two equal choices. Listed after the rule
+   above deliberately: .insight-btn.export-btn alone ties with it on
+   specificity, and source order is what decides a tie. */
+.market-analysis .insight-btn.export-btn,
+.service-detail .insight-btn.export-btn {
+  --btn-fill: transparent;
+  --btn-line: rgba(255, 204, 0, 0.9);
+  --btn-ink: #0f1115;
+  --btn-shadow: none;
 }
 
+/* Outline buttons fill on hover */
 .insight-btn:hover,
 .insight-btn:focus-visible {
-  background: #fff;
+  background: var(--yellow);
   color: #0f1115;
   border-color: var(--yellow);
-  box-shadow: 0 2px 10px rgba(255, 204, 0, .35);
 }
 
+/* Already filled, so these lift a shade instead — same hover as the shared
+   .btn-banner family. Hover only: :focus-visible must fall through to the
+   double ring below, which this would otherwise outrank. */
+.market-analysis .insight-btn:not(.export-btn):hover,
+.service-detail .insight-btn:not(.export-btn):hover {
+  background: var(--yellow-hover);
+  color: #0f1115;
+  border-color: var(--yellow-hover);
+  box-shadow: 0 2px 6px rgba(15, 17, 21, .18);
+}
+
+/* Double ring, as on the shared .btn-banner family: these sit on the black
+   services block and on the white analysis panel, and one of the two rings
+   always contrasts with whatever is behind. A single dark outline was
+   invisible against the black section. */
 .insight-btn:focus-visible {
-  outline: 2px solid #0f1115;
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0f1115;
 }
 
 /* ---- Responsive ---- */
