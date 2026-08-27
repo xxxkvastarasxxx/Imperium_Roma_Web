@@ -422,29 +422,6 @@ nav ul li a.active {
     left: 0;
 }
 
-/* ===== Background-video poster crossfade =====
-   Inserted over each background <video> by video-fade.js and dissolved once
-   the video is actually playing, so the still does not cut to motion in one
-   step. background-size: cover is the equivalent of the video's object-fit,
-   so the two images stay registered during the fade. See video-fade.js for
-   why this is an overlay rather than a fade on the video itself. */
-.video-poster {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    pointer-events: none;
-    transition: opacity .55s ease;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .video-poster { transition: none; }
-}
-
 /* SEO H1 - visually hidden but accessible to screen readers and search engines */
 .banner-overlay {
     position: absolute;
