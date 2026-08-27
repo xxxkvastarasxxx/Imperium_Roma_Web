@@ -207,7 +207,7 @@
     <!-- LCP: the hero <video> poster is the largest contentful paint. A video
          poster cannot carry fetchpriority itself, so preload it here to start
          the fetch without waiting on the render-blocking stylesheets below. -->
-    <link rel="preload" as="image" href="/assets/images/general/poster-intro1.webp" fetchpriority="high">
+    <link rel="preload" as="image" href="/assets/images/general/poster-logo.webp" fetchpriority="high">
 
     <!-- Stylesheet -->
     <!-- Fonts are self-hosted (see @font-face in style.css), removing a
@@ -231,7 +231,7 @@
                  never an empty box; preload=metadata avoids pulling the whole
                  6.7MB file before first paint -->
             <video autoplay muted loop playsinline preload="metadata"
-                   poster="/assets/images/general/poster-intro1.webp"
+                   poster="/assets/images/general/poster-logo.webp"
                    width="1280" height="720" aria-hidden="true">
                 <source src="/assets/videos/intro1.mp4" type="video/mp4">
                 Your browser does not support the video tag.
@@ -574,7 +574,7 @@
 
     <!-- Auction Highlights -->
     <section class="auction-highlights">
-        <video class="background-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true">
+        <video class="background-video" autoplay loop muted playsinline preload="metadata" poster="/assets/images/general/poster-logo.webp" aria-hidden="true">
             <source src="/assets/videos/auction.intro.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
