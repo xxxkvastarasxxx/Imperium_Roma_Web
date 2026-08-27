@@ -7,6 +7,78 @@
 
 const BIBLIO_ARTICLES = [
     {
+        slug: "where-to-buy-roman-coins",
+        title: "Where to Buy Ancient Roman Coins Safely",
+        date: "August 2026",
+        category: "guides",
+        categoryLabel: "Collector Guides",
+        excerpt: "The four channels for buying Roman coins, how to vet a seller in five minutes, and the listing red flags to avoid."
+    },
+    {
+        slug: "roman-silver-debasement",
+        title: "How the Denarius Lost Its Silver: Roman Debasement Explained",
+        date: "August 2026",
+        category: "coins",
+        categoryLabel: "Coins & Denominations",
+        excerpt: "From 98 per cent fine to a silver-washed token in under three centuries — the story of Roman debasement."
+    },
+    {
+        slug: "why-are-roman-coins-so-cheap",
+        title: "Why Are Ancient Roman Coins So Cheap?",
+        date: "July 2026",
+        category: "history",
+        categoryLabel: "History",
+        excerpt: "A genuine 1,800-year-old coin for the price of a meal. The reason is supply — and it is more interesting than it sounds."
+    },
+    {
+        slug: "what-does-sc-mean-on-roman-coins",
+        title: "What Does SC Mean on a Roman Coin?",
+        date: "July 2026",
+        category: "minting",
+        categoryLabel: "Minting & Iconography",
+        excerpt: "SC means Senatus Consulto, by decree of the Senate. Why it marks brass and bronze but never imperial gold or silver."
+    },
+    {
+        slug: "how-to-clean-roman-coins",
+        title: "Should You Clean an Ancient Roman Coin? Almost Always, No",
+        date: "July 2026",
+        category: "guides",
+        categoryLabel: "Collector Guides",
+        excerpt: "Cleaning is the fastest way to destroy a Roman coin value. What is safe, what is not, and the one exception."
+    },
+    {
+        slug: "is-it-legal-to-own-roman-coins",
+        title: "Is It Legal to Buy and Own Ancient Roman Coins?",
+        date: "July 2026",
+        category: "guides",
+        categoryLabel: "Collector Guides",
+        excerpt: "Collecting Roman coins is legal in most countries — provided the coin left its country of origin lawfully. Here is what that means."
+    },
+    {
+        slug: "how-to-identify-a-roman-coin",
+        title: "How to Identify a Roman Coin in Six Steps",
+        date: "June 2026",
+        category: "guides",
+        categoryLabel: "Collector Guides",
+        excerpt: "A repeatable method for naming and dating an unidentified Roman coin, from metal and weight to the mint mark."
+    },
+    {
+        slug: "how-much-is-a-roman-coin-worth",
+        title: "How Much Is a Roman Coin Worth? A Realistic Price Guide",
+        date: "June 2026",
+        category: "guides",
+        categoryLabel: "Collector Guides",
+        excerpt: "Indicative price bands by denomination and grade, the five factors that set value, and how to check real sold prices."
+    },
+    {
+        slug: "is-my-roman-coin-real",
+        title: "How to Tell If a Roman Coin Is Real: 9 Checks You Can Do at Home",
+        date: "June 2026",
+        category: "guides",
+        categoryLabel: "Collector Guides",
+        excerpt: "Nine practical checks — weight, magnetism, edge seams, surface texture, style — that catch most fake Roman coins."
+    },
+    {
         slug: "denarius-silver-standard",
         title: "Denarius: The Silver Standard of Rome",
         date: "February 2026",

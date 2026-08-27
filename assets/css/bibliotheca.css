@@ -447,6 +447,259 @@ body {
     background: #ffd633;
 }
 
+
+/* --- Long-form article furniture (tables, key facts, FAQ, related) ---------
+   Added for the question-led Bibliotheca articles. Comparison tables and a
+   stated "short answer" are what passage extraction actually quotes, so they
+   get real styling rather than falling back to unstyled browser defaults. */
+
+.biblio-article-content .biblio-answer {
+    margin: 0 0 26px;
+    padding: 18px 22px;
+    background: #111;
+    border: 1px solid #1c1c1c;
+    border-left: 3px solid var(--yellow);
+    border-radius: var(--radius-md);
+    color: #ddd;
+    font-size: 16.5px;
+    line-height: 1.75;
+}
+
+.biblio-article-content .biblio-answer strong {
+    color: var(--yellow);
+}
+
+/* Inline prose links. Without this they fall through to the browser default —
+   bright blue with a hard underline — which is unreadable on #0d0d0d and fights
+   the palette everywhere these articles cross-link to each other. The underline
+   stays (colour alone must not be the only cue) but is dimmed until hover. */
+.biblio-article-content p a,
+.biblio-article-content li a,
+.biblio-article-content td a,
+.biblio-article-content blockquote a {
+    color: var(--yellow);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 204, 0, 0.38);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color .2s ease, text-decoration-color .2s ease;
+}
+
+.biblio-article-content p a:hover,
+.biblio-article-content li a:hover,
+.biblio-article-content td a:hover,
+.biblio-article-content blockquote a:hover,
+.biblio-article-content p a:focus-visible,
+.biblio-article-content li a:focus-visible,
+.biblio-article-content td a:focus-visible,
+.biblio-article-content blockquote a:focus-visible {
+    color: var(--yellow-hover);
+    text-decoration-color: var(--yellow-hover);
+}
+
+.biblio-article-content a:focus-visible {
+    outline: 2px solid var(--yellow);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+}
+
+/* Harvard in-text citations. Deliberately quieter than a prose link — they are
+   navigation to the reference list, not part of the sentence. Higher class
+   specificity than the prose-link rules above, so they win without !important. */
+.biblio-article-content .biblio-cite {
+    color: #8a8a8a;
+    font-size: 0.86em;
+}
+
+.biblio-article-content .biblio-cite a {
+    color: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 1px dotted #444;
+    transition: color .2s ease, border-color .2s ease;
+}
+
+.biblio-article-content .biblio-cite a:hover,
+.biblio-article-content .biblio-cite a:focus-visible {
+    color: var(--yellow);
+    border-bottom-color: var(--yellow);
+}
+
+/* Reference list: alphabetical, unnumbered, hanging indent per Harvard. */
+.biblio-references {
+    margin-top: 44px;
+    padding-top: 26px;
+    border-top: 1px solid #1c1c1c;
+}
+
+.biblio-references h2 {
+    margin-top: 0 !important;
+}
+
+.biblio-references ul {
+    list-style: none;
+    padding-left: 0;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #999;
+}
+
+.biblio-references li {
+    padding-left: 2em;
+    text-indent: -2em;
+    margin-bottom: 11px;
+    /* A URL with no spaces must not push the page sideways on a phone. */
+    overflow-wrap: break-word;
+}
+
+/* Highlights the entry you just jumped to from an in-text citation. */
+.biblio-references li:target {
+    color: #ddd;
+}
+
+.biblio-references li:target::marker,
+.biblio-references li:target strong {
+    color: var(--yellow);
+}
+
+.biblio-references .biblio-refs-note {
+    margin-top: 18px;
+    color: #666;
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.65;
+}
+
+.biblio-keyfacts {
+    margin: 26px 0;
+    padding: 20px 24px;
+    background: #101010;
+    border: 1px solid #1c1c1c;
+    border-radius: var(--radius-md);
+}
+
+.biblio-keyfacts h3 {
+    margin: 0 0 10px;
+    color: var(--yellow);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.biblio-keyfacts ul {
+    margin: 0;
+}
+
+/* Tables are wider than the 780px column on phones, so they scroll inside
+   their own wrapper instead of pushing the page sideways. */
+.biblio-table-wrap {
+    margin: 24px 0;
+    overflow-x: auto;
+    border: 1px solid #1c1c1c;
+    border-radius: var(--radius-md);
+}
+
+.biblio-article-content table {
+    width: 100%;
+    min-width: 460px;
+    border-collapse: collapse;
+    font-size: 14px;
+    color: #aaa;
+}
+
+.biblio-article-content th,
+.biblio-article-content td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid #1c1c1c;
+    line-height: 1.55;
+}
+
+.biblio-article-content thead th {
+    background: #141414;
+    color: #e6e6e6;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+
+.biblio-article-content tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.biblio-article-content tbody tr:hover td {
+    background: #121212;
+}
+
+.biblio-article-content td strong {
+    color: #ddd;
+}
+
+.biblio-article-content caption {
+    caption-side: bottom;
+    padding: 10px 14px;
+    color: #666;
+    font-size: 12.5px;
+    font-style: italic;
+    text-align: left;
+}
+
+/* FAQ: each question is a real heading so it can be extracted on its own. */
+.biblio-faq h3 {
+    margin: 22px 0 6px;
+    color: #e0e0e0;
+    font-size: 16.5px;
+}
+
+.biblio-faq h3::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 9px;
+    vertical-align: middle;
+    background: var(--yellow);
+    border-radius: 50%;
+}
+
+.biblio-related {
+    margin: 40px 0 0;
+    padding: 22px 24px;
+    background: #101010;
+    border: 1px solid #1c1c1c;
+    border-radius: var(--radius-md);
+}
+
+.biblio-related h2 {
+    margin: 0 0 12px !important;
+    font-size: 18px !important;
+}
+
+.biblio-related ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.biblio-related a {
+    color: var(--yellow);
+    text-decoration: none;
+}
+
+.biblio-related a:hover,
+.biblio-related a:focus-visible {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .biblio-article-content .biblio-answer { font-size: 15px; padding: 15px 18px; }
+    .biblio-article-content table { font-size: 13px; }
+    .biblio-article-content th,
+    .biblio-article-content td { padding: 8px 11px; }
+    .biblio-faq h3 { font-size: 15.5px; }
+    .biblio-references ul { font-size: 13px; }
+}
+
 /* --- Responsive --- */
 @media (max-width: 1024px) {
     .biblio-hero { height: 50vh; }

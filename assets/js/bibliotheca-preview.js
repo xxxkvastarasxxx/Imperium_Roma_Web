@@ -5,22 +5,22 @@
 document.addEventListener("DOMContentLoaded", function () {
     const articles = [
         {
-            title: "Denarius: The Silver Standard of Rome",
-            date: "February 2026",
-            excerpt: "Struck for over five centuries, the denarius was the backbone of Roman commerce — learn its origins, evolution, and iconography.",
-            slug: "denarius-silver-standard"
+            title: "Where to Buy Ancient Roman Coins Safely",
+            date: "August 2026",
+            excerpt: "The four channels for buying Roman coins, how to vet a seller in five minutes, and the listing red flags to avoid.",
+            slug: "where-to-buy-roman-coins"
         },
         {
-            title: "Reading Coin Legends: A Beginner's Guide",
-            date: "February 2026",
-            excerpt: "Latin inscriptions on Roman coins reveal emperors, tribunes, and victories. Decode the abbreviations step by step.",
-            slug: "reading-coin-legends"
+            title: "How the Denarius Lost Its Silver: Roman Debasement Explained",
+            date: "August 2026",
+            excerpt: "From 98 per cent fine to a silver-washed token in under three centuries — the story of Roman debasement.",
+            slug: "roman-silver-debasement"
         },
         {
-            title: "Aureus vs Denarius: The Coin Hierarchy",
-            date: "January 2026",
-            excerpt: "From the humble as to the prestigious aureus — understand the full spectrum of Roman denomination and value.",
-            slug: "aureus-vs-denarius"
+            title: "Why Are Ancient Roman Coins So Cheap?",
+            date: "July 2026",
+            excerpt: "A genuine 1,800-year-old coin for the price of a meal. The reason is supply — and it is more interesting than it sounds.",
+            slug: "why-are-roman-coins-so-cheap"
         }
     ];
 
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!container) return;
 
     container.innerHTML = articles.map(function (a) {
-        return `<a href="/bibliotheca/?doc=${a.slug}" target="_blank" rel="noopener noreferrer" class="bibliotheca-card">
+        return `<a href="/bibliotheca/${a.slug}/" target="_blank" rel="noopener noreferrer" class="bibliotheca-card">
             <h3>${a.title}</h3>
             <span class="biblio-arrow">&rarr;</span>
         </a>`;

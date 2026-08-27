@@ -2006,9 +2006,10 @@ body.has-modal {
 }
 
 /* ===== Our Services =====
-   Domus is given its own card above the list, because the platform is a
-   different kind of offer from a one-off service. Below it, the four named
-   services sit in a 2x2 grid with the catch-all spanning the full width. */
+   The four named services lead, in a 2x2 grid with the catch-all spanning the
+   full width. Domus follows at the foot of the section: the platform is a
+   different kind of offer from a one-off service, and it reads better as the
+   next step than as the opening pitch. */
 .services {
   --svc-line: rgba(255, 255, 255, 0.10);
   --svc-soft: #a9a49c;
@@ -2034,7 +2035,8 @@ body.has-modal {
   align-items: center;
   text-align: left;
   max-width: 1080px;
-  margin: 0 auto 3rem;
+  /* Sits below the service grid, so the gap goes above it now */
+  margin: 3rem auto 0;
   padding: 2rem 2.25rem;
   background: #141414;
   border: 1px solid var(--svc-line);
@@ -2098,16 +2100,33 @@ body.has-modal {
   transform: rotate(-45deg);
 }
 
-/* ---- Section sub-heading ---- */
+/* ---- Section sub-heading ----
+   These four services are what the page is for, so this is a heading rather
+   than the small grey label it used to be when Domus led the section. */
 .services-subhead {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
   max-width: 1080px;
-  margin: 0 auto 1.25rem;
+  margin: 0 auto 1.5rem;
   text-align: left;
-  font-size: 0.75rem;
+  font-size: clamp(1.3rem, 2.4vw, 1.7rem);
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--svc-soft);
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.25;
+  color: #fff;
+}
+
+/* Gold rule echoes the platform card's left edge, keeping the two blocks in
+   one family now that they sit at opposite ends of the section. */
+.services-subhead::before {
+  content: '';
+  flex: none;
+  width: 3px;
+  height: 1.15em;
+  background: var(--yellow);
+  border-radius: 2px;
 }
 
 /* ---- Service grid ---- */
@@ -2238,6 +2257,7 @@ body.has-modal {
   .platform-card {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    margin-top: 2.25rem;
     padding: 1.5rem 1.35rem;
   }
 
