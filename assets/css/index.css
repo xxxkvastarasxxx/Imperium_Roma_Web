@@ -783,6 +783,16 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    /* A failed image renders its alt text in whatever colour it inherits, which
+       is what produced the coloured flash on the tile. Nothing to inherit now. */
+    color: transparent;
+}
+
+/* Set by carousel.js when a lot photo is missing or fails to load. The tiles
+   are hotlinked from an external auction host, so this is a normal state, not
+   an edge case: it must land on the same neutral dark as a loading tile. */
+.image-wrap.is-empty {
+    background: #15151a;
 }
 
 .price-badge {
@@ -831,11 +841,16 @@
 
 /* View Details Button */
 .view-details-btn {
+    /* .item-details is a flex column, so a bare inline-block still stretches to
+       the full card width. align-self is what actually sizes this to its label. */
+    align-self: center;
     display: inline-block;
-    padding: 8px 14px;
-    background: transparent;
-    color: var(--cta);
-    border: 1.5px solid var(--cta);
+    padding: 9px 20px;
+    background: var(--yellow);
+    color: #0f1115;
+    /* Border matched to the fill rather than removed, so the solid and any
+       future outline variant keep identical metrics. Was var(--cta) = white. */
+    border: 1.5px solid var(--yellow);
     border-radius: var(--radius-pill);
     text-decoration: none;
     font-family: var(--font-body);
@@ -847,13 +862,19 @@
     margin-top: auto;
 }
 
-.view-details-btn:hover,
+.view-details-btn:hover {
+    background: var(--yellow-hover);
+    border-color: var(--yellow-hover);
+    color: #0f1115;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(15, 17, 21, .18);
+}
+
+/* These sit on video, so the double ring guarantees one visible edge whatever
+   frame is behind. The old rule set outline:none with no replacement. */
 .view-details-btn:focus-visible {
-    background: var(--cta);
-    color: var(--cta-ink);
-    transform: translateY(-1px) scale(1.02);
-    box-shadow: var(--shadow-gold);
     outline: none;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #0f1115;
 }
 
 /* Promote Lot Button */

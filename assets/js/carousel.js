@@ -82,6 +82,29 @@ document.addEventListener("DOMContentLoaded", async function() {
                     </div>
                 </div>
             `;
+        // Lot photos are hotlinked from an external auction host, so a missing
+        // or failed image is routine. Left alone the browser draws its own
+        // broken-image glyph over the tile; dropping the <img> lets the neutral
+        // .image-wrap background stand in instead. The link stays clickable,
+        // and nothing is lost for assistive tech — .image-link is already
+        // aria-hidden, with the real title in .item-title below.
+        const wrap = el.querySelector('.image-wrap');
+        const img = wrap && wrap.querySelector('img');
+        if (img) {
+            const drop = function () {
+                img.remove();
+                wrap.classList.add('is-empty');
+            };
+            if (!item.image) {
+                drop();
+            } else {
+                img.addEventListener('error', drop, { once: true });
+                // A clone built from an already-failed cached image can finish
+                // before the listener above exists, and then never fires.
+                if (img.complete && img.naturalWidth === 0) drop();
+            }
+        }
+
         if (isClone) {
             // Duplicates exist only to make the scroll endless: keep them out of
             // the accessibility tree and the tab order so the list still reads

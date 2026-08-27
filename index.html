@@ -574,7 +574,7 @@
 
     <!-- Auction Highlights -->
     <section class="auction-highlights">
-        <video class="background-video" autoplay loop muted playsinline poster="/assets/images/general/poster-auction-1280.webp">
+        <video class="background-video" autoplay loop muted playsinline preload="metadata" aria-hidden="true">
             <source src="/assets/videos/auction.intro.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -600,6 +600,7 @@
     <!-- @include partials/footer.html -->
 
     <!-- Scripts -->
+    <script src="/assets/js/video-fade.js" defer></script>
     <script src="/assets/js/header.js" defer></script>
     <script src="/assets/js/hamburger.js" defer></script>
     <script src="/assets/js/drifting-objects.js" defer></script>
