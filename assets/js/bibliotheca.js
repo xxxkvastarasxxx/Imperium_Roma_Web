@@ -7,6 +7,22 @@
 
 const BIBLIO_ARTICLES = [
     {
+        slug: "how-were-roman-coins-made",
+        title: "How Were Roman Coins Made? Inside the Imperial Mint",
+        date: "August 2026",
+        category: "minting",
+        categoryLabel: "Minting & Iconography",
+        excerpt: "Hand-cut dies, cast blanks and a single hammer blow — how Rome made coin by the billion, and what the process leaves on the coin."
+    },
+    {
+        slug: "how-to-store-roman-coins",
+        title: "How to Store Ancient Roman Coins Safely",
+        date: "August 2026",
+        category: "guides",
+        categoryLabel: "Collector Guides",
+        excerpt: "Which holder materials are safe, why PVC and oak destroy coins, and the humidity level that keeps bronze stable."
+    },
+    {
         slug: "where-to-buy-roman-coins",
         title: "Where to Buy Ancient Roman Coins Safely",
         date: "August 2026",
