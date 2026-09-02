@@ -50,3 +50,6 @@ dist/
 **/fake*.png
 **/test*.jpg
 **/test*.png
+
+# IndexNow submission state (per-page content hashes; persisted via CI cache)
+.indexnow-state.json

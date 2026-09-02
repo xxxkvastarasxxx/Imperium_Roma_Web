@@ -27,6 +27,18 @@ jobs:
       - name: Build optimized site (-> dist/)
         run: npm run build
 
+      # Carries the per-page content hashes between runs so IndexNow only ever
+      # sees genuinely changed URLs. Cache entries are immutable, so the key is
+      # per-commit and restore-keys falls back to the most recent previous entry.
+      # A cache miss is harmless: the submitter treats it as a first run.
+      - name: Restore IndexNow state
+        uses: actions/cache@v4
+        with:
+          path: .indexnow-state.json
+          key: indexnow-state-${{ github.sha }}
+          restore-keys: |
+            indexnow-state-
+
       - name: Deploy via SFTP
         uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
@@ -69,3 +81,14 @@ jobs:
           remote_path: '/Imperium_Roma/config'
           sftp_only: true
           args: '-o ConnectTimeout=10'
+
+      # Runs last, and only on a real push: submitting a URL before the upload has
+      # landed asks the crawler to fetch a 404. Bing is the participant that matters
+      # here — its index is what ChatGPT's search grounding reads. Google does not
+      # participate in IndexNow, so this is not a Google ranking step.
+      # Never fails the deploy: the site is already live by this point, and a
+      # throttled or rejected ping is not worth a red build.
+      - name: Notify IndexNow of changed pages
+        if: github.event_name == 'push'
+        continue-on-error: true
+        run: node scripts/indexnow.mjs

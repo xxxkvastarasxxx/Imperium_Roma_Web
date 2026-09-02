@@ -8,6 +8,8 @@
     "dev": "node dev.mjs",
     "build": "node build.mjs",
     "preview": "node dev.mjs --preview",
+    "indexnow": "node scripts/indexnow.mjs",
+    "indexnow:dry": "node scripts/indexnow.mjs --dry-run",
     "clean": "node -e \"import('node:fs').then(fs=>fs.rmSync('dist',{recursive:true,force:true}))\""
   },
   "engines": {
