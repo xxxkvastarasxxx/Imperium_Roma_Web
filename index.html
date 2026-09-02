@@ -200,9 +200,9 @@
     <link rel="manifest" href="/site.webmanifest">
     <meta name="apple-mobile-web-app-title" content="Imperium Roma">
     <meta name="theme-color" content="#0f0f10">
-    <!-- The .ico is deliberately not linked: every browser here already takes the
-         PNG above. Legacy crawlers that probe /favicon.ico still get served the
-         16/32/48 bundle via the .htaccess rewrite. -->
+    <!-- The .ico is deliberately not linked: it is a 174KB multi-resolution bundle,
+         and every browser here already takes the 5KB PNG above. Legacy crawlers that
+         probe /favicon.ico still get served via the .htaccess rewrite. -->
 
     <!-- LCP: the hero <video> poster is the largest contentful paint. A video
          poster cannot carry fetchpriority itself, so preload it here to start
@@ -445,28 +445,28 @@
                     <div class="domus-features">
                         <div class="feature-card">
                             <div class="feature-icon">
-                                <img src="/assets/images/icons/collection.png" alt="Coin collection management icon" onerror="this.src='/assets/images/icons/brand-mark.png'" width="512" height="512" loading="lazy" decoding="async">
+                                <img src="/assets/images/icons/collection.png" alt="Coin collection management icon" onerror="this.src='/assets/images/icons/favicon.ico'" width="512" height="512" loading="lazy" decoding="async">
                             </div>
                             <h3>Manage Your Collection</h3>
                             <p>Catalog, organise and showcase your Roman coins with intuitive digital tools</p>
                         </div>
                         <div class="feature-card">
                             <div class="feature-icon">
-                                <img src="/assets/images/icons/identify.png" alt="Coin identification icon" onerror="this.src='/assets/images/icons/brand-mark.png'" width="512" height="512" loading="lazy" decoding="async">
+                                <img src="/assets/images/icons/identify.png" alt="Coin identification icon" onerror="this.src='/assets/images/icons/favicon.ico'" width="512" height="512" loading="lazy" decoding="async">
                             </div>
                             <h3>Identify Your Finds</h3>
                             <p>Advanced identification tools backed by expert community support</p>
                         </div>
                         <div class="feature-card">
                             <div class="feature-icon">
-                                <img src="/assets/images/icons/commuty.png" alt="Collector community icon" onerror="this.src='/assets/images/icons/brand-mark.png'" width="512" height="512" loading="lazy" decoding="async">
+                                <img src="/assets/images/icons/commuty.png" alt="Collector community icon" onerror="this.src='/assets/images/icons/favicon.ico'" width="512" height="512" loading="lazy" decoding="async">
                             </div>
                             <h3>Join the Community</h3>
                             <p>Connect with fellow collectors and participate in expert discussions</p>
                         </div>
                         <div class="feature-card">
                             <div class="feature-icon">
-                                <img src="/assets/images/icons/knowledge.png" alt="Expert numismatic knowledge icon" onerror="this.src='/assets/images/icons/brand-mark.png'" width="512" height="512" loading="lazy" decoding="async">
+                                <img src="/assets/images/icons/knowledge.png" alt="Expert numismatic knowledge icon" onerror="this.src='/assets/images/icons/favicon.ico'" width="512" height="512" loading="lazy" decoding="async">
                             </div>
                             <h3>Expert Knowledge</h3>
                             <p>Extensive database of Roman coinage with detailed historical context</p>

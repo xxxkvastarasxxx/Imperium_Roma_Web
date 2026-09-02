@@ -321,9 +321,9 @@
     <link rel="manifest" href="/site.webmanifest">
     <meta name="apple-mobile-web-app-title" content="Imperium Roma">
     <meta name="theme-color" content="#0f0f10">
-    <!-- The .ico is deliberately not linked: every browser here already takes the
-         PNG above. Legacy crawlers that probe /favicon.ico still get served the
-         16/32/48 bundle via the .htaccess rewrite. -->
+    <!-- The .ico is deliberately not linked: it is a 174KB multi-resolution bundle,
+         and every browser here already takes the 5KB PNG above. Legacy crawlers that
+         probe /favicon.ico still get served via the .htaccess rewrite. -->
     <!-- Fonts are self-hosted (see @font-face in style.css), removing a
          render-blocking third-party stylesheet. crossorigin is required on
          font preloads even same-origin: fonts always fetch in CORS mode, and

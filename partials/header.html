@@ -1,11 +1,12 @@
     <header>
         <div class="header__container">
             <a class="logo" href="/">
-                <!-- 96x96 PNG (5KB) rather than favicon.ico (174KB) — see footer partial.
-                     This one is above the fold on every page, so it is eagerly loaded
-                     with explicit dimensions to avoid a layout shift in the header. -->
-                <img src="/assets/images/icons/favicon-96x96.png" alt="Imperium Roma"
-                     width="40" height="40" decoding="async">
+                <!-- The 256px lockup, not favicon.ico (174KB) and not the 96px favicon:
+                     at 80px the 96px PNG would upscale on a 2x display, so this uses the
+                     full-resolution mark. Above the fold on every page, so it is eagerly
+                     loaded with explicit dimensions to avoid a layout shift in the header. -->
+                <img src="/assets/images/icons/logo-lockup.png" alt="Imperium Roma"
+                     width="64" height="64" decoding="async">
                 <span>Imperium Roma</span>
             </a>
             <nav>
