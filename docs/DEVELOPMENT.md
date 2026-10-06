@@ -158,6 +158,12 @@ checkout → setup-node → npm ci → npm run build
          → SFTP upload dist/* to IONOS
 ```
 
+`vendor/` (~3,400 files, ~30 min over IONOS SFTP) is uploaded **only when `composer.lock`
+changes**: the server's version is recorded in `/vendor-version.txt`, written as the last
+step after a successful upload. To force a re-upload (e.g. vendor/ was deleted on the
+server): GitHub → Actions → "Deploy to IONOS" → Run workflow → tick `force_vendor`.
+Deploys are serialised (`concurrency`), so two quick pushes queue instead of overlapping.
+
 `package-lock.json` and `composer.lock` are committed (required by `npm ci` and for
 reproducible PHP dependencies). The build already excludes repo-only files (README,
 docs, workflow, tooling, `vendor/`, composer files), so there is no manual cleanup step.

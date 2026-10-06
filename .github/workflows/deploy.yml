@@ -5,6 +5,17 @@ on:
     branches:
       - main  # Deploy when pushing to main branch
   workflow_dispatch:  # Allow manual deployment from GitHub Actions tab
+    inputs:
+      force_vendor:
+        description: 'Re-upload the PHP dependencies (vendor/) even if the server already has this version'
+        type: boolean
+        default: false
+
+# One deploy at a time: a second push waits for the first instead of uploading
+# to the same server in parallel.
+concurrency:
+  group: deploy-ionos
+  cancel-in-progress: false
 
 jobs:
   deploy:
@@ -32,11 +43,32 @@ jobs:
         run: npm run build
 
       # PHP dependencies for identify-coin.php (official Anthropic SDK + Guzzle).
+      # vendor/ is ~3,400 files and IONOS SFTP uploads ~2 files/s, so sending it on
+      # every deploy would add ~30 minutes. It only changes with composer.lock, so
+      # the server's copy is recorded in /vendor-version.txt (written by the last
+      # step below, only after the upload succeeded) and vendor/ is uploaded only
+      # when that differs from this commit's composer.lock - or when forced from the
+      # Actions tab (Run workflow -> force_vendor).
+      - name: Check PHP dependencies on the server
+        id: vendor
+        run: |
+          want=$(sha256sum composer.lock | cut -c1-16)
+          have=$(curl -fsS --max-time 20 https://imperiumroma.com/vendor-version.txt 2>/dev/null | tr -d '[:space:]' || true)
+          echo "hash=$want" >> "$GITHUB_OUTPUT"
+          if [ "$want" != "$have" ] || [ "${{ inputs.force_vendor }}" = "true" ]; then
+            echo "upload=true" >> "$GITHUB_OUTPUT"
+            echo "vendor/ will be uploaded (server: '${have:-none}', this commit: $want)"
+          else
+            echo "upload=false" >> "$GITHUB_OUTPUT"
+            echo "Server already has vendor/ for composer.lock $want - skipping the upload"
+          fi
+
       # Resolved for PHP 8.1, the oldest version the SDK supports, so the result
       # runs on the host whatever 8.x it is set to. build.mjs skips vendor/; it is
       # copied into dist/ here so the existing upload below carries it (that step
       # runs sftp-only and cannot create a missing remote vendor/ directory itself).
       - name: Set up PHP + Composer
+        if: steps.vendor.outputs.upload == 'true'
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.1'
@@ -44,6 +76,7 @@ jobs:
           coverage: none
 
       - name: Install PHP dependencies (-> dist/vendor)
+        if: steps.vendor.outputs.upload == 'true'
         run: |
           composer install --no-dev --no-interaction --no-progress --prefer-dist --optimize-autoloader
           cp -r vendor dist/vendor
@@ -100,6 +133,28 @@ jobs:
           port: 22
           local_path: './dist/config/.htaccess'
           remote_path: '/Imperium_Roma/config'
+          sftp_only: true
+          args: '-o ConnectTimeout=10'
+
+      # Record which vendor/ the server now has. Written only after vendor/ (in the
+      # main upload) and the .htaccess files went up successfully, so an interrupted
+      # upload is retried in full on the next deploy.
+      - name: Write vendor-version marker
+        if: steps.vendor.outputs.upload == 'true'
+        run: |
+          mkdir -p vendor-marker
+          echo "${{ steps.vendor.outputs.hash }}" > vendor-marker/vendor-version.txt
+
+      - name: Deploy vendor-version marker
+        if: steps.vendor.outputs.upload == 'true'
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 22
+          local_path: './vendor-marker/vendor-version.txt'
+          remote_path: '/Imperium_Roma'
           sftp_only: true
           args: '-o ConnectTimeout=10'
 
