@@ -18,6 +18,8 @@ declare(strict_types=1);
 
 use Anthropic\Client;
 
+if (PHP_SAPI !== 'cli') { http_response_code(404); exit; } // command-line tool only
+
 $root = dirname(__DIR__);
 require $root . '/includes/coin-identify.php';
 if (!is_file($root . '/vendor/autoload.php')) {

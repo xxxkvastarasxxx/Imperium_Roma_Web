@@ -17,8 +17,9 @@
  * Compare them on your own coins first: scripts/compare-coin-models.php
  *
  * dailyLimit caps how many identifications the whole site runs per day
- * (UTC), as a guard on API spend if the endpoint is abused. Each request is
- * one Claude call with up to two photos.
+ * (UTC), as a guard on API spend if the endpoint is abused. 0 switches the
+ * feature off (it does NOT mean unlimited). Each identification makes two
+ * Claude calls with up to two photos.
  */
 
 return [

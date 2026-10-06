@@ -132,6 +132,13 @@
   </IfModule>
 </FilesMatch>
 
+# AI coin identification: refuse oversized uploads at the web server, before
+# PHP reads anything (two downscaled photos are well under 4 MB; 16 MB matches
+# the endpoint's own check in identify-coin.php).
+<Files "identify-coin.php">
+  LimitRequestBody 16777216
+</Files>
+
 # Protect PHP config files
 <FilesMatch "^(telegram|config)\.php$">
   <IfModule mod_authz_core.c>

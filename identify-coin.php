@@ -58,11 +58,16 @@ function msg(string $key, string $lang): string {
   return ($m[$lang] ?? $m['en'])[$key] ?? $m['en'][$key];
 }
 
-/** Sliding-window counter in a temp file; returns false when the limit is hit. */
-function rate_take(string $bucket, int $window, int $limit): bool {
+/**
+ * Sliding-window counter in a temp file; returns false when the limit is hit.
+ * $failOpen: what to do if the counter file can't be opened. Per-visitor
+ * limits fail open (a broken temp dir must not take the feature down); the
+ * site-wide spend cap fails closed (it must never silently disappear).
+ */
+function rate_take(string $bucket, int $window, int $limit, bool $failOpen = true): bool {
   $file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'ir_rate_' . sha1($bucket) . '.json';
   $fh = @fopen($file, 'c+');
-  if (!$fh) return true; // fail open: a broken temp dir must not take the feature down
+  if (!$fh) return $failOpen;
   flock($fh, LOCK_EX);
   $raw = stream_get_contents($fh);
   $now = time();
@@ -99,24 +104,35 @@ header('X-Content-Type-Options: nosniff');
 header('Referrer-Policy: same-origin');
 header('X-Frame-Options: DENY');
 
+if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+  respond(405, ['success' => false, 'error' => msg('method', 'en')]);
+}
+
+// Size cap before reading the body: two downscaled photos are well under 4 MB;
+// 16 MB leaves room for the 5 MB-per-photo limit plus base64 overhead.
+if ((int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 16 * 1024 * 1024) {
+  respond(413, ['success' => false, 'error' => msg('tooLarge', 'en')]);
+}
+
 $ctype = $_SERVER['CONTENT_TYPE'] ?? '';
 $input = stripos($ctype, 'application/json') !== false
-  ? (json_decode((string) file_get_contents('php://input'), true) ?: [])
+  ? (json_decode((string) file_get_contents('php://input', false, null, 0, 16 * 1024 * 1024), true) ?: [])
   : [];
 $lang = ($input['lang'] ?? '') === 'uk' ? 'uk' : 'en';
 
-if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
-  respond(405, ['success' => false, 'error' => msg('method', $lang)]);
-}
-
 // Same-origin allowlist (the endpoint spends API credit, so no cross-site use).
+// Browsers always send Origin on a fetch() POST, so a request carrying neither
+// Origin nor Referer is a script, not the page. (Both headers can be forged by a
+// determined script; the rate limits and daily cap below are the real budget guard.)
 $allowedHosts = ['imperiumroma.com', 'www.imperiumroma.com', '127.0.0.1', 'localhost'];
-foreach ([$_SERVER['HTTP_ORIGIN'] ?? '', $_SERVER['HTTP_REFERER'] ?? ''] as $h) {
-  if ($h) {
-    $host = parse_url($h, PHP_URL_HOST);
-    if ($host && !in_array($host, $allowedHosts, true)) {
-      respond(403, ['success' => false, 'error' => msg('origin', $lang)]);
-    }
+$sourceHeaders = array_filter([$_SERVER['HTTP_ORIGIN'] ?? '', $_SERVER['HTTP_REFERER'] ?? '']);
+if (!$sourceHeaders) {
+  respond(403, ['success' => false, 'error' => msg('origin', $lang)]);
+}
+foreach ($sourceHeaders as $h) {
+  $host = parse_url($h, PHP_URL_HOST);
+  if (!$host || !in_array($host, $allowedHosts, true)) {
+    respond(403, ['success' => false, 'error' => msg('origin', $lang)]);
   }
 }
 
@@ -140,6 +156,10 @@ if (is_file($configPath)) {
   }
 }
 $autoload = __DIR__ . '/vendor/autoload.php';
+// dailyLimit 0 is the off switch (not "unlimited"): an unbounded spend must never be one typo away.
+if ($dailyLimit === 0) {
+  respond(503, ['success' => false, 'error' => msg('config', $lang)]);
+}
 if (!$apiKey || str_contains($apiKey, 'YOUR_') || !is_file($autoload) || PHP_VERSION_ID < 80100) {
   error_log('identify-coin: not configured (key ' . ($apiKey ? 'set' : 'missing') . ', vendor '
     . (is_file($autoload) ? 'ok' : 'missing') . ', PHP ' . PHP_VERSION . ')');
@@ -161,10 +181,15 @@ if (!$images) {
 
 // ---------- Rate limits (checked after validation, so bad uploads don't use up a visitor's quota) ----------
 $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+// One IPv6 connection controls a whole /64 (billions of addresses), so IPv6
+// visitors are limited per /64 block rather than per address.
+if (str_contains($ip, ':') && ($bin = @inet_pton($ip)) !== false && strlen($bin) === 16) {
+  $ip = bin2hex(substr($bin, 0, 8)) . '::/64';
+}
 if (!rate_take('coin-id-hour-' . $ip, 3600, 6) || !rate_take('coin-id-day-' . $ip, 86400, 20)) {
   respond(429, ['success' => false, 'error' => msg('rateIp', $lang)]);
 }
-if ($dailyLimit > 0 && !rate_take('coin-id-global-' . gmdate('Y-m-d'), 86400, $dailyLimit)) {
+if (!rate_take('coin-id-global-' . gmdate('Y-m-d'), 86400, $dailyLimit, false)) {
   respond(429, ['success' => false, 'error' => msg('rateGlobal', $lang)]);
 }
 

@@ -20,6 +20,12 @@
 
 declare(strict_types=1);
 
+// Library file: never a page of its own, even if the .htaccess rule is missing.
+if (PHP_SAPI !== 'cli' && isset($_SERVER['SCRIPT_FILENAME']) && realpath($_SERVER['SCRIPT_FILENAME']) === __FILE__) {
+  http_response_code(404);
+  exit;
+}
+
 /** Models the site may be configured to use, cheapest last. */
 const COIN_ID_MODELS = ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-4-5'];
 const COIN_ID_DEFAULT_MODEL = 'claude-haiku-4-5'; // cheapest; owner's choice (2026-10-06)
