@@ -5,6 +5,7 @@
 # Secrets and sensitive configuration
 config/telegram.php
 config/newsletter.php
+config/anthropic.php
 config/*.pem
 *.env
 .env*
@@ -37,7 +38,7 @@ logs/
 
 # PHP
 vendor/
-composer.lock
+compare-results.json
 
 # Node
 node_modules/

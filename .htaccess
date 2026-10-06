@@ -19,6 +19,11 @@
   # probes this root path first; internal rewrite, so no duplicate file needed.
   RewriteRule ^favicon\.ico$ /assets/images/icons/favicon.ico [L]
 
+  # Composer dependencies (vendor/, deployed by CI) and shared PHP code
+  # (includes/) are libraries, not pages: never serve or execute them directly.
+  # PHP still loads them from disk.
+  RewriteRule ^(vendor|includes)(/|$) - [F,L]
+
   # Legacy Bibliotheca article URLs. Articles used to be rendered client-side at
   # /bibliotheca/?doc=<slug> (see dc815b3); they now have their own pages. Without
   # this, those old URLs silently serve the library index, stranding any links and

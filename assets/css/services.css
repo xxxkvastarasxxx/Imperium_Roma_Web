@@ -2016,6 +2016,1150 @@ body.has-modal {
   }
 }
 
+/* ===== Coin Tools: 3D visualisation (left, compact) + AI identification (right) =====
+   The 3D tool used to fill the section on its own; it now shares it with the
+   AI identification panel. Both are cards with the same shell; the 3D card is
+   the narrower column, so its preview and upload boxes are scaled down here
+   rather than in the generic .model-preview rules above. */
+#coin-3d-visualization .container {
+  max-width: 1200px;
+}
+
+.coin-tools {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.coin-tool {
+  position: relative;
+  background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
+  border: 1px solid rgba(255, 204, 0, 0.18);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  padding: 28px;
+  overflow: hidden;
+  text-align: left;
+}
+
+.coin-tool::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--yellow) 0%, #ff9900 50%, var(--yellow) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+.coin-tool__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#coin-3d-visualization .coin-tool__title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #111;
+  line-height: 1.25;
+}
+
+.coin-tool__lead {
+  margin: 8px 0 20px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #666;
+}
+
+.ai-badge {
+  flex: none;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  background: var(--yellow);
+  color: #000;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+/* --- 3D card: the old full-width card becomes the inner area of this one --- */
+.coin-tool--3d .model-preview {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+.coin-tool--3d .model-preview::before { display: none; }
+
+.coin-tool--3d .coin-model-container {
+  height: 330px;
+  margin-bottom: 18px;
+}
+
+.coin-tool--3d .coin-model-placeholder {
+  width: 190px;
+  height: 190px;
+}
+
+.coin-tool--3d .model-label { white-space: nowrap; }
+
+.coin-tool--3d .upload-controls { padding: 16px; }
+.coin-tool--3d .upload-row { gap: 18px; margin-bottom: 4px; }
+.coin-tool--3d .upload-box { width: 132px; }
+.coin-tool--3d .upload-preview { width: 132px; height: 132px; }
+.coin-tool--3d .upload-box label { font-size: 11px; margin-bottom: 8px; }
+.coin-tool--3d .remove-image-btn { top: 20px; right: -8px; }
+.coin-tool--3d .generate-btn { margin-top: 12px; max-width: none; }
+
+/* --- AI card --- */
+.ai-id__uploads {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.ai-id__slot {
+  position: relative;
+}
+
+.ai-id__drop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  aspect-ratio: 1 / 1;
+  max-height: 230px;
+  width: 100%;
+  border: 3px dashed #d4c19c;
+  border-radius: var(--radius-md);
+  background: #fff;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.ai-id__drop:hover,
+.ai-id__drop.is-dragover,
+.ai-id input.file-input:focus-visible + .ai-id__drop {
+  border-color: var(--yellow);
+  background-color: rgba(255, 204, 0, 0.04);
+}
+
+.ai-id input.file-input:focus-visible + .ai-id__drop {
+  outline: 2px solid #0f1115;
+  outline-offset: 2px;
+}
+
+.ai-id__plus {
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 300;
+  color: #d4c19c;
+}
+
+.ai-id__side {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #5a3921;
+}
+
+.ai-id__hint {
+  font-size: 12px;
+  color: #999;
+}
+
+.ai-id__preview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+}
+
+.ai-id__drop.has-image {
+  border-style: solid;
+  border-color: rgba(255, 204, 0, 0.5);
+}
+
+.ai-id__remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 2px solid #fff;
+  border-radius: var(--radius-circle);
+  background: #6b6b6b;
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.ai-id__tip {
+  margin: 12px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #777;
+}
+
+.ai-id .ai-id__submit {
+  display: block;
+  max-width: none;
+  margin-top: 14px;
+  padding: 13px 20px;
+  font-size: 15px;
+}
+
+/* Free alternative: Google Lens (opens in a new tab) */
+.ai-id__lens {
+  margin: 12px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #777;
+  text-align: center;
+}
+
+.ai-id__lens a,
+.aiid-link {
+  color: #5a3921;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgba(201, 151, 0, 0.6);
+  text-underline-offset: 2px;
+}
+
+.ai-id__lens a::after,
+.aiid-link::after {
+  content: '\00a0\2197'; /* non-breaking space + ↗: the arrow never wraps alone */
+}
+
+.ai-id__lens a:hover,
+.aiid-link:hover {
+  color: #000;
+  text-decoration-color: var(--yellow);
+}
+
+.ai-id.is-busy .ai-id__drop {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.ai-id__output {
+  margin-top: 20px;
+}
+
+/* Idle state: what the visitor will get */
+.ai-id__promise {
+  list-style: none;
+  margin: 0;
+  padding: 16px 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+  background: #fffbf0;
+  border: 1px solid rgba(255, 204, 0, 0.25);
+  border-radius: var(--radius-md);
+}
+
+.ai-id__promise li {
+  position: relative;
+  padding-left: 24px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #444;
+}
+
+.ai-id__promise li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 3px;
+  width: 12px;
+  height: 7px;
+  border-left: 2.5px solid #c99700;
+  border-bottom: 2.5px solid #c99700;
+  transform: rotate(-45deg);
+}
+
+/* Accuracy / liability notice, always visible in the AI card.
+   Same cream + gold language as the "what you get" list above it. */
+.ai-id__notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(201, 151, 0, 0.28);
+  border-left: 3px solid var(--yellow);
+  border-radius: var(--radius-md);
+  background: #fffbf0;
+}
+
+.ai-id__notice-icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  color: #c99700;
+}
+
+.ai-id__notice p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #5c5140;
+}
+
+.ai-id__notice strong { color: #2b2111; }
+
+.ai-id__notice a {
+  color: #5a3921;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgba(201, 151, 0, 0.6);
+  text-underline-offset: 2px;
+}
+.ai-id__notice a:hover { color: #000; text-decoration-color: var(--yellow); }
+
+.ai-id__notice .ai-id__privacy {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #8a8172;
+}
+
+/* The 3D card is a light-grey panel without the gold stripe, so the two
+   tools read as separate cards; the AI card keeps the original look. */
+.coin-tool--3d {
+  background: #f6f6f3;
+  border-color: #e6e3db;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+.coin-tool--3d::before { display: none; }
+
+/* Side by side, both cards share one height. The 3D card absorbs the
+   difference by pushing its upload panel to the bottom; the preview keeps
+   its fixed height (the WebGL canvas is sized from it). While the AI card
+   shows a result or the loading state it grows far taller, so the cards go
+   back to their natural heights rather than leave a tall empty 3D card. */
+@media (min-width: 901px) {
+  .coin-tools { align-items: stretch; }
+  .coin-tools:has(.aiid-card, .aiid-loading) { align-items: start; }
+
+  .coin-tool--3d {
+    display: flex;
+    flex-direction: column;
+  }
+  .coin-tool--3d .model-preview {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  .coin-tool--3d .upload-controls { margin-top: auto; }
+  /* Taller preview so the equal-height card has little leftover gap */
+  .coin-tool--3d .coin-model-container { height: 380px; }
+}
+
+/* ===== AI result UI (built by coin-identify.js; classes prefixed aiid-) ===== */
+
+/* Paragraph typography comes from the rules below: the coin-tool cards are
+   excluded from the page-wide `.service-detail p` rule further down. */
+.aiid-icon {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+.aiid-icon svg { width: 100%; height: 100%; }
+
+@keyframes aiidIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes aiidSlide {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(250%); }
+}
+@keyframes aiidPulse {
+  0%, 100% { box-shadow: 0 0 0 3px #fff, 0 0 0 5px rgba(255, 204, 0, 0.35); }
+  50%      { box-shadow: 0 0 0 3px #fff, 0 0 0 9px rgba(255, 204, 0, 0.12); }
+}
+
+/* --- Loading: the visitor's coin + a checklist that advances --- */
+.aiid-loading {
+  padding: 18px;
+  border: 1px solid #f0e3b5;
+  border-radius: 16px;
+  background: #fffcf3;
+  animation: aiidIn 0.3s ease both;
+}
+
+.aiid-loading__head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Both coins, a gold scan line sweeping across them while the AI reads */
+@keyframes aiidScan {
+  0%   { transform: translateY(-110%); }
+  100% { transform: translateY(110%); }
+}
+
+.aiid-scan {
+  position: relative;
+  display: flex;
+  flex: none;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 999px;
+  background: #1b1710;
+  overflow: hidden;
+}
+.aiid-scan::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 204, 0, 0) 38%, rgba(255, 214, 77, 0.55) 50%, rgba(255, 204, 0, 0) 62%, transparent 100%);
+  animation: aiidScan 1.8s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.aiid-scan__coin {
+  display: block;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.7);
+  animation: aiidPulse 1.6s ease-in-out infinite;
+}
+.aiid-scan__coin img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+.aiid-loading__text { min-width: 0; }
+
+.aiid-loading__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: #111;
+}
+
+.aiid-loading__sub {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: #888;
+}
+
+.aiid-loading__bar {
+  position: relative;
+  height: 4px;
+  margin: 16px 0 14px;
+  border-radius: 4px;
+  background: #f3ead0;
+  overflow: hidden;
+}
+.aiid-loading__bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, var(--yellow), transparent);
+  animation: aiidSlide 1.4s ease-in-out infinite;
+}
+
+.aiid-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.aiid-steps li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #aaa;
+  transition: color 0.3s ease;
+}
+
+.aiid-steps__tick {
+  width: 22px;
+  height: 22px;
+  padding: 3px;
+  box-sizing: border-box;
+  border: 2px solid #e5dcc0;
+  border-radius: 50%;
+  color: transparent;
+}
+
+.aiid-steps li.is-active { color: #111; font-weight: 600; }
+.aiid-steps li.is-active .aiid-steps__tick {
+  border-color: var(--yellow);
+  border-top-color: transparent;
+  animation: spin 0.9s linear infinite;
+}
+.aiid-steps li.is-done { color: #555; }
+.aiid-steps li.is-done .aiid-steps__tick {
+  border-color: var(--yellow);
+  background: var(--yellow);
+  color: #000;
+}
+
+/* --- Result card --- */
+.aiid-card {
+  scroll-margin-top: 100px; /* clear the fixed header when scrolled into view */
+  overflow: hidden;
+  border: 1px solid #eee3c2;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  animation: aiidIn 0.35s ease both;
+}
+
+/* Body blocks share the card's inner gutter and rhythm */
+.aiid-card > :not(.aiid-hero) { margin-left: 20px; margin-right: 20px; }
+.aiid-card > * + * { margin-top: 16px; }
+.aiid-card > :last-child { margin-bottom: 18px; }
+
+/* Staggered reveal: each block fades up a beat after the previous one
+   (--aiid-i is set per child by coin-identify.js) */
+.aiid-card > * {
+  animation: aiidIn 0.45s ease both;
+  animation-delay: calc(var(--aiid-i, 0) * 70ms);
+}
+
+/* Hero: dark band with the visitor's coin and the attribution */
+.aiid-hero {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: linear-gradient(135deg, #17140c 0%, #2c2512 100%);
+}
+
+.aiid-hero__coins {
+  display: flex;
+  flex: none;
+}
+
+.aiid-thumb {
+  display: block;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #3a3220;
+}
+.aiid-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+.aiid-hero .aiid-thumb {
+  width: 68px;
+  height: 68px;
+  border: 3px solid #211b0d;
+  background: #fff;
+  box-shadow: 0 0 0 2px var(--yellow);
+}
+.aiid-hero .aiid-thumb + .aiid-thumb { margin-left: -12px; }
+
+.aiid-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--yellow);
+}
+.aiid-eyebrow .aiid-icon { width: 14px; height: 14px; }
+
+.aiid-title {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.3;
+  color: #fff;
+  text-wrap: balance;
+}
+
+/* Confidence: 3-step meter + what it means */
+.aiid-confidence {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+}
+.aiid-confidence--high   { background: #eaf6ec; color: #1e7a37; }
+.aiid-confidence--medium { background: #fff6d6; color: #8a6400; }
+.aiid-confidence--low    { background: #fbefe9; color: #9a3f1f; }
+
+.aiid-meter {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  flex: none;
+}
+.aiid-meter span {
+  width: 7px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.12);
+}
+.aiid-meter span:nth-child(1) { height: 10px; }
+.aiid-meter span:nth-child(2) { height: 15px; }
+.aiid-meter span:nth-child(3) { height: 20px; }
+.aiid-meter span.is-on { background: currentColor; }
+
+.aiid-confidence strong {
+  display: block;
+  font-size: 14px;
+}
+.aiid-confidence__hint {
+  display: block;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #555;
+}
+
+/* Key facts as tiles */
+.aiid-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  padding: 0;
+}
+
+.aiid-fact {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #f0e8cf;
+  border-radius: 12px;
+  background: #fffdf7;
+}
+
+.aiid-fact__icon {
+  width: 32px;
+  height: 32px;
+  padding: 7px;
+  box-sizing: border-box;
+  border-radius: 9px;
+  background: #fff3c4;
+  color: #8a6400;
+}
+
+.aiid-fact > div { min-width: 0; }
+
+.aiid-fact dt {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9a9a9a;
+  overflow-wrap: anywhere; /* "DENOMINATION" / "МОНЕТНИЙ ДВІР" in a narrow tile */
+}
+
+.aiid-fact dd {
+  margin: 2px 0 0;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #111;
+}
+
+/* Obverse / reverse */
+.aiid-sides {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Each side: the coin large and round on top, then its name, legend, description */
+.aiid-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 14px 14px;
+  border: 1px solid #efe8d6;
+  border-radius: 12px;
+  background: #faf8f2;
+  text-align: center;
+}
+
+.aiid-side .aiid-thumb {
+  width: 104px;
+  height: 104px;
+  margin-bottom: 10px;
+  background: #fff;
+  box-shadow: 0 0 0 3px #fff, 0 0 0 4px #e3d39a, 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.aiid-side__title {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8a6d1c;
+}
+
+.aiid-side .aiid-legend { align-self: stretch; }
+
+/* Legends set like an inscription */
+.aiid-legend {
+  margin: 0 0 8px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  background: #1b1710;
+  color: #f4d675;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1.5;
+  text-align: center;
+  text-wrap: balance; /* no lone "P" on the last line */
+  overflow-wrap: anywhere;
+}
+.aiid-legend--none {
+  background: #f0ede4;
+  color: #999;
+  font-family: inherit;
+  font-style: italic;
+  letter-spacing: 0;
+}
+
+.aiid-side__desc {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #444;
+}
+
+/* Titled sections (references, reasoning) */
+.aiid-section__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a6d1c;
+}
+.aiid-section__title .aiid-icon { width: 16px; height: 16px; }
+
+.aiid-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.aiid-chip {
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  background: #111;
+  color: var(--yellow);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Catalogue verification: badge + one card per confirmed type */
+.aiid-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 10px;
+  padding: 4px 10px 4px 6px;
+  border-radius: var(--radius-pill);
+  background: #eaf6ec;
+  color: #1e6b2f;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+.aiid-verified .aiid-icon {
+  width: 16px;
+  height: 16px;
+  padding: 2px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: #1e7a37;
+  color: #fff;
+}
+
+.aiid-match {
+  padding: 12px 14px;
+  border: 1px solid #e6ddc4;
+  border-left: 3px solid #c9b77a;
+  border-radius: 12px;
+  background: #fff;
+}
+.aiid-match + .aiid-match { margin-top: 8px; }
+.aiid-match--high   { border-left-color: #1e7a37; }
+.aiid-match--medium { border-left-color: #c99700; }
+
+.aiid-match__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 10px;
+}
+.aiid-match__label { font-size: 15px; color: #111; }
+
+.aiid-match__pill {
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+  background: #ececec;
+  color: #555;
+  font-size: 11.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.aiid-match--high .aiid-match__pill   { background: #eaf6ec; color: #1e6b2f; }
+.aiid-match--medium .aiid-match__pill { background: #fff3c4; color: #7a5a00; }
+
+.aiid-match__meta {
+  margin-top: 2px !important;
+  font-size: 12.5px;
+  color: #8a7f68;
+}
+
+.aiid-match__legends {
+  display: grid;
+  gap: 4px;
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #faf8f2;
+}
+.aiid-match__legends > div { display: flex; gap: 8px; }
+.aiid-match__legends dt {
+  flex: none;
+  width: 34px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #9a9a9a;
+  text-transform: uppercase;
+}
+.aiid-match__legends dd {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  color: #2b2111;
+  overflow-wrap: anywhere;
+}
+
+.aiid-match__why {
+  margin-top: 8px !important;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #444;
+}
+
+.aiid-match__link {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.aiid-unverified {
+  margin-top: 8px !important;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #fff6e0;
+  color: #7a5200;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.aiid-cat-note { margin-top: 8px !important; font-size: 13px; }
+
+/* OCRE catalogue search: a search-field-like button that shows the query */
+.aiid-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px 14px;
+  border: 1px solid #e3d39a;
+  border-radius: 12px;
+  background: #fffbf0;
+  color: #3a2c12;
+  text-decoration: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+.aiid-search:hover {
+  border-color: var(--yellow);
+  background: #fff6d6;
+  transform: translateY(-1px);
+}
+.aiid-search:focus-visible { outline: 2px solid #111; outline-offset: 2px; }
+
+.aiid-search > .aiid-icon {
+  width: 30px;
+  height: 30px;
+  padding: 7px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: var(--yellow);
+  color: #000;
+}
+
+.aiid-search__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+.aiid-search__text strong { font-size: 13.5px; }
+.aiid-search__query {
+  overflow: hidden;
+  font-size: 12.5px;
+  color: #8a7f68;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.aiid-search::after {
+  content: '\2197';
+  flex: none;
+  font-size: 14px;
+  color: #8a6d1c;
+}
+
+.aiid-muted {
+  margin: 0;
+  font-size: 14px;
+  color: #777;
+}
+
+.aiid-why p {
+  margin: 0;
+  padding: 12px 14px;
+  border-left: 3px solid var(--yellow);
+  border-radius: 0 10px 10px 0;
+  background: #fffbea;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: #333;
+}
+
+/* Alternatives accordion */
+.aiid-more {
+  border: 1px solid #ece6d4;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.aiid-more summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border: 0;
+  list-style: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  color: #3a2c12;
+}
+.aiid-more summary::-webkit-details-marker { display: none; }
+.aiid-more summary::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  margin: -4px 4px 0 10px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+.aiid-more[open] summary::after { margin-top: 4px; transform: rotate(-135deg); }
+.aiid-more summary:focus { outline: none; }
+.aiid-more summary:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
+.aiid-more ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0 14px 14px;
+  list-style: none;
+}
+
+.aiid-more li {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #faf8f2;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #555;
+}
+.aiid-more li strong {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 14px;
+  color: #111;
+}
+
+/* Callouts: notes, not-a-Roman-coin, errors */
+.aiid-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.aiid-callout > .aiid-icon { width: 20px; height: 20px; margin-top: 1px; }
+.aiid-callout p { margin: 0; }
+.aiid-callout strong { display: block; margin-bottom: 2px; }
+
+.aiid-callout--info  { background: #f2f6fb; color: #2b4a6b; }
+.aiid-callout--info p { color: #3d5670; }
+.aiid-callout--warn  { background: #fff6e0; color: #7a5200; }
+.aiid-callout--error { background: #fbf0ee; color: #7a2a1f; animation: aiidIn 0.3s ease both; }
+.aiid-callout--error p { margin-top: 6px; font-size: 13.5px; color: #6b4a45; }
+
+/* Next steps: two compact buttons, always on one row */
+.aiid-actions {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid #f1ead7;
+}
+
+.aiid-btn {
+  display: inline-flex;
+  flex: 0 1 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.aiid-btn .aiid-icon { width: 16px; height: 16px; }
+
+.aiid-btn--primary {
+  border: 1.5px solid var(--yellow);
+  background: var(--yellow);
+  color: #000;
+}
+.aiid-btn--primary:hover { background: var(--yellow-hover); border-color: var(--yellow-hover); color: #000; }
+
+.aiid-btn--ghost {
+  border: 1.5px solid #d9d2bf;
+  background: transparent;
+  color: #222;
+}
+.aiid-btn--ghost:hover { border-color: #111; }
+
+.aiid-btn:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+}
+
+.aiid-second {
+  margin-top: 10px !important;
+  font-size: 13px;
+  color: #777;
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiid-card,
+  .aiid-loading,
+  .aiid-card > *,
+  .aiid-callout--error,
+  .aiid-scan::after,
+  .aiid-scan__coin,
+  .aiid-loading__bar::before,
+  .aiid-steps li.is-active .aiid-steps__tick { animation: none; }
+}
+
+/* Stacked: AI first (the main action), 3D below. */
+@media (max-width: 900px) {
+  .coin-tools {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+  .coin-tool--ai { order: -1; }
+  .coin-tool--3d .coin-model-container { height: 320px; }
+}
+
+@media (max-width: 480px) {
+  .coin-tool { padding: 20px 16px; }
+  #coin-3d-visualization .coin-tool__title { font-size: 20px; }
+  .coin-tool__lead { font-size: 14px; margin-bottom: 16px; }
+  .ai-id__uploads { gap: 10px; }
+  .ai-id__promise { grid-template-columns: 1fr; }
+  .coin-tool--3d .upload-box { width: 120px; }
+  .coin-tool--3d .upload-preview { width: 120px; height: 120px; }
+
+  .aiid-card > :not(.aiid-hero) { margin-left: 14px; margin-right: 14px; }
+  .aiid-hero { gap: 12px; padding: 16px 14px; }
+  .aiid-hero .aiid-thumb { width: 52px; height: 52px; }
+  .aiid-title { font-size: 17px; }
+  .aiid-facts { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+  .aiid-fact { padding: 10px 12px; }
+  /* Two narrow columns: the icons would squeeze labels into mid-word breaks */
+  .aiid-fact__icon { display: none; }
+  .aiid-fact dt { font-size: 10px; letter-spacing: 0.05em; }
+  .aiid-fact dd { font-size: 14px; }
+  /* Two columns here: a fifth tile on its own row spans the full width */
+  .aiid-fact:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .aiid-sides { grid-template-columns: 1fr; }
+  .aiid-side .aiid-thumb { width: 96px; height: 96px; }
+  .aiid-scan__coin { width: 54px; height: 54px; }
+  /* Still one row on a 360px phone: drop the icons, tighten the padding;
+     a label that still doesn't fit wraps onto two lines instead of clipping */
+  .aiid-actions { gap: 6px; }
+  .aiid-btn { flex: 1 1 auto; padding: 8px 10px; font-size: 12px; white-space: normal; text-wrap: balance; }
+  .aiid-btn--ghost { flex: none; white-space: nowrap; } /* short label: never wraps */
+  .aiid-btn .aiid-icon { display: none; }
+}
+
 /* Services Section */
 .services {
   padding: 50px 20px;
@@ -2355,7 +3499,7 @@ body.has-modal {
     font-weight: bold;
 }
 
-.service-detail p {
+.service-detail p:not(.coin-tool p) {
     font-size: 18px;
     margin-bottom: 20px;
     line-height: 1.6;
@@ -2382,7 +3526,7 @@ body.has-modal {
     .service-detail h2 {
         font-size: 28px;
     }
-    .service-detail p {
+    .service-detail p:not(.coin-tool p) {
         font-size: 16px;
     }
     .section-title {
@@ -2400,7 +3544,7 @@ body.has-modal {
     .service-detail h2 {
         font-size: 24px;
     }
-    .service-detail p {
+    .service-detail p:not(.coin-tool p) {
         font-size: 15px;
     }
 }
@@ -2415,7 +3559,7 @@ body.has-modal {
     .service-detail h2 {
         font-size: 22px;
     }
-    .service-detail p {
+    .service-detail p:not(.coin-tool p) {
         font-size: 14px;
     }
 }

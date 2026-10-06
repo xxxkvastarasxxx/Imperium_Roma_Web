@@ -1,0 +1,20 @@
+{
+    "name": "imperium-roma/web",
+    "description": "Server-side PHP dependencies for imperiumroma.com (installed in CI, deployed as vendor/).",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "anthropic-ai/sdk": "^0.54.0",
+        "guzzlehttp/guzzle": "^7"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": false
+        },
+        "optimize-autoloader": true,
+        "platform": {
+            "php": "8.1.0"
+        },
+        "sort-packages": true
+    }
+}

@@ -31,6 +31,23 @@ jobs:
       - name: Build optimized site (-> dist/)
         run: npm run build
 
+      # PHP dependencies for identify-coin.php (official Anthropic SDK + Guzzle).
+      # Resolved for PHP 8.1, the oldest version the SDK supports, so the result
+      # runs on the host whatever 8.x it is set to. build.mjs skips vendor/; it is
+      # copied into dist/ here so the existing upload below carries it (that step
+      # runs sftp-only and cannot create a missing remote vendor/ directory itself).
+      - name: Set up PHP + Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer:v2
+          coverage: none
+
+      - name: Install PHP dependencies (-> dist/vendor)
+        run: |
+          composer install --no-dev --no-interaction --no-progress --prefer-dist --optimize-autoloader
+          cp -r vendor dist/vendor
+
       # Carries the per-page content hashes between runs so IndexNow only ever
       # sees genuinely changed URLs. Cache entries are immutable, so the key is
       # per-commit and restore-keys falls back to the most recent previous entry.

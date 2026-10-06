@@ -153,11 +153,62 @@ Also add the article to the translated index's ItemList JSON-LD and noscript lis
 `.github/workflows/deploy.yml` runs on every push to `main`:
 
 ```
-checkout → setup-node → npm ci → npm run build → SFTP upload dist/* to IONOS
+checkout → setup-node → npm ci → npm run build
+         → setup-php 8.1 → composer install --no-dev → cp vendor dist/vendor
+         → SFTP upload dist/* to IONOS
 ```
 
-`package-lock.json` is committed (required by `npm ci`). The build already excludes
-repo-only files (README, docs, workflow, tooling), so there is no manual cleanup step.
+`package-lock.json` and `composer.lock` are committed (required by `npm ci` and for
+reproducible PHP dependencies). The build already excludes repo-only files (README,
+docs, workflow, tooling, `vendor/`, composer files), so there is no manual cleanup step.
+
+## AI coin identification
+
+Services page → "Coin Tools" → right-hand panel. Flow:
+
+```
+browser (assets/js/coin-identify.js)
+  downscale photos to ≤1568px JPEG → POST JSON {lang, obverse, reverse}
+    → /identify-coin.php → Claude (official Anthropic PHP SDK, structured JSON output)
+      → JSON result rendered in the panel
+```
+
+- **Pipeline** (`coin_id_run` in `includes/coin-identify.php`): (1) Claude reads the photos
+  — observations and letter-by-letter legends before the attribution — and suggests
+  rulers/denominations in English; (2) every OCRE/CRRO type for those people (as issuing
+  authority *or* obverse portrait) is fetched from Nomisma's SPARQL endpoint
+  (`https://nomisma.org/query`, cached 30 days in the PHP temp dir) and ranked locally
+  against the legends and reverse design; (3) Claude sees the photos again with the top 10
+  types and may only pick from their ids, so a "verified" reference always exists in the
+  catalogue. If Nomisma is unreachable the result is still returned, with references marked
+  unverified. Two API calls per identification.
+- **Model:** `model` in `config/anthropic.php` — `claude-haiku-4-5` (default, cheapest,
+  ~$0.01/coin), `claude-sonnet-5-5` or `claude-opus-5-5` (most accurate). Prompt, schema and
+  the per-model request options live in `includes/coin-identify.php` (web access
+  forbidden by the root `.htaccess`), shared with the comparison script below.
+- **Choosing a model:** `php scripts/compare-coin-models.php [--lang=uk] obv.jpg+rev.jpg …`
+  sends your own photos to every model with the production request and prints each
+  answer, time and cost (needs `composer install` and an API key; spends real credit).
+- **Free alternative:** the panel always offers Google Lens (via Google Images, camera
+  icon) — under the button, in every result and in every error, so visitors have a
+  route even when the AI is unavailable or rate-limited.
+- **Dependencies:** `composer.json` / `composer.lock` (Anthropic SDK + Guzzle), installed
+  by CI and uploaded as `vendor/`. The root `.htaccess` forbids web access to `vendor/`.
+  Requires **PHP 8.1+** on the host (IONOS: Hosting → PHP version).
+- **API key (one-time, on the server):** copy `config/anthropic.example.php` to
+  `config/anthropic.php` on the server and set `apiKey` (or set the `ANTHROPIC_API_KEY`
+  env var). Gitignored, never committed, and never copied into `dist/` (the build skips
+  `anthropic.php`, `telegram.php` and `newsletter.php`, because the dev server serves
+  `dist/` to the local network as plain files). Without it the panel shows "temporarily
+  unavailable" and the PHP error log says what is missing.
+- **Spend guards:** per visitor 6 identifications/hour and 20/day; site-wide `dailyLimit`
+  (default 300/day) in `config/anthropic.php`; same-origin check. Counters live in the
+  PHP temp dir like the contact form's rate limit.
+- **Local dev:** the static dev server (`npm run dev`) does not run PHP, so the panel
+  reports "temporarily unavailable" locally. To test end to end, serve `dist/` (plus
+  `vendor/` and a `config/anthropic.php`) with `php -S`.
+- **Strings:** labels in the page HTML per language; dynamic labels and errors under
+  `aiid.*` in `i18n/*.json` (`js` section); server error messages in `identify-coin.php`.
 
 ## Notes & known items
 

@@ -552,42 +552,103 @@
       </div>
     </section>
 
+    <!-- Інструменти для монет: 3D-візуалізація (ліворуч) + ШІ-ідентифікація (праворуч).
+         id секції збережено, щоб наявні посилання #coin-3d-visualization вели сюди. -->
     <section id="coin-3d-visualization" class="service-detail coin-modeling">
       <div class="container">
-          <h2>3D-візуалізація монет</h2>
+          <h2>Інструменти для монет</h2>
 
           <div class="intro-text">
-              <p>Наша революційна технологія дає змогу нумізматам, колекціонерам і аукціонним домам створювати точні тривимірні моделі античних римських монет із простих фотографій</p>
+              <p>Сфотографуйте монету — і наш ШІ визначить її за лічені секунди, а з тих самих фото можна створити інтерактивну 3D-модель</p>
           </div>
 
-          <div class="model-preview">
-              <div id="coin3DPreview" class="coin-model-container">
-                  <div class="coin-model-placeholder" id="placeholder">
-                      <div class="coin-rotate-animation"></div>
-                      <span class="model-label">Інтерактивний перегляд</span>
+          <div class="coin-tools">
+              <!-- Ліворуч: 3D-візуалізація (id використовує coin3d_generator.js) -->
+              <div class="coin-tool coin-tool--3d">
+                  <h3 class="coin-tool__title">3D-візуалізація монет</h3>
+                  <p class="coin-tool__lead">Створіть тривимірну модель монети з двох фотографій</p>
+                  <div class="model-preview">
+                      <div id="coin3DPreview" class="coin-model-container">
+                          <div class="coin-model-placeholder" id="placeholder">
+                              <div class="coin-rotate-animation"></div>
+                              <span class="model-label">Інтерактивний перегляд</span>
+                          </div>
+                          <canvas id="coin3DCanvas" class="hidden"></canvas>
+                      </div>
+                      <div class="upload-controls">
+                          <div class="upload-row">
+                              <div class="upload-box">
+                                  <label for="obverseUpload">Аверс (лицьовий бік)</label>
+                                  <input type="file" id="obverseUpload" accept="image/*" class="file-input" />
+                                  <div class="upload-preview" id="obversePreview">
+                                      <span class="upload-icon">+</span>
+                                  </div>
+                                  <button class="remove-image-btn hidden" id="removeObverse" title="Прибрати зображення">×</button>
+                              </div>
+                              <div class="upload-box">
+                                  <label for="reverseUpload">Реверс (зворотний бік)</label>
+                                  <input type="file" id="reverseUpload" accept="image/*" class="file-input" />
+                                  <div class="upload-preview" id="reversePreview">
+                                      <span class="upload-icon">+</span>
+                                  </div>
+                                  <button class="remove-image-btn hidden" id="removeReverse" title="Прибрати зображення">×</button>
+                              </div>
+                          </div>
+                          <button id="generateModel" class="generate-btn" disabled>Створити 3D-модель</button>
+                      </div>
                   </div>
-                  <canvas id="coin3DCanvas" class="hidden"></canvas>
               </div>
-              <div class="upload-controls">
-                  <div class="upload-row">
-                      <div class="upload-box">
-                          <label for="obverseUpload">Аверс (лицьовий бік)</label>
-                          <input type="file" id="obverseUpload" accept="image/*" class="file-input" />
-                          <div class="upload-preview" id="obversePreview">
-                              <span class="upload-icon">+</span>
+
+              <!-- Праворуч: ШІ-ідентифікація (assets/js/coin-identify.js -> /identify-coin.php) -->
+              <div class="coin-tool coin-tool--ai" id="ai-coin-identification">
+                  <div class="coin-tool__head">
+                      <h3 class="coin-tool__title">ШІ-ідентифікація монет</h3>
+                      <span class="ai-badge">ШІ</span>
+                  </div>
+                  <p class="coin-tool__lead">Завантажте аверс і реверс — і отримайте правителя, номінал, монетний двір, дату, легенди та посилання на каталоги</p>
+
+                  <form class="ai-id" id="aiIdForm" novalidate>
+                      <div class="ai-id__uploads">
+                          <div class="ai-id__slot">
+                              <input type="file" id="aiObverse" class="file-input" accept="image/jpeg,image/png,image/webp,image/*" data-side="obverse" />
+                              <label for="aiObverse" class="ai-id__drop">
+                                  <span class="ai-id__plus" aria-hidden="true">+</span>
+                                  <span class="ai-id__side">Аверс</span>
+                                  <span class="ai-id__hint">Обов’язково</span>
+                              </label>
+                              <button type="button" class="ai-id__remove hidden" data-remove="obverse" aria-label="Прибрати фото аверсу">×</button>
                           </div>
-                          <button class="remove-image-btn hidden" id="removeObverse" title="Прибрати зображення">×</button>
+                          <div class="ai-id__slot">
+                              <input type="file" id="aiReverse" class="file-input" accept="image/jpeg,image/png,image/webp,image/*" data-side="reverse" />
+                              <label for="aiReverse" class="ai-id__drop">
+                                  <span class="ai-id__plus" aria-hidden="true">+</span>
+                                  <span class="ai-id__side">Реверс</span>
+                                  <span class="ai-id__hint">Бажано</span>
+                              </label>
+                              <button type="button" class="ai-id__remove hidden" data-remove="reverse" aria-label="Прибрати фото реверсу">×</button>
+                          </div>
                       </div>
-                      <div class="upload-box">
-                          <label for="reverseUpload">Реверс (зворотний бік)</label>
-                          <input type="file" id="reverseUpload" accept="image/*" class="file-input" />
-                          <div class="upload-preview" id="reversePreview">
-                              <span class="upload-icon">+</span>
-                          </div>
-                          <button class="remove-image-btn hidden" id="removeReverse" title="Прибрати зображення">×</button>
+                      <p class="ai-id__tip">Найкращий результат дають чіткі, рівномірно освітлені фото, де монета заповнює кадр, а легенди читаються</p>
+                      <button type="submit" class="generate-btn ai-id__submit" id="aiIdSubmit" disabled>Визначити монету</button>
+                      <p class="ai-id__lens">Хочете безкоштовний пошук за зображенням? <a href="https://images.google.com/" target="_blank" rel="noopener noreferrer">Знайдіть схожі монети в Google Lens<span class="sr-only"> (відкриється в новій вкладці)</span></a> — натисніть значок камери й завантажте фото</p>
+                  </form>
+
+                  <!-- Статус і результат заповнює coin-identify.js -->
+                  <div class="ai-id__output" id="aiIdOutput" aria-live="polite">
+                      <ul class="ai-id__promise">
+                          <li>Правитель і номінал</li>
+                          <li>Монетний двір і дата випуску</li>
+                          <li>Легенди аверсу та реверсу</li>
+                          <li>Посилання на каталоги (RIC, RRC, RPC)</li>
+                      </ul>
+                  </div>
+                  <div class="ai-id__notice" role="note">
+                      <svg class="ai-id__notice-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.5v.5"/></svg>
+                      <div>
+                          <p><strong>Зверніть увагу:</strong> результати ШІ формуються автоматично й можуть містити помилки. Imperium Roma не гарантує їхньої точності та не несе відповідальності за рішення, ухвалені на їх основі. Для надійної атрибуції <a href="{{link:/contact/?subject=identification}}">зверніться безпосередньо до наших експертів</a>.</p>
+                          <p class="ai-id__privacy">Фото надсилаються нашому постачальнику ШІ для аналізу; ми їх не зберігаємо.</p>
                       </div>
                   </div>
-                  <button id="generateModel" class="generate-btn" disabled>Створити 3D-модель</button>
               </div>
           </div>
       </div>
@@ -638,6 +699,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r132/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.0/examples/js/controls/OrbitControls.min.js"></script>
     <script src="/assets/js/coin3d_generator.js" defer></script>
+    <script src="/assets/js/coin-identify.js" defer></script>
     <script src="/assets/js/zoom.js" defer></script>
     <script src="/assets/js/header.js" defer></script>
     <script src="/assets/js/hamburger.js" defer></script>

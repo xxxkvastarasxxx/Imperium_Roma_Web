@@ -628,42 +628,103 @@
 
 
     
+    <!-- Coin tools: 3D visualisation (left, compact) + AI identification (right).
+         The section keeps its old id so existing #coin-3d-visualization links still land here. -->
     <section id="coin-3d-visualization" class="service-detail coin-modeling">
       <div class="container">
-          <h2>3D Coin Visualisation</h2>
-          
+          <h2>Coin Tools</h2>
+
           <div class="intro-text">
-              <p>Our revolutionary technology allows numismatists, collectors, and auction houses to create accurate three-dimensional representations of ancient Roman coins from simple photographs</p>
+              <p>Photograph your coin, then let our AI attribute it in seconds &mdash; or turn the same photos into an interactive 3D model</p>
           </div>
-          
-          <div class="model-preview">
-              <div id="coin3DPreview" class="coin-model-container">
-                  <div class="coin-model-placeholder" id="placeholder">
-                      <div class="coin-rotate-animation"></div>
-                      <span class="model-label">Interactive Preview</span>
+
+          <div class="coin-tools">
+              <!-- Left: 3D visualisation (ids are used by coin3d_generator.js) -->
+              <div class="coin-tool coin-tool--3d">
+                  <h3 class="coin-tool__title">3D Coin Visualisation</h3>
+                  <p class="coin-tool__lead">Create a three-dimensional model of your coin from two photographs</p>
+                  <div class="model-preview">
+                      <div id="coin3DPreview" class="coin-model-container">
+                          <div class="coin-model-placeholder" id="placeholder">
+                              <div class="coin-rotate-animation"></div>
+                              <span class="model-label">Interactive Preview</span>
+                          </div>
+                          <canvas id="coin3DCanvas" class="hidden"></canvas>
+                      </div>
+                      <div class="upload-controls">
+                          <div class="upload-row">
+                              <div class="upload-box">
+                                  <label for="obverseUpload">Obverse (Front)</label>
+                                  <input type="file" id="obverseUpload" accept="image/*" class="file-input" />
+                                  <div class="upload-preview" id="obversePreview">
+                                      <span class="upload-icon">+</span>
+                                  </div>
+                                  <button class="remove-image-btn hidden" id="removeObverse" title="Remove image">×</button>
+                              </div>
+                              <div class="upload-box">
+                                  <label for="reverseUpload">Reverse (Back)</label>
+                                  <input type="file" id="reverseUpload" accept="image/*" class="file-input" />
+                                  <div class="upload-preview" id="reversePreview">
+                                      <span class="upload-icon">+</span>
+                                  </div>
+                                  <button class="remove-image-btn hidden" id="removeReverse" title="Remove image">×</button>
+                              </div>
+                          </div>
+                          <button id="generateModel" class="generate-btn" disabled>Generate 3D Model</button>
+                      </div>
                   </div>
-                  <canvas id="coin3DCanvas" class="hidden"></canvas>
               </div>
-              <div class="upload-controls">
-                  <div class="upload-row">
-                      <div class="upload-box">
-                          <label for="obverseUpload">Obverse (Front)</label>
-                          <input type="file" id="obverseUpload" accept="image/*" class="file-input" />
-                          <div class="upload-preview" id="obversePreview">
-                              <span class="upload-icon">+</span>
+
+              <!-- Right: AI identification (assets/js/coin-identify.js -> /identify-coin.php) -->
+              <div class="coin-tool coin-tool--ai" id="ai-coin-identification">
+                  <div class="coin-tool__head">
+                      <h3 class="coin-tool__title">AI Coin Identification</h3>
+                      <span class="ai-badge">AI</span>
+                  </div>
+                  <p class="coin-tool__lead">Upload the obverse and reverse and get the ruler, denomination, mint, date, legends and catalogue references</p>
+
+                  <form class="ai-id" id="aiIdForm" novalidate>
+                      <div class="ai-id__uploads">
+                          <div class="ai-id__slot">
+                              <input type="file" id="aiObverse" class="file-input" accept="image/jpeg,image/png,image/webp,image/*" data-side="obverse" />
+                              <label for="aiObverse" class="ai-id__drop">
+                                  <span class="ai-id__plus" aria-hidden="true">+</span>
+                                  <span class="ai-id__side">Obverse</span>
+                                  <span class="ai-id__hint">Required</span>
+                              </label>
+                              <button type="button" class="ai-id__remove hidden" data-remove="obverse" aria-label="Remove obverse photo">×</button>
                           </div>
-                          <button class="remove-image-btn hidden" id="removeObverse" title="Remove image">×</button>
+                          <div class="ai-id__slot">
+                              <input type="file" id="aiReverse" class="file-input" accept="image/jpeg,image/png,image/webp,image/*" data-side="reverse" />
+                              <label for="aiReverse" class="ai-id__drop">
+                                  <span class="ai-id__plus" aria-hidden="true">+</span>
+                                  <span class="ai-id__side">Reverse</span>
+                                  <span class="ai-id__hint">Recommended</span>
+                              </label>
+                              <button type="button" class="ai-id__remove hidden" data-remove="reverse" aria-label="Remove reverse photo">×</button>
+                          </div>
                       </div>
-                      <div class="upload-box">
-                          <label for="reverseUpload">Reverse (Back)</label>
-                          <input type="file" id="reverseUpload" accept="image/*" class="file-input" />
-                          <div class="upload-preview" id="reversePreview">
-                              <span class="upload-icon">+</span>
-                          </div>
-                          <button class="remove-image-btn hidden" id="removeReverse" title="Remove image">×</button>
+                      <p class="ai-id__tip">For the best result: sharp, evenly lit photos, the coin filling the frame, legends readable</p>
+                      <button type="submit" class="generate-btn ai-id__submit" id="aiIdSubmit" disabled>Identify My Coin</button>
+                      <p class="ai-id__lens">Prefer a free visual search? <a href="https://images.google.com/" target="_blank" rel="noopener noreferrer">Find similar coins with Google Lens<span class="sr-only"> (opens in a new tab)</span></a> &mdash; tap the camera icon and upload your photo</p>
+                  </form>
+
+                  <!-- Status and result; filled in by coin-identify.js -->
+                  <div class="ai-id__output" id="aiIdOutput" aria-live="polite">
+                      <ul class="ai-id__promise">
+                          <li>Ruler &amp; denomination</li>
+                          <li>Mint &amp; date of issue</li>
+                          <li>Obverse &amp; reverse legends</li>
+                          <li>Catalogue references (RIC, RRC, RPC)</li>
+                      </ul>
+                  </div>
+                  <div class="ai-id__notice" role="note">
+                      <svg class="ai-id__notice-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.5v.5"/></svg>
+                      <div>
+                          <p><strong>Please note:</strong> AI results are generated automatically and may contain mistakes. Imperium Roma does not guarantee their accuracy and accepts no responsibility for decisions made on the basis of them. For a reliable attribution, <a href="/contact/?subject=identification">ask our experts directly</a>.</p>
+                          <p class="ai-id__privacy">Photos are sent to our AI provider for analysis and are not stored by us.</p>
                       </div>
                   </div>
-                  <button id="generateModel" class="generate-btn" disabled>Generate 3D Model</button>
               </div>
           </div>
       </div>
@@ -716,6 +777,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r132/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.0/examples/js/controls/OrbitControls.min.js"></script>
     <script src="/assets/js/coin3d_generator.js" defer></script>
+    <script src="/assets/js/coin-identify.js" defer></script>
     <script src="/assets/js/zoom.js" defer></script>
     <script src="/assets/js/header.js" defer></script>
     <script src="/assets/js/hamburger.js" defer></script>
