@@ -142,6 +142,16 @@
 # Error Documents
 # =============================================================================
 ErrorDocument 404 /404.html
+# Translated error pages. ErrorDocument cannot vary by path on its own, so each
+# language folder sets its own inside an <If>. <If> is Apache 2.4+; the
+# mod_version guard means an older server simply keeps the English page above.
+<IfModule mod_version.c>
+<IfVersion >= 2.4>
+  <If "%{REQUEST_URI} =~ m#^/uk/#">
+    ErrorDocument 404 /uk/404.html
+  </If>
+</IfVersion>
+</IfModule>
 # No ErrorDocument for 5xx on purpose: serving the homepage for a server error
 # hides real failures from us and from crawlers. Let Apache report the error.
 

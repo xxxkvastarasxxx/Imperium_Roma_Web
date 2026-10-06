@@ -15,6 +15,13 @@
 (function () {
     'use strict';
 
+    // Localised strings injected by the build (window.I18N); English literals are the fallback.
+    const T = (window.I18N && window.I18N.js) || {};
+    const t = function (key, fallback, vars) {
+        return String(T[key] !== undefined ? T[key] : fallback)
+            .replace(/\{(\w+)\}/g, function (m, n) { return vars && n in vars ? vars[n] : m; });
+    };
+
     /* The Five Good Emperors, in reign order. example.com is the
        RFC 2606 reserved domain, so these addresses can never resolve. */
     var EMPERORS = ['Nerva', 'Trajan', 'Hadrian', 'Antoninus Pius', 'Marcus Aurelius'];
@@ -29,15 +36,15 @@
     var GROUPS = [
         {
             targets: [
-                { id: 'name', rest: 'Your name', examples: EMPERORS },
-                { id: 'email', rest: 'you@example.com', examples: INBOXES }
+                { id: 'name', rest: t('placeholder.name', 'Your name'), examples: EMPERORS },
+                { id: 'email', rest: t('placeholder.email', 'you@example.com'), examples: INBOXES }
             ]
         },
         {
             targets: [{
                 id: 'message',
-                rest: 'Tell us about your coin…',
-                examples: [
+                rest: t('placeholder.message', 'Tell us about your coin…'),
+                examples: Array.isArray(T['placeholder.examples']) ? T['placeholder.examples'] : [
                     'I have a denarius of Marcus Aurelius I would like authenticated.',
                     'Could you value a sestertius of Trajan from my collection?',
                     'I inherited a small group of Roman coins and cannot identify them.'

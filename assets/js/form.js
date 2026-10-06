@@ -1,4 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Localised strings injected by the build (window.I18N); English literals are the fallback.
+    const T = (window.I18N && window.I18N.js) || {};
+    const t = function (key, fallback, vars) {
+        return String(T[key] !== undefined ? T[key] : fallback)
+            .replace(/\{(\w+)\}/g, function (m, n) { return vars && n in vars ? vars[n] : m; });
+    };
     const form = document.querySelector('.contact-form');
     const fileInput = document.getElementById('file');
     const customButton = document.getElementById('customButton');
@@ -41,17 +47,17 @@ document.addEventListener("DOMContentLoaded", function () {
             selectedFiles.forEach(file => {
                 // Size: 10MB
                 if (file.size > 10 * 1024 * 1024) {
-                    alert(`File "${file.name}" exceeds the maximum size limit of 10MB.`);
+                    alert(t('form.fileTooLarge', 'File "{name}" exceeds the maximum size limit of 10MB.', { name: file.name }));
                     return;
                 }
                 // Types: jpeg/png (adjust if you want to allow PDFs, etc.)
                 if (!['image/jpeg', 'image/png'].includes(file.type)) {
-                    alert(`File "${file.name}" is not a valid format. Please upload JPEG or PNG images only.`);
+                    alert(t('form.fileType', 'File "{name}" is not a valid format. Please upload JPEG or PNG images only.', { name: file.name }));
                     return;
                 }
                 // Count: max 5
                 if (filesArray.length >= 5) {
-                    alert('You can only upload a maximum of 5 files.');
+                    alert(t('form.maxFiles', 'You can only upload a maximum of 5 files.'));
                     return;
                 }
 
@@ -62,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const removeButton = document.createElement('button');
                 removeButton.type = 'button';
-                removeButton.textContent = 'Remove';
+                removeButton.textContent = t('form.remove', 'Remove');
                 removeButton.style.marginLeft = '10px';
                 removeButton.addEventListener('click', () => {
                     filesArray = filesArray.filter(f => f !== file);
@@ -123,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const message = document.getElementById('message')?.value?.trim() || '';
 
         if (!name || !email || !message) {
-            formResponse.textContent = 'Please fill out all required fields.';
+            formResponse.textContent = t('form.required', 'Please fill out all required fields.');
             formResponse.classList.remove('ok','err');
             formResponse.classList.add('warn');
             return;
@@ -137,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-    formResponse.textContent = 'Sending...';
+    formResponse.textContent = t('form.sending', 'Sending...');
     formResponse.classList.remove('ok','warn','err');
 
         try {
@@ -161,19 +167,19 @@ document.addEventListener("DOMContentLoaded", function () {
             const payload = isJson ? await response.json() : { success: response.ok, message: await response.text() };
 
             if (response.ok && payload.success !== false) {
-                formResponse.textContent = payload.message || 'Message sent successfully!';
+                formResponse.textContent = t('form.sent', payload.message || 'Message sent successfully!');
                 formResponse.classList.remove('warn','err');
                 formResponse.classList.add('ok');
                 form.reset();
                 filesArray = [];
                 if (fileList) fileList.innerHTML = '';
             } else {
-                const msg = (payload?.message && typeof payload.message === 'string') ? payload.message : 'An error occurred while sending your message.';
+                const msg = (payload?.message && typeof payload.message === 'string') ? payload.message : t('form.failed', 'An error occurred while sending your message.');
                 const status = response.status || 'Request failed';
                 throw new Error(`${status}: ${msg}`);
             }
         } catch (err) {
-            formResponse.textContent = `Error: ${err?.message || err}`;
+            formResponse.textContent = `${t('form.errorPrefix', 'Error')}: ${err?.message || err}`;
             formResponse.classList.remove('ok','warn');
             formResponse.classList.add('err');
         }

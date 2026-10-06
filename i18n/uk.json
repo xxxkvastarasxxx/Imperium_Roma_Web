@@ -1,0 +1,125 @@
+{
+  "_meta": {
+    "label": "УКР",
+    "name": "Українська",
+    "ogLocale": "uk_UA",
+    "banner": {
+      "text": "Цей сайт доступний українською.",
+      "cta": "Читати українською",
+      "dismiss": "Ні, дякую"
+    }
+  },
+
+  "nav": {
+    "home": "Головна",
+    "about": "Про нас",
+    "services": "Послуги",
+    "bibliotheca": "Бібліотека",
+    "contact": "Контакти",
+    "domus": "Domus",
+    "language": "Мова"
+  },
+
+  "footer": {
+    "title": "Підвал сайту Imperium Roma",
+    "logoAlt": "Логотип Imperium Roma",
+    "brandText": "Інструменти та знання для ідентифікації, каталогізації й дослідження монет Римської імперії — для колекціонерів, науковців і поціновувачів",
+    "explore": "Навігація",
+    "verify": "Перевірити сертифікат",
+    "policies": "Документи",
+    "privacy": "Конфіденційність",
+    "terms": "Умови використання",
+    "deleteData": "Видалення даних",
+    "newsletter": "Розсилка",
+    "newsletterText": "Зрідка — головні новини та добірки. Без спаму",
+    "newsletterAria": "Підписка на розсилку",
+    "emailLabel": "Електронна пошта",
+    "emailPlaceholder": "Ваш email",
+    "subscribe": "Підписатися",
+    "social": "Соціальні мережі",
+    "copyright": "&copy; 2026 Imperium Roma. Усі права захищено."
+  },
+
+  "js": {
+    "form.required": "Будь ласка, заповніть усі обов’язкові поля.",
+    "form.sending": "Надсилаємо…",
+    "form.sent": "Повідомлення надіслано!",
+    "form.failed": "Не вдалося надіслати повідомлення.",
+    "form.errorPrefix": "Помилка",
+    "form.remove": "Видалити",
+    "form.fileTooLarge": "Файл «{name}» перевищує обмеження в 10 МБ.",
+    "form.fileType": "Файл «{name}» має непідтримуваний формат. Завантажуйте лише зображення JPEG або PNG.",
+    "form.maxFiles": "Можна додати щонайбільше 5 файлів.",
+
+    "placeholder.name": "Ваше ім’я",
+    "placeholder.email": "you@example.com",
+    "placeholder.message": "Розкажіть про вашу монету…",
+    "placeholder.examples": [
+      "Маю денарій Марка Аврелія і хотів би підтвердити його автентичність.",
+      "Чи можете ви оцінити сестерцій Траяна з моєї колекції?",
+      "Я успадкував кілька римських монет і не можу їх визначити."
+    ],
+
+    "newsletter.enterEmail": "Будь ласка, введіть адресу електронної пошти",
+    "newsletter.invalidEmail": "Будь ласка, введіть коректну адресу електронної пошти",
+    "newsletter.sending": "Надсилаємо…",
+    "newsletter.thanks": "Дякуємо за підписку!",
+    "newsletter.failed": "Не вдалося оформити підписку. Спробуйте ще раз.",
+    "newsletter.notConfigured": "Сервіс розсилки тимчасово недоступний. Спробуйте пізніше.",
+    "newsletter.serverError": "Сервіс розсилки тимчасово недоступний. Спробуйте пізніше.",
+    "newsletter.network": "Помилка мережі. Перевірте з’єднання та спробуйте ще раз.",
+
+    "story.showFull": "Показати всю історію",
+    "story.showLess": "Згорнути",
+
+    "carousel.aria": "Найцікавіше з аукціонів",
+    "carousel.empty": "Наразі немає доступних лотів.",
+    "carousel.view": "Детальніше",
+
+    "biblio.read": "Читати статтю →",
+    "biblio.cat.coins": "Монети та номінали",
+    "biblio.cat.history": "Історія",
+    "biblio.cat.guides": "Посібники для колекціонерів",
+    "biblio.cat.minting": "Карбування та іконографія",
+    "biblio.month.January": "Січень",
+    "biblio.month.February": "Лютий",
+    "biblio.month.March": "Березень",
+    "biblio.month.April": "Квітень",
+    "biblio.month.May": "Травень",
+    "biblio.month.June": "Червень",
+    "biblio.month.July": "Липень",
+    "biblio.month.August": "Серпень",
+    "biblio.month.September": "Вересень",
+    "biblio.month.October": "Жовтень",
+    "biblio.month.November": "Листопад",
+    "biblio.month.December": "Грудень",
+
+    "market.median": "Медіанна ціна",
+    "market.high": "Висока",
+    "market.moderate": "Помірна",
+    "market.veryHigh": "Дуже висока",
+    "market.range.5Y": "5 р.",
+    "market.range.3Y": "3 р.",
+    "market.range.1Y": "1 р.",
+    "market.medianLabel": "Медіана &middot; {range}",
+    "market.change": "Зміна за {range}",
+    "market.recorded": "Зафіксовані продажі &middot; {range}",
+    "market.activityAria": "Відносна активність лотів у вікні {range}: {n} зі 100",
+    "market.ytd": "{year} (триває)",
+    "market.peakTitle": "Пікова медіана {price}",
+    "market.peakTitleYtd": "Пікова медіана {price} — {year} ще триває, дані неповні",
+    "market.growthTitle": "{sign}{pct}% загалом за {range} — приблизно {cagr}% на рік із накопиченням",
+    "market.details": "Ринок у {year} році",
+    "market.medianRealised": "Медіанна ціна продажу",
+    "market.lots": "Зафіксовано лотів",
+    "market.topHouse": "Провідний аукціонний дім",
+    "market.close": "Закрити",
+
+    "coin3d.libs": "Не вдалося завантажити потрібні бібліотеки. Оновіть сторінку.",
+    "coin3d.error": "Сталася помилка під час створення 3D-моделі. Спробуйте ще раз.",
+
+    "zoom.preview": "Перегляд сертифіката",
+    "zoom.alt": "Збільшений сертифікат",
+    "zoom.close": "Закрити перегляд"
+  }
+}

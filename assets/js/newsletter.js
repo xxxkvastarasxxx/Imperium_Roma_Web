@@ -6,6 +6,13 @@
 (function() {
     'use strict';
 
+    // Localised strings injected by the build (window.I18N); English literals are the fallback.
+    const T = (window.I18N && window.I18N.js) || {};
+    const t = function (key, fallback, vars) {
+        return String(T[key] !== undefined ? T[key] : fallback)
+            .replace(/\{(\w+)\}/g, function (m, n) { return vars && n in vars ? vars[n] : m; });
+    };
+
     // Wait for DOM to be ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initNewsletter);
@@ -51,13 +58,13 @@
 
         // Client-side validation
         if (!email) {
-            showMessage(messageContainer, 'Please enter your email address', 'error');
+            showMessage(messageContainer, t('newsletter.enterEmail', 'Please enter your email address'), 'error');
             emailInput.focus();
             return;
         }
 
         if (!isValidEmail(email)) {
-            showMessage(messageContainer, 'Please enter a valid email address', 'error');
+            showMessage(messageContainer, t('newsletter.invalidEmail', 'Please enter a valid email address'), 'error');
             emailInput.focus();
             return;
         }
@@ -65,7 +72,7 @@
         // Disable button and show loading state
         const originalText = subscribeBtn.textContent;
         subscribeBtn.disabled = true;
-        subscribeBtn.textContent = 'Sending...';
+        subscribeBtn.textContent = t('newsletter.sending', 'Sending...');
         subscribeBtn.classList.add('loading');
 
         try {
@@ -80,7 +87,7 @@
 
             // Check if subscribe.php exists (not a 404 HTML page)
             if (!response.ok && response.status === 404) {
-                showMessage(messageContainer, 'Newsletter service not configured. Please contact the administrator.', 'error');
+                showMessage(messageContainer, t('newsletter.notConfigured', 'Newsletter service not configured. Please contact the administrator.'), 'error');
                 console.error('subscribe.php not found. Please upload it to your server root directory.');
                 return;
             }
@@ -88,7 +95,7 @@
             // Check if response is JSON (not HTML error page)
             const contentType = response.headers.get('content-type');
             if (!contentType || !contentType.includes('application/json')) {
-                showMessage(messageContainer, 'Server configuration error. Please contact the administrator.', 'error');
+                showMessage(messageContainer, t('newsletter.serverError', 'Server configuration error. Please contact the administrator.'), 'error');
                 console.error('Expected JSON response, got:', contentType);
                 console.error('Response indicates subscribe.php is missing or PHP is not enabled.');
                 return;
@@ -98,7 +105,7 @@
 
             if (response.ok && data.success) {
                 // Success
-                showMessage(messageContainer, 'Thank you for subscribing!', 'success');
+                showMessage(messageContainer, t('newsletter.thanks', 'Thank you for subscribing!'), 'success');
                 emailInput.value = '';
                 
                 // Optional: Track subscription analytics
@@ -110,7 +117,7 @@
                 }
             } else {
                 // Error from server
-                const errorMsg = data.error || 'Subscription failed. Please try again.';
+                const errorMsg = data.error || t('newsletter.failed', 'Subscription failed. Please try again.');
                 showMessage(messageContainer, errorMsg, 'error');
             }
         } catch (error) {
@@ -132,7 +139,8 @@
                 errorMessage += 'Please check your connection and try again.';
             }
             
-            showMessage(messageContainer, errorMessage, 'error');
+            // Translated pages get one plain message; English keeps the diagnostic detail.
+            showMessage(messageContainer, t('newsletter.network', errorMessage), 'error');
         } finally {
             // Re-enable button
             subscribeBtn.disabled = false;

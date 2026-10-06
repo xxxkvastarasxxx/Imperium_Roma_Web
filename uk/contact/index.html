@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Зв’яжіться з Imperium Roma щодо автентифікації та оцінки римських монет або з будь-яким нумізматичним запитанням. Відповідаємо протягом 24 годин. Безкоштовна консультація для колекціонерів античних монет." />
+    <meta name="keywords" content="контакти imperium roma, нумізмат, автентифікація римських монет, експерт з римських монет, оцінка римських монет, античні монети допомога" />
+    <title>Контакти | Imperium Roma — експерти з римських монет</title>
+    <link rel="canonical" href="https://imperiumroma.com/uk/contact/" />
+    <!-- @hreflang -->
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Контакти Imperium Roma | Допомога експертів" />
+    <meta property="og:description" content="Напишіть нашій команді нумізматів щодо автентифікації, оцінки чи дослідження монет. Відповідь протягом 24 годин." />
+    <meta property="og:url" content="https://imperiumroma.com/uk/contact/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://imperiumroma.com/assets/images/general/contact.jpg" />
+    <meta property="og:site_name" content="Imperium Roma" />
+    <meta property="og:locale" content="uk_UA" />
+    <meta property="og:locale:alternate" content="en_GB" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Контакти Imperium Roma" />
+    <meta name="twitter:description" content="Допомога експертів з автентифікації та оцінки римських монет." />
+    <meta name="twitter:image" content="https://imperiumroma.com/assets/images/general/contact.jpg" />
+
+    <!-- Structured Data - ContactPage -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ContactPage",
+        "name": "Контакти Imperium Roma",
+        "description": "Сторінка контактів нумізматичних послуг Imperium Roma",
+        "url": "https://imperiumroma.com/uk/contact/",
+        "inLanguage": "uk",
+        "mainEntity": {
+            "@type": "Organization",
+            "name": "Imperium Roma",
+            "url": "https://imperiumroma.com",
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "customer service",
+                "availableLanguage": ["English", "Ukrainian", "Russian"]
+            }
+        }
+    }
+    </script>
+
+    <!-- BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Головна",
+                "item": "https://imperiumroma.com/uk/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Контакти",
+                "item": "https://imperiumroma.com/uk/contact/"
+            }
+        ]
+    }
+    </script>
+
+    <!-- Favicon Icons -->
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/images/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/images/icons/favicon-48x48.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="apple-mobile-web-app-title" content="Imperium Roma">
+    <meta name="theme-color" content="#0f0f10">
+
+    <!-- Stylesheet -->
+    <!-- Fonts are self-hosted (see @font-face in style.css). Ukrainian pages preload
+         the Cyrillic subset: it carries almost all the visible text here. -->
+    <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/montserrat-cyrillic.woff2" crossorigin>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/contact.css">
+</head>
+<body>
+    <!-- Header -->
+    <!-- @include partials/header.html -->
+
+    <main>
+
+    <!-- Main Banner -->
+    <section class="banner">
+        <div class="banner-image-container">
+            <img src="/assets/images/general/contact1.webp" alt="Експертиза античних римських монет">
+        </div>
+        <div class="banner-content">
+            <h1>Зв’яжіться з нами</h1>
+            <a href="#contact" class="btn-banner">Написати нам</a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2>Контакти</h2>
+            <p>Будемо раді вашому листу! Маєте запитання про наші послуги, потрібна допомога чи просто хочете поговорити про римські монети — пишіть, ми на зв’язку</p>
+            <form action="/send-telegram.php" method="POST" class="contact-form" enctype="multipart/form-data">
+                <!-- Honeypot anti-spam field (keep hidden) -->
+                <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;" aria-hidden="true">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Ім’я</label>
+                        <input type="text" id="name" name="name" required minlength="2" maxlength="80">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Електронна пошта</label>
+                        <input type="email" id="email" name="email" required maxlength="254" autocomplete="email">
+                    </div>
+                </div>
+
+                <!-- Option values stay in English: they are what the server receives and
+                     what the ?subject= links from the Services page match against. -->
+                <div class="form-group">
+                    <label for="subject">Тема</label>
+                    <select id="subject" name="subject" required>
+                        <option value="" disabled selected>Оберіть тему</option>
+                        <option value="identification">Ідентифікація</option>
+                        <option value="market evaluation">Ринкова оцінка</option>
+                        <option value="authenticity check">Перевірка автентичності</option>
+                        <option value="data parsing">Парсинг даних</option>
+                        <option value="promote your lot">Просування лоту</option>
+                        <option value="custom request">Індивідуальний запит</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Повідомлення</label>
+                    <textarea id="message" name="message" rows="5" required minlength="10" maxlength="4000"></textarea>
+                </div>
+                <div class="form-group form-group--file">
+                    <label for="file">Прикріпити файли (до 5)</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="file" name="file[]" multiple accept="image/jpeg,image/png">
+                        <button type="button" id="customButton" class="custom-file-upload">Обрати файли</button>
+                    </div>
+                    <ul id="fileList"></ul> <!-- File list area -->
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn-submit">Надіслати повідомлення</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    </main>
+
+    <!-- Footer -->
+    <!-- @include partials/footer.html -->
+
+    <!-- Scripts -->
+    <script src="/assets/js/header.js" defer></script>
+    <script src="/assets/js/hamburger.js" defer></script>
+    <script src="/assets/js/lang.js" defer></script>
+    <script src="/assets/js/form.js" defer></script>
+    <script src="/assets/js/form-placeholders.js" defer></script>
+    <script src="/assets/js/contact-prefill.js" defer></script>
+    <script src="/assets/js/newsletter.js" defer></script>
+    <script src="/assets/js/smooth-scroll.js" defer></script>
+
+</body>
+
+</html>

@@ -84,7 +84,7 @@ function collectPages() {
   const pages = new Map(); // url -> content hash
   for (const abs of walkHtml(DIST)) {
     const rel = relative(DIST, abs).split(sep).join('/');
-    if (rel === '404.html') continue;
+    if (/(^|\/)404\.html$/.test(rel)) continue; // every language's error page
     const html = readFileSync(abs, 'utf8');
     if (/<meta[^>]+name=["']robots["'][^>]+content=["'][^"']*noindex/i.test(html)) continue;
     pages.set(toUrl(abs), createHash('sha256').update(html).digest('hex').slice(0, 16));

@@ -1,35 +1,41 @@
 /**
  * Bibliotheca Preview — dynamically renders recent article cards
  * into #bibliotheca-preview on the homepage.
+ *
+ * Each article carries its translations inline; a language without one falls back
+ * to the English title and the English article URL.
  */
 document.addEventListener("DOMContentLoaded", function () {
     const articles = [
         {
+            slug: "how-were-roman-coins-made",
             title: "How Were Roman Coins Made? Inside the Imperial Mint",
-            date: "August 2026",
-            excerpt: "Hand-cut dies, cast blanks and a single hammer blow — how Rome made coin by the billion, and what the process leaves on the coin.",
-            slug: "how-were-roman-coins-made"
+            i18n: { uk: "Як карбували римські монети? Усередині імперського монетного двору" }
         },
         {
+            slug: "how-to-store-roman-coins",
             title: "How to Store Ancient Roman Coins Safely",
-            date: "August 2026",
-            excerpt: "Which holder materials are safe, why PVC and oak destroy coins, and the humidity level that keeps bronze stable.",
-            slug: "how-to-store-roman-coins"
+            i18n: { uk: "Як безпечно зберігати античні римські монети" }
         },
         {
+            slug: "where-to-buy-roman-coins",
             title: "Where to Buy Ancient Roman Coins Safely",
-            date: "August 2026",
-            excerpt: "The four channels for buying Roman coins, how to vet a seller in five minutes, and the listing red flags to avoid.",
-            slug: "where-to-buy-roman-coins"
+            i18n: { uk: "Де безпечно купити античні римські монети" }
         }
     ];
 
     const container = document.getElementById("bibliotheca-preview");
     if (!container) return;
 
+    const LANG = (window.I18N && window.I18N.lang) || "en";
+
     container.innerHTML = articles.map(function (a) {
-        return `<a href="/bibliotheca/${a.slug}/" target="_blank" rel="noopener noreferrer" class="bibliotheca-card">
-            <h3>${a.title}</h3>
+        const translated = a.i18n && a.i18n[LANG];
+        const title = translated || a.title;
+        const href = translated ? "/" + LANG + "/bibliotheca/" + a.slug + "/" : "/bibliotheca/" + a.slug + "/";
+        const langAttr = translated || LANG === "en" ? "" : ' lang="en"';
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="bibliotheca-card"${langAttr}>
+            <h3>${title}</h3>
             <span class="biblio-arrow">&rarr;</span>
         </a>`;
     }).join("");

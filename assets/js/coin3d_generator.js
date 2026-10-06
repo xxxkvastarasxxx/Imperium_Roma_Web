@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(initCoin3DGenerator)
         .catch(err => {
             console.error("Failed to load dependencies:", err);
-            alert("Failed to load required libraries. Please refresh the page.");
+            alert(((window.I18N && window.I18N.js && window.I18N.js["coin3d.libs"]) || "Failed to load required libraries. Please refresh the page."));
         });
 });
 
@@ -240,7 +240,7 @@ function initCoin3DGenerator() {
                 window.dispatchEvent(new Event('resize'));
             } catch (error) {
                 console.error("Error generating coin:", error);
-                alert("There was an error generating the 3D coin. Please try again.");
+                alert(((window.I18N && window.I18N.js && window.I18N.js["coin3d.error"]) || "There was an error generating the 3D coin. Please try again."));
             }
             
             // Remove loading overlay

@@ -1,4 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Localised strings injected by the build (window.I18N); English literals are the fallback.
+    const T = (window.I18N && window.I18N.js) || {};
+    const t = function (key, fallback, vars) {
+        return String(T[key] !== undefined ? T[key] : fallback)
+            .replace(/\{(\w+)\}/g, function (m, n) { return vars && n in vars ? vars[n] : m; });
+    };
+
     // DOM Elements
     const overlay = document.querySelector('.chart-overlay');
     if (overlay) {
@@ -123,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
         data: {
           labels: ['2022', '2023', '2024', '2025', '2026'],
           datasets: [{
-            label: 'Median price',
+            label: t('market.median', 'Median price'),
             data: [120, 138, 152, 168, 193],
             borderColor: GOLD,
             borderWidth: 2.5,
@@ -278,9 +285,9 @@ document.addEventListener("DOMContentLoaded", () => {
     /* How many trailing points each window covers, plus the channel split and
        activity reading that belong to that window. */
     const RANGE_META = {
-      '5Y': { points: 5, auctionVolume: 65, privateVolume: 35, tradingActivity: 78, activityLabel: 'High' },
-      '3Y': { points: 3, auctionVolume: 42, privateVolume: 58, tradingActivity: 65, activityLabel: 'Moderate' },
-      '1Y': { points: 2, auctionVolume: 33, privateVolume: 67, tradingActivity: 85, activityLabel: 'Very high' }
+      '5Y': { points: 5, auctionVolume: 65, privateVolume: 35, tradingActivity: 78, activityLabel: t('market.high', 'High') },
+      '3Y': { points: 3, auctionVolume: 42, privateVolume: 58, tradingActivity: 65, activityLabel: t('market.moderate', 'Moderate') },
+      '1Y': { points: 2, auctionVolume: 33, privateVolume: 67, tradingActivity: 85, activityLabel: t('market.veryHigh', 'Very high') }
     };
 
     const dataRanges = Object.fromEntries(
@@ -361,6 +368,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function updatePriceData(range) {
       // Get the data config for this range or default to '5Y'
       const { labels, data, lots, recordedSales, auctionVolume, privateVolume, tradingActivity, activityLabel } = dataRanges[range] || dataRanges['5Y'];
+      // "5Y" is the data key; what the visitor reads may differ per language ("5 р.").
+      const rangeLabel = t('market.range.' + range, range);
       activeLots = lots;
   
       // Update price chart with smooth animation
@@ -375,9 +384,9 @@ document.addEventListener("DOMContentLoaded", () => {
         labels.map((y, i) => `${y}: ${lots[i]}`).join('  ·  ');
   
       // Every figure below is window-dependent, so each label names its window.
-      if (medianLabelEl) medianLabelEl.innerHTML = `Median &middot; ${range}`;
-      if (growthLabelEl) growthLabelEl.textContent = `${range} change`;
-      if (certifiedLabelEl) certifiedLabelEl.innerHTML = `Recorded sales &middot; ${range}`;
+      if (medianLabelEl) medianLabelEl.innerHTML = t('market.medianLabel', 'Median &middot; {range}', { range: rangeLabel });
+      if (growthLabelEl) growthLabelEl.textContent = t('market.change', '{range} change', { range: rangeLabel });
+      if (certifiedLabelEl) certifiedLabelEl.innerHTML = t('market.recorded', 'Recorded sales &middot; {range}', { range: rangeLabel });
 
       // Update Trading Volume indicator
       if (tradingVolumeEl && activityBarEl) {
@@ -386,7 +395,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       if (activityTrackEl) {
         activityTrackEl.setAttribute('aria-label',
-          `Relative lot activity in the ${range} window: ${tradingActivity} out of 100`);
+          t('market.activityAria', 'Relative lot activity in the {range} window: {n} out of 100', { range: rangeLabel, n: tradingActivity }));
       }
 
       /* Median of the whole selected window, not a spot price — the label says
@@ -400,10 +409,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (peakMarkerEl) {
         const peakYear = labels[peakIndex];
         const isPartial = Number(peakYear) === CURRENT_YEAR;
-        peakMarkerEl.textContent = isPartial ? `${peakYear} YTD` : peakYear;
+        peakMarkerEl.textContent = isPartial ? t('market.ytd', '{year} YTD', { year: peakYear }) : peakYear;
         peakMarkerEl.title = isPartial
-          ? `Peak median ${formatCurrency(peakValue)} — ${peakYear} is year-to-date and still incomplete`
-          : `Peak median ${formatCurrency(peakValue)}`;
+          ? t('market.peakTitleYtd', 'Peak median {price} — {year} is year-to-date and still incomplete', { price: formatCurrency(peakValue), year: peakYear })
+          : t('market.peakTitle', 'Peak median {price}', { price: formatCurrency(peakValue) });
       }
 
       // Total change across the selected window (not annualised)
@@ -416,8 +425,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // Annualised equivalent, which is the figure a dealer actually compares
         const years = Math.max(1, data.length - 1);
         const cagr = (Math.pow(data[data.length - 1] / data[0], 1 / years) - 1) * 100;
-        growthBadgeEl.title =
-          `${sign}${Math.abs(Math.round(rangeChange))}% total across ${range} — about ${cagr.toFixed(1)}% a year compounded`;
+        growthBadgeEl.title = t('market.growthTitle', '{sign}{pct}% total across {range} — about {cagr}% a year compounded',
+          { sign, pct: Math.abs(Math.round(rangeChange)), range: rangeLabel, cagr: cagr.toFixed(1) });
       }
 
       // Recompute and update market liquidity (3rd graph)
@@ -443,12 +452,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const lots = Array.isArray(activeLots) ? activeLots[yearIndex] : undefined;
 
       overlayContent.innerHTML = `
-        <button type="button" class="overlay-close" aria-label="Close details">&times;</button>
-        <h3>${year} Market Details</h3>
+        <button type="button" class="overlay-close" aria-label="${t('market.close', 'Close details')}">&times;</button>
+        <h3>${t('market.details', '{year} Market Details', { year })}</h3>
         <div class="price-details">
-          <p>Median realised: ${formatCurrency(price)}</p>
-          <p>Recorded lots: ${lots === undefined ? '\u2014' : lots}</p>
-          <p>Top auction house: ${auctionHouses[yearIndex % 3]}</p>
+          <p>${t('market.medianRealised', 'Median realised')}: ${formatCurrency(price)}</p>
+          <p>${t('market.lots', 'Recorded lots')}: ${lots === undefined ? '\u2014' : lots}</p>
+          <p>${t('market.topHouse', 'Top auction house')}: ${auctionHouses[yearIndex % 3]}</p>
         </div>
       `;
       lastFocused = document.activeElement;

@@ -755,3 +755,14 @@ body {
     .biblio-article-content h2 { font-size: 18px; }
 }
 
+
+/* Shown on translated library indexes while the articles themselves are still
+   English-only, so a reader knows before clicking a card. */
+.biblio-lang-note {
+    max-width: 720px;
+    margin: 14px auto 0;
+    text-align: center;
+    color: #9a9a9a;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}

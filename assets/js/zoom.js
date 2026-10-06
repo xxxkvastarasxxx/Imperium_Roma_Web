@@ -6,11 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Create lightbox element only if it doesn't exist yet
   if (!document.querySelector('.certificate-lightbox')) {
     const lightboxTemplate = `
-      <div class="certificate-lightbox" role="dialog" aria-modal="true" aria-label="Certificate preview">
+      <div class="certificate-lightbox" role="dialog" aria-modal="true" aria-label="${((window.I18N && window.I18N.js && window.I18N.js["zoom.preview"]) || "Certificate preview")}">
         <div class="lightbox-container">
           <div class="lightbox-content">
-            <img src="" alt="Enlarged certificate" class="lightbox-image">
-            <button class="lightbox-close" aria-label="Close lightbox">&times;</button>
+            <img src="" alt="${((window.I18N && window.I18N.js && window.I18N.js["zoom.alt"]) || "Enlarged certificate")}" class="lightbox-image">
+            <button class="lightbox-close" aria-label="${((window.I18N && window.I18N.js && window.I18N.js["zoom.close"]) || "Close lightbox")}">&times;</button>
           </div>
         </div>
       </div>

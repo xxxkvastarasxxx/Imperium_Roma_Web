@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Миттєво перевірте сертифікат автентичності римської монети на Imperium Roma. Введіть код сертифіката, щоб підтвердити, що ваша антична монета справжня. Перевірка, якій довіряють нумізмати." />
+    <meta name="keywords" content="перевірка сертифіката монети, автентичність римської монети, перевірка справжності античної монети, виявлення підробок монет, imperium roma сертифікат" />
+    <title>Перевірка сертифіката римської монети | Imperium Roma</title>
+    <link rel="canonical" href="https://imperiumroma.com/uk/authenticity/" />
+    <!-- @hreflang -->
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Перевірте сертифікат вашої римської монети | Imperium Roma" />
+    <meta property="og:description" content="Миттєва перевірка сертифікатів автентифікованих римських монет. Введіть код, щоб підтвердити справжність." />
+    <meta property="og:url" content="https://imperiumroma.com/uk/authenticity/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://imperiumroma.com/assets/images/general/authenticity1.jpg" />
+    <meta property="og:site_name" content="Imperium Roma" />
+    <meta property="og:locale" content="uk_UA" />
+    <meta property="og:locale:alternate" content="en_GB" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Перевірка сертифіката римської монети" />
+    <meta name="twitter:description" content="Миттєво перевірте сертифікат автентичності від Imperium Roma." />
+    <meta name="twitter:image" content="https://imperiumroma.com/assets/images/general/authenticity1.jpg" />
+
+    <!-- Structured Data - WebApplication -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Перевірка сертифікатів Imperium Roma",
+        "description": "Онлайн-інструмент для перевірки сертифікатів автентичності римських монет",
+        "url": "https://imperiumroma.com/uk/authenticity/",
+        "inLanguage": "uk",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "Web Browser",
+        "provider": {
+            "@type": "Organization",
+            "name": "Imperium Roma",
+            "url": "https://imperiumroma.com"
+        }
+    }
+    </script>
+
+    <!-- BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Головна",
+                "item": "https://imperiumroma.com/uk/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Перевірка сертифіката",
+                "item": "https://imperiumroma.com/uk/authenticity/"
+            }
+        ]
+    }
+    </script>
+
+    <!-- Favicon Icons -->
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/images/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/images/icons/favicon-48x48.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="apple-mobile-web-app-title" content="Imperium Roma">
+    <meta name="theme-color" content="#0f0f10">
+
+    <!-- Stylesheet -->
+    <!-- Fonts are self-hosted (see @font-face in style.css). Ukrainian pages preload
+         the Cyrillic subset: it carries almost all the visible text here. -->
+    <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/montserrat-cyrillic.woff2" crossorigin>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/authenticity.css">
+</head>
+<body>
+    <!-- Header -->
+    <!-- @include partials/header.html -->
+
+    <main>
+
+    <!-- Main Banner -->
+    <section class="banner">
+        <div class="banner-image-container">
+            <img src="/assets/images/general/authenticity1.webp" alt="Перевірка автентичності">
+        </div>
+        <div class="banner-content">
+            <h1>Перевірте сертифікат вашої монети</h1>
+            <a href="#authenticity-check-section" class="btn-banner">Перевірити</a>
+        </div>
+    </section>
+
+    <!-- Authenticity Check Section -->
+    <section id="authenticity-check-section" class="authenticity-check-section">
+        <h2>Введіть код сертифіката</h2>
+        <p>Введіть код сертифіката нижче, щоб перевірити його справжність</p>
+
+        <!-- Certificate Verification Form -->
+        <form id="certificateForm" action="validate_certificate.php" method="POST" class="cert-form">
+            <input type="text" name="certificateCode" id="certificateCode" placeholder="Введіть код сертифіката" required>
+            <button type="submit" class="btn-verify">Перевірити</button>
+        </form>
+    </section>
+
+    </main>
+
+    <!-- Footer -->
+    <!-- @include partials/footer.html -->
+
+    <!-- Scripts -->
+    <script src="/assets/js/header.js" defer></script>
+    <script src="/assets/js/hamburger.js" defer></script>
+    <script src="/assets/js/lang.js" defer></script>
+    <script src="/assets/js/newsletter.js" defer></script>
+    <script src="/assets/js/smooth-scroll.js" defer></script>
+</body>
+</html>

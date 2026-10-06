@@ -1,6 +1,6 @@
     <footer class="site-footer" aria-labelledby="footer-title">
         <div class="container">
-            <h2 id="footer-title" class="sr-only">Imperium Roma Footer</h2>
+            <h2 id="footer-title" class="sr-only">{{t:footer.title}}</h2>
             <div class="footer-grid">
                 <!-- Brand / About -->
                 <div class="footer-col brand">
@@ -9,48 +9,50 @@
                              multi-resolution bundle meant for browser chrome, and using it
                              here cost ~174KB of image on every page of the site. At 72px the
                              96px favicon would upscale on a 2x display, hence the full mark. -->
-                        <img src="/assets/images/icons/logo-lockup.png" alt="Imperium Roma Logo"
+                        <img src="/assets/images/icons/logo-lockup.png" alt="{{t:footer.logoAlt}}"
                              class="brand-logo" width="58" height="58" loading="lazy" decoding="async">
                         <span class="brand-name">Imperium Roma</span>
                     </div>
-                    <p class="brand-text">Tools and insights for identifying, cataloging, and researching Roman Imperial coinage - built for collectors, scholars, and enthusiasts</p>
+                    <p class="brand-text">{{t:footer.brandText}}</p>
                 </div>
 
                 <!-- Explore -->
-                <nav class="footer-col" aria-label="Explore">
-                    <h3 class="footer-title">Explore</h3>
+                <!-- Layout hooks are classes: the aria-label is translated per language,
+                     so style.css must never match on its text. -->
+                <nav class="footer-col footer-col--explore" aria-label="{{t:footer.explore}}">
+                    <h3 class="footer-title">{{t:footer.explore}}</h3>
                     <ul class="footer-links">
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/about/">About</a></li>
-                        <li><a href="/services/">Services</a></li>
-                        <li><a href="/bibliotheca/">Bibliotheca</a></li>
-                        <li><a href="/authenticity/">Verify Certificate</a></li>
-                        <li><a href="/contact/">Contact</a></li>
+                        <li><a href="{{link:/}}">{{t:nav.home}}</a></li>
+                        <li><a href="{{link:/about/}}">{{t:nav.about}}</a></li>
+                        <li><a href="{{link:/services/}}">{{t:nav.services}}</a></li>
+                        <li><a href="{{link:/bibliotheca/}}">{{t:nav.bibliotheca}}</a></li>
+                        <li><a href="{{link:/authenticity/}}">{{t:footer.verify}}</a></li>
+                        <li><a href="{{link:/contact/}}">{{t:nav.contact}}</a></li>
                         <!-- TODO: point Domus to its subdomain (e.g. https://domus.imperiumroma.com) when live; was href="/domus/" -->
-                        <li><a class="is-disabled" role="link" aria-disabled="true" tabindex="-1">Domus</a></li>
+                        <li><a class="is-disabled" role="link" aria-disabled="true" tabindex="-1">{{t:nav.domus}}</a></li>
                     </ul>
                 </nav>
 
                 <!-- Policies -->
-                <nav class="footer-col" aria-label="Policies">
-                    <h3 class="footer-title">Policies</h3>
+                <nav class="footer-col footer-col--policies" aria-label="{{t:footer.policies}}">
+                    <h3 class="footer-title">{{t:footer.policies}}</h3>
                     <ul class="footer-links">
-                        <li><a href="/policies/privacy_policy/">Privacy Policy</a></li>
-                        <li><a href="/policies/terms_of_use/">Terms of Use</a></li>
-                        <li><a href="/policies/delete_user_data/">Delete User Data</a></li>
+                        <li><a href="{{link:/policies/privacy_policy/}}">{{t:footer.privacy}}</a></li>
+                        <li><a href="{{link:/policies/terms_of_use/}}">{{t:footer.terms}}</a></li>
+                        <li><a href="{{link:/policies/delete_user_data/}}">{{t:footer.deleteData}}</a></li>
                     </ul>
                 </nav>
 
                 <!-- Newsletter -->
                 <div class="footer-col newsletter">
-                    <h3 class="footer-title">Newsletter</h3>
-                    <p class="newsletter-text">Occasional highlights and updates — no spam</p>
-                    <form class="newsletter-form" action="#" method="post" onsubmit="return false" aria-label="Newsletter signup">
-                        <label for="email-input" class="sr-only">Email</label>
-                        <input type="email" id="email-input" class="newsletter-input" placeholder="Enter your email" autocomplete="email">
-                        <button type="submit" id="subscribe-btn" class="newsletter-btn">Subscribe</button>
+                    <h3 class="footer-title">{{t:footer.newsletter}}</h3>
+                    <p class="newsletter-text">{{t:footer.newsletterText}}</p>
+                    <form class="newsletter-form" action="#" method="post" onsubmit="return false" aria-label="{{t:footer.newsletterAria}}">
+                        <label for="email-input" class="sr-only">{{t:footer.emailLabel}}</label>
+                        <input type="email" id="email-input" class="newsletter-input" placeholder="{{t:footer.emailPlaceholder}}" autocomplete="email">
+                        <button type="submit" id="subscribe-btn" class="newsletter-btn">{{t:footer.subscribe}}</button>
                     </form>
-                    <div class="footer-social" aria-label="Social links">
+                    <div class="footer-social" aria-label="{{t:footer.social}}">
                         <a href="https://www.facebook.com/profile.php?id=61574871069964" class="social-link" aria-label="Facebook" title="Facebook" target="_blank" rel="noopener noreferrer">
                             <img src="/assets/images/icons/facebook.png" alt="Facebook" width="24" height="24" loading="lazy" decoding="async" onerror="this.src='/assets/images/icons/favicon.ico'">
                         </a>
@@ -65,7 +67,7 @@
             </div>
 
             <div class="footer-bottom">
-                <p class="copyright">&copy; 2026 Imperium Roma. All rights reserved.</p>
+                <p class="copyright">{{t:footer.copyright}}</p>
             </div>
         </div>
     </footer>

@@ -1,6 +1,6 @@
     <header>
         <div class="header__container">
-            <a class="logo" href="/">
+            <a class="logo" href="{{link:/}}">
                 <!-- The 256px lockup, not favicon.ico (174KB) and not the 96px favicon:
                      at 80px the 96px PNG would upscale on a 2x display, so this uses the
                      full-resolution mark. Above the fold on every page, so it is eagerly
@@ -11,13 +11,35 @@
             </a>
             <nav>
                 <ul id="menu" class="menu">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/about/">About</a></li>
-                    <li><a href="/services/">Services</a></li>
-                    <li><a href="/bibliotheca/">Bibliotheca</a></li>
-                    <li><a href="/contact/">Contact</a></li>
+                    <li><a href="{{link:/}}">{{t:nav.home}}</a></li>
+                    <li><a href="{{link:/about/}}">{{t:nav.about}}</a></li>
+                    <li><a href="{{link:/services/}}">{{t:nav.services}}</a></li>
+                    <li><a href="{{link:/bibliotheca/}}">{{t:nav.bibliotheca}}</a></li>
+                    <li><a href="{{link:/contact/}}">{{t:nav.contact}}</a></li>
                     <!-- TODO: point Domus to its subdomain (e.g. https://domus.imperiumroma.com) when live; was href="/login" -->
-                    <li><a class="is-disabled" role="link" aria-disabled="true" tabindex="-1">Domus</a></li>
+                    <li><a class="is-disabled" role="link" aria-disabled="true" tabindex="-1">{{t:nav.domus}}</a></li>
+                    <!-- Language switcher. The build emits one link per dictionary in
+                         i18n/, pointing at this same page in that language (or that
+                         language's home page when the page is not translated yet).
+                         Desktop: globe button + dropdown (toggled by lang.js).
+                         Mobile overlay: a full-width button that opens the list upwards. -->
+                    <li class="menu-lang">
+                        <div class="lang-menu" data-lang-menu>
+                            <button type="button" class="lang-menu__toggle" aria-expanded="false"
+                                    aria-controls="lang-menu-list" aria-label="{{t:nav.language}}: {{langmeta:name}}">
+                                <svg class="lang-menu__globe" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                                    <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                                    <path d="M3 12h18M12 3c2.6 2.6 3.9 5.6 3.9 9s-1.3 6.4-3.9 9c-2.6-2.6-3.9-5.6-3.9-9s1.3-6.4 3.9-9z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                                </svg>
+                                <span class="lang-menu__current">{{langmeta:label}}</span>
+                                <span class="lang-menu__current-name">{{langmeta:name}}</span>
+                                <svg class="lang-menu__chevron" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false">
+                                    <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                            <div class="lang-menu__list" id="lang-menu-list" role="group" aria-label="{{t:nav.language}}">{{langswitch}}</div>
+                        </div>
+                    </li>
                 </ul>
                 <div class="hamburger" id="hamburger">
                     <span></span>

@@ -4,6 +4,13 @@
 (function () {
     'use strict';
 
+    // Localised strings injected by the build (window.I18N); English literals are the fallback.
+    const T = (window.I18N && window.I18N.js) || {};
+    const t = function (key, fallback, vars) {
+        return String(T[key] !== undefined ? T[key] : fallback)
+            .replace(/\{(\w+)\}/g, function (m, n) { return vars && n in vars ? vars[n] : m; });
+    };
+
     /* ==========================================================
        Scroll-reveal + Collapsible Journey Toggle
        ========================================================== */
@@ -34,14 +41,14 @@
                 journey.classList.remove('journey--expanded');
                 journey.classList.add('journey--collapsed');
                 btn.classList.remove('is-expanded');
-                btn.querySelector('span').textContent = 'Show Full Story';
+                btn.querySelector('span').textContent = t('story.showFull', 'Show Full Story');
                 btn.setAttribute('aria-expanded', 'false');
                 document.getElementById('about').scrollIntoView({ behavior: 'smooth', block: 'start' });
             } else {
                 journey.classList.remove('journey--collapsed');
                 journey.classList.add('journey--expanded');
                 btn.classList.add('is-expanded');
-                btn.querySelector('span').textContent = 'Show Less';
+                btn.querySelector('span').textContent = t('story.showLess', 'Show Less');
                 btn.setAttribute('aria-expanded', 'true');
 
                 /* Re-observe only milestones that haven't appeared yet */

@@ -1,0 +1,110 @@
+{
+  "_meta": {
+    "label": "EN",
+    "name": "English",
+    "ogLocale": "en_GB",
+    "banner": {
+      "text": "This site is also available in English.",
+      "cta": "Switch to English",
+      "dismiss": "No, thanks"
+    }
+  },
+
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "bibliotheca": "Bibliotheca",
+    "contact": "Contact",
+    "domus": "Domus",
+    "language": "Language"
+  },
+
+  "footer": {
+    "title": "Imperium Roma Footer",
+    "logoAlt": "Imperium Roma Logo",
+    "brandText": "Tools and insights for identifying, cataloging, and researching Roman Imperial coinage - built for collectors, scholars, and enthusiasts",
+    "explore": "Explore",
+    "verify": "Verify Certificate",
+    "policies": "Policies",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use",
+    "deleteData": "Delete User Data",
+    "newsletter": "Newsletter",
+    "newsletterText": "Occasional highlights and updates — no spam",
+    "newsletterAria": "Newsletter signup",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+    "subscribe": "Subscribe",
+    "social": "Social links",
+    "copyright": "&copy; 2026 Imperium Roma. All rights reserved."
+  },
+
+  "js": {
+    "form.required": "Please fill out all required fields.",
+    "form.sending": "Sending...",
+    "form.sent": "Message sent successfully!",
+    "form.failed": "An error occurred while sending your message.",
+    "form.errorPrefix": "Error",
+    "form.remove": "Remove",
+    "form.fileTooLarge": "File \"{name}\" exceeds the maximum size limit of 10MB.",
+    "form.fileType": "File \"{name}\" is not a valid format. Please upload JPEG or PNG images only.",
+    "form.maxFiles": "You can only upload a maximum of 5 files.",
+
+    "placeholder.name": "Your name",
+    "placeholder.email": "you@example.com",
+    "placeholder.message": "Tell us about your coin…",
+    "placeholder.examples": [
+      "I have a denarius of Marcus Aurelius I would like authenticated.",
+      "Could you value a sestertius of Trajan from my collection?",
+      "I inherited a small group of Roman coins and cannot identify them."
+    ],
+
+    "newsletter.enterEmail": "Please enter your email address",
+    "newsletter.invalidEmail": "Please enter a valid email address",
+    "newsletter.sending": "Sending...",
+    "newsletter.thanks": "Thank you for subscribing!",
+    "newsletter.failed": "Subscription failed. Please try again.",
+
+    "story.showFull": "Show Full Story",
+    "story.showLess": "Show Less",
+
+    "carousel.aria": "Auction highlights",
+    "carousel.empty": "No highlights available right now.",
+    "carousel.view": "View details",
+
+    "biblio.read": "Read article →",
+    "biblio.cat.coins": "Coins & Denominations",
+    "biblio.cat.history": "History",
+    "biblio.cat.guides": "Collector Guides",
+    "biblio.cat.minting": "Minting & Iconography",
+
+    "market.median": "Median price",
+    "market.high": "High",
+    "market.moderate": "Moderate",
+    "market.veryHigh": "Very high",
+    "market.range.5Y": "5Y",
+    "market.range.3Y": "3Y",
+    "market.range.1Y": "1Y",
+    "market.medianLabel": "Median &middot; {range}",
+    "market.change": "{range} change",
+    "market.recorded": "Recorded sales &middot; {range}",
+    "market.activityAria": "Relative lot activity in the {range} window: {n} out of 100",
+    "market.ytd": "{year} YTD",
+    "market.peakTitle": "Peak median {price}",
+    "market.peakTitleYtd": "Peak median {price} — {year} is year-to-date and still incomplete",
+    "market.growthTitle": "{sign}{pct}% total across {range} — about {cagr}% a year compounded",
+    "market.details": "{year} Market Details",
+    "market.medianRealised": "Median realised",
+    "market.lots": "Recorded lots",
+    "market.topHouse": "Top auction house",
+    "market.close": "Close details",
+
+    "coin3d.libs": "Failed to load required libraries. Please refresh the page.",
+    "coin3d.error": "There was an error generating the 3D coin. Please try again.",
+
+    "zoom.preview": "Certificate preview",
+    "zoom.alt": "Enlarged certificate",
+    "zoom.close": "Close lightbox"
+  }
+}

@@ -1,4 +1,10 @@
 document.addEventListener("DOMContentLoaded", async function() {
+    // Localised strings injected by the build (window.I18N); English literals are the fallback.
+    const T = (window.I18N && window.I18N.js) || {};
+    const t = function (key, fallback, vars) {
+        return String(T[key] !== undefined ? T[key] : fallback)
+            .replace(/\{(\w+)\}/g, function (m, n) { return vars && n in vars ? vars[n] : m; });
+    };
     const highlightsSection = document.querySelector('.auction-highlights');
     const carousel = document.getElementById('auction-carousel');
     const carouselTrack = document.querySelector('.carousel-track');
@@ -8,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     // Accessibility attributes
     if (highlightsSection) {
-        highlightsSection.setAttribute('aria-label', 'Auction highlights');
+        highlightsSection.setAttribute('aria-label', t('carousel.aria', 'Auction highlights'));
     }
     carouselTrack.setAttribute('aria-live', 'polite');
 
@@ -78,7 +84,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                     <div class="item-details">
                         <h2 class="item-title" title="${item.title}">${item.title}</h2>
                         <p class="item-desc">${item.description || ''}</p>
-                        <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="view-details-btn">View details</a>
+                        <a href="${item.link}" target="_blank" rel="noopener noreferrer" class="view-details-btn">${t('carousel.view', 'View details')}</a>
                     </div>
                 </div>
             `;
@@ -215,7 +221,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     function loadCarouselItems() {
         teardownLoop();
         if (!Array.isArray(auctionItems) || auctionItems.length === 0) {
-            carouselTrack.innerHTML = '<div style="color:#fff;opacity:.8;text-align:center;width:100%">No highlights available right now.</div>';
+            carouselTrack.innerHTML = '<div style="color:#fff;opacity:.8;text-align:center;width:100%">' + t('carousel.empty', 'No highlights available right now.') + '</div>';
             return;
         }
         carouselTrack.innerHTML = '';

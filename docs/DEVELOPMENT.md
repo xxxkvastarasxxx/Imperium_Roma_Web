@@ -58,6 +58,80 @@ the page is (`/index.html` and `/policies/terms_of_use/index.html` both write
    to the hashed filenames automatically.
 5. `npm run dev` and check it.
 
+## Languages (i18n)
+
+English is the default language and lives at the site root, exactly as before. Every
+other language is a top-level folder named by its language code, plus a dictionary:
+
+```
+i18n/en.json            strings for the shared shell (nav, footer, JS messages) — required
+i18n/uk.json            same keys in Ukrainian; anything missing falls back to English
+uk/index.html           → /uk/            (translation of index.html)
+uk/about/index.html     → /uk/about/      (translation of about/index.html)
+uk/404.html             → /uk/404.html    (served by .htaccess for missing /uk/ URLs)
+```
+
+A page exists in a language only if its file exists — nothing is auto-translated, and a
+page you have not translated yet simply has no URL in that language. Translated pages
+are full HTML files (own `<title>`, meta description, Open Graph, JSON-LD), so each
+language is fully controllable for SEO.
+
+### What the build does per page
+
+| In the page or partial | Becomes |
+|---|---|
+| `<!-- @hreflang -->` (put it right after `<link rel="canonical">`) | One `<link rel="alternate" hreflang>` per language the page exists in, plus `x-default` → English. |
+| `{{t:footer.subscribe}}` | The string from `i18n/<lang>.json` (falls back to `en.json`, with a build warning). |
+| `{{link:/about/#team}}` | `/uk/about/#team` on a Ukrainian page **if `uk/about/index.html` exists**, otherwise the English URL — so links never 404. Use it for every internal link in partials and translated pages. |
+| `{{alt:uk}}` | This page in Ukrainian, or the Ukrainian home page if it is not translated. |
+| `{{langswitch}}` | One `<a>` per dictionary (native name + label), for the header switcher's dropdown (the current language gets `aria-current`). |
+| `{{langmeta:label}}` / `{{langmeta:name}}` | The current locale's `_meta.label` / `_meta.name`, shown on the switcher button. |
+| `{{lang}}`, `{{prefix}}` | `uk` and `/uk` (empty for English). |
+| `</head>` on public pages | `window.I18N` is injected: the `js` section of the dictionary, the page's URL in every language, and the banner texts. The shared scripts read it through a tiny `t(key, fallback)` helper and keep their English literals as the fallback. |
+
+`sitemap.xml` is generated into `dist/` from the pages actually built (per-language
+`<xhtml:link>` alternates, `<lastmod>` from git history — hence `fetch-depth: 0` in the
+deploy workflow), and `uk/404.html` is wired in `.htaccess`. hreflang, the sitemap and
+IndexNow all pick up a new translation automatically; there is no list to maintain.
+
+A visitor whose browser prefers a language the site has, but who lands on another one,
+gets a small dismissible banner (`assets/js/lang.js`) offering the switch. The site never
+redirects on language: crawlers index every language at its own URL, and a redirect would
+hide pages from them and from people who followed a link on purpose.
+
+### Translating a page
+
+1. Copy the English file to the same path under the language folder, e.g.
+   `services/index.html` → `uk/services/index.html`.
+2. Set `<html lang="uk">`, translate the text and the `<head>` SEO (title, description,
+   OG, JSON-LD); point `canonical` / `og:url` at the `/uk/` URL; set `og:locale` to `uk_UA`
+   with `og:locale:alternate` `en_GB`.
+3. Replace internal hrefs with `{{link:/path/}}` and keep `<!-- @hreflang -->`.
+4. Preload the Cyrillic font subset instead of the Latin one
+   (`/assets/fonts/montserrat-cyrillic.woff2`).
+5. `npm run dev` and open `http://localhost:3000/uk/services/`.
+
+Strings that live in JavaScript (form and newsletter messages, carousel labels, chart
+labels…) are keyed under `js` in the dictionaries. When a script gains a new user-facing
+string, wrap it in `t('some.key', 'English text')` and add the key to every dictionary.
+
+Bibliotheca article cards are rendered by `assets/js/bibliotheca.js` (index) and
+`assets/js/bibliotheca-preview.js` (home page). When you translate an article, add its
+title and excerpt under that language in `BIBLIO_I18N` / the `i18n` field there: an entry
+is what makes the card show the translated title and link to `/<lang>/bibliotheca/<slug>/`.
+A slug without an entry keeps the English card and the English link, so nothing 404s.
+Also add the article to the translated index's ItemList JSON-LD and noscript list.
+
+### Adding a language
+
+1. Create `i18n/<code>.json` from `uk.json`. `_meta` holds the switcher label, the
+   language name, the Open Graph locale and the first-visit banner text.
+2. Add the font subset the script needs (`@font-face` blocks in `style.css`; Latin and
+   Cyrillic are already there).
+3. Add a translated 404 at `<code>/404.html` and its `<If>` block in `.htaccess`.
+4. Translate pages into `<code>/…` as above. The header switcher, hreflang and the
+   sitemap need no further changes.
+
 ## How assets are optimized
 
 - **CSS** — minified (lightningcss) and renamed to `name.<hash>.css`. References in HTML
