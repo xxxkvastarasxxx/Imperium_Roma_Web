@@ -11,8 +11,9 @@
  * could not be switched off by the `prefers-reduced-motion` media query.
  *
  * What remains is the one thing CSS cannot do: replace the default hash jump
- * with a scroll that does not push a new history entry, so Back returns to the
- * previous page rather than stepping through each anchor visited. The header
+ * with a scroll that leaves the address bar clean and adds no history entry,
+ * so Back returns to the previous page rather than stepping through each
+ * anchor visited. The header
  * offset comes from `scroll-margin-top` on `section[id]`, which
  * scrollIntoView() honours.
  */
@@ -56,8 +57,15 @@
             block: "start"
         });
 
-        // replaceState, not pushState: visiting five anchors should not mean
-        // five presses of Back to leave the page.
-        history.replaceState(null, "", hash);
+        // Keep the address clean: an in-page button ("Our Services") is a scroll,
+        // not a new address, and writing its target produced URLs like
+        // /services/#services. Any hash the page was opened with is cleared too,
+        // so it doesn't keep naming a section the visitor has scrolled away from.
+        // Deep links from other pages (/services/#market-evaluation) still work:
+        // the browser resolves those on load. replaceState, not pushState, so Back
+        // still leaves the page in one press.
+        if (location.hash) {
+            history.replaceState(null, "", location.pathname + location.search);
+        }
     });
 })();
