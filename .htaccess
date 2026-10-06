@@ -71,8 +71,10 @@
   # Default expiration
   ExpiresDefault "access plus 1 month"
   
-  # HTML - short cache for content updates
-  ExpiresByType text/html "access plus 1 hour"
+  # HTML - always revalidated (see the no-cache header below). Page URLs never
+  # change, so a 1-hour cache kept serving the previous version after every
+  # deploy; with an ETag check an unchanged page still costs only a 304.
+  ExpiresByType text/html "access plus 0 seconds"
   
   # CSS and JavaScript
   ExpiresByType text/css "access plus 1 year"
@@ -101,6 +103,18 @@
   ExpiresByType application/json "access plus 1 day"
   ExpiresByType application/xml "access plus 1 day"
   ExpiresByType text/xml "access plus 1 day"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Pages: the browser must check for a newer version on every visit.
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  # Site icons keep fixed names (browsers and Google request them by path), so
+  # a year-long cache would pin an old icon after it is redesigned. One day.
+  <FilesMatch "^(favicon[^/]*|apple-touch-icon|icon-[^/]*)\.(ico|png)$">
+    Header set Cache-Control "public, max-age=86400"
+  </FilesMatch>
 </IfModule>
 
 # =============================================================================
