@@ -441,6 +441,11 @@ body {
     border-radius: var(--radius-pill);
     text-decoration: none;
     transition: background 0.2s ease;
+    /* Longer (e.g. Ukrainian) labels wrap on phones: keep the two lines even
+       and centred. The arrow is glued to the last word with &nbsp; in the
+       markup so it never drops onto a line by itself. */
+    text-align: center;
+    text-wrap: balance;
 }
 
 .biblio-cta-btn:hover {
@@ -523,6 +528,14 @@ body {
 .biblio-article-content .biblio-cite a:focus-visible {
     color: var(--yellow);
     border-bottom-color: var(--yellow);
+}
+
+/* nowrap keeps "(Author, 2019)" together on wide screens, but a long
+   institutional author is wider than a phone and scrolled the whole page. */
+@media (max-width: 600px) {
+    .biblio-article-content .biblio-cite a {
+        white-space: normal;
+    }
 }
 
 /* Reference list: alphabetical, unnumbered, hanging indent per Harvard. */
@@ -744,9 +757,12 @@ body {
     .biblio-hero h1 { font-size: 22px; }
     .biblio-hero p { font-size: 14px; }
 
+    /* Was 5px/11px — a 26px-tall target, too small to hit reliably with a
+       thumb. Now ~36px, still compact enough for the wrapping tag row. */
     .biblio-tag {
-        font-size: 11px;
-        padding: 5px 12px;
+        font-size: 12px;
+        padding: 10px 14px;
+        line-height: 1.2;
     }
 
     .biblio-article-card h2 { font-size: 16px; }

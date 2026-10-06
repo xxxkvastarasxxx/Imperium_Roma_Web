@@ -910,6 +910,11 @@
     font-size: 16px;
     transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* If a translation is too long for one line on a phone, wrap it centred
+       and balanced, and keep the pill clear of the screen edges. */
+    max-width: calc(100% - 32px);
+    text-align: center;
+    text-wrap: balance;
 }
 
 .promote-lot-btn:hover,
@@ -2523,8 +2528,12 @@
         padding: clamp(36px, 5vw, 52px) 16px;
     }
     
+    /* minmax(0, 1fr), not 1fr: a bare 1fr track never shrinks below its
+       widest item's min-content, and the nowrap tab row (longer in Ukrainian)
+       pushed the whole column - stats, CTA - past the viewport, giving the
+       page a horizontal scroll. The tab row scrolls on its own instead. */
     .domus-split {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: clamp(28px, 4vw, 40px);
     }
     
@@ -2852,12 +2861,20 @@
         display: none;
     }
 
-    /* `flex: 1` split the row four ways and crushed "How It Works". Size each
-       tab to its label and let the row scroll instead. */
+    /* `flex: 1` split the row four ways and crushed "How It Works". Each tab
+       is sized to its label (never shrinks) and shares any spare width; the
+       tighter padding lets all four fit from 360px up, including the longer
+       Ukrainian labels. Narrower phones still fall back to scrolling. */
     .domus-tab {
-        flex: 0 0 auto;
-        font-size: 13px;
-        padding: 12px 14px 10px;
+        flex: 1 0 auto;
+        font-size: 12px;
+        letter-spacing: .2px;
+        padding: 12px 6px 10px;
+    }
+    .domus-left .cta-button .domus-cta-locked {
+        flex-wrap: wrap;
+        justify-content: center;
+        row-gap: 6px;
     }
 
     /* 10px was below a comfortable reading size for these pills */

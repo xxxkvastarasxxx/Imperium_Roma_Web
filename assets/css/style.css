@@ -714,9 +714,14 @@ nav ul li a.active {
     .footer-grid { display: flex !important; flex-wrap: wrap; justify-content: center; column-gap: 56px; row-gap: 32px; padding: 0 16px !important; }
     .footer-col, .footer-col * { position: static !important; transform: none !important; z-index: auto !important; }
     .footer-col.brand, .footer-col.newsletter { flex: 1 1 100%; }
-    .footer-col.footer-col--explore, .footer-col.footer-col--policies { flex: 0 1 auto; text-align: center; }
+    /* Each link column is capped at half the row (minus half the gap) so the
+       pair can never be too wide to share a line. Short labels (English) are
+       unaffected; a longer one (e.g. Ukrainian "Перевірити сертифікат") wraps
+       onto two balanced lines inside its column instead of pushing the second
+       column onto its own row. */
+    .footer-col.footer-col--explore, .footer-col.footer-col--policies { flex: 0 1 auto; min-width: 0; max-width: calc(50% - 28px); text-align: center; }
     .footer-col.footer-col--explore .footer-links, .footer-col.footer-col--policies .footer-links { display: grid !important; gap: 10px !important; justify-items: center !important; margin: 0 auto !important; width: 100% !important; }
-    .footer-col.footer-col--explore .footer-links a, .footer-col.footer-col--policies .footer-links a { display: inline-block !important; padding: 6px 0 !important; white-space: nowrap; }
+    .footer-col.footer-col--explore .footer-links a, .footer-col.footer-col--policies .footer-links a { display: inline-block !important; padding: 6px 0 !important; text-wrap: balance; }
     .newsletter-form { grid-template-columns: 1fr !important; max-width: 280px !important; margin: 0 auto !important; gap: 10px !important; }
     .newsletter-input, .newsletter-btn { width: 100% !important; }
     .newsletter-input { padding: 12px 15px !important; text-align: center; font-size: 14px; }
@@ -733,8 +738,7 @@ nav ul li a.active {
     .newsletter-btn { padding: 10px; }
     .social-link { width: 36px; height: 36px; }
     .social-link img { width: 18px; height: 18px; }
-    .footer-col.footer-col--explore .footer-links a,
-    .footer-col.footer-col--policies .footer-links a { white-space: normal; }
+    .footer-col.footer-col--explore, .footer-col.footer-col--policies { max-width: calc(50% - 16px); }
 }
 /* ===== Shared button treatment =====
    One definition for the primary buttons that appear across pages, matching
