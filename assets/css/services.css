@@ -1815,62 +1815,86 @@ body.has-modal {
   50% { opacity: 0.6; }
 }
 
-/* 3D Model Controls */
+/* 3D Model Controls: a compact pill of four small icon buttons, built by
+   coin3d_generator.js. It fades back when the pointer leaves it alone
+   (.is-idle, mouse devices only); .model-toast names what a button just did. */
 .model-controls {
   position: absolute;
-  bottom: 30px;
+  bottom: 12px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 15px;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 12px 20px;
-  border-radius: 35px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(10px);
+  gap: 2px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.86);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
   z-index: 5;
-  border: 1px solid rgba(255, 204, 0, 0.2);
+  transition: opacity 0.4s ease;
+}
+
+@media (hover: hover) {
+  .model-controls.is-idle:not(:hover):not(:focus-within) { opacity: 0.4; }
 }
 
 .control-btn {
-  width: 45px;
-  height: 45px;
-  background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
-  border: 2px solid rgba(0, 0, 0, 0.05);
-  border-radius: var(--radius-circle);
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #3a3122;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.control-btn:hover {
-  background: linear-gradient(135deg, var(--yellow) 0%, #ff9900 100%);
-  border-color: var(--yellow);
-  transform: translateY(-3px);
-  box-shadow: 0 5px 20px rgba(255, 204, 0, 0.4);
-}
+.control-btn[hidden] { display: none; }
 
-.control-btn.active {
-  background: linear-gradient(135deg, var(--yellow) 0%, #ff9900 100%);
-  border-color: var(--yellow);
-  box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
-}
+.control-btn:hover { background: rgba(255, 204, 0, 0.22); }
+.control-btn:active { background: rgba(255, 204, 0, 0.38); }
+.control-btn[aria-pressed="true"] { color: #8a6a1c; }
+
+.control-btn:focus { outline: none; }
+.control-btn:focus-visible { outline: 2px solid #b8954a; outline-offset: 1px; }
 
 .control-btn svg {
-  width: 24px;
-  height: 24px;
-  transition: all 0.3s ease;
+  width: 18px;
+  height: 18px;
 }
 
-.control-btn:hover svg {
-  transform: scale(1.1);
+#coin3DCanvas:focus { outline: none; }
+#coin3DCanvas:focus-visible { outline: 2px solid #b8954a; outline-offset: -2px; }
+
+.model-toast {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translate(-50%, -4px);
+  max-width: calc(100% - 24px);
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(30, 26, 20, 0.72);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 6;
 }
 
-.control-btn.active svg {
-  color: #000;
+.model-toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
 
 /* Error State */
@@ -1975,15 +1999,6 @@ body.has-modal {
     height: 100px;
   }
   
-  .model-controls {
-    padding: 8px 12px;
-    gap: 8px;
-  }
-  
-  .control-btn {
-    width: 38px;
-    height: 38px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -2006,14 +2021,6 @@ body.has-modal {
     height: 180px; /* Adjusted for small screens */
   }
   
-  .model-controls {
-    bottom: 15px;
-  }
-  
-  .control-btn {
-    width: 34px;
-    height: 34px;
-  }
 }
 
 /* ===== Coin Tools: 3D visualisation (left, compact) + AI identification (right) =====
@@ -2118,6 +2125,27 @@ body.has-modal {
 .coin-tool--3d .upload-box label { font-size: 11px; margin-bottom: 8px; }
 .coin-tool--3d .remove-image-btn { top: 20px; right: -8px; }
 .coin-tool--3d .generate-btn { margin-top: 12px; max-width: none; }
+
+/* Upload states set by coin3d_generator.js: the photo is analysed in the
+   browser (coin found, cropped and cut out) before the thumbnail appears. */
+.coin-tool--3d .upload-preview.is-processing { cursor: progress; }
+.coin-tool--3d .upload-preview.is-dragover { border-color: var(--yellow); border-style: solid; }
+.coin-tool--3d .upload-preview.is-fallback { border-style: solid; border-color: #e0b04a; }
+.upload-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid #eadfc4;
+  border-top-color: #b8954a;
+  border-radius: var(--radius-circle);
+  animation: spin 0.9s linear infinite;
+}
+.coin3d-note {
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #6b5326;
+  text-align: center;
+}
 
 /* --- AI card --- */
 .ai-id__uploads {
