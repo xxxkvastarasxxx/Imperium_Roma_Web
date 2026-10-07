@@ -520,6 +520,10 @@
 
 /* Parallax Section */
 .parallax-section {
+    /* Everything is sized from the helmet width: coins sit at fixed ratios
+       of it (see .coin-one..four), so the arrangement is the same at any
+       screen width - only the helmet size changes per breakpoint. */
+    --helmet-w: 400px;
     position: relative;
     overflow: hidden;
     --trim-bottom: 120px; /* adjust */
@@ -541,7 +545,7 @@
 /* Helmet Image */
 .parallax-img.helmet {
     position: absolute;
-    width: 400px;
+    width: var(--helmet-w);
     height: auto;
     object-fit: contain;
     z-index: 1;
@@ -554,36 +558,42 @@
 /* Coin Images */
 .coin {
     position: absolute;
-    width: 100px;
+    width: calc(var(--helmet-w) * 0.25);
     height: auto;
     transition: transform 0.5s ease-out;
     will-change: transform, opacity;
     transform-origin: center;
 }
 
-/* Coin Positions - Adjusted to move all coins higher */
+/* Coin positions. These were percentages of the viewport (30% / 35%),
+   which only matched the helmet on a ~1920px screen and slid onto it on
+   laptops. They are now the same arrangement as fixed ratios of the helmet
+   width W (461x520 image, so height = 1.128W): coin diameter 0.25W, top pair
+   centred +/-0.835W and 0.249H above the helmet's centre, bottom pair
+   +/-0.595W and 0.399H below it. A coin's left/top is its centre minus its
+   radius (0.125W), which gives the constants below. */
 .coin-one {
-    left: 30%;
-    top: 15%; /* Adjusted from 25% to lift it higher */
+    left: calc(50% - var(--helmet-w) * 0.960);
+    top: calc(40% - var(--helmet-w) * 0.406);
     z-index: 2;
 }
 
 .coin-two {
-    right: 30%;
-    top: 15%; /* Adjusted from 25% to lift it higher */
+    left: calc(50% + var(--helmet-w) * 0.710);
+    top: calc(40% - var(--helmet-w) * 0.406);
     opacity: 0.8;
     z-index: 2;
 }
 
 .coin-three {
-    right: 35%;
-    top: 60%; /* Adjusted from 70% to lift it higher */
+    left: calc(50% + var(--helmet-w) * 0.470);
+    top: calc(40% + var(--helmet-w) * 0.325);
     z-index: 1;
 }
 
 .coin-four {
-    left: 35%;
-    top: 60%; /* Adjusted from 70% to lift it higher */
+    left: calc(50% - var(--helmet-w) * 0.720);
+    top: calc(40% + var(--helmet-w) * 0.325);
     opacity: 0.9;
     z-index: 1;
 }
@@ -965,32 +975,10 @@
         transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
+    /* Small laptops: a slightly smaller helmet; the coins follow it */
     .parallax-section {
-        min-height: 520px; /* was 600px - proportionally reduced */
-        height: auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        overflow: hidden;
+        --helmet-w: 340px;
     }
-
-    .parallax-img.helmet {
-        width: 300px;
-        top: 40%;
-    }
-
-    .coin {
-        width: 80px;
-    }
-
-    /* Position coins between the helmet edges on mobile (row of two above and two below) */
-    .coin-one, .coin-two, .coin-three, .coin-four { right: auto; }
-    .coin-one { left: calc(50% - 110px); top: 16%; z-index: 2; }
-    .coin-two { left: calc(50% + 50px); top: 16%; z-index: 2; }
-    /* Pull bottom coins inward and slightly higher to sit inside helmet */
-    .coin-three { left: calc(50% - 85px); top: 52%; z-index: 1; }
-    .coin-four { left: calc(50% + 20px); top: 52%; z-index: 1; }
 
     .parallax-content h2 {
         font-size: 2rem;
@@ -1090,22 +1078,6 @@
         overflow: hidden;
     }
 
-    .parallax-img.helmet {
-        width: 250px;
-        top: 40%;
-    }
-
-    .coin {
-        width: 60px;
-    }
-
-    .coin-one, .coin-two {
-        top: 10%;
-    }
-
-    .coin-three, .coin-four {
-        top: 50%;
-    }
 
     .parallax-content h2 {
         font-size: 1.8rem;
@@ -1192,14 +1164,6 @@
         height: 300px; /* was 340px - slightly smaller */
     }
 
-    .parallax-img.helmet {
-        width: 200px;
-        top: 40%;
-    }
-
-    .coin {
-        width: 50px;
-    }
 
     .parallax-content h2 {
         font-size: 1.2rem;
@@ -1810,14 +1774,6 @@
     }
     .domus-steps .step-label,
     .domus-steps .step-note { text-align: center; }
-
-    /* Fine-tune coin positions for very small screens */
-    .coin { width: 52px; }
-    .coin-one { left: calc(50% - 90px); top: 18%; }
-    .coin-two { left: calc(50% + 34px); top: 18%; }
-    /* Tighter spacing and slightly higher placement for very small screens */
-    .coin-three { left: calc(50% - 80px); top: 54%; }
-    .coin-four { left: calc(50% + 15px); top: 54%; }
 }
 
 /* Domus: Visual Enhancements */
@@ -2620,50 +2576,10 @@
 }
 
 @media (max-width: 768px) {
-    /* Coin placement derived from the desktop layout instead of hand-tuned per
-       breakpoint. On desktop the four coins sit at fixed ratios of the helmet -
-       diameter 0.25W; top pair +/-0.835W and -0.249H from its centre; bottom
-       pair +/-0.595W and +0.399H - and those ratios are what give the wide
-       version its spacing. Mobile reproduces them exactly and just scales the
-       helmet to whatever the viewport can hold, so the arrangement reads the
-       same at any phone size.
-
-       Helmet is 461x520, so H = 1.128W. A coin's left/top is its centre minus
-       its radius (0.125W), which gives the constants below. */
+    /* Phones: same helmet-relative arrangement as desktop, with the helmet
+       scaled to what the viewport can hold. */
     .parallax-section {
         --helmet-w: clamp(150px, 44vw, 250px);
-    }
-    .parallax-img.helmet {
-        width: var(--helmet-w);
-        top: 40%;
-    }
-    .coin {
-        width: calc(var(--helmet-w) * 0.25);
-        height: auto;
-    }
-    /* the base rules pin coin-two and coin-three by their right edge; clear
-       that so the left offsets below govern */
-    .coin-one,
-    .coin-two,
-    .coin-three,
-    .coin-four {
-        right: auto;
-    }
-    .coin-one {
-        left: calc(50% - var(--helmet-w) * 0.960);
-        top: calc(40% - var(--helmet-w) * 0.406);
-    }
-    .coin-two {
-        left: calc(50% + var(--helmet-w) * 0.710);
-        top: calc(40% - var(--helmet-w) * 0.406);
-    }
-    .coin-four {
-        left: calc(50% - var(--helmet-w) * 0.720);
-        top: calc(40% + var(--helmet-w) * 0.325);
-    }
-    .coin-three {
-        left: calc(50% + var(--helmet-w) * 0.470);
-        top: calc(40% + var(--helmet-w) * 0.325);
     }
 }
 
