@@ -1,300 +1,572 @@
-/* General Styles */
+/* =============================================================================
+   Legal pages: Privacy Policy, Terms of Use, Delete Your Data
+   -----------------------------------------------------------------------------
+   Every rule is scoped under .policy. The previous sheet styled bare a, ul,
+   section and h1 globally, which leaked into the shared header and footer
+   (and is likely why these pages were shipped without the site header).
+
+   Layout: a title block with links between the three pages and a short
+   summary, then a two-column body: a sticky "On this page" list on desktop
+   (a collapsible <details> on phones, see policies.js) and the text column.
+   ============================================================================= */
+
 body {
-    background-color: var(--background);
-    color: var(--white);
+    background: #0b0b0b;
+}
+
+.policy {
+    --policy-text: #c8c8c8;
+    --policy-strong: #ffffff;
+    --policy-muted: #9a9a9a;
+    --policy-line: #222222;
+    --policy-panel: #131313;
+    --policy-panel-border: #262626;
+
+    color: var(--policy-text);
     font-family: var(--font-body);
-    line-height: 1.8;
+    /* Clears the fixed site header. */
+    padding: clamp(112px, 13vw, 150px) 20px clamp(56px, 8vw, 96px);
+}
+
+.policy-hero,
+.policy-layout {
+    max-width: 1120px;
+    margin: 0 auto;
+}
+
+/* ---- Title block ---------------------------------------------------------- */
+
+.policy-switch {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 28px;
+    padding: 0;
+    list-style: none;
+}
+.policy-switch a {
+    display: inline-block;
+    padding: 7px 15px;
+    border: 1px solid #2c2c2c;
+    border-radius: var(--radius-pill);
+    color: #bdbdbd;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color .2s ease, color .2s ease, background-color .2s ease;
+}
+.policy-switch a:hover {
+    border-color: #4a4a4a;
+    color: #fff;
+}
+.policy-switch a[aria-current="page"] {
+    background: var(--yellow);
+    border-color: var(--yellow);
+    color: #111;
+}
+
+.policy-hero h1 {
+    margin: 0;
+    color: #fff;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -.01em;
+}
+/* The short yellow rule the other section headings on the site use. */
+.policy-hero h1::after {
+    content: "";
+    display: block;
+    width: 64px;
+    height: 4px;
+    margin-top: 18px;
+    border-radius: var(--radius-xs);
+    background: var(--yellow);
+}
+.policy-lede {
+    max-width: 660px;
+    margin: 20px 0 16px;
+    color: #c2c2c2;
+    font-size: clamp(16px, 1.8vw, 19px);
+    line-height: 1.6;
+}
+.policy-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin: 0;
+    color: var(--policy-muted);
+    font-size: 13.5px;
+}
+.policy-meta strong {
+    color: #e0e0e0;
+    font-weight: 600;
+}
+
+/* ---- Two-column body ------------------------------------------------------ */
+
+.policy-layout {
+    display: grid;
+    grid-template-columns: 230px minmax(0, 1fr);
+    gap: 64px;
+    align-items: start;
+    margin-top: 48px;
+}
+
+.policy-toc {
+    position: sticky;
+    top: 104px;
+}
+/* On desktop the list is always shown; the toggle only exists on phones. */
+.policy-toc summary {
+    display: none;
+}
+.policy-toc__title {
+    margin: 0 0 12px;
+    color: var(--policy-muted);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+.policy-toc ol {
     margin: 0;
     padding: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    list-style: none;
+    border-left: 1px solid var(--policy-line);
+}
+.policy-toc a {
+    display: block;
+    margin-left: -1px;
+    padding: 6px 0 6px 16px;
+    border-left: 2px solid transparent;
+    color: var(--policy-muted);
+    font-size: 14px;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: color .2s ease, border-color .2s ease;
+}
+.policy-toc a:hover {
+    color: #fff;
+}
+.policy-toc a[aria-current="true"] {
+    border-left-color: var(--yellow);
+    color: #fff;
 }
 
-h1, h2 {
+.policy-body {
+    max-width: 740px;
+    min-width: 0;
+}
+
+/* ---- "The short version" -------------------------------------------------- */
+
+.policy-summary {
+    margin-bottom: 12px;
+    padding: 24px 26px;
+    border: 1px solid var(--policy-panel-border);
+    border-radius: var(--radius-md);
+    background: linear-gradient(180deg, #151515 0%, #101010 100%);
+}
+/* Two classes deep so the general .policy-body h2 / li rules below don't win. */
+.policy-body .policy-summary h2 {
+    display: block;
+    margin: 0 0 16px;
     color: var(--yellow);
-    font-weight: 600;
-    margin-top: 0;
-    letter-spacing: 0.5px;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
 }
-
-h1 {
-    font-size: 2.5rem;
-    border-bottom: 2px solid var(--grey);
-    padding-bottom: 15px;
-    margin-bottom: 25px;
+.policy-summary ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 28px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.policy-body .policy-summary li {
     position: relative;
+    padding-left: 28px;
+    color: #e6e6e6;
+    font-size: 15px;
+    line-height: 1.5;
 }
-
-h1::after {
+/* Check mark drawn from two borders. */
+.policy-summary li::before {
     content: "";
     position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 80px;
-    height: 2px;
-    background-color: var(--yellow);
+    top: .32em;
+    left: 3px;
+    width: 11px;
+    height: 6px;
+    border-left: 2px solid var(--yellow);
+    border-bottom: 2px solid var(--yellow);
+    transform: rotate(-45deg);
 }
 
-h2 {
-    font-size: 1.8rem;
-    margin-top: 30px;
-    margin-bottom: 20px;
-    padding-left: 15px;
-    border-left: 4px solid var(--yellow);
+/* ---- Sections and text ---------------------------------------------------- */
+
+.policy-body section {
+    padding: 36px 0 22px;
+    border-top: 1px solid var(--policy-line);
+    /* Below the fixed header when reached from the contents list. */
+    scroll-margin-top: 100px;
 }
-
-p, ul, li {
-    margin-bottom: 15px;
-    font-size: 1rem;
+.policy-summary + section {
+    border-top: 0;
 }
-
-ul {
-    list-style-type: none;
-    margin-left: 10px;
-    padding-left: 20px;
-}
-
-ul li {
-    position: relative;
-    padding-left: 20px;
-    margin-bottom: 12px;
-}
-
-ul li::before {
-    color: var(--yellow);
-    font-size: 1.2em;
-    position: absolute;
-    left: 0;
-    top: -2px;
-}
-
-/* Main Content */
-.policy-content {
-    background-color: var(--darkgrey);
-    border: 1px solid var(--border);
-    padding: 35px;
-    border-radius: var(--radius-sm);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-}
-
-/* Remove bottom border to avoid a line above the footer */
-.policy-content { border-bottom: none !important; }
-
-/* Tighten the space above the footer to match home */
-.policy-content { padding-bottom: 18px !important; margin-bottom: 0 !important; }
-
-.policy-content:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-}
-
-.policy-content .last-updated {
-    font-style: italic;
-    color: var(--lightgrey);
-    margin-bottom: 30px;
-    padding: 10px 15px;
-    background-color: var(--yellow-transparent);
-    border-radius: var(--radius-xs);
-    display: inline-block;
-}
-
-/* Links */
-a {
-    color: var(--yellow);
-    text-decoration: none;
-    transition: all 0.2s ease;
-    position: relative;
-}
-
-/* Bare URLs printed as link text can't otherwise break on a 320px phone. */
-.policy-content a {
-    overflow-wrap: anywhere;
-}
-
-a:hover {
-    color: var(--yellow-hover);
-    text-decoration: none;
-}
-
-a:hover::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 1px;
-    background: var(--yellow-hover);
-    bottom: -2px;
-    left: 0;
-    transform: scaleX(1);
-    transition: transform 0.3s ease;
-}
-
-/* Focus states for accessibility */
-a:focus, button:focus {
-    outline: 2px solid var(--yellow);
-    outline-offset: 2px;
-}
-
-/* Section styling */
-section {
-    margin-bottom: 40px;
-    padding-bottom: 30px;
-    border-bottom: 1px solid var(--grey);
-    transition: all 0.3s ease;
-}
-
-section:hover {
-    background-color: rgba(51, 51, 51, 0.2);
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-left: -10px;
-    margin-right: -10px;
-    border-radius: 5px;
-}
-
-section:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
-
-/* Scroll to top button */
-.scroll-top {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    background-color: var(--yellow);
-    color: var(--background);
-    border-radius: var(--radius-circle);
+.policy-body h2 {
     display: flex;
-    justify-content: center;
+    align-items: baseline;
+    gap: 14px;
+    margin: 0 0 16px;
+    color: var(--policy-strong);
+    font-size: clamp(21px, 2.4vw, 26px);
+    font-weight: 700;
+    line-height: 1.25;
+}
+.policy-num {
+    flex: none;
+    color: var(--yellow);
+    font-size: 14px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+.policy-body h3 {
+    margin: 26px 0 8px;
+    color: var(--policy-strong);
+    font-size: 16.5px;
+    font-weight: 700;
+}
+.policy-body p,
+.policy-body li {
+    font-size: 15.5px;
+    line-height: 1.75;
+}
+.policy-body p {
+    margin: 0 0 14px;
+}
+/* Plain bulleted lists only; a list with its own class styles itself. */
+.policy-body section ul:not([class]) {
+    margin: 0 0 16px;
+    padding: 0;
+    list-style: none;
+}
+.policy-body section ul:not([class]) li {
+    position: relative;
+    margin-bottom: 8px;
+    padding-left: 22px;
+}
+.policy-body section ul:not([class]) li::before {
+    content: "";
+    position: absolute;
+    top: .72em;
+    left: 3px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--yellow);
+}
+.policy-body strong {
+    color: var(--policy-strong);
+    font-weight: 600;
+}
+.policy-body a {
+    color: var(--yellow);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 204, 0, .45);
+    text-underline-offset: 3px;
+    /* Bare addresses must still break on a 320px phone. */
+    overflow-wrap: anywhere;
+    transition: text-decoration-color .2s ease;
+}
+.policy-body a:hover {
+    text-decoration-color: var(--yellow);
+}
+
+/* A highlighted aside, e.g. "export before you delete". */
+.policy-note {
+    margin: 18px 0;
+    padding: 14px 18px;
+    border-left: 3px solid var(--yellow);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    background: var(--policy-panel);
+}
+.policy-note p:last-child {
+    margin-bottom: 0;
+}
+
+/* ---- Table: purposes and legal bases -------------------------------------- */
+
+.policy-table {
+    width: 100%;
+    margin: 8px 0 18px;
+    border-collapse: collapse;
+    font-size: 14.5px;
+}
+.policy-table th {
+    padding: 10px 14px 10px 0;
+    border-bottom: 1px solid #333;
+    color: var(--policy-muted);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-align: left;
+    text-transform: uppercase;
+}
+.policy-table td {
+    padding: 13px 14px 13px 0;
+    border-bottom: 1px solid #1d1d1d;
+    line-height: 1.55;
+    vertical-align: top;
+}
+.policy-table td:first-child {
+    color: var(--policy-strong);
+    font-weight: 600;
+}
+
+/* ---- Steps (Delete Your Data) --------------------------------------------- */
+
+.policy-steps {
+    margin: 10px 0 22px;
+    padding: 0;
+    list-style: none;
+    counter-reset: policy-step;
+}
+.policy-steps li {
+    position: relative;
+    padding: 0 0 24px 54px;
+    counter-increment: policy-step;
+}
+.policy-steps li::before {
+    content: counter(policy-step);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
     align-items: center;
-    cursor: pointer;
-    opacity: 0;
-    transition: all 0.3s ease;
-    z-index: 999;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 1.5px solid var(--yellow);
+    border-radius: 50%;
+    color: var(--yellow);
+    font-size: 14px;
+    font-weight: 700;
+    background: #0b0b0b;
+}
+/* The line joining one step to the next. */
+.policy-steps li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 38px;
+    bottom: 4px;
+    left: 17px;
+    width: 1px;
+    background: #333;
+}
+.policy-steps strong {
+    display: block;
+    margin: 4px 0 2px;
+    color: var(--policy-strong);
+    font-size: 16px;
+}
+.policy-steps p {
+    margin: 0;
 }
 
-.scroll-top.visible {
-    opacity: 0.8;
+.policy-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 6px 0 18px;
+}
+.policy-body .policy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border: 1.5px solid var(--yellow);
+    border-radius: var(--radius-pill);
+    background: var(--yellow);
+    color: #0f1115;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: .3px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+}
+.policy-body .policy-btn:hover {
+    background: var(--yellow-hover);
+    border-color: var(--yellow-hover);
+}
+.policy-body .policy-btn--ghost {
+    background: transparent;
+    color: var(--yellow);
+}
+.policy-body .policy-btn--ghost:hover {
+    background: rgba(255, 204, 0, .08);
+    color: var(--yellow);
 }
 
-.scroll-top:hover {
-    opacity: 1;
-    transform: translateY(-5px);
+/* Keyboard focus, visible on the dark background. */
+.policy a:focus-visible,
+.policy summary:focus-visible {
+    outline: 2px solid var(--yellow);
+    outline-offset: 3px;
+    border-radius: 4px;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 992px) {
-    .container {
-        width: 90%;
-    }
-}
+/* ---- Tablet and phone ----------------------------------------------------- */
 
-@media (max-width: 768px) {
-    .container {
-        width: 95%;
-        padding: 15px 10px;
+@media (max-width: 960px) {
+    .policy-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 24px;
+        margin-top: 32px;
     }
-
-    h1 {
-        font-size: 2rem;
-        padding-bottom: 10px;
+    .policy-body {
+        max-width: none;
     }
-
-    h2 {
-        font-size: 1.5rem;
-        padding-left: 10px;
+    /* The contents list becomes a collapsible box above the text. */
+    .policy-toc {
+        position: static;
+        border: 1px solid var(--policy-panel-border);
+        border-radius: var(--radius-md);
+        background: var(--policy-panel);
     }
-
-    .policy-content {
-        padding: 25px 20px;
+    .policy-toc summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        list-style: none;
     }
-
-    section:hover {
-        padding-left: 5px;
-        padding-right: 5px;
-        margin-left: -5px;
-        margin-right: -5px;
-    }
-}
-
-@media (max-width: 480px) {
-    h1 {
-        font-size: 1.8rem;
-    }
-
-    h2 {
-        font-size: 1.3rem;
-    }
-
-    .policy-content {
-        padding: 20px 15px;
-    }
-
-    ul {
-        padding-left: 10px;
-    }
-}
-
-/* Print styles */
-@media print {
-    body {
-        background: white;
-        color: black;
-    }
-    
-    .policy-content {
-        background: white;
-        border: none;
-        box-shadow: none;
-        padding: 0;
-    }
-    
-    h1, h2 {
-        color: black;
-    }
-    
-    p, ul, li {
-        color: black;
-    }
-    
-    a {
-        color: black;
-        text-decoration: underline;
-    }
-    
-    .scroll-top {
+    .policy-toc summary::-webkit-details-marker {
         display: none;
     }
+    .policy-toc summary::after {
+        content: "";
+        width: 8px;
+        height: 8px;
+        margin-right: 4px;
+        border-right: 2px solid var(--yellow);
+        border-bottom: 2px solid var(--yellow);
+        transform: rotate(45deg) translateY(-3px);
+        transition: transform .2s ease;
+    }
+    .policy-toc[open] summary::after {
+        transform: rotate(-135deg) translateY(-3px);
+    }
+    .policy-toc__title {
+        display: none;
+    }
+    .policy-toc ol {
+        margin: 0 18px 14px;
+    }
 }
 
-/* Policy pages define their own generic a:hover::after underline effect above;
-   keep that off the shared footer links (style.css doesn't use it there). */
-.site-footer a:hover::after,
-.site-footer a:focus-visible::after {
-    content: none !important;
-    display: none !important;
+@media (max-width: 640px) {
+    .policy {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    .policy-summary {
+        padding: 20px 18px;
+    }
+    .policy-summary ul {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+    .policy-body section {
+        padding-top: 30px;
+    }
+    .policy-body h2 {
+        gap: 10px;
+    }
+    .policy-body p,
+    .policy-body li {
+        font-size: 15px;
+    }
+
+    /* Table rows become stacked cards, each cell labelled from data-label. */
+    .policy-table thead {
+        display: none;
+    }
+    .policy-table,
+    .policy-table tbody,
+    .policy-table tr,
+    .policy-table td {
+        display: block;
+    }
+    .policy-table tr {
+        padding: 12px 0;
+        border-bottom: 1px solid #262626;
+    }
+    .policy-table td {
+        padding: 3px 0;
+        border: 0;
+    }
+    .policy-table td:not(:first-child)::before {
+        content: attr(data-label) ": ";
+        color: var(--policy-muted);
+        font-weight: 600;
+    }
+
+    .policy-actions .policy-btn {
+        flex: 1 1 100%;
+    }
 }
 
-/* Final tighten: minimize space above footer to match home */
-.policy-content { padding-bottom: 10px !important; }
-
-/* Center the Newsletter column on desktop (policy pages only) */
-@media (min-width: 901px) {
-    .footer-col.newsletter { text-align: center !important; }
-    .footer-col.newsletter .footer-title { text-align: center !important; margin-left: auto !important; margin-right: auto !important; }
-    .footer-col.newsletter .newsletter-text { text-align: center !important; max-width: 520px; margin-left: auto !important; margin-right: auto !important; }
-    .footer-col.newsletter .newsletter-form { grid-template-columns: 1fr auto !important; gap: 12px !important; max-width: 500px !important; margin-left: auto !important; margin-right: auto !important; }
-    .footer-col.newsletter .footer-social { display: flex; justify-content: center !important; }
+@media (prefers-reduced-motion: reduce) {
+    .policy *,
+    .policy *::before,
+    .policy *::after {
+        transition: none !important;
+    }
 }
 
-/* Center policy page content block on all breakpoints */
-.policy-content { width: min(92%, 920px); margin-left: auto; margin-right: auto; }
-.policy-content > .container { width: 100% !important; max-width: none !important; margin: 0 !important; padding: 0 !important; }
+/* ---- Print: just the text ------------------------------------------------- */
 
-@media (max-width: 768px) {
-    .policy-content { width: min(95%, 640px); }
+@media print {
+    body {
+        background: #fff;
+    }
+    header,
+    .site-footer,
+    .policy-switch,
+    .policy-toc,
+    .policy-actions {
+        display: none !important;
+    }
+    .policy {
+        padding: 0;
+        color: #000;
+    }
+    .policy-layout {
+        display: block;
+        margin-top: 16px;
+    }
+    .policy-hero h1,
+    .policy-body h2,
+    .policy-body h3,
+    .policy-body strong,
+    .policy-summary li,
+    .policy-table td:first-child {
+        color: #000;
+    }
+    .policy-summary {
+        border-color: #999;
+        background: none;
+    }
+    .policy-body a {
+        color: #000;
+    }
 }

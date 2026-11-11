@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="robots" content="noindex, follow" />
-	<meta name="description" content="Request deletion of your personal data from Imperium Roma. Learn how to exercise your privacy rights and remove your account information." />
-	<title>Delete User Data - Imperium Roma</title>
-	<link rel="icon" type="image/png" sizes="96x96" href="/assets/images/icons/favicon-96x96.png">
-	<link rel="icon" type="image/png" sizes="48x48" href="/assets/images/icons/favicon-48x48.png">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, follow" />
+    <title>Delete Your Data - Imperium Roma</title>
+    <meta name="description" content="How to delete your Domus account, what happens to your data, and how to ask Imperium Roma to remove anything else we hold about you." />
+    <link rel="canonical" href="https://imperiumroma.com/policies/delete_user_data/" />
+    <!-- @hreflang -->
+
+    <meta property="og:title" content="Delete Your Data - Imperium Roma" />
+    <meta property="og:description" content="How to delete your Domus account and any other data we hold about you." />
+    <meta property="og:url" content="https://imperiumroma.com/policies/delete_user_data/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://imperiumroma.com/assets/images/general/Roman-Coins_BG.jpg" />
+    <meta property="og:site_name" content="Imperium Roma" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Delete Your Data - Imperium Roma" />
+    <meta name="twitter:description" content="How to delete your Domus account and your data." />
+    <meta name="twitter:image" content="https://imperiumroma.com/assets/images/general/Roman-Coins_BG.jpg" />
+
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/images/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/images/icons/favicon-48x48.png">
     <!-- Touch icons. iOS renders alpha as black, so these are opaque, and the
          mark sits inside ~76% because iOS applies its own rounded mask. The
          file also lives at /apple-touch-icon.png, which Safari probes by
@@ -16,210 +30,158 @@
     <link rel="manifest" href="/site.webmanifest">
     <meta name="apple-mobile-web-app-title" content="Imperium Roma">
     <meta name="theme-color" content="#0f0f10">
-	<!-- The .ico is deliberately not linked: it is a 174KB multi-resolution bundle,
-         and every browser here already takes the 5KB PNG above. Legacy crawlers that
-         probe /favicon.ico still get served via the .htaccess rewrite. -->
-    <!-- Fonts are self-hosted (see @font-face in style.css), removing a
-         render-blocking third-party stylesheet. crossorigin is required on
-         font preloads even same-origin: fonts always fetch in CORS mode, and
-         without it the file is downloaded twice. -->
+
+    <!-- Fonts are self-hosted (see @font-face in style.css). crossorigin is
+         required on font preloads even same-origin, or the file downloads twice. -->
     <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/montserrat-latin.woff2" crossorigin>
-	<link rel="stylesheet" href="/assets/css/style.css">
-	<link rel="stylesheet" href="/assets/css/policies.css?v=2025-10-15-2">
-	<link rel="canonical" href="https://imperiumroma.com/policies/delete_user_data/" />
-	<!-- @hreflang -->
-	<meta property="og:title" content="Delete User Data - Imperium Roma" />
-	<meta property="og:description" content="How to request deletion of your personal data from Imperium Roma." />
-	<meta property="og:url" content="https://imperiumroma.com/policies/delete_user_data/" />
-	<meta property="og:type" content="website" />
-	<meta property="og:image" content="https://imperiumroma.com/assets/images/general/Roman-Coins_BG.jpg" />
-	<meta property="og:site_name" content="Imperium Roma" />
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="Delete User Data - Imperium Roma" />
-	<meta name="twitter:description" content="Request removal of your account data and content." />
-	<meta name="twitter:image" content="https://imperiumroma.com/assets/images/general/Roman-Coins_BG.jpg" />
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/policies.css">
 </head>
 <body>
-	<main class="policy-content">
-		<div class="container">
-			<h1>Data Deletion Request</h1>
-			<p class="last-updated">Last Updated: February 13, 2026</p>
+    <!-- Header -->
+    <!-- @include partials/header.html -->
 
-			<section id="introduction">
-				<h2>Your Right to Deletion</h2>
-				<p>Under applicable data protection laws, including the EU General Data Protection Regulation (GDPR) Article 17 ("Right to Erasure"), UK GDPR, and the California Consumer Privacy Act (CCPA), you have the right to request deletion of your personal information that we have collected and stored.</p>
-				<p>This page explains how to submit a deletion request, what data will be deleted, and important information about the deletion process.</p>
-			</section>
+    <main class="policy">
+        <div class="policy-hero">
+            <nav aria-label="Legal pages">
+                <ul class="policy-switch">
+                    <li><a href="/policies/privacy_policy/">Privacy Policy</a></li>
+                    <li><a href="/policies/terms_of_use/">Terms of Use</a></li>
+                    <li><a href="/policies/delete_user_data/" aria-current="page">Delete Your Data</a></li>
+                </ul>
+            </nav>
+            <h1>Delete Your Data</h1>
+            <p class="policy-lede">How to delete your Domus account, what happens to your data, and how to have anything else we hold about you removed.</p>
+            <p class="policy-meta">
+                <span>Last updated <strong>11 November 2026</strong></span>
+                <span>Covers imperiumroma.com and domus.imperiumroma.com</span>
+            </p>
+        </div>
 
-			<section id="what-is-deleted">
-				<h2>1. What Will Be Deleted</h2>
-				<p>When you request account deletion, we will permanently delete or anonymize the following personal information:</p>
-				
-				<h3>1.1 Account Information</h3>
-				<ul>
-					<li>Your username, email address, and authentication credentials</li>
-					<li>Profile information and account settings</li>
-					<li>Login history and session data</li>
-				</ul>
-				
-				<h3>1.2 User-Generated Content</h3>
-				<ul>
-					<li>Coin collection data (items, descriptions, notes)</li>
-					<li>Wishlist entries and saved searches</li>
-					<li>Uploaded images and photos</li>
-					<li>Comments, reviews, and forum posts (if applicable)</li>
-					<li>Authentication and valuation requests</li>
-				</ul>
-				
-				<h3>1.3 Technical and Usage Data</h3>
-				<ul>
-					<li>IP addresses and device identifiers linked to your account</li>
-					<li>Cookies and tracking data associated with your account</li>
-					<li>Activity logs and usage analytics tied to your identity</li>
-				</ul>
-			</section>
+        <div class="policy-layout">
+            <details class="policy-toc" open>
+                <summary>On this page</summary>
+                <nav aria-label="On this page">
+                    <p class="policy-toc__title">On this page</p>
+                    <ol>
+                        <li><a href="#in-domus">Delete your Domus account</a></li>
+                        <li><a href="#deleted">What gets deleted</a></li>
+                        <li><a href="#kept">What we may keep</a></li>
+                        <li><a href="#other-data">Other data we hold</a></li>
+                        <li><a href="#by-email">Ask us by email</a></li>
+                        <li><a href="#your-rights">Your other rights</a></li>
+                    </ol>
+                </nav>
+            </details>
 
-			<section id="exceptions">
-				<h2>2. Exceptions and Limitations</h2>
-				<p>We may retain certain information when we have a legal obligation or legitimate reason to do so:</p>
-				
-				<h3>2.1 Legal and Regulatory Requirements</h3>
-				<ul>
-					<li>Information required to comply with applicable laws, regulations, or legal processes</li>
-					<li>Records necessary for tax, accounting, or audit purposes</li>
-					<li>Data subject to legal holds, court orders, or active investigations</li>
-				</ul>
-				
-				<h3>2.2 Fraud Prevention and Security</h3>
-				<ul>
-					<li>Information necessary to detect, prevent, or investigate fraud, security breaches, or abuse</li>
-					<li>Records of accounts terminated for violations of our Terms of Use</li>
-				</ul>
-				
-				<h3>2.3 Contractual Obligations</h3>
-				<ul>
-					<li>Transaction records for completed auctions or sales</li>
-					<li>Communication records related to disputes or customer service issues</li>
-				</ul>
-				
-				<h3>2.4 Anonymized Data</h3>
-				<ul>
-					<li>Aggregated, anonymized, or de-identified data that cannot reasonably be used to identify you may be retained for analytics and research purposes</li>
-				</ul>
-				
-				<h3>2.5 Backup Systems</h3>
-				<p>Deleted data may persist in backup systems for up to 90 days before being permanently purged. During this period, the data will not be accessible through our Service or used for any purpose.</p>
-			</section>
+            <article class="policy-body">
+                <div class="policy-summary">
+                    <h2>The short version</h2>
+                    <ul>
+                        <li>Delete your account yourself, in Domus settings.</li>
+                        <li>You have 14 days to change your mind.</li>
+                        <li>After that, your account and collection are erased for good.</li>
+                        <li>No Domus account? Email us and we'll remove what we hold.</li>
+                    </ul>
+                </div>
 
-			<section id="how-to-request">
-				<h2>3. How to Request Deletion</h2>
-				<p>You can submit a deletion request through the following methods:</p>
-				
-				<h3>3.1 Submission Methods</h3>
-				<ul>
-					<li><strong>Email:</strong> Send your request to <a href="mailto:imperiumroma0@gmail.com">imperiumroma0@gmail.com</a> with the subject line "Data Deletion Request"</li>
-					<li><strong>Contact Form:</strong> Submit a request via <a href="https://imperiumroma.com/contact/">https://imperiumroma.com/contact/</a></li>
-					<li><strong>Account Settings:</strong> Use the "Delete Account" option in your account settings (if available)</li>
-				</ul>
-				
-				<h3>3.2 Required Information</h3>
-				<p>To process your request efficiently and verify your identity, please include:</p>
-				<ul>
-					<li>Your full name associated with the account</li>
-					<li>The email address registered to your account</li>
-					<li>Your username (if applicable)</li>
-					<li>Any additional information that helps us locate your account</li>
-					<li>Confirmation that you wish to permanently delete all account data</li>
-				</ul>
-				
-				<h3>3.3 Identity Verification</h3>
-				<p>For security and privacy protection, we may ask you to verify your identity before processing your deletion request. This may involve:</p>
-				<ul>
-					<li>Logging into your account</li>
-					<li>Responding to an email sent to your registered email address</li>
-					<li>Providing additional identifying information</li>
-				</ul>
-				<p>We will not process deletion requests from unverified sources to prevent unauthorized deletion of accounts.</p>
-			</section>
+                <section id="in-domus">
+                    <h2><span class="policy-num">01</span> Delete your Domus account</h2>
+                    <p>The quickest way is to do it yourself:</p>
+                    <ol class="policy-steps">
+                        <li>
+                            <strong>Open Settings</strong>
+                            <p>Sign in to Domus and go to Settings.</p>
+                        </li>
+                        <li>
+                            <strong>Choose to delete your account</strong>
+                            <p>We email you a confirmation link. Your account stays fully active until you open it.</p>
+                        </li>
+                        <li>
+                            <strong>Confirm from the email</strong>
+                            <p>A 14-day recovery period starts. Your account is restricted during it; to cancel, sign in and choose "Restore my account".</p>
+                        </li>
+                        <li>
+                            <strong>Deleted for good</strong>
+                            <p>After 14 days your account and everything in it are permanently erased.</p>
+                        </li>
+                    </ol>
+                    <div class="policy-actions">
+                        <a class="policy-btn" href="https://domus.imperiumroma.com/settings" target="_blank" rel="noopener">Open Domus settings</a>
+                    </div>
+                    <div class="policy-note">
+                        <p><strong>Before you go:</strong> want a copy of your collection? Export it from Domus first, or email us and we'll send it to you. If you have a paid plan, cancel it on the Subscription page so you aren't charged again.</p>
+                    </div>
+                </section>
 
-			<section id="processing-time">
-				<h2>4. Processing Timeline</h2>
-				<ul>
-					<li><strong>Acknowledgment:</strong> We will acknowledge receipt of your request within 5 business days</li>
-					<li><strong>Verification:</strong> Identity verification (if required) may take 3-7 business days</li>
-					<li><strong>Processing:</strong> We aim to complete your deletion request within <strong>30 days</strong> of verification (as required by GDPR)</li>
-					<li><strong>Confirmation:</strong> You will receive a confirmation email once deletion is complete</li>
-				</ul>
-				<p><strong>Note:</strong> In some cases, particularly those involving complex legal or technical issues, the timeline may be extended up to 60 days. We will notify you if an extension is necessary.</p>
-			</section>
+                <section id="deleted">
+                    <h2><span class="policy-num">02</span> What gets deleted</h2>
+                    <ul>
+                        <li><strong>Your account:</strong> email address, sign-in details and any link to your Google account</li>
+                        <li><strong>Your profile:</strong> nickname, name, profile picture and settings</li>
+                        <li><strong>Your collection and wishlist:</strong> coins, photos, notes, provenance, prices and 3D models</li>
+                        <li><strong>Your activity:</strong> the members you follow, your notifications and notification settings</li>
+                        <li><strong>Your forum posts:</strong> removed, or anonymised so they no longer show your name where removing them would break other members' conversations</li>
+                    </ul>
+                </section>
 
-			<section id="consequences">
-				<h2>5. Consequences of Deletion</h2>
-				<p>Before requesting deletion, please be aware of the following consequences:</p>
-				
-				<h3>5.1 Permanent and Irreversible</h3>
-				<p>Account deletion is <strong>permanent and cannot be undone</strong>. Once your account is deleted:</p>
-				<ul>
-					<li>You will lose access to all features requiring authentication</li>
-					<li>Your collection, wishlist, and saved data will be permanently lost</li>
-					<li>You will be unable to recover any User Content, images, or notes</li>
-					<li>You will not be able to reactivate your account or restore deleted data</li>
-				</ul>
-				
-				<h3>5.2 Outstanding Obligations</h3>
-				<p>If you have any outstanding transactions, auctions, or disputes, those must be resolved before account deletion can be completed.</p>
-				
-				<h3>5.3 Future Use</h3>
-				<p>After deletion, if you wish to use our Service again, you will need to create a new account. Your previous data will not be associated with the new account.</p>
-			</section>
+                <section id="kept">
+                    <h2><span class="policy-num">03</span> What we may keep</h2>
+                    <p>A few things can outlast your account, and only for as long as needed:</p>
+                    <ul>
+                        <li><strong>Backups:</strong> copies are overwritten within 90 days and can't be reached through the service in the meantime.</li>
+                        <li><strong>Legal records:</strong> what the law requires us to keep, such as payment and tax records for paid plans.</li>
+                        <li><strong>Safety records:</strong> what we need to handle a dispute or prevent abuse, such as a record that an account was banned.</li>
+                        <li><strong>Anonymous statistics</strong> that can't identify you.</li>
+                    </ul>
+                </section>
 
-			<section id="alternatives">
-				<h2>6. Alternatives to Full Deletion</h2>
-				<p>If you're not ready for permanent deletion, consider these alternatives:</p>
-				<ul>
-					<li><strong>Account Deactivation:</strong> Temporarily disable your account without deleting data (contact us for options)</li>
-					<li><strong>Data Correction:</strong> Update or correct inaccurate personal information in your account settings</li>
-					<li><strong>Data Export:</strong> Request a copy of your data in a portable format before deletion</li>
-					<li><strong>Selective Deletion:</strong> Delete specific collections, images, or content without closing your account</li>
-					<li><strong>Marketing Opt-Out:</strong> Unsubscribe from newsletters and marketing communications while keeping your account active</li>
-				</ul>
-			</section>
+                <section id="other-data">
+                    <h2><span class="policy-num">04</span> Other data we hold</h2>
+                    <ul>
+                        <li><strong>Newsletter:</strong> use the unsubscribe link in any newsletter, or email us, and your address is removed from our list.</li>
+                        <li><strong>Messages you sent us:</strong> email us and we'll delete your contact-form messages and any files you attached.</li>
+                        <li><strong>AI identification photos:</strong> nothing to delete. We don't store them.</li>
+                        <li><strong>Server logs</strong> expire automatically.</li>
+                    </ul>
+                </section>
 
-			<section id="additional-rights">
-				<h2>7. Additional Privacy Rights</h2>
-				<p>In addition to deletion, you have other rights regarding your personal data:</p>
-				<ul>
-					<li><strong>Right of Access:</strong> Request a copy of personal information we hold about you</li>
-					<li><strong>Right to Rectification:</strong> Request correction of inaccurate or incomplete data</li>
-					<li><strong>Right to Restrict Processing:</strong> Request that we limit how we use your data</li>
-					<li><strong>Right to Data Portability:</strong> Receive your data in a structured, machine-readable format</li>
-					<li><strong>Right to Object:</strong> Object to processing based on legitimate interests or direct marketing</li>
-				</ul>
-				<p>To exercise any of these rights, please see our <a href="/policies/privacy_policy/">Privacy Policy</a> or contact us using the information below.</p>
-			</section>
+                <section id="by-email">
+                    <h2><span class="policy-num">05</span> Ask us by email</h2>
+                    <p>If you can't sign in, don't have a Domus account, or want something specific removed, email <a href="mailto:imperiumroma0@gmail.com?subject=Data%20deletion%20request">imperiumroma0@gmail.com</a> with the subject "Data deletion request". Please:</p>
+                    <ul>
+                        <li>write from the email address linked to your account, or the one you used to contact us</li>
+                        <li>include your Domus nickname, if you have one</li>
+                        <li>say what you'd like deleted: everything, or something specific</li>
+                    </ul>
+                    <p>To protect your account, we may ask you to confirm it's you before we delete anything. We'll let you know when it's done, within one month of your request.</p>
+                    <div class="policy-actions">
+                        <a class="policy-btn policy-btn--ghost" href="mailto:imperiumroma0@gmail.com?subject=Data%20deletion%20request">Email a deletion request</a>
+                    </div>
+                </section>
 
-			<section id="concerns">
-				<h2>8. Questions and Concerns</h2>
-				<p>If you have questions about the deletion process or wish to exercise your data protection rights, please contact us:</p>
-				<p><strong>Email:</strong> <a href="mailto:imperiumroma0@gmail.com">imperiumroma0@gmail.com</a><br>
-				<strong>Contact Form:</strong> <a href="https://imperiumroma.com/contact/">https://imperiumroma.com/contact/</a><br>
-				<strong>Response Time:</strong> We aim to respond within 5-7 business days</p>
-				
-				<h3>8.1 Lodge a Complaint</h3>
-				<p>If you are not satisfied with how we handle your deletion request or believe we have not complied with applicable data protection laws, you have the right to lodge a complaint with your local data protection authority:</p>
-				<ul>
-					<li><strong>EU/EEA:</strong> Contact your national Data Protection Authority (DPA)</li>
-					<li><strong>UK:</strong> Information Commissioner's Office (ICO) - <a href="https://ico.org.uk/" target="_blank" rel="noopener noreferrer">https://ico.org.uk/</a></li>
-					<li><strong>California:</strong> California Attorney General's Office - <a href="https://oag.ca.gov/" target="_blank" rel="noopener noreferrer">https://oag.ca.gov/</a></li>
-				</ul>
-			</section>
-		</div>
-	</main>
+                <section id="your-rights">
+                    <h2><span class="policy-num">06</span> Your other rights</h2>
+                    <p>You can also ask to see, correct or get a copy of your data, or object to how we use it. The <a href="/policies/privacy_policy/#your-rights">Privacy Policy</a> explains how.</p>
+                    <p>If you're unhappy with how we've handled your request, you can complain to a data protection authority, for example:</p>
+                    <ul>
+                        <li><strong>EU:</strong> the data protection authority in your country</li>
+                        <li><strong>UK:</strong> the <a href="https://ico.org.uk/" target="_blank" rel="noopener noreferrer">Information Commissioner's Office</a></li>
+                        <li><strong>California:</strong> the <a href="https://oag.ca.gov/privacy" target="_blank" rel="noopener noreferrer">California Attorney General</a></li>
+                    </ul>
+                </section>
+            </article>
+        </div>
+    </main>
 
-		<!-- Footer (shared) -->
-		<!-- @include partials/footer.html -->
-	<script src="/assets/js/newsletter.js" defer></script>
-	<script src="/assets/js/smooth-scroll.js" defer></script>
+    <!-- Footer (shared) -->
+    <!-- @include partials/footer.html -->
+
+    <script src="/assets/js/header.js" defer></script>
+    <script src="/assets/js/hamburger.js" defer></script>
     <script src="/assets/js/lang.js" defer></script>
+    <script src="/assets/js/newsletter.js" defer></script>
+    <script src="/assets/js/smooth-scroll.js" defer></script>
+    <script src="/assets/js/policies.js" defer></script>
 </body>
 </html>

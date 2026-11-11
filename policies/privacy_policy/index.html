@@ -4,33 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, follow" />
-    <meta name="description" content="Privacy Policy for Imperium Roma - Information on how we collect, use, and protect your data." />
     <title>Privacy Policy - Imperium Roma</title>
+    <meta name="description" content="How Imperium Roma and Domus collect, use, share and protect your personal data, and how to use your privacy rights." />
     <link rel="canonical" href="https://imperiumroma.com/policies/privacy_policy/" />
     <!-- @hreflang -->
+
     <meta property="og:title" content="Privacy Policy - Imperium Roma" />
-    <meta property="og:description" content="How we collect, use, and protect your data." />
+    <meta property="og:description" content="What we collect, why, who helps us run the service, and how to stay in control of your data." />
     <meta property="og:url" content="https://imperiumroma.com/policies/privacy_policy/" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://imperiumroma.com/assets/images/general/Roman-Coins_BG.jpg" />
     <meta property="og:site_name" content="Imperium Roma" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Privacy Policy - Imperium Roma" />
-    <meta name="twitter:description" content="Read our privacy practices." />
+    <meta name="twitter:description" content="What we collect, why, and how to stay in control of your data." />
     <meta name="twitter:image" content="https://imperiumroma.com/assets/images/general/Roman-Coins_BG.jpg" />
-    
-    <!-- Apple Touch Icons -->
-    <!-- <link rel="apple-touch-icon" sizes="57x57" href="/assets/images/icons/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/assets/images/icons/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/assets/images/icons/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/assets/images/icons/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/assets/images/icons/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/assets/images/icons/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/assets/images/icons/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/assets/images/icons/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-icon-180x180.png"> -->
 
-    <!-- Favicon Icons -->
     <link rel="icon" type="image/png" sizes="96x96" href="/assets/images/icons/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="48x48" href="/assets/images/icons/favicon-48x48.png">
     <!-- Touch icons. iOS renders alpha as black, so these are opaque, and the
@@ -41,249 +30,228 @@
     <link rel="manifest" href="/site.webmanifest">
     <meta name="apple-mobile-web-app-title" content="Imperium Roma">
     <meta name="theme-color" content="#0f0f10">
-    <!-- The .ico is deliberately not linked: it is a 174KB multi-resolution bundle,
-         and every browser here already takes the 5KB PNG above. Legacy crawlers that
-         probe /favicon.ico still get served via the .htaccess rewrite. -->
 
-    <!-- Web Manifest -->
-    <!-- <link rel="manifest" href="/assets/images/icons/manifest.json"> -->
-
-    <!-- Microsoft Tiles -->
-    <!-- <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/assets/images/icons/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff"> -->
-
-    <!-- Stylesheet -->
-    <!-- Fonts are self-hosted (see @font-face in style.css), removing a
-         render-blocking third-party stylesheet. crossorigin is required on
-         font preloads even same-origin: fonts always fetch in CORS mode, and
-         without it the file is downloaded twice. -->
+    <!-- Fonts are self-hosted (see @font-face in style.css). crossorigin is
+         required on font preloads even same-origin, or the file downloads twice. -->
     <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/montserrat-latin.woff2" crossorigin>
     <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="stylesheet" href="/assets/css/policies.css?v=2025-10-15-2">
+    <link rel="stylesheet" href="/assets/css/policies.css">
 </head>
 <body>
-    <main class="policy-content">
-        <div class="container">
+    <!-- Header -->
+    <!-- @include partials/header.html -->
+
+    <main class="policy">
+        <div class="policy-hero">
+            <nav aria-label="Legal pages">
+                <ul class="policy-switch">
+                    <li><a href="/policies/privacy_policy/" aria-current="page">Privacy Policy</a></li>
+                    <li><a href="/policies/terms_of_use/">Terms of Use</a></li>
+                    <li><a href="/policies/delete_user_data/">Delete Your Data</a></li>
+                </ul>
+            </nav>
             <h1>Privacy Policy</h1>
-            <p class="last-updated">Last Updated: February 13, 2026</p>
+            <p class="policy-lede">What we collect, why we need it, who helps us run the service, and how you stay in control of your data.</p>
+            <p class="policy-meta">
+                <span>Last updated <strong>11 November 2026</strong></span>
+                <span>Covers imperiumroma.com and domus.imperiumroma.com</span>
+            </p>
+        </div>
 
-            <section id="introduction">
-                <h2>Introduction</h2>
-                <p><strong>Imperium Roma</strong> ("we," "our," "us," or "Company") operates the website <strong>imperiumroma.com</strong> (the "Site" or "Service"). We are committed to protecting your personal information and your right to privacy in compliance with applicable data protection laws, including the EU General Data Protection Regulation ("GDPR"), UK GDPR, and the California Consumer Privacy Act ("CCPA").</p>
-                <p>This Privacy Policy describes how we collect, use, store, share, and protect your personal information when you use our Service. By accessing or using the Site, you acknowledge that you have read, understood, and agree to be bound by this Privacy Policy. If you do not agree with these terms, please do not use our Service.</p>
-                <p><strong>Data Controller:</strong> Imperium Roma<br>
-                <strong>Contact Email:</strong> imperiumroma0@gmail.com<br>
-                <strong>Website:</strong> https://imperiumroma.com</p>
-            </section>
+        <div class="policy-layout">
+            <details class="policy-toc" open>
+                <summary>On this page</summary>
+                <nav aria-label="On this page">
+                    <p class="policy-toc__title">On this page</p>
+                    <ol>
+                        <li><a href="#who-we-are">Who we are</a></li>
+                        <li><a href="#what-we-collect">What we collect</a></li>
+                        <li><a href="#why">Why we use it</a></li>
+                        <li><a href="#visibility">What other members see</a></li>
+                        <li><a href="#retention">How long we keep it</a></li>
+                        <li><a href="#your-rights">Your rights</a></li>
+                        <li><a href="#transfers">International transfers</a></li>
+                        <li><a href="#security">Security</a></li>
+                        <li><a href="#children">Children</a></li>
+                        <li><a href="#changes">Changes to this policy</a></li>
+                        <li><a href="#contact">Contact us</a></li>
+                    </ol>
+                </nav>
+            </details>
 
-            <section id="information-collection">
-                <h2>1. Information We Collect</h2>
-                
-                <h3>1.1 Personal Information You Provide</h3>
-                <p>We collect personal information that you voluntarily provide to us when you:</p>
-                <ul>
-                    <li>Register for an account (name, email address, username)</li>
-                    <li>Create a collection or wishlist</li>
-                    <li>Submit inquiries through our contact form</li>
-                    <li>Subscribe to our newsletter</li>
-                    <li>Participate in authentication services or auctions</li>
-                    <li>Communicate with us via email or other channels</li>
-                </ul>
-                
-                <h3>1.2 Automatically Collected Information</h3>
-                <p>When you access our Site, we automatically collect certain technical information, including:</p>
-                <ul>
-                    <li><strong>Device Information:</strong> IP address, browser type and version, operating system, device identifiers</li>
-                    <li><strong>Usage Data:</strong> Pages visited, time and date of visits, time spent on pages, clickstream data, referring websites</li>
-                    <li><strong>Location Data:</strong> General geographic location based on IP address</li>
-                </ul>
-                
-                <h3>1.3 Cookies and Tracking Technologies</h3>
-                <p>We use cookies, web beacons, and similar tracking technologies to enhance your experience and collect information about usage patterns. Cookie types include:</p>
-                <ul>
-                    <li><strong>Essential Cookies:</strong> Required for site functionality and authentication</li>
-                    <li><strong>Analytics Cookies:</strong> Help us understand how visitors interact with our Site</li>
-                    <li><strong>Preference Cookies:</strong> Remember your settings and preferences</li>
-                </ul>
-                <p>You can manage cookie preferences through your browser settings. Note that disabling certain cookies may affect site functionality.</p>
-                
-                <h3>1.4 Third-Party Services</h3>
-                <p>We use <strong>Supabase</strong> as our backend infrastructure provider for authentication, database management, and data storage. Supabase may collect and process data on our behalf in accordance with their privacy policy.</p>
-            </section>
+            <article class="policy-body">
+                <div class="policy-summary">
+                    <h2>The short version</h2>
+                    <ul>
+                        <li>We never sell your data or show you adverts.</li>
+                        <li>No analytics or advertising trackers on imperiumroma.com.</li>
+                        <li>Your Domus collection stays private unless you make your profile public.</li>
+                        <li>Export your data or delete your account whenever you like.</li>
+                    </ul>
+                </div>
 
-            <section id="information-use">
-                <h2>2. How We Use Your Information</h2>
-                <p>We process your personal information for the following lawful purposes:</p>
-                
-                <h3>2.1 Service Delivery and Contract Performance</h3>
-                <ul>
-                    <li>Creating and managing your user account</li>
-                    <li>Providing access to collection management, authentication, and valuation tools</li>
-                    <li>Processing and facilitating auction participation</li>
-                    <li>Delivering customer support and responding to inquiries</li>
-                    <li>Sending service-related notifications and updates</li>
-                </ul>
-                
-                <h3>2.2 Legitimate Business Interests</h3>
-                <ul>
-                    <li>Analyzing usage patterns to improve Site performance and user experience</li>
-                    <li>Conducting research and development of new features</li>
-                    <li>Detecting, preventing, and addressing technical issues, fraud, and security threats</li>
-                    <li>Maintaining business records and legal compliance</li>
-                </ul>
-                
-                <h3>2.3 Legal Obligations</h3>
-                <ul>
-                    <li>Complying with applicable laws, regulations, and legal processes</li>
-                    <li>Protecting our rights, privacy, safety, or property</li>
-                    <li>Enforcing our Terms of Use and other agreements</li>
-                </ul>
-                
-                <h3>2.4 With Your Consent</h3>
-                <ul>
-                    <li>Sending marketing communications and newsletters (you may opt out at any time)</li>
-                    <li>Other purposes for which you provide explicit consent</li>
-                </ul>
-            </section>
+                <section id="who-we-are">
+                    <h2><span class="policy-num">01</span> Who we are</h2>
+                    <p>Imperium Roma ("we", "us") runs the websites <strong>imperiumroma.com</strong> and <strong>domus.imperiumroma.com</strong>, home of Domus, our collection app. We decide how and why the personal data described here is used, which makes us its controller.</p>
+                    <p>Questions about your data go to <a href="mailto:imperiumroma0@gmail.com">imperiumroma0@gmail.com</a> or through our <a href="/contact/">contact form</a>.</p>
+                </section>
 
-            <section id="information-sharing">
-                <h2>3. Information Sharing and Disclosure</h2>
-                <p><strong>We do not sell, rent, or trade your personal information to third parties for their marketing purposes.</strong></p>
-                
-                <p>We may share your information in the following circumstances:</p>
-                
-                <h3>3.1 Service Providers</h3>
-                <p>We engage trusted third-party service providers to perform functions on our behalf, including:</p>
-                <ul>
-                    <li><strong>Supabase:</strong> Authentication, database hosting, and backend infrastructure</li>
-                    <li><strong>Hosting Providers:</strong> Website hosting and content delivery</li>
-                    <li><strong>Analytics Services:</strong> Usage analysis and performance monitoring</li>
-                    <li><strong>Communication Services:</strong> Email delivery and customer support</li>
-                </ul>
-                <p>These providers have access to personal information only to perform specific tasks and are obligated to protect your data.</p>
-                
-                <h3>3.2 Legal Requirements</h3>
-                <p>We may disclose your information if required to do so by law or in response to:</p>
-                <ul>
-                    <li>Valid legal requests from law enforcement or government authorities</li>
-                    <li>Court orders, subpoenas, or other legal processes</li>
-                    <li>Protection of our rights, property, or safety, or that of our users or the public</li>
-                </ul>
-                
-                <h3>3.3 Business Transfers</h3>
-                <p>In the event of a merger, acquisition, reorganization, bankruptcy, or sale of assets, your personal information may be transferred as part of that transaction. We will provide notice before your information becomes subject to a different privacy policy.</p>
-                
-                <h3>3.4 With Your Consent</h3>
-                <p>We may share your information for other purposes with your explicit consent or at your direction.</p>
-            </section>
+                <section id="what-we-collect">
+                    <h2><span class="policy-num">02</span> What we collect</h2>
 
-            <section id="data-security">
-                <h2>4. Data Security</h2>
-                <p>We implement industry-standard security measures to protect your personal information, including:</p>
-                <ul>
-                    <li>Encryption of data in transit using HTTPS/TLS protocols</li>
-                    <li>Secure authentication mechanisms and password hashing</li>
-                    <li>Access controls limiting data access to authorized personnel only</li>
-                    <li>Regular security assessments and vulnerability testing</li>
-                    <li>Secure backup procedures and disaster recovery plans</li>
-                </ul>
-                <p>While we strive to protect your personal information, no method of transmission over the Internet or electronic storage is completely secure. We cannot guarantee absolute security but continuously work to maintain reasonable safeguards appropriate to the sensitivity of the information.</p>
-            </section>
-            
-            <section id="data-retention">
-                <h2>5. Data Retention</h2>
-                <p>We retain your personal information for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required or permitted by law.</p>
-                <ul>
-                    <li><strong>Account Data:</strong> Retained while your account is active and for a reasonable period thereafter for legal and business purposes</li>
-                    <li><strong>Usage Data:</strong> Typically retained for 24-36 months for analytics purposes</li>
-                    <li><strong>Communication Records:</strong> Retained for customer service and legal compliance purposes</li>
-                </ul>
-                <p>When we no longer need your information, we will securely delete or anonymize it. You may request deletion of your account and personal information at any time (see Section 6).</p>
-            </section>
+                    <h3>When you browse imperiumroma.com</h3>
+                    <ul>
+                        <li><strong>Server logs.</strong> Like any website, our hosting and network providers record your IP address, browser type, the pages requested and when, for security and to fix problems.</li>
+                        <li><strong>Your language.</strong> If you switch language, the choice is saved in your browser's local storage so the site remembers it. We set no cookies and use no analytics or advertising trackers. Our network provider, Cloudflare, may set a strictly necessary security cookie if it needs to tell visitors from bots.</li>
+                    </ul>
 
-            <section id="data-rights">
-                <h2>6. Your Privacy Rights</h2>
-                <p>Depending on your location, you may have the following rights regarding your personal information:</p>
-                
-                <h3>6.1 Rights for EU/UK Users (GDPR)</h3>
-                <ul>
-                    <li><strong>Right of Access:</strong> Request a copy of personal information we hold about you</li>
-                    <li><strong>Right to Rectification:</strong> Request correction of inaccurate or incomplete information</li>
-                    <li><strong>Right to Erasure ("Right to be Forgotten"):</strong> Request deletion of your personal data under certain circumstances</li>
-                    <li><strong>Right to Restrict Processing:</strong> Request limitation of how we use your data</li>
-                    <li><strong>Right to Data Portability:</strong> Receive your data in a structured, machine-readable format</li>
-                    <li><strong>Right to Object:</strong> Object to processing based on legitimate interests or direct marketing</li>
-                    <li><strong>Right to Withdraw Consent:</strong> Withdraw consent at any time where processing is based on consent</li>
-                    <li><strong>Right to Lodge a Complaint:</strong> File a complaint with your local data protection authority</li>
-                </ul>
-                
-                <h3>6.2 Rights for California Users (CCPA/CPRA)</h3>
-                <ul>
-                    <li><strong>Right to Know:</strong> Request disclosure of personal information collected, used, or sold</li>
-                    <li><strong>Right to Delete:</strong> Request deletion of personal information we have collected</li>
-                    <li><strong>Right to Opt-Out:</strong> Opt out of the sale or sharing of personal information (we do not sell data)</li>
-                    <li><strong>Right to Non-Discrimination:</strong> Equal service and pricing regardless of exercising rights</li>
-                    <li><strong>Right to Correct:</strong> Request correction of inaccurate personal information</li>
-                </ul>
-                
-                <h3>6.3 Exercising Your Rights</h3>
-                <p>To exercise any of these rights, contact us at:</p>
-                <ul>
-                    <li><strong>Email:</strong> imperiumroma0@gmail.com</li>
-                    <li><strong>Request Form:</strong> <a href="https://imperiumroma.com/policies/delete_user_data/">Delete User Data Page</a></li>
-                </ul>
-                <p>We will respond to verifiable requests within 30 days (or as required by applicable law). We may request additional information to verify your identity before processing your request.</p>
-            </section>
+                    <h3>When you contact us</h3>
+                    <p>The contact form sends us your name, email address, the subject, your message and any files you attach. We use them to answer you and, if you ask, to carry out a service such as an authenticity check or market evaluation.</p>
 
-            <section id="international">
-                <h2>7. International Data Transfers</h2>
-                <p>Your information may be transferred to and processed in countries other than your country of residence. These countries may have data protection laws that differ from those in your jurisdiction.</p>
-                <p>We ensure that appropriate safeguards are in place when transferring data internationally, including:</p>
-                <ul>
-                    <li>Standard Contractual Clauses approved by the European Commission</li>
-                    <li>Adequacy decisions confirming sufficient data protection levels</li>
-                    <li>Other legally compliant transfer mechanisms</li>
-                </ul>
-            </section>
-            
-            <section id="children">
-                <h2>8. Children's Privacy</h2>
-                <p>Our Service is not intended for children under the age of 16. We do not knowingly collect personal information from children under 16. If you are a parent or guardian and believe your child has provided us with personal information, please contact us immediately. If we discover that we have collected information from a child under 16, we will promptly delete such information.</p>
-            </section>
+                    <h3>When you subscribe to the newsletter</h3>
+                    <p>We keep your email address on our mailing list. Every newsletter has an unsubscribe link.</p>
 
-            <section id="third-party">
-                <h2>9. Third-Party Links</h2>
-                <p>Our Site may contain links to third-party websites and services not operated by us. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services. We encourage you to review the privacy policies of any third-party sites you visit.</p>
-            </section>
+                    <h3>When you identify a coin with AI</h3>
+                    <p>AI identification on the <a href="/services/">Services</a> page sends the two photos you choose (obverse and reverse) to Anthropic's Claude AI, which reads the coin. We don't keep the photos. To match the coin against published catalogues we then look up the ruler and denomination on Nomisma.org; nothing about you is part of that lookup.</p>
 
-            <section id="policy-changes">
-                <h2>10. Changes to This Privacy Policy</h2>
-                <p>We reserve the right to update or modify this Privacy Policy at any time. When we make material changes, we will:</p>
-                <ul>
-                    <li>Update the "Last Updated" date at the top of this policy</li>
-                    <li>Notify you via email (if you have an account with us)</li>
-                    <li>Display a prominent notice on our Site</li>
-                </ul>
-                <p>Your continued use of the Service after changes become effective constitutes acceptance of the revised Privacy Policy. We encourage you to review this policy periodically.</p>
-            </section>
+                    <h3>Tools that run in your browser</h3>
+                    <p>The 3D coin viewer and the market valuation tool on the Services page work entirely on your device: images you open in them are not uploaded to us. The 3D viewer loads its graphics library from public content networks (cdnjs and jsDelivr), which see your IP address as any site you load files from would.</p>
 
-            <section id="contact">
-                <h2>11. Contact Us</h2>
-                <p>If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:</p>
-                <p><strong>Email:</strong> imperiumroma0@gmail.com<br>
-                <strong>Contact Form:</strong> <a href="https://imperiumroma.com/contact/">https://imperiumroma.com/contact/</a><br>
-                <strong>Response Time:</strong> We aim to respond to all inquiries within 5-7 business days.</p>
-                <p>For GDPR-related inquiries from EU/UK residents, you may also contact your local data protection authority.</p>
-            </section>
+                    <h3>When you use Domus</h3>
+                    <ul>
+                        <li><strong>Sign-in details:</strong> your email address and password, or your Google account if you choose "Continue with Google", in which case Google shares your name, email address and profile picture with us. Passwords are stored only in hashed form.</li>
+                        <li><strong>Profile:</strong> what you add, such as your nickname, name, location, preferred currency and profile picture, plus your plan, your public or private setting and when you were last online.</li>
+                        <li><strong>Collection and wishlist:</strong> your coins with their photos, legends, references, condition, provenance, prices paid and notes; the 3D models made from your photos; and the coins on your wishlist.</li>
+                        <li><strong>Community:</strong> your forum threads and replies, the members you follow, and your notifications and notification settings.</li>
+                        <li><strong>Plan and payments:</strong> which plan you are on. If you buy a paid plan, the payment is handled by our payment provider; we receive confirmation of the payment, not your full card details.</li>
+                        <li><strong>Security records:</strong> sign-in times and IP addresses, used to keep accounts safe.</li>
+                    </ul>
+                    <p>Some Domus features run on your device too. Removing the background from coin photos happens in your browser, using image models downloaded from img.ly's servers. To show values in your currency, Domus fetches exchange rates from public services (ExchangeRate-API and Frankfurter); those requests contain currency codes only.</p>
+                </section>
+
+                <section id="why">
+                    <h2><span class="policy-num">03</span> Why we use it</h2>
+                    <p>We only use personal data where the law gives us a reason to. For each purpose:</p>
+                    <table class="policy-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Purpose</th>
+                                <th scope="col">Data</th>
+                                <th scope="col">Legal basis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Running your Domus account and its features</td>
+                                <td data-label="Data">Account, profile, collection and community data</td>
+                                <td data-label="Legal basis">Contract: needed to provide the service you signed up for</td>
+                            </tr>
+                            <tr>
+                                <td>Answering messages and carrying out services you request</td>
+                                <td data-label="Data">Contact form details and attachments</td>
+                                <td data-label="Legal basis">Contract, or our legitimate interest in replying to you</td>
+                            </tr>
+                            <tr>
+                                <td>Sending the newsletter</td>
+                                <td data-label="Data">Email address</td>
+                                <td data-label="Legal basis">Your consent, which you can withdraw at any time</td>
+                            </tr>
+                            <tr>
+                                <td>Identifying a coin with AI</td>
+                                <td data-label="Data">The two photos you upload</td>
+                                <td data-label="Legal basis">Contract: needed to give you the result you asked for</td>
+                            </tr>
+                            <tr>
+                                <td>Keeping the site and community safe: stopping spam, abuse and fraud, and moderating the forum</td>
+                                <td data-label="Data">IP addresses, logs, account and forum records</td>
+                                <td data-label="Legal basis">Our legitimate interest in a safe, working service</td>
+                            </tr>
+                            <tr>
+                                <td>Meeting legal obligations, such as keeping tax records for paid plans</td>
+                                <td data-label="Data">What the law requires</td>
+                                <td data-label="Legal basis">Legal obligation</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>We don't use your data for advertising, and we don't make automated decisions about you that have legal or similarly significant effects.</p>
+                </section>
+
+                <section id="visibility">
+                    <h2><span class="policy-num">04</span> What other members see</h2>
+                    <p>In Domus, you decide what others see:</p>
+                    <ul>
+                        <li>With a <strong>private profile</strong>, only you can see your coins, and nobody sees when you were last online.</li>
+                        <li>With a <strong>public profile</strong>, other members can see your profile, the coins you haven't hidden from it, and when you were last online. You can hide individual coins at any time.</li>
+                        <li><strong>Forum posts</strong> are visible to other members, shown with your nickname and profile picture.</li>
+                        <li>Members can search for each other by nickname and follow one another.</li>
+                    </ul>
+                    <p>You can change these choices at any time in your Domus profile and settings.</p>
+                </section>
+
+                <section id="retention">
+                    <h2><span class="policy-num">05</span> How long we keep it</h2>
+                    <ul>
+                        <li><strong>Domus account:</strong> for as long as you keep it. When you delete your account, it is permanently erased after a 14-day recovery period, and copies in backups are overwritten within 90 days.</li>
+                        <li><strong>Contact messages:</strong> as long as we need to deal with your request and any follow-up. Ask us and we'll delete them sooner.</li>
+                        <li><strong>Newsletter:</strong> until you unsubscribe.</li>
+                        <li><strong>AI identification photos:</strong> we don't store them. Anthropic processes them to return the result and keeps them only for a limited period under its own policy.</li>
+                        <li><strong>Anti-abuse limits:</strong> a scrambled (hashed) form of your IP address, for up to 24 hours.</li>
+                        <li><strong>Server logs:</strong> for the limited period set by our hosting and network providers.</li>
+                    </ul>
+                </section>
+
+                <section id="your-rights">
+                    <h2><span class="policy-num">06</span> Your rights</h2>
+                    <p>Wherever you live, you can ask us to:</p>
+                    <ul>
+                        <li><strong>See</strong> the personal data we hold about you and get a copy</li>
+                        <li><strong>Correct</strong> anything that's wrong or incomplete</li>
+                        <li><strong>Delete</strong> your data</li>
+                        <li><strong>Take it with you</strong> in a machine-readable format</li>
+                        <li><strong>Object to</strong> or <strong>restrict</strong> how we use it</li>
+                        <li><strong>Withdraw consent</strong> you've given, such as for the newsletter</li>
+                    </ul>
+                    <p>Most of this you can do yourself in Domus: edit your profile and coins, export your collection, and delete your account (see <a href="/policies/delete_user_data/">Delete Your Data</a>). For anything else, email <a href="mailto:imperiumroma0@gmail.com">imperiumroma0@gmail.com</a>. We reply within one month and may first ask you to confirm your identity.</p>
+                    <p><strong>California residents</strong> also have the right to know, delete and correct personal information, and not to be treated differently for using these rights. We don't sell or share personal information for cross-context behavioural advertising.</p>
+                    <p>If you're unhappy with how we've handled your data, you can complain to a data protection authority, such as the ICO in the UK or the authority in your EU country. We'd appreciate the chance to put things right first.</p>
+                </section>
+
+                <section id="transfers">
+                    <h2><span class="policy-num">07</span> International transfers</h2>
+                    <p>Some of our providers process data outside your country, including in the United States. When data from the UK or EU leaves those areas, we rely on safeguards the law recognises, such as adequacy decisions and the European Commission's Standard Contractual Clauses.</p>
+                </section>
+
+                <section id="security">
+                    <h2><span class="policy-num">08</span> Security</h2>
+                    <p>All traffic to imperiumroma.com and domus.imperiumroma.com is encrypted (HTTPS), passwords are hashed, access to our systems is limited to the people who need it, and the contact form and AI tool are rate-limited against abuse. No system is perfectly secure; if a breach affects your data, we'll tell you and the authorities as the law requires.</p>
+                </section>
+
+                <section id="children">
+                    <h2><span class="policy-num">09</span> Children</h2>
+                    <p>Imperium Roma and Domus are for people aged 16 and over. We don't knowingly collect data from anyone younger. If you believe a child has given us personal data, contact us and we'll delete it.</p>
+                </section>
+
+                <section id="changes">
+                    <h2><span class="policy-num">10</span> Changes to this policy</h2>
+                    <p>When we change this policy we update the date at the top. If a change significantly affects how we use your data, we'll tell Domus users by email or in the app before it takes effect.</p>
+                </section>
+
+                <section id="contact">
+                    <h2><span class="policy-num">11</span> Contact us</h2>
+                    <p>Email <a href="mailto:imperiumroma0@gmail.com">imperiumroma0@gmail.com</a> or use the <a href="/contact/">contact form</a>. We aim to reply within 5–7 working days.</p>
+                </section>
+            </article>
         </div>
     </main>
 
     <!-- Footer (shared) -->
     <!-- @include partials/footer.html -->
-    
+
+    <script src="/assets/js/header.js" defer></script>
+    <script src="/assets/js/hamburger.js" defer></script>
+    <script src="/assets/js/lang.js" defer></script>
     <script src="/assets/js/newsletter.js" defer></script>
     <script src="/assets/js/smooth-scroll.js" defer></script>
-    <script src="/assets/js/lang.js" defer></script>
+    <script src="/assets/js/policies.js" defer></script>
 </body>
 </html>
