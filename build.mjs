@@ -352,9 +352,11 @@ function runtimeI18nTag(page, ctx) {
 
 /* ---------------------------------------------------------------- sitemap */
 
-/** Pages that must never be listed: error page, the logged-in app, auth screens. */
-const isSitemapExcluded = (canon) =>
-  canon === '/404.html' || canon.startsWith('/domus/') || canon.startsWith('/login/');
+/**
+ * Pages that must never be listed: the error page. (Domus, the logged-in app, lives on
+ * its own host, domus.imperiumroma.com, so it has no pages here.)
+ */
+const isSitemapExcluded = (canon) => canon === '/404.html';
 
 function sitemapMeta(canon) {
   if (canon === '/') return { changefreq: 'weekly', priority: '1.0' };
@@ -525,8 +527,8 @@ export async function build({ dev = false } = {}) {
     const htmlPath = page.abs;
     let html = resolveIncludes(readFileSync(htmlPath, 'utf8'), htmlPath);
     html = localizeHtml(html, page, { ...i18nCtx, file: toWebPath(htmlPath) });
-    // Only the public site shares scripts that read window.I18N; the Domus/login app
-    // shell has its own and stays untouched.
+    // Only pages built from the shared partials load the scripts that read
+    // window.I18N; a standalone page without them stays untouched.
     if (page.usesPartials && /<\/head>/i.test(html)) {
       html = html.replace(/<\/head>/i, `    ${runtimeI18nTag(page, i18nCtx)}\n</head>`);
     }
