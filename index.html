@@ -129,6 +129,14 @@
         "mainEntity": [
             {
                 "@type": "Question",
+                "name": "How do I join Domus?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Create a free account at domus.imperiumroma.com."
+                }
+            },
+            {
+                "@type": "Question",
                 "name": "Is Domus free?",
                 "acceptedAnswer": {
                     "@type": "Answer",
@@ -374,40 +382,35 @@
                             <span class="domus-reasons__num" aria-hidden="true">I</span>
                             <div>
                                 <strong>Every coin, fully documented</strong>
-                                <span>Photos of both sides, legends, weight, references and provenance in one record &mdash; not spread across tickets, envelopes and spreadsheets.</span>
+                                <span>Photos, legends, weight, references and provenance in one record.</span>
                             </div>
                         </li>
                         <li>
                             <span class="domus-reasons__num" aria-hidden="true">II</span>
                             <div>
                                 <strong>Provenance that stays with the coin</strong>
-                                <span>Purchase details, auction lots and earlier owners are kept with each piece &mdash; exactly what buyers, insurers and heirs will ask for.</span>
+                                <span>Purchases, auction lots and past owners, kept with every piece.</span>
                             </div>
                         </li>
                         <li>
                             <span class="domus-reasons__num" aria-hidden="true">III</span>
                             <div>
                                 <strong>Your collection at a glance</strong>
-                                <span>See it by era and metal, and what you have paid for it, the moment you add a coin.</span>
+                                <span>Era, metal and spend, updated the moment you add a coin.</span>
                             </div>
                         </li>
                         <li>
                             <span class="domus-reasons__num" aria-hidden="true">IV</span>
                             <div>
-                                <strong>Free, ad-free and private</strong>
-                                <span>Nothing to pay and no adverts. Your coins stay private until you choose to share them with the community.</span>
+                                <strong>Free to join, ad-free and private</strong>
+                                <span>Most features stay free; coins stay private until you share them.</span>
                             </div>
                         </li>
                     </ol>
                 </div>
 
                 <div class="cta-button">
-                    <!-- TODO: when Domus goes live, swap this locked block for
-                         <a class="domus-button" href="https://domus.imperiumroma.com">Create Free Account</a> -->
-                    <div class="domus-cta-locked" role="status">
-                        <span class="domus-cta-locked__badge">Free to join</span>
-                        <span class="domus-cta-locked__label">Accounts open soon</span>
-                    </div>
+                    <a class="domus-button" href="https://domus.imperiumroma.com/" target="_blank" rel="noopener">Create free account</a>
                 </div>
             </div>
 
@@ -423,12 +426,57 @@
                 <div class="domus-panel-wrapper">
                 <!-- Tab: Tour -->
                 <div class="domus-tab-panel active" id="domus-panel-tour" role="tabpanel" aria-labelledby="tab-tour">
-                    <figure class="tour-hero">
-                        <img src="/assets/images/general/collection dashboard.jpg" alt="Domus collection dashboard overview" loading="lazy" decoding="async" width="1280" height="720">
-                    </figure>
                     <div class="tour-description">
                         <p class="tour-intro"><strong class="domus-word">Domus</strong> is the first digital platform built exclusively for Roman coin collectors</p>
-                        <p class="tour-details">Document every piece with photos, legends, mint marks and condition — then explore your holdings through a visual dashboard with real-time statistics, 3D coin models generated from your own images, and community-driven identification</p>
+                    </div>
+                    <!-- Screenshot carousel, driven by domus-carousel.js. Every slide
+                         sits on the same 16:9 stage, so the differently shaped
+                         screenshots never change the panel's height. Without JS the
+                         first slide simply stays in view. -->
+                    <div class="tour-carousel" role="region" aria-roledescription="carousel" aria-label="Domus screenshots">
+                        <div class="tour-carousel__viewport">
+                            <div class="tour-carousel__slide" role="group" aria-roledescription="slide" aria-label="1 of 4">
+                                <img src="/assets/images/domus/dashboard-1400.webp"
+                                     srcset="/assets/images/domus/dashboard-800.webp 800w, /assets/images/domus/dashboard-1400.webp 1400w"
+                                     sizes="(max-width: 900px) calc(100vw - 32px), 700px"
+                                     width="1400" height="787" loading="lazy" decoding="async"
+                                     alt="Domus dashboard with collection totals, coins by era and material, coins by emperor and collection growth">
+                            </div>
+                            <div class="tour-carousel__slide" role="group" aria-roledescription="slide" aria-label="2 of 4">
+                                <img src="/assets/images/domus/spending-1400.webp"
+                                     srcset="/assets/images/domus/spending-800.webp 800w, /assets/images/domus/spending-1400.webp 1400w"
+                                     sizes="(max-width: 900px) calc(100vw - 32px), 700px"
+                                     width="1400" height="741" loading="lazy" decoding="async"
+                                     alt="Domus spending analytics: total and average spent, spending over time, price by metal and wishlist cost">
+                            </div>
+                            <div class="tour-carousel__slide" role="group" aria-roledescription="slide" aria-label="3 of 4">
+                                <img src="/assets/images/domus/coin-3d-1087.webp"
+                                     srcset="/assets/images/domus/coin-3d-800.webp 800w, /assets/images/domus/coin-3d-1087.webp 1087w"
+                                     sizes="(max-width: 900px) 70vw, 420px"
+                                     width="1087" height="917" loading="lazy" decoding="async"
+                                     alt="A Trajan denarius shown as an interactive 3D model in Domus, next to its catalogue details">
+                            </div>
+                            <div class="tour-carousel__slide" role="group" aria-roledescription="slide" aria-label="4 of 4">
+                                <img src="/assets/images/domus/forum-1400.webp"
+                                     srcset="/assets/images/domus/forum-800.webp 800w, /assets/images/domus/forum-1400.webp 1400w"
+                                     sizes="(max-width: 900px) calc(100vw - 32px), 700px"
+                                     width="1400" height="547" loading="lazy" decoding="async"
+                                     alt="The Domus forum, with discussions sorted into categories such as attribution and authenticity">
+                            </div>
+                        </div>
+                        <div class="tour-carousel__controls">
+                            <button type="button" class="tour-carousel__toggle" aria-label="Pause slideshow"
+                                    data-label-pause="Pause slideshow" data-label-play="Play slideshow">
+                                <svg class="tour-carousel__icon-pause" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/></svg>
+                                <svg class="tour-carousel__icon-play" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg>
+                            </button>
+                            <div class="tour-carousel__dots">
+                                <button type="button" class="tour-carousel__dot" aria-label="Slide 1: dashboard" aria-current="true"></button>
+                                <button type="button" class="tour-carousel__dot" aria-label="Slide 2: spending"></button>
+                                <button type="button" class="tour-carousel__dot" aria-label="Slide 3: 3D coin model"></button>
+                                <button type="button" class="tour-carousel__dot" aria-label="Slide 4: forum"></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -508,6 +556,10 @@
                             <p>Imperium Roma is a platform for ancient Roman coin authentication, valuation, and collection management. It provides free tools for collectors and numismatists to identify, catalog, and research Roman Imperial coinage</p>
                         </details>
                         <details>
+                            <summary>How do I join Domus?</summary>
+                            <p>Create a free account at <a href="https://domus.imperiumroma.com/" target="_blank" rel="noopener">domus.imperiumroma.com</a></p>
+                        </details>
+                        <details>
                             <summary>Is Domus free?</summary>
                             <p>Yes. You can join and start cataloging for free</p>
                         </details>
@@ -537,7 +589,7 @@
                         </details>
                         <details>
                             <summary>How do I delete my account or data?</summary>
-                            <p>Request removal here: <a href="/policies/delete_user_data/">Delete User Data</a></p>
+                            <p>Delete your account in Domus settings at any time, or see <a href="/policies/delete_user_data/">Delete Your Data</a></p>
                         </details>
                         <details>
                             <summary>How do I get help?</summary>
@@ -598,6 +650,7 @@
     <script src="/assets/js/drifting-objects.js" defer></script>
     <script src="/assets/js/domus-features.js" defer></script>
     <script src="/assets/js/domus-tabs.js" defer></script>
+    <script src="/assets/js/domus-carousel.js" defer></script>
     <script src="/assets/js/parallax.js" defer></script>
     <script src="/assets/js/news.js" defer></script>
     <script src="/assets/js/bibliotheca-preview.js" defer></script>

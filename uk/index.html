@@ -104,6 +104,11 @@
         "mainEntity": [
             {
                 "@type": "Question",
+                "name": "Як приєднатися до Domus?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Створіть безкоштовний акаунт на domus.imperiumroma.com." }
+            },
+            {
+                "@type": "Question",
                 "name": "Domus безкоштовний?",
                 "acceptedAnswer": { "@type": "Answer", "text": "Так. Приєднатися і почати каталогізацію можна безкоштовно." }
             },
@@ -316,40 +321,35 @@
                             <span class="domus-reasons__num" aria-hidden="true">I</span>
                             <div>
                                 <strong>Кожна монета повністю задокументована</strong>
-                                <span>Фото обох боків, легенди, вага, каталожні посилання й провенанс в одному записі &mdash; а не на розрізнених етикетках, у конвертах і таблицях.</span>
+                                <span>Фото, легенди, вага, каталоги й провенанс в одному записі.</span>
                             </div>
                         </li>
                         <li>
                             <span class="domus-reasons__num" aria-hidden="true">II</span>
                             <div>
                                 <strong>Провенанс залишається з монетою</strong>
-                                <span>Дані про купівлю, аукціонні лоти й попередніх власників зберігаються з кожною монетою &mdash; саме це запитають покупці, страховики та спадкоємці.</span>
+                                <span>Купівля, лоти й попередні власники &mdash; разом із монетою.</span>
                             </div>
                         </li>
                         <li>
                             <span class="domus-reasons__num" aria-hidden="true">III</span>
                             <div>
                                 <strong>Уся колекція з першого погляду</strong>
-                                <span>Розподіл за епохами й металами та сума, яку ви за неї сплатили, &mdash; щойно ви додаєте монету.</span>
+                                <span>Епохи, метали й витрати &mdash; одразу, щойно додаєте монету.</span>
                             </div>
                         </li>
                         <li>
                             <span class="domus-reasons__num" aria-hidden="true">IV</span>
                             <div>
-                                <strong>Безкоштовно, без реклами, приватно</strong>
-                                <span>Жодних платежів і реклами. Ваші монети залишаються приватними, доки ви самі не поділитеся ними зі спільнотою.</span>
+                                <strong>Безкоштовна реєстрація, без реклами, приватно</strong>
+                                <span>Майже все безкоштовно, монети приватні, доки не поділитеся.</span>
                             </div>
                         </li>
                     </ol>
                 </div>
 
                 <div class="cta-button">
-                    <!-- TODO: when Domus goes live, swap this locked block for
-                         <a class="domus-button" href="https://domus.imperiumroma.com">Створити безкоштовний акаунт</a> -->
-                    <div class="domus-cta-locked" role="status">
-                        <span class="domus-cta-locked__badge">Безкоштовно</span>
-                        <span class="domus-cta-locked__label">Реєстрація незабаром</span>
-                    </div>
+                    <a class="domus-button" href="https://domus.imperiumroma.com/" target="_blank" rel="noopener">Створити безкоштовний акаунт</a>
                 </div>
             </div>
 
@@ -365,12 +365,57 @@
                 <div class="domus-panel-wrapper">
                 <!-- Tab: Tour -->
                 <div class="domus-tab-panel active" id="domus-panel-tour" role="tabpanel" aria-labelledby="tab-tour">
-                    <figure class="tour-hero">
-                        <img src="/assets/images/general/collection dashboard.jpg" alt="Огляд панелі колекції Domus" loading="lazy" decoding="async" width="1280" height="720">
-                    </figure>
                     <div class="tour-description">
                         <p class="tour-intro"><strong class="domus-word">Domus</strong> — перша цифрова платформа, створена саме для колекціонерів римських монет</p>
-                        <p class="tour-details">Документуйте кожну монету з фотографіями, легендами, знаками монетного двору та станом, а потім досліджуйте колекцію через візуальну панель зі статистикою в реальному часі, 3D-моделями монет із ваших фотографій та ідентифікацією за допомогою спільноти</p>
+                    </div>
+                    <!-- Screenshot carousel, driven by domus-carousel.js. Every slide
+                         sits on the same 16:9 stage, so the differently shaped
+                         screenshots never change the panel's height. Without JS the
+                         first slide simply stays in view. -->
+                    <div class="tour-carousel" role="region" aria-roledescription="карусель" aria-label="Знімки екрана Domus">
+                        <div class="tour-carousel__viewport">
+                            <div class="tour-carousel__slide" role="group" aria-roledescription="слайд" aria-label="1 з 4">
+                                <img src="/assets/images/domus/dashboard-1400.webp"
+                                     srcset="/assets/images/domus/dashboard-800.webp 800w, /assets/images/domus/dashboard-1400.webp 1400w"
+                                     sizes="(max-width: 900px) calc(100vw - 32px), 700px"
+                                     width="1400" height="787" loading="lazy" decoding="async"
+                                     alt="Панель Domus: кількість і вартість колекції, монети за епохами й металами, за імператорами та ріст колекції">
+                            </div>
+                            <div class="tour-carousel__slide" role="group" aria-roledescription="слайд" aria-label="2 з 4">
+                                <img src="/assets/images/domus/spending-1400.webp"
+                                     srcset="/assets/images/domus/spending-800.webp 800w, /assets/images/domus/spending-1400.webp 1400w"
+                                     sizes="(max-width: 900px) calc(100vw - 32px), 700px"
+                                     width="1400" height="741" loading="lazy" decoding="async"
+                                     alt="Аналітика витрат у Domus: загальні й середні витрати, витрати в часі, ціни за металом і вартість списку бажань">
+                            </div>
+                            <div class="tour-carousel__slide" role="group" aria-roledescription="слайд" aria-label="3 з 4">
+                                <img src="/assets/images/domus/coin-3d-1087.webp"
+                                     srcset="/assets/images/domus/coin-3d-800.webp 800w, /assets/images/domus/coin-3d-1087.webp 1087w"
+                                     sizes="(max-width: 900px) 70vw, 420px"
+                                     width="1087" height="917" loading="lazy" decoding="async"
+                                     alt="Денарій Траяна як інтерактивна 3D-модель у Domus поруч із даними каталогу">
+                            </div>
+                            <div class="tour-carousel__slide" role="group" aria-roledescription="слайд" aria-label="4 з 4">
+                                <img src="/assets/images/domus/forum-1400.webp"
+                                     srcset="/assets/images/domus/forum-800.webp 800w, /assets/images/domus/forum-1400.webp 1400w"
+                                     sizes="(max-width: 900px) calc(100vw - 32px), 700px"
+                                     width="1400" height="547" loading="lazy" decoding="async"
+                                     alt="Форум Domus з обговореннями за категоріями, як-от атрибуція та автентичність">
+                            </div>
+                        </div>
+                        <div class="tour-carousel__controls">
+                            <button type="button" class="tour-carousel__toggle" aria-label="Призупинити слайд-шоу"
+                                    data-label-pause="Призупинити слайд-шоу" data-label-play="Запустити слайд-шоу">
+                                <svg class="tour-carousel__icon-pause" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/></svg>
+                                <svg class="tour-carousel__icon-play" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg>
+                            </button>
+                            <div class="tour-carousel__dots">
+                                <button type="button" class="tour-carousel__dot" aria-label="Слайд 1: панель" aria-current="true"></button>
+                                <button type="button" class="tour-carousel__dot" aria-label="Слайд 2: витрати"></button>
+                                <button type="button" class="tour-carousel__dot" aria-label="Слайд 3: 3D-модель монети"></button>
+                                <button type="button" class="tour-carousel__dot" aria-label="Слайд 4: форум"></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -450,6 +495,10 @@
                             <p>Imperium Roma — платформа для автентифікації, оцінки та управління колекціями античних римських монет. Вона надає безкоштовні інструменти колекціонерам і нумізматам для ідентифікації, каталогізації та дослідження монет Римської імперії</p>
                         </details>
                         <details>
+                            <summary>Як приєднатися до Domus?</summary>
+                            <p>Створіть безкоштовний акаунт на <a href="https://domus.imperiumroma.com/" target="_blank" rel="noopener">domus.imperiumroma.com</a></p>
+                        </details>
+                        <details>
                             <summary>Domus безкоштовний?</summary>
                             <p>Так. Приєднатися і почати каталогізацію можна безкоштовно</p>
                         </details>
@@ -479,7 +528,7 @@
                         </details>
                         <details>
                             <summary>Як видалити обліковий запис або дані?</summary>
-                            <p>Надішліть запит тут: <a href="{{link:/policies/delete_user_data/}}">Видалення даних користувача</a></p>
+                            <p>Видаліть акаунт у налаштуваннях Domus будь-коли або перегляньте <a href="{{link:/policies/delete_user_data/}}">Видалення даних</a></p>
                         </details>
                         <details>
                             <summary>Як отримати допомогу?</summary>
@@ -540,6 +589,7 @@
     <script src="/assets/js/drifting-objects.js" defer></script>
     <script src="/assets/js/domus-features.js" defer></script>
     <script src="/assets/js/domus-tabs.js" defer></script>
+    <script src="/assets/js/domus-carousel.js" defer></script>
     <script src="/assets/js/parallax.js" defer></script>
     <script src="/assets/js/news.js" defer></script>
     <script src="/assets/js/bibliotheca-preview.js" defer></script>
