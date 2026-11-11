@@ -24,6 +24,15 @@
   # PHP still loads them from disk.
   RewriteRule ^(vendor|includes)(/|$) - [F,L]
 
+  # Domus now lives at https://domus.imperiumroma.com. The old in-site app
+  # (/login/, /domus/ and their sub-pages) is still on the server, because the
+  # SFTP deploy never deletes files, so every old URL is sent permanently to the
+  # new app: bookmarks keep working and search engines drop the old pages.
+  # The host check stops the rule ever matching on the subdomain itself; the
+  # trailing "?" drops the old query string (e.g. an OAuth ?code=).
+  RewriteCond %{HTTP_HOST} ^imperiumroma\.com$ [NC]
+  RewriteRule ^(login|domus)(/.*)?$ https://domus.imperiumroma.com/? [R=301,L]
+
   # Legacy Bibliotheca article URLs. Articles used to be rendered client-side at
   # /bibliotheca/?doc=<slug> (see dc815b3); they now have their own pages. Without
   # this, those old URLs silently serve the library index, stranding any links and

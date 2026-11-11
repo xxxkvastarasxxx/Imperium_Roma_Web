@@ -7,15 +7,9 @@ Allow: /contact/
 Allow: /authenticity/
 Allow: /bibliotheca/
 
-# Block auth-required / private pages
-Disallow: /login/
-Disallow: /domus/
-Disallow: /login/reset-password/
-Disallow: /domus/settings/
-Disallow: /domus/create-profile/
-Disallow: /domus/check-profile/
-Disallow: /domus/collection/
-Disallow: /domus/wishlist/
+# /login/ and /domus/ are deliberately NOT blocked: they 301 to
+# https://domus.imperiumroma.com (see .htaccess), and crawlers have to be able
+# to fetch them to see that redirect and drop the old URLs from their index.
 
 # Block policy pages (low value for search)
 Disallow: /policies/

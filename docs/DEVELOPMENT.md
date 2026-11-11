@@ -43,9 +43,9 @@ Include paths are resolved from the repo root, so they are the same regardless o
 the page is (`/index.html` and `/policies/terms_of_use/index.html` both write
 `<!-- @include partials/header.html -->`).
 
-> The `domus/*` (logged-in "Domus") and `login/*` areas use a different app shell and do
-> **not** use these public partials. If you later want to de-duplicate those, add e.g.
-> `partials/domus-header.html` and include it the same way.
+> Domus, the logged-in collection app, is not part of this repo: it is a separate app at
+> **https://domus.imperiumroma.com**, linked from the header, footer and the home-page
+> Domus section. The old in-site `/login/` and `/domus/` URLs 301 there (root `.htaccess`).
 
 ## Adding or editing a page
 
@@ -140,11 +140,10 @@ Also add the article to the translated index's ItemList JSON-LD and noscript lis
 - **Classic JS** (plain scripts sharing globals: header, hamburger, carousel, parallax,
   newsletter, …) — minified (esbuild) and content-hashed, same as CSS.
 - **ES-module JS** — files that use `import`/`export` or are loaded with
-  `<script type="module">` (the Supabase/login/Domus code: `config.js`,
-  `supabaseClient.js`, `login.js`, `check-profile.js`, `create-profile.js`,
-  `domus.js`, `supabase-init.js`) are **minified in place and keep their original names**.
+  `<script type="module">` are **minified in place and keep their original names**.
   Hashing them would break their internal `import '/assets/js/…'` specifiers. The build
   detects this set automatically (module graph), so you don't have to configure anything.
+  No site script is a module at the moment; the support is there for when one is added.
 - **Everything else** (images, videos, PHP, `.htaccess` under `config/`, JSON, XML,
   fonts, PDFs, `robots.txt`, `sitemap.xml`) is copied through untouched.
 
@@ -228,15 +227,11 @@ browser (assets/js/coin-identify.js)
   `config/telegram.php` for the contact form. See
   [docs/NEWSLETTER_SETUP.md](NEWSLETTER_SETUP.md).
 - **ES-module cache-busting is by name only.** Because module files keep their names, a
-  changed module relies on normal HTTP caching rather than a new hash. These files (the
-  logged-in app area) change rarely; hard-refresh if needed. Bundling the Domus app into
-  hashed entry files is a good future step.
+  changed module relies on normal HTTP caching rather than a new hash. Bundle any future
+  module into a hashed entry file if it will change often.
 - **Orphaned hashed files.** SFTP upload does not delete remote files, so old hashed
   assets accumulate on the server over time. Harmless (nothing references them); can be
   cleaned periodically.
-- **`domus/assets/css/domus.css`** has a Google-Fonts `@import` after other rules, which
-  is invalid CSS (browsers ignore it). The build recovers and still minifies it. Move the
-  `@import` to the top of the file to make the font load.
 
 ## Future optimization opportunities (not yet done)
 

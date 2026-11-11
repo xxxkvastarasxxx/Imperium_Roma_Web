@@ -614,13 +614,6 @@ nav ul li a.active {
     }
 }
 
-/* Disabled link state (e.g. Domus until the subdomain is live) */
-.is-disabled {
-    opacity: 0.45;
-    pointer-events: none;
-    cursor: not-allowed;
-}
-
 /* ===== Shared site footer =====
    Styles partials/footer.html, included on every public page. This block used to be
    copy-pasted into every page-specific stylesheet (about.css, contact.css, etc. each
